@@ -46,6 +46,7 @@ options(bitmapType = "cairo")
 
 # ABSTRACT 
 
+
 The stock assessment model for *Euphausia superba* (hereafter krill) in the Antarctic Peninsula, operating within a spatial-temporal and ecosystemic framework, highlights the importance of incorporating spatial heterogeneity. The spatial heterogeneity, such as variations in oceanographic conditions and habitat suitability across different regions, is likely to outperform a population dynamics of krill. By accounting for spatial heterogeneity, a integrated stock assessment model can better capture localized dynamics and interactions, leading to more accurate predictions of krill population dynamics. This nuanced approach allows for a more refined understanding of diferente zones shape krill abundance, fishing mortalyty and recruitment patterns across the Antarctic Peninsula. Consequently, by acknowledging and integrating spatial heterogeneity, the stock assessment model can provide more robust insights into the ecological dynamics of krill populations and improve CCAMLR fishery management and conservation strategies in this region.
 
 *Keywords: Krill populations, dynamic population, stock assessment, SS3, spatial implicit, management, CCAMLR.*
