@@ -51,6 +51,7 @@ The stock assessment model for *Euphausia superba* (hereafter krill) in the Anta
 *Keywords: Krill populations, dynamic population, stock assessment, SS3, spatial implicit, management, CCAMLR.*
 
 
+
 # INTRODUCTION
 
 
