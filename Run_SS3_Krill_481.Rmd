@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: "Implicit spatial model to krill Dynamic Population in Antarctic Peninsula, 48-1 SubArea. SS3 aplications"
 subtitle: "Working Paper to be submitted in CCAMLR WG-FSA 2024"
 author:
@@ -45,6 +46,8 @@ options(bitmapType = "cairo")
 ```
 
 # ABSTRACT 
+
+
 
 
 
@@ -97,12 +100,30 @@ In Table 1 we have ten scenarios to test different option in modeling about main
 The stock assesment model was configured using Stock Synthesis (SS3 hereafter)[SS3](https://vlab.noaa.gov/web/stock-synthesis) [@Methot2013] with the most updated version (V.3.30.21). SS3 is a structured age and size stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"*. SS3 has a stock population sub-model that simulates growth, maturity, fecundity, recruitment, movement, and mortality processes, and observation sub-models and expected values for different types of data. The model is coded in `C++` with estimation parameters enabled by automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The analysis of results and outputs uses R tools and the graphical interface of the *r4ss* library [@Taylor2019; @Winker2023].
 
 ## Model setup
+=======
+title: "Run_SS3_Krill_481"
+author: "Mauricio Mardones I."
+date: '2022-06-15'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+>>>>>>> b9427ff069cad766960c2f0138ac1537b2c9aac5
 
 ```{r message=FALSE}
 # install.packages("devtools")
 # devtools::install_github("r4ss/r4ss", ref="development")
+<<<<<<< HEAD
 # install.packages("caTools")
 # library("caTools")
+=======
+# 
+# install.packages("caTools")
+# library("caTools")
+# 
+>>>>>>> b9427ff069cad766960c2f0138ac1537b2c9aac5
 # install.packages("r4ss")
 library(r4ss)
 library(here)
@@ -112,6 +133,7 @@ library(ss3diags)
 
 
 ```{r message=FALSE, warning=FALSE}
+<<<<<<< HEAD
 dir01 <- here("s01") # agreggate data (no spatial diferences)
 dir1<-here("s1") # Data strata flishery
 dir2<-here("s2") # Same 9 with areas (SubStrata) as fleet. Dif size comoposition and dif CPUE and dif survey length and biomass data by strata
@@ -187,10 +209,33 @@ base.model7 <- SS_output(dir=dir7,
                         forecast=T)
 
 
+=======
+dir1<-here("~/DOCAS/SA_Krill/s1")
+dir2<-here("~/DOCAS/SA_Krill/s2")
+dir3<-here("~/DOCAS/SA_Krill/s3_longer")
+dir4<-here("~/DOCAS/SA_Krill/s3")
+```
+
+
+```{r}
+#shell(cmd="ss") # run SS para windows
+# aqui debo cambiar el setwd() para correr el modelo
+
+r4ss::run_SS_models(dirvec = dir4, model = './ss_osx', 
+                    skipfinished = FALSE) 
+```
+
+
+
+```{r}
+dir4<-here("s3")
+base.model <- SS_output(dir=dir4,covar=F,forecast=F)
+>>>>>>> b9427ff069cad766960c2f0138ac1537b2c9aac5
 ```
 
 Saco los outputs en html
 
+<<<<<<< HEAD
 ```{r eval=FALSE,  message=F, include=FALSE}
 SS_plots(base.model7, 
          uncertainty = TRUE,
@@ -200,6 +245,10 @@ SS_plots(base.model7,
          btarg=0.75, 
          minbthresh=0.2, 
          forecast=T)
+=======
+```{r eval=FALSE}
+SS_plots(base.model, uncertainty=T,datplot = F, png=T, aalresids = F,btarg=0.75, minbthresh=0.25, forecast=F)
+>>>>>>> b9427ff069cad766960c2f0138ac1537b2c9aac5
 ```
 
 
@@ -207,15 +256,29 @@ SS_plots(base.model7,
 Data disponible para este escenario. Espinel es la serie mas consistente del conjunto de datos.
 
 ```{r}
+<<<<<<< HEAD
 SSplotData(base.model, subplots = 2)
 
 
+=======
+SSplotData(base.model, subplot = 2, 
+           fleetnames = c("Fishery", "Survey"),
+           fleetcol = c(4,6))
+>>>>>>> b9427ff069cad766960c2f0138ac1537b2c9aac5
 ```
 
 Respecto a los valores y parametros biologicos modelados, los siguientes graficos identifican los estimadores puntuales del recurso
 
 ```{r}
+<<<<<<< HEAD
 SSplotSelex(base.model)
+=======
+SSplotBiology(base.model, subplots =1, labels = c("Length (cm)", "Age (yr)", "Maturity", "Mean weight (kg) in last year",
+    "Spawning output", "Length (cm, beginning of the year)", "Natural mortality",
+    "Female weight (kg)", "Female length (cm)", "Fecundity", "Default fecundity label",
+    "Year", "Hermaphroditism transition rate", "Fraction females by age at equilibrium"),
+ )
+>>>>>>> b9427ff069cad766960c2f0138ac1537b2c9aac5
 ```
 
 aporte de las cohortes por año para las capturas.
@@ -242,6 +305,7 @@ Salida de las biomasas con las dos flotas
 
 
 ```{r}
+<<<<<<< HEAD
 SSplotTimeseries(base.model7, subplot = 1)
 ```
 
@@ -780,5 +844,83 @@ SStableComparisons(summaryoutput,
                    csvfile = "parameter_comparison_table.csv",
                  verbose = TRUE,
                    mcmc = FALSE)
+=======
+SSplotTimeseries(base.model, subplot = 1)
+```
+
+
+
+```{r}
+#########################################################################
+#COMPARACION DE MODELOS con distinto desembarque
+#########################################################################
+
+
+#PLOT labels, name of each model run
+legend.labels <- c('SSdir1','SSdir2','SSdir3')
+
+#read in all model runs
+#note if cover=T you need a hessian; if covar=F you do not need a hessian
+biglist <- SSgetoutput(keyvec = NULL, dirvec = c(SSdir1,SSdir2,SSdir3),	getcovar = F)
+
+#create summary of model runs from list above
+summaryoutput <- SSsummarize(biglist)
+
+SSplotComparisons(summaryoutput, subplots = 1:20, plot = TRUE,
+                  print = T, endyrvec = "default", indexfleets = NULL, indexUncertainty = FALSE,
+                  indexQlabel = TRUE, indexQdigits = 4, indexSEvec = "default",
+                  indexPlotEach = FALSE, labels = c("Year", "Spawning biomass (t)",
+                                                    "Relative spawning biomass", "Age-0 recruits (1,000s)",
+                                                    "Recruitment deviations", "Index", "Log index", "1 - SPR", "Density",
+                                                    "Management target", "Minimum stock size threshold", "Spawning output",
+                                                    "Harvest rate"), col = NULL, shadecol = NULL, pch = NULL,
+                  lty = 1, lwd = 2, spacepoints = 10, staggerpoints = 1,
+                  initpoint = 0, tickEndYr = TRUE, shadeForecast = TRUE,
+                  xlim = "default", ylimAdj = 1, xaxs = "r", yaxs = "r",
+                  type = "o", uncertainty = TRUE, shadealpha = 0.1, legend = TRUE,
+                  legendlabels = "default", legendloc = "topright",
+                  legendorder = "default", legendncol = 1, sprtarg = NULL,
+                  btarg = NULL, minbthresh = NULL, pwidth = 6.5, pheight = 5,
+                  punits = "in", res = 300, ptsize = 10, cex.main = 1,
+                  plotdir = "C:\\Users\\mauricio.mardones\\Documents\\IFOP\\Loco_Assessment_AMERB\\SA_Loco", filenameprefix = "", densitynames = c("SSB_Virgin",
+                                                                                                                     "R0"), densityxlabs = "default", densityscalex = 1,
+                  densityscaley = 1, densityadjust = 1, densitysymbols = TRUE,
+                  densitytails = TRUE, densitymiddle = FALSE, densitylwd = 1,
+                  fix0 = TRUE, new = TRUE, add = FALSE, par = list(mar = c(5, 4, 1,
+                                                                           1) + 0.1), verbose = TRUE, mcmcVec = FALSE,
+                  show_equilibrium = TRUE)
+
+
+SStableComparisons(summaryoutput,
+                   likenames = c("TOTAL", "Survey", "Length_comp", "Age_comp", "priors",
+                                 "Size_at_age"), names = c("Recr_Virgin", "R0", "steep", "NatM",
+                                                           "L_at_Amax", "VonBert_K", "SSB_Virg", "Bratio_2017", "SPRratio_2016"),
+                   digits = NULL, modelnames = "default", csv = FALSE,
+                   csvdir = "C:\\Users\\mauricio.mardones\\Documents\\IFOP\\Loco_Assessment_AMERB\\SA_Loco",
+                   csvfile = "parameter_comparison_table.csv", verbose = TRUE,
+                   mcmc = FALSE)
+```
+
+# Analisis retrospectivo
+
+```{r}
+
+#do retrospective model runs
+SS_doRetro('C:\\SAFS\\SS\\Modelos_Seattle\\Anchoveta\\month\\5', '', newsubdir = "retrospectives",
+           subdirstart = "retro", years = 0:-5, overwrite = TRUE, exefile = "ss",
+           extras = "-nox -nohess", intern = FALSE, CallType = "system",
+           RemoveBlocks = FALSE)
+retroModels <- SSgetoutput(dirvec=file.path('C:\\SAFS\\SS\\Modelos_Seattle\\Anchoveta\\month\\5', "retrospectives",paste("retro",0:-5,sep="")))
+retroSummary <- SSsummarize(retroModels)
+endyrvec <- retroSummary$endyrs + 0:-5
+SSplotComparisons(retroSummary, endyrvec=endyrvec, legendlabels=paste("Data",0:-5,"years"),
+                  plotdir='C:\\SAFS\\SS\\Modelos_Seattle\\Anchoveta\\month\\',plot=TRUE,print=T)
+TableCompare <- SStableComparisons(retroSummary,likenames=like, names=names, 
+                                   modelnames=c('B','-1','-2','-3','-4','-5'), csv=TRUE, csvfile="RetroRuns.csv",verbose=FALSE)
+##############################################################################################
+
+
+
+>>>>>>> b9427ff069cad766960c2f0138ac1537b2c9aac5
 ```
 
