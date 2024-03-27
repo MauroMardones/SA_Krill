@@ -184,6 +184,10 @@ library(here)
 #remotes::install_github("PIFSCstockassessments/ss3diags")
 library(ss3diags)
 library(kableExtra)
+library(doParallel) # facilita la ejecución paralela en R
+detectCores()
+registerDoParallel(8)
+library(ggpubr)
 ```
 
 
@@ -288,7 +292,7 @@ SS_plots(base.model7,
 ```{r}
 SSplotData(base.model01, subplot = 1, 
            fleetnames = c("Fishery", "Survey", "Predator"),
-           fleetcol = c(7,6, 4))
+           fleetcol = c("blue","green", "red"))
 
 SSplotData(base.model2, 
            subplot = 1,
@@ -379,7 +383,7 @@ Step to do a good practice in model diagnosis is;
 ## Residual
 
 ```{r eval=TRUE}
-SSplotRunstest(base.model2, 
+SSplotRunstest(base.model01, 
                subplots = "cpue",
                add=T)
 SSplotRunstest(base.model2, 
@@ -421,42 +425,126 @@ retro(dir=dir7, oldsubdir="",
 ```
 
 
-```{r}
-retroModels <- SSgetoutput(dirvec=file.path(dir2,
+```{r echo=FALSE}
+#s01
+retroModels01 <- SSgetoutput(dirvec=file.path(dir01,
                                             "Retrospective",
                                             paste("retro",0:-5,
                                                   sep="")))
 
-retroSummary <- SSsummarize(retroModels)
+retroSummary01 <- SSsummarize(retroModels01)
+# s1
+retroModels1 <- SSgetoutput(dirvec=file.path(dir1,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary1 <- SSsummarize(retroModels1)
+#s2
+retroModels2 <- SSgetoutput(dirvec=file.path(dir2,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary2 <- SSsummarize(retroModels2)
+#s3
+retroModels3 <- SSgetoutput(dirvec=file.path(dir3,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary3 <- SSsummarize(retroModels3)
+#s4
+retroModels4 <- SSgetoutput(dirvec=file.path(dir4,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary4 <- SSsummarize(retroModels4)
+#s5
+retroModels5 <- SSgetoutput(dirvec=file.path(dir5,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary5 <- SSsummarize(retroModels5)
+#s6
+retroModels6 <- SSgetoutput(dirvec=file.path(dir6,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary6 <- SSsummarize(retroModels6)
+#s7
+retroModels7 <- SSgetoutput(dirvec=file.path(dir7,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary7 <- SSsummarize(retroModels7)
+
 ```
 
 
-```{r}
+```{r echo FALSE}
 #save(retroSummary, retroModels, file="retro5.Rdata")
 
-retro01 <- SSplotRetro(retroSummary,
+retro01 <- SSplotRetro(retroSummary01,
             add=T,
             forecast = F,
-            legend = F,
+            legend = T,
             verbose=F)
-retro2 <- SSplotRetro(retroSummary,
+retro1 <- SSplotRetro(retroSummary1,
             add=T,
             forecast = F,
-            legend = F,
+            legend = T,
             verbose=F)
-retro1 <- SSplotRetro(retroSummary,
+retro2 <- SSplotRetro(retroSummary2,
             add=T,
             forecast = F,
-            legend = F,
+            legend = T,
+            verbose=F)
+retro3 <- SSplotRetro(retroSummary3,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F)
+retro4 <- SSplotRetro(retroSummary4,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F)
+retro5 <- SSplotRetro(retroSummary5,
+            add=T,
+            forecast = F,
+            legend = T,
             verbose=F)
 
-retro7 <- SSplotRetro(retroSummary,
+retro6 <- SSplotRetro(retroSummary6,
             add=T,
             forecast = F,
-            legend = F,
-            verbose=F,
-            legendlabels="default")
+            legend = T,
+            verbose=F)
+
+
+retro7 <- SSplotRetro(retroSummary7,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F)
 ```
+```{r echo=FALSE}
+ggarrange(retro01,
+          retro1,
+          retro2,
+          retro3,
+          retro4,
+          retro5,
+          retro6,
+          retro7, ncol = 4, nrow = 4)
+```
+
+
 ## Hindcast Cross-Validation and prediction skill
 
 Implementing the Hindcast Cross-Validation (HCxval) diagnostic in Stock Synthesis requires the same model outputs generated by `r4ss:SS_doRetro()`. As a robust measure of prediction skill, we implemented the mean absolute scaled error (MASE). In brief, the MASE score scales the mean absolute. Regarding (A MASE score > 1 indicates that the average model forecasts are worse than a random walk. Conversely, a MASE score of 0.5 indicates that the model forecasts twice as
@@ -465,7 +553,7 @@ accurately as a naïve baseline prediction; thus, the model has prediction skill
 
 
 ```{r}
-hci = SSplotHCxval(retroSummary, 
+hci = SSplotHCxval(retroSummary2, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
@@ -480,12 +568,39 @@ mvln = SSdeltaMVLN(base.model01,
                    virgin = TRUE,
                    mc=100)
 
+mvln = SSdeltaMVLN(base.model2,
+                   Fref = "MSY", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
 ```
 
 
-```{r}
-SShcbias(retroSummary,quant="SSB",verbose=F)
-SShcbias(retroSummary,quant="F",verbose=F)
+```{r echo=FALSE}
+# model01
+tablebias01 <- SShcbias(retroSummary01,quant="SSB",verbose=F)
+tablebias02 <- SShcbias(retroSummary01,quant="F",verbose=F)
+
+kbl(tablebias01, booktabs = T,format = "latex",
+    caption = "Rho parameter in SSB model s01")  %>% 
+    kable_styling(latex_options = "HOLD_position")
+
+kbl(tablebias02, booktabs = T,format = "latex",
+    caption = "Rho parameter in F model s01")  %>% 
+    kable_styling(latex_options = "HOLD_position")
+
+# model2
+tablebias1 <- SShcbias(retroSummary2,quant="SSB",verbose=F)
+tablebias2 <- SShcbias(retroSummary2,quant="F",verbose=F)
+
+kbl(tablebias1, booktabs = T,format = "latex",
+    caption = "Rho parameter in SSB model s2")  %>% 
+    kable_styling(latex_options = "HOLD_position")
+
+kbl(tablebias2, booktabs = T,format = "latex",
+    caption = "Rho parameter in F model s2")  %>% 
+    kable_styling(latex_options = "HOLD_position")
 ```
 
 
@@ -493,144 +608,84 @@ SShcbias(retroSummary,quant="F",verbose=F)
 ## Verosimilitud
 
 
-```{r eval=FALSE, echo= FALSE}
+```{r eval=FALSE, echo = FALSE}
 # 1. Identificar el directorio donde se encuentra el modelo base ----
-dirname.model.run <- here("s10")
-
+dirname.model.run <- here("s2")
 # 2. Crear un nuevo directorio para el "Perfil_Verosimilitud"  
-
-
 dirname.R0.profile <- here("Ejercicios","Perfil_Verosimilitud")
 dir.create(path=dirname.R0.profile, showWarnings = TRUE, recursive = TRUE)
-
-
 # 3. Crear un subdirectorio llamado "plots_Verosimilitud" ----
-
-
 plotdir=paste0(dirname.R0.profile, "/plots_Verosimilitud")
 dir.create(path=plotdir, showWarnings = TRUE, recursive = TRUE)
-
-
-
-
 # 4. Crear un subdirectorio llamado "simple" ----
-
 reference.dir <- paste0(dirname.R0.profile,'/simple') 
 dir.create(path=reference.dir, showWarnings = TRUE, recursive = TRUE)
-
-
-
-
 # 5. Copiar el resultado del modelo base completo en este directorio ----
-
 file.copy(Sys.glob(paste(dirname.model.run, "*.*", sep="/"),
                    dirmark = FALSE),
                     reference.dir)
-
-
 # 6. Leer la salida del modelo base ----
-
-
 Base <- SS_output(dir=reference.dir,covar=T)
-
-
-
-
 # 7. Copiar los archivos necesarios de "simple" al directorio "Perfil_Verosimilitud" ----
-
 copy_SS_inputs(dir.old = reference.dir, 
                dir.new =  dirname.R0.profile,
                copy_exe = TRUE,
                verbose = FALSE)
-
-
-
-
 # 8. Leer los archivos del modelo ----
-
 inputs <- r4ss::SS_read(dir = dirname.R0.profile)
-
-
-
 # 9. Editar el archivo control la fase de estimación recdev ----
-
 inputs$ctl$recdev_phase <- 1
-
-
-
-
 # 10. Editar el archivo starter para leer los valores de inicio ----
-
-
 inputs$start$init_values_src <- 0
-
-
-
-
 # 11. Vector de valores para el perfil ----
-
-
-R0.vec <- seq(7,11,0.5)  
+R0.vec <- seq(15,20,0.5)  
 Nprof.R0 <- length(R0.vec)
-
-
-
-
 # 12. Cambiar el nombre del archivo control en el archivo starter.ss ----
-
 inputs$start$ctlfile <- "control_modified.ss" 
-
-
-
-
 # 13. Incluir prior_like para parámetros no estimados ----
-
 inputs$start$prior_like <- 1                                 
-
-
-
-
 # 14. Escribir los modelos modificados ----
-
 r4ss::SS_write(inputs, dir = dirname.R0.profile, overwrite = TRUE)
-
-
-
-
 # 15. Ejecutar la función profile() ----
-
 ?SS_profile()
-profile <- profile(dir="dir10", # directory
-                      model="ss_osx",
+profile <- profile(dir=dirname.R0.profile, # directory
+                      exe="ss_osx",
                       oldctlfile ="control.ss",
                       newctlfile="control_modified.ss",
                       string="SR_LN(R0)",
                       profilevec=R0.vec)
-
-
-
-
 # 16. Leer los archivos de salida ----
 # (con nombres como Report1.sso, Report2.sso, etc.)
 prof.R0.models <- SSgetoutput(dirvec=dirname.R0.profile, 
                               keyvec=1:Nprof.R0, 
                               getcovar = FALSE) 
-
 # 17. Resumir las salidas con la función SSsummarize()  ----
 prof.R0.summary <- SSsummarize(prof.R0.models)
-
 # 18. Identificar los componentes de Verosimilitud ----
-mainlike_components         <- c('TOTAL',"Survey", 'Length_comp',"Age_comp",'Size_at_age','Recruitment') 
-mainlike_components_labels  <- c('Total likelihood','Index likelihood','Length likelihood',"Age likelihood",'Size_at_age likelihood','Recruitment likelihood') 
-
+mainlike_components         <- c('TOTAL',
+                                 "Survey", 
+                                 'Length_comp',
+                                 "Age_comp",
+                                 'Size_at_age',
+                                 'Recruitment') 
+mainlike_components_labels  <- c('Total likelihood',
+                                 'Index likelihood',
+                                 'Length likelihood',
+                                 "Age likelihood",
+                                 'Size_at_age likelihood',
+                                 'Recruitment likelihood') 
 # 19. Funciones para generar plots de perfil de verosimilitud ----
 ### SSplotProfile() ----
-png(file.path(plotdir,"R0_profile_plot.png"),width=7,height=4.5,res=300,units='in')
+png(file.path(plotdir,"R0_profile_plot.png"),
+    width=7,
+    height=4.5,
+    res=300,
+    units='in')
 par(mar=c(5,4,1,1))
-
 SSplotProfile(prof.R0.summary,           # summary object
               profile.string = "R0",     # substring of profile parameter
-              profile.label=expression(log(italic(R)[0])), ymax=150,minfraction = 0.001,
+              profile.label=expression(log(italic(R)[0])), 
+              ymax=150,minfraction = 0.001,
               pheight=4.5, 
               print=FALSE, 
               plotdir=plotdir, 
@@ -649,7 +704,8 @@ dev.off()
 ### SSplotComparisons() ----
 # Comparación de series de tiempo 
 labs <- paste("SR_Ln(R0) = ",R0.vec)
-labs[which(round(R0.vec,2)==Baseval)] <- paste("SR_Ln(R0) = ",Baseval,"(Base model)")
+labs[which(round(R0.vec,2)==Baseval)] <- paste("SR_Ln(R0) = ",
+                                               Baseval,"(Base model)")
 
 SSplotComparisons(prof.R0.summary,
                   legendlabels=labs,
@@ -659,7 +715,11 @@ SSplotComparisons(prof.R0.summary,
 
 ### PinerPlot() ----
 #### R0_profile_plot_Length_like ----
-png(file.path(plotdir,"R0_profile_plot_Length_like.png"),width=7,height=4.5,res=300,units='in')
+png(file.path(plotdir,"R0_profile_plot_Length_like.png"),
+    width=7,
+    height=4.5,
+    res=300,
+    units='in')
 par(mar=c(5,4,1,1))
 PinerPlot(prof.R0.summary, 
           profile.string = "R0", 
@@ -675,12 +735,20 @@ axis(1,at=Baseval,
 abline(v = Baseval, lty=2)
 dev.off()
 #### R0_profile_plot_Survey_like ----
-png(file.path(plotdir,"R0_profile_plot_Survey_like.png"),width=7,height=4.5,res=300,units='in')
+png(file.path(plotdir,"R0_profile_plot_Survey_like.png"),
+    width=7,
+    height=4.5,
+    res=300,
+    units='in')
 par(mar=c(5,4,1,1))
-PinerPlot(prof.R0.summary, profile.string = "R0", component = "Surv_like",main = "Changes in Index likelihoods by fleet",
+PinerPlot(prof.R0.summary, 
+          profile.string = "R0", 
+          component = "Surv_like",
+          main = "Changes in Index likelihoods by fleet",
           add_cutoff = TRUE,
           cutoff_prob = 0.95, legendloc="topleft")
-Baseval <- round(Base$parameters$Value[grep("SR_LN",Base$parameters$Label)],2)
+Baseval <- round(Base$parameters$Value[grep("SR_LN",
+                                            Base$parameters$Label)],2)
 Baselab <- paste(Baseval,sep="")
 axis(1,at=Baseval,label=Baselab)
 abline(v = Baseval, lty=2)
@@ -689,7 +757,7 @@ dev.off()
 
 ## Comparision outputs betwwen scenarios
 
-```{r}
+```{r echo=FALSE}
 #PLOT labels, name of each model run
 legend.labels <- c( "s01",
                   "s1",
@@ -737,6 +805,18 @@ SSplotComparisons(summaryoutput,
                             "Minimum stock size threshold",
                             "Spawning output",
                             "Harvest rate"))
+
+comp <- SSplotComparisons(summaryoutput,
+                  legendlabels = c("s01",
+                                   "s1",
+                                   "s2",
+                 "s3",
+                 "s4",
+                 "s5",
+                 "s6",
+                 "s7"),
+                 subplots = c(2, 16))
+comp
 ```
 
 
