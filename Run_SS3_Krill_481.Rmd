@@ -142,7 +142,7 @@ This equation represents the basic dynamics of the krill population, with abunda
 
 Stock Synthesis v.3.30.21 is a widely used software tool for assessing fish and invertebrate populations, including krill (Euphausia superba) in the Antarctic Peninsula region. The methodology employed by Stock Synthesis involves a comprehensive and integrated approach, utilizing various data sources and modeling techniques to estimate the main population variables of krill in WAP. 
 
-The stock assesment model was configured using Stock Synthesis (SS3 hereafter)[SS3](https://vlab.noaa.gov/web/stock-synthesis) [@Methot2013] with the most updated version (V.3.30.21). SS3 is a structured age and size stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"*. SS3 has a stock population sub-model that simulates growth, maturity, fecundity, recruitment, movement, and mortality processes, and observation sub-models and expected values for different types of data. The model is coded in `C++` with estimation parameters enabled by automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The analysis of results and outputs uses R tools and the graphical interface of the *r4ss* library [@Taylor2019; @Winker2023].
+The stock assesment model was configured using Stock Synthesis (SS3 hereafter)[SS3](https://vlab.noaa.gov/web/stock-synthesis) [@Methot2013; @methot2020stock] with the most updated version (V.3.30.21). SS3 is a structured age and size stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"*. SS3 has a stock population sub-model that simulates growth, maturity, fecundity, recruitment, movement, and mortality processes, and observation sub-models and expected values for different types of data. The model is coded in `C++` with estimation parameters enabled by automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The analysis of results and outputs uses R tools and the graphical interface of the *r4ss* library [@Taylor2019; @Winker2023].
 
 By integrating data from multiple sources and considering spatial heterogeneity, the assessment methodology using Stock Synthesis v.3.30.21 provides a robust framework for evaluating the status of krill populations in the Antarctic Peninsula region. This information is essential for supporting management decisions aimed at ensuring the sustainable use of krill resources in this ecologically sensitive area.
 
@@ -231,7 +231,7 @@ for (dir in directorios) {
 #system('./ss_osx') # to mac
 
 # r4ss::run(
-#   dir = dir1,
+#   dir = dir2,
 #   exe = "ss_osx",
 #   skipfinished = FALSE, # TRUE will skip running if Report.sso present
 #   show_in_console = TRUE # change to true to watch the output go past
@@ -277,7 +277,7 @@ base.model7 <- SS_output(dir=dir7,
 
 
 ```{r eval=FALSE, message=F, include=FALSE}
-SS_plots(base.model7, 
+SS_plots(base.model2, 
          uncertainty = TRUE,
          datplot = T, 
          png=T, 
@@ -591,14 +591,14 @@ kbl(tablebias02, booktabs = T,format = "latex",
     kable_styling(latex_options = "HOLD_position")
 
 # model2
-tablebias1 <- SShcbias(retroSummary2,quant="SSB",verbose=F)
-tablebias2 <- SShcbias(retroSummary2,quant="F",verbose=F)
+tablebias7 <- SShcbias(retroSummary7,quant="SSB",verbose=F)
+tablebias07 <- SShcbias(retroSummary7,quant="F",verbose=F)
 
-kbl(tablebias1, booktabs = T,format = "latex",
+kbl(tablebias7, booktabs = T,format = "latex",
     caption = "Rho parameter in SSB model s2")  %>% 
     kable_styling(latex_options = "HOLD_position")
 
-kbl(tablebias2, booktabs = T,format = "latex",
+kbl(tablebias7, booktabs = T,format = "latex",
     caption = "Rho parameter in F model s2")  %>% 
     kable_styling(latex_options = "HOLD_position")
 ```

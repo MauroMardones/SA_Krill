@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.11.5)  27 MAR 2024 16:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.11.5)  28 MAR 2024 10:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -856,42 +856,78 @@ File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-3.jpeg Graphic file 
 Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-3.jpeg  used on input line 962.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [40 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-2.jpeg>]
-<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg, id=308, 469.755pt x 325.215pt>
-File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg Graphic file (type jpg)
-<use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg>
-Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg  used on input line 980.
+<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-4.jpeg, id=308, 469.755pt x 325.215pt>
+File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-4.jpeg Graphic file (type jpg)
+<use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-4.jpeg>
+Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-4.jpeg  used on input line 964.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [41 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-3.jpeg>]
-<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-2.jpeg, id=315, 469.755pt x 325.215pt>
+<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-5.jpeg, id=313, 469.755pt x 325.215pt>
+File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-5.jpeg Graphic file (type jpg)
+<use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-5.jpeg>
+Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-5.jpeg  used on input line 966.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[42 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-4.jpeg>]
+<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-6.jpeg, id=319, 469.755pt x 325.215pt>
+File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-6.jpeg Graphic file (type jpg)
+<use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-6.jpeg>
+Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-6.jpeg  used on input line 968.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[43 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-5.jpeg>]
+<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-7.jpeg, id=325, 469.755pt x 325.215pt>
+File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-7.jpeg Graphic file (type jpg)
+<use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-7.jpeg>
+Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-7.jpeg  used on input line 970.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[44 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-6.jpeg>]
+<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-8.jpeg, id=330, 469.755pt x 325.215pt>
+File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-8.jpeg Graphic file (type jpg)
+<use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-8.jpeg>
+Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-8.jpeg  used on input line 972.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[45 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-7.jpeg>]
+<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-9.jpeg, id=335, 469.755pt x 325.215pt>
+File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-9.jpeg Graphic file (type jpg)
+<use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-9.jpeg>
+Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-9.jpeg  used on input line 974.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[46 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-8.jpeg>]
+<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg, id=340, 469.755pt x 325.215pt>
+File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg Graphic file (type jpg)
+<use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg>
+Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg  used on input line 992.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[47 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-20-9.jpeg>]
+<Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-2.jpeg, id=346, 469.755pt x 325.215pt>
 File: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-2.jpeg Graphic file (type jpg)
 <use Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-2.jpeg>
-Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-2.jpeg  used on input line 995.
+Package pdftex.def Info: Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-2.jpeg  used on input line 1007.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[42 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg>]
+[48 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-1.jpeg>]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 1001.
+(Font)              <10> on input line 1013.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 1001.
-[43 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-2.jpeg>]
-Overfull \hbox (18.04921pt too wide) in paragraph at lines 1084--1084
+(Font)              <7> on input line 1013.
+[49 <./Run_SS3_Krill_481_files/figure-latex/unnamed-chunk-21-2.jpeg>]
+Overfull \hbox (18.04921pt too wide) in paragraph at lines 1096--1096
 []\T1/lmtt/m/n/12 ##  [1]       NA 28992648       NA       NA       NA       NA       NA       NA[] 
  []
 
 
-Overfull \hbox (18.06322pt too wide) in paragraph at lines 1084--1084
+Overfull \hbox (18.06322pt too wide) in paragraph at lines 1096--1096
 []\T1/lmtt/m/n/12 ##  [9]       NA       NA       NA       NA       NA       NA       NA       NA[] 
  []
 
-[44] [45] [46] [47] (./Run_SS3_Krill_481.aux)
+[50] [51] [52] [53] (./Run_SS3_Krill_481.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16740 strings out of 478033
- 298105 string characters out of 5838239
+ 16848 strings out of 478033
+ 304477 string characters out of 5838239
  1870330 words of memory out of 5000000
- 36280 multiletter control sequences out of 15000+600000
+ 36376 multiletter control sequences out of 15000+600000
  572922 words of font info for 146 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  77i,12n,81p,1014b,526s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -899,10 +935,10 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{ref-Winker2023} has been referenced but does not exist, replaced by a fixed one
 
 {/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Run_SS3_Krill_481.pdf (47 pages, 5025513 bytes).
+Output written on Run_SS3_Krill_481.pdf (53 pages, 5706041 bytes).
 PDF statistics:
- 519 PDF objects out of 1000 (max. 8388607)
- 399 compressed objects within 4 object streams
- 113 named destinations out of 1000 (max. 500000)
- 37216 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 552 PDF objects out of 1000 (max. 8388607)
+ 419 compressed objects within 5 object streams
+ 119 named destinations out of 1000 (max. 500000)
+ 37246 words of extra memory for PDF output out of 42996 (max. 10000000)
 
