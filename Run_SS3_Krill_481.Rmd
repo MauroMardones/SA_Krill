@@ -189,105 +189,7 @@ library(ggpubr)
 ```
 
 
-```{r message=FALSE, warning=FALSE}
-dir01 <- here("s01") # agreggate data (no spatial diferences)
-dir1<-here("s1") # Data strata flishery
-dir2<-here("s2") # Same 9 with areas (SubStrata) as fleet. Dif size comoposition and dif CPUE and dif survey length and biomass data by strata
-dir3<-here("s3") # whitout S-R
-dir4<-here("s4") # 
-dir5<-here("s5") # whitout S-R
-dir6<-here("s6") # whitout S-R
-dir7<-here("s7") # whitout S-R
-```
-
-
-```{r eval=FALSE, message=F, include=FALSE}
-# Lista de directorios para correro tordos juntos
-directorios <- c("s01", 
-                 "s1", 
-                 "s2",
-                 "s3",
-                 "s4",
-                 "s5",
-                 "s6",
-                 "s7")  # Agrega aquí todos los nombres de las carpetas que deseas procesar
-
-# Bucle para ejecutar el código en cada directorio
-for (dir in directorios) {
-  r4ss::run(
-    dir = dir,
-    exe = "ss_osx",
-    skipfinished = FALSE,
-    show_in_console = TRUE
-  )
-}
-
-#OR with rby separate
-
-#shell(cmd="ss") # run SS to windows
-# or 
-#system('./ss_osx') # to mac
-
-# r4ss::run(
-#   dir = dir2,
-#   exe = "ss_osx",
-#   skipfinished = FALSE, # TRUE will skip running if Report.sso present
-#   show_in_console = TRUE # change to true to watch the output go past
-# )
-```
-
-
-```{r message=F, include=FALSE}
-#s01
-base.model01 <- SS_output(dir=dir01,
-                        covar=T,
-                        forecast=T)
-#s1
-base.model1 <- SS_output(dir=dir1,
-                        covar=T,
-                        forecast=T)
-#s2
-base.model2 <- SS_output(dir=dir2,
-                        covar=T,
-                        forecast=T)
-#s3
-base.model3 <- SS_output(dir=dir3,
-                        covar=T,
-                        forecast=T)
-#s4
-base.model4 <- SS_output(dir=dir4,
-                        covar=T,
-                        forecast=T)
-#s5
-base.model5 <- SS_output(dir=dir5,
-                        covar=T,
-                        forecast=T)
-#s6
-base.model6 <- SS_output(dir=dir6,
-                        covar=T,
-                        forecast=T)
-
-#s7
-base.model7 <- SS_output(dir=dir7,
-                        covar=T,
-                        forecast=T)
-```
-
-
-```{r eval=FALSE, message=F, include=FALSE}
-SS_plots(base.model2, 
-         uncertainty = TRUE,
-         datplot = T, 
-         png=T, 
-         aalresids = F,
-         btarg=0.75, 
-         minbthresh=0.2, 
-         forecast=T)
-```
-
-
-
-```{r}
+```{r fig.height=7}
 SSplotData(base.model01, subplot = 1, 
            fleetnames = c("Fishery", "Survey", "Predator"),
            fleetcol = c("blue","green", "red"))
@@ -874,6 +776,12 @@ knitr::include_graphics('Figs/481.png')
 
 ```{r path, fig.cap="Framework path to stock assessment model in krill in WAP"}
 knitr::include_graphics('Figs/pathmod.png')
+```
+
+Plot data 
+
+```{r datas2, out.width='60%', fig.cap="Data series using in "s2" scenario"}
+knitr::include_graphics('s2/plots/data_plot.png')
 ```
 
 \end{landscape}

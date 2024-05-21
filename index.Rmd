@@ -75,10 +75,6 @@ In Table 1 we have ten scenarios to test different option in modeling about main
 
 ## Run Models
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ```{r message=FALSE, eval=TRUE}
 # install.packages("devtools")
 # devtools::install_github("r4ss/r4ss", ref="development")
@@ -132,13 +128,10 @@ for (dir in directorios) {
     show_in_console = TRUE
   )
 }
-
 #OR with rby separate
-
 #shell(cmd="ss") # run SS to windows
 # or 
 #system('./ss_osx') # to mac
-
 # r4ss::run(
 #   dir = dir2,
 #   exe = "ss_osx",
@@ -199,7 +192,7 @@ SS_plots(base.model2,
 
 
 
-```{r}
+```{r fig.height=7}
 SSplotData(base.model01, subplot = 1, 
            fleetnames = c("Fishery", "Survey", "Predator"),
            fleetcol = c("blue","green", "red"))
