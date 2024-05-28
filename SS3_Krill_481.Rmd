@@ -1,0 +1,282 @@
+---
+title: "Implicit spatial model to krill Dynamic Population in Antarctic Peninsula, 48-1 SubArea. SS3 aplications"
+subtitle: "Working Paper to be submitted in CCAMLR WG-FSA 2024"
+author:
+  - Mardones Mauricio^[Universidad de Magallanes,Chile. mamardon@umag.cl]
+  - César Cárdenas^[Instituto Antártico Chileno, Chile]
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::pdf_document2:
+    number_sections: false
+fig_caption: yes
+bibliography: SA_krill.bib
+csl: apa.csl
+link-citations: yes
+toc: false
+linkcolor: blue
+linestretch: 1.3
+header-includes:
+- \fontsize{12}{16}
+- \selectfont
+- \usepackage{lscape}
+---
+\newpage
+\tableofcontents
+\newpage
+
+
+```{r setup1, echo=FALSE}
+rm(list = ls())
+knitr::opts_chunk$set(eval=TRUE,
+                      echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = 'center',
+                      fig.pos = "H",
+                      dev = 'jpeg',
+                      dpi = 300,
+                      tidy.opts=list(width.cutoff=50), 
+                      tidy=TRUE)
+#XQuartz is a mess, put this in your onload to default to cairo instead
+options(bitmapType = "cairo") 
+# (https://github.com/tidyverse/ggplot2/issues/2655)
+# Lo mapas se hacen mas rapido
+```
+
+```{r message=FALSE, eval=TRUE}
+library(here)
+library(kableExtra)
+library(ggpubr)
+library(tibble)
+```
+
+
+# ABSTRACT 
+
+The stock assessment model for *Euphausia superba* (hereafter krill) in the Antarctic Peninsula, operating within a spatial-temporal and ecosystem framework, highlights the importance of incorporating spatial heterogeneity. The spatial heterogeneity, such as variations in oceanographic conditions and habitat suitability across different regions, is likely to outperform a population dynamics of krill. By accounting for spatial heterogeneity, a integrated stock assessment model can better capture localized dynamics and interactions, leading to more accurate predictions of krill population dynamics. This nuanced approach allows for a more refined understanding of different areas features krill structure, fishing mortality and recruitment patterns across the Antarctic Peninsula. Consequently, by acknowledging and integrating spatial heterogeneity, the stock assessment model can provide more robust insights into the ecological dynamics of krill populations and improve CCAMLR fishery management and conservation strategies in this region.
+
+*Keywords: Krill populations, dynamic population, stock assessment, SS3, spatial implicit, management, CCAMLR.*
+
+
+
+# INTRODUCTION
+
+Antarctic krill (*Euphausia superba* krill thereafter) population is predominantly concentrated in the Western Antarctic Peninsula (WAP), serving as a vital food source for predators and being targeted by increasing fishing activities. On another hand, WAP is considered one of the most sensitive areas to Climate Change (CC) and has already experienced fast changes in various dimensions [@Turner2005; @Lima2013; @McBride2021; @Morley2020; @Atkinson2019a]. Given its ecological significance and economic value, effective management of krill stocks is paramount to ensure the sustainability of Antarctic ecosystems and support fisheries-dependent communities. As part of its mandate, CCAMLR routinely conducts stock assessments to assess the status of important species, such as Antarctic krill, and to provide information for decision-making regarding fisheries management and conservation measures [@Hill2016]. This regional fisheries management organization has intensified its efforts to promote sustainable management of Antarctic krill through an ecosystem-based approach [@Watters2013].
+
+Various stock assessments research on krill have been conducted to provide management advice to CCAMLR using model-based methodologies. However, many of these models face challenges in aligning with management schemes or accurately representing the population dynamics of krill, due to its variability and heterogeneity in spatial distribution and ecosystem complexity. Traditionally, stock assessments have relied on single-source data, primarily from fisheries catch data or population monitoring surveys. However, these approaches may overlook critical aspects of krill dynamics, such as spatial heterogeneity in abundance and distribution, as well as the influence of environmental factors and predator-prey interactions. Recognizing these limitations, there is a growing consensus on the need for integrated stock assessment models that incorporate multiple sources of information and consider the complex interplay of ecological variables. Integrating the complexity of krill population dynamics presents several challenges. Firstly, data consistency over the years has been problematic, as many monitoring programs and studies have not adhered to a uniform standard throughout their temporal and spatial extension. Additionally, certain regions lack sufficient data or possess only limited information regarding krill dynamics. Furthermore, interpreting indirect indicators that may affect the krill population, such as environmental variables, predator abundance, and fishery data, adds another layer of complexity. Despite these gaps, the existing data on krill population dynamics is abundant, considered data rich, and this availability allows build a integrated model to get populations signals and estimate main variables such as spawning biomass, recruitment, and fishing mortality, among others.
+
+
+In response to this need, we propose a conceptual model to conducted a stock assessment of Antarctic krill in the Antarctic Peninsula, leveraging an integrated modeling approach that incorporates the fishing and biological history of krill over the past 20 years, as well as ecosystem variables such as environmental conditions, primary productivity levels affecting krill recruitment, and predator abundance. Unlike previous assessments, this apporach integrate data from both fisheries and population monitoring efforts, providing a more holistic understanding of krill dynamics. Moreover, our approach will go beyond conventional methods by explicitly considering spatial heterogeneity in krill abundance and distribution across the Antarctic Peninsula.
+
+
+Spatial heterogeneity is a fundamental aspect of krill ecology, driven by a myriad of factors including oceanographic conditions and predator foraging behavior. By incorporating spatially implicit information into our model, we aim to capture the complex spatial patterns of krill distribution and better understand the underlying drivers of variability in krill abundance. This spatially implicit approach will allow us to identify krill hotspots, areas of high productivity, and potential ecological corridors, providing valuable insights for conservation planning and management strategies [@Watters2013]. Consequently, this approach aligns with current management frameworks, accurately reflecting krill population dynamics at a spatial scale and providing management recommendations at more localized scales than the current global ones. 
+
+
+
+Beyond integrating available information for assessing krill population dynamics, we tested several natural scenarios to identify uncertainties associated with estimating key population variables. Using a set of eight scenarios, we aimed to diagnose, evaluate, assess performance, and compare the tested models. This methodology represents a modern approach to assessing population dynamics and provides a foundation for making recommendations for the sustainable management of krill populations.
+
+
+# METHODOLOGY
+
+The study area for the assessment of krill populations in the Antarctic Peninsula is block 48.1 subarea and strata subdivision inside to account for spatial heterogeneity. The Antarctic Peninsula region is vast and encompasses a variety of habitats and environmental conditions that can influence the distribution and abundance of krill. Therefore, dividing the study area into strata allows for a more detailed and accurate assessment of krill populations by considering local variations in environmental factors.
+
+The strata in the Antarctic Peninsula may include different regions such as coastal areas, offshore waters, and areas influenced by major oceanographic features like currents and frontal systems. Each stratum may have distinct characteristics that affect krill biology, such as sea ice cover, water temperature, and nutrient availability (Figure \@ref(fig:mapa))
+
+## Data Sources and Recolection
+
+Stock Synthesis relies on multiple sources of data to inform the population dynamics model. These data sources may include:
+
+1. **Fisheries Data:** Information on krill catches and fishing effort from commercial fisheries operating in the Antarctic Peninsula region.
+  
+2. **Population Monitoring Data:** Data collected from scientific research cruises and monitoring programs specifically designed to assess krill populations. This may include data on abundance, distribution, and biological characteristics of krill collected through net sampling, acoustic surveys, and other techniques.
+  
+3. **Environmental Data:** Environmental data such as sea surface temperature, chlorophyll concentration, and sea ice extent are also incorporated into the assessment. These data help to understand the influence of environmental factors on krill populations and their distribution.
+
+4. **Predator information:** MAPPPD. Predator “fleet” to add like M2 in an integrated stock assessment, in this case, we use a index of penguins abundance to consider this like another kind of natural mortality.
+
+
+In addition to existing data sources, researchers may submit requests to the Commission for the Conservation of Antarctic Marine Living Resources (CCAMLR) Secretariat for access to additional data relevant to krill population assessment. These requests may include data from scientific research programs, environmental monitoring initiatives, and other sources that can contribute to improving the accuracy and reliability of the assessment. all this component and road to construct models, diagnostics and check outputs is represented in Figure \@ref(fig:path).
+
+## Conceptual Model 
+
+
+The process of modeling and statistical analysis of a database can be structured according to the following guidelines:
+
+- Contextualization of the problem. Definition of objectives and variables.
+- Experiment design and data collection.
+- Recording and preliminary processing of available information.
+- Graphical inspection and trend identification.
+- Consideration of distributional and relational hypotheses. Proposal of modeling.
+- Model adjustment. Comparison and selection of the best model.
+- Diagnosis and validation of the adjusted model.
+- Assessment of the predictive capacity of the model and prediction.
+- Interpretation and conclusions.
+
+## Population Dynamics Model
+
+In a simple way, the core of Stock Synthesis is its population dynamics model, which represents the dynamics of krill populations over time. This model incorporates key biological parameters such as growth rates, mortality rates, recruitment, and spawning biomass. The model is typically formulated using mathematical equations that describe how these parameters interact to determine the abundance and distribution of krill in the study area.
+
+A typical state-space model for krill population dynamics can be represented as:
+
+\[
+N_t = N_{t-1} \cdot e^{(r - M)} + R
+\]
+
+Where:
+
+\(N_t\) is the abundance of krill at time \(t\),  \(N_{t-1}\) is the abundance of krill at the previous time step, \(r\) is the intrinsic growth rate of the population, \(M\) is the mortality rate and \(R\) is the recruitment of new individuals into the population.
+
+This equation represents the basic dynamics of the krill population, with abundance changing over time due to growth, mortality, and recruitment.
+
+## Statistical model (SS3)
+
+Stock Synthesis v.3.30.21 is a widely used software tool for assessing fish and invertebrate populations, including krill (Euphausia superba) in the Antarctic Peninsula region. The methodology employed by Stock Synthesis involves a comprehensive and integrated approach, utilizing various data sources and modeling techniques to estimate the main population variables of krill in WAP. 
+
+The stock assessment model was configured using Stock Synthesis (SS3 hereafter)[SS3](https://vlab.noaa.gov/web/stock-synthesis) [@Methot2013; @methot2020stock] with the most updated version (V.3.30.21). SS3 is a structured age and size stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"*. SS3 has a stock population sub-model that simulates growth, maturity, fecundity, recruitment, movement, and mortality processes, and observation sub-models and expected values for different types of data. The model is coded in `C++` with estimation parameters enabled by automatic differentiation (ADMB) [@Fournier2012; @Methot2013: @methot2020stock]. The analysis of results and outputs uses R tools and the graphical interface of the *r4ss*  and *ss3diags* libraries [@Taylor2019; @Winker2023].
+
+By integrating data from multiple sources and considering spatial heterogeneity, the assessment methodology using Stock Synthesis v.3.30.21 provides a robust framework for evaluating the status of krill populations in the Antarctic Peninsula region. This information is essential for supporting management decisions aimed at ensuring the sustainable use of krill resources in this ecologically sensitive area.
+
+
+
+## Environmental factor in modelation
+
+
+
+One of the key challenges in this stock assessment framework is integrating ecosystem variables and drivers into the primary process of krill population dynamics. SS3 addresses these approaches. In the context of krill, the estimated level of recruitment depends on the spawning biomass from the previous season, an environmental time series—specifically, the 2000-2022 Chlorophyll-a time series—and a log-bias adjustment.
+
+\[
+E(\text{Recruitment}) = f(\text{SpBio}) \times \exp(B \times \text{envdata}) \times \exp\left(-0.5 \times \pi_R^2\right)
+\]
+
+\(R\) represents the variability of deviations, adding to the variance caused by environmental factors. Consequently, as the environmental effect accounts for more of the total recruitment variability, the residual \(R\) should be reduced. However, the model does not automatically adjust for this.
+
+
+Furthermore, our integrated model will take into account environmental variables known to influence krill abundance and distribution, such as sea surface temperature, chlorophyll concentration, and sea ice extent. These environmental factors play a critical role in shaping krill habitat suitability and productivity, thereby affecting their population dynamics. By integrating environmental data into our model, we aim to elucidate the relationships between environmental conditions and krill abundance, enabling more robust predictions of krill population dynamics under future climate scenarios.
+
+## Predator components in modelation
+
+Additionally, our model will consider predator-prey interactions as a key driver of krill population dynamics. Antarctic krill are a vital prey species for a wide range of predators, including whales, seals, and seabirds. Changes in predator populations and foraging behavior can have profound effects on krill abundance and distribution, with cascading impacts throughout the Antarctic ecosystem. By incorporating information on predator distribution, abundance, and feeding ecology, our model will provide a more comprehensive understanding of the trophic interactions shaping krill dynamics.
+
+
+## Scenarios
+
+The methodology involves comparing the statistical performance of the model concerning spatial heterogeneity of krill. By comparing model outputs under scenarios where spatial heterogeneity is assumed versus not assumed, one can gauge the significance of incorporating spatial variation into the model. This methodology enables researchers to make informed decisions about the necessity of accounting for spatial heterogeneity in understanding krill distribution and abundance, thereby enhancing the accuracy and reliability of ecological modeling efforts.
+
+In Table 1 we have eight scenarios to test different option in modeling about main consideration in assessment of krill population.
+
+
+| Scenario | Description                                      |
+|:---------:|:-------------------------------------------------|
+|    s01     | Fishery, Predator, Survey, Environmental data agreggate (Whole 48.1) |
+|    s1     | Fishery data (Length, Index, Catch) by strata  and Predator and Env data      |
+|    s2    | Fishery and Survey (AMLR) data Length, Index, Catch by strata. Predator and Env data |
+|    s3     | "s2" Without S-R relation         |
+|    s4     | "s2" Ricker S-R relation estimated          |
+|    s5     | "s2" BH S-R relation weak (0.9 steepness)     |
+|    s6     | "s2" BH S-R relation strong (0.6 steepness)     |
+|    s7     | "s2" BH S-R relation mid-strong (0.65 steepness) estimated     |
+
+: Scenarios to modelling dynamics in krill in spatial implicit context
+
+
+
+
+# RESULTS
+
+## Diagnosis Base Model 
+
+Step to do a good practice in model diagnosis is;
+
+- 1. Convergence. Final convergence criteria is 1.0e-04
+
+- 2. Residual (visual and metrics)
+
+- 3. Retrospective analysis (Mhon Parameter)
+
+- 4. Likelihood profile
+
+
+
+
+
+## Predator fleet with RW
+
+Random Walk (RW) refers to a mathematical model that describes a stochastic process in which a variable changes randomly over time, without a clear trend or pattern.
+
+Specifically, a random walk can be used as a Bayesian estimation technique to infer the posterior distribution of an unknown parameter. In this approach, it is assumed that the prior distribution of the parameter is a normal distribution with mean zero and a known variance, and that the parameter value at each time step follows a random walk process. Based on the observed data and the prior distribution, the posterior distribution of the parameter can be calculated using Bayesian inference.
+
+Random walk is a useful tool for parameter estimation in dynamic models, as it allows for modeling uncertainty and variability in the parameter's evolution over time. However, it is important to note that the random walk assumes that the changes in the parameter are random and without a clear trend, which may not be appropriate in all cases.
+
+## Retrospective analysis
+
+Los análisis retrospectivo, dan cuenta de diferencias de estimación (sub - sobreestimación) en los patrones entre modelos evaluados. 
+
+
+## Hindcast Cross-Validation and prediction skill
+
+Implementing the Hindcast Cross-Validation (HCxval) diagnostic in Stock Synthesis requires the same model outputs generated by `r4ss:SS_doRetro()`. As a robust measure of prediction skill, we implemented the mean absolute scaled error (MASE). In brief, the MASE score scales the mean absolute. Regarding (A MASE score > 1 indicates that the average model forecasts are worse than a random walk. Conversely, a MASE score of 0.5 indicates that the model forecasts twice as
+accurately as a naïve baseline prediction; thus, the model has prediction skill.
+
+## Kobe (status)
+
+
+## Verosimilitud
+
+
+## Comparision outputs betwwen scenarios
+
+
+
+\newpage
+# DISCUSION
+
+
+
+ Some authors have idicated spatial heterogeneity and identified different zones, such as areas with higher or lower concentrations of juveniles or regions more affected by the environment, which structure the population differently even inside WAP (REF*).
+
+In summary, our proposed stock assessment represents a novel and integrated approach to evaluating Antarctic krill populations in the Antarctic Peninsula. By leveraging multiple sources of information and explicitly considering spatial heterogeneity, environmental variables, and predator-prey interactions, our model aims to provide policymakers and stakeholders with actionable insights for informed decision-making within the framework of CCAMLR. Through collaborative efforts and interdisciplinary research, we are committed to advancing the science of krill ecology and supporting the conservation and sustainable management of Antarctic marine resources.
+
+\newpage
+# CONCLUSION
+
+\newpage
+
+# FIGURES AND TABLES
+
+
+```{r mapa, out.width='100%', fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, GERLASHE= Gerlashe strait, JOIN= Joinville Island, SSWI= South West)"}
+knitr::include_graphics('Figs/481.png')
+```
+\begin{landscape}
+
+
+```{r path, fig.cap="Framework path to stock assessment model in krill in WAP"}
+knitr::include_graphics('Figs/pathmod.png')
+```
+\end{landscape}
+
+
+```{r concem, out.width='80%', fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
+knitr::include_graphics('Figs/conceptual.png')
+```
+
+
+```{r datas2, out.width='60%', fig.cap="Data series using in s2 scenario"}
+knitr::include_graphics('s2/plots/data_plot.png')
+```
+
+
+\begin{landscape}
+
+```{r comparision, fig.cap="Data series using in s2 scenario"}
+par(mfrow=c(2,2))
+knitr::include_graphics(c('compare8_Fvalue_uncertainty.png',
+                          'compare2_spawnbio_uncertainty.png',
+                          'compare4_Bratio_uncertainty.png',
+                          'compare8_Fvalue_uncertainty.png'))
+```
+\end{landscape}
+
+\newpage
+
+# REFERENCES

@@ -47,7 +47,7 @@ options(bitmapType = "cairo")
 # OVERVIEW
 
 
-In a simple way, the core of Stock Synthesis is its population dynamics model, which represents the dynamics of krill populations over time. This model incorporates key biological parameters such as growth rates, mortality rates, recruitment, and spawning biomass. The model is typically formulated using mathematical equations that describe how these parameters interact to determine the abundance and distribution of krill in the study area.
+In a simple way, the core of Stock Synthesis is its population dynamics model, which represents the dynamics of krill populations over time. This model incorporates key biological, environmental and predator data sources. The model is typically formulated using mathematical equations that describe how these parameters interact to determine the abundance and distribution of krill in the study area.
 
 ## Statistical model (SS3)
 
@@ -78,11 +78,8 @@ In Table 1 we have ten scenarios to test different option in modeling about main
 ```{r message=FALSE, eval=TRUE}
 # install.packages("devtools")
 # devtools::install_github("r4ss/r4ss", ref="development")
-
-# 
 # install.packages("caTools")
 # library("caTools")
-# 
 # install.packages("r4ss")
 library(r4ss)
 library(here)
@@ -93,6 +90,7 @@ library(doParallel) # facilita la ejecución paralela en R
 detectCores()
 registerDoParallel(8)
 library(ggpubr)
+library(tibble)
 ```
 
 
@@ -281,6 +279,7 @@ Step to do a good practice in model diagnosis is;
 
 - 4. Likelihood profile
 
+all this framework try to follow recommendations of @Carvalho2021b
 
 
 ## Residual
@@ -513,6 +512,57 @@ kbl(tablebias7, booktabs = T,format = "latex",
 
 
 ## Verosimilitud
+
+```{r}
+like01 <- base.model01$likelihoods_used
+like01$model <- rep("s01", nrow(like01))
+like01 <- rownames_to_column(like01, var = "Description")
+like1 <- base.model1$likelihoods_used
+like1$model <- rep("s1", nrow(like1))
+like1 <- rownames_to_column(like1, var = "Description")
+like2 <- base.model1$likelihoods_used
+like2$model <- rep("s2", nrow(like2))
+like2 <- rownames_to_column(like2, var = "Description")
+like3 <- base.model3$likelihoods_used
+like3$model <- rep("s3", nrow(like3))
+like3 <- rownames_to_column(like3, var = "Description")
+like4 <- base.model4$likelihoods_used
+like4$model <- rep("s4", nrow(like4))
+like4 <- rownames_to_column(like4, var = "Description")
+like5 <- base.model5$likelihoods_used
+like5$model <- rep("s5", nrow(like5))
+like5 <- rownames_to_column(like5, var = "Description")
+like6 <- base.model6$likelihoods_used
+like6$model <- rep("s6", nrow(like6))
+like6 <- rownames_to_column(like6, var = "Description")
+like7 <- base.model7$likelihoods_used
+like7$model <- rep("s7", nrow(like7))
+like7 <- rownames_to_column(like7, var = "Description")
+totalike <- rbind(like01,
+                  like1,
+                   like2,
+                   like3,
+                   like4,
+                   like5,
+                   like6,
+                   like7)
+
+```
+
+```{r}
+ggplot(totalike)+
+  geom_bar( aes(y = reorder(Description, values), x =values),
+            stat = "identity", position = "dodge") +
+  theme_few() +
+  facet_wrap(.~model, 
+             ncol=4)+
+  labs(y="",
+       x="Likelihood")+
+  xlim(0, 1000)+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1)) 
+```
+
 
 
 ```{r eval=FALSE, echo = FALSE}
