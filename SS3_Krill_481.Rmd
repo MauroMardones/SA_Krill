@@ -48,6 +48,8 @@ library(here)
 library(kableExtra)
 library(ggpubr)
 library(tibble)
+library(readxl)
+library(openxlsx)
 ```
 
 
@@ -78,24 +80,13 @@ Beyond integrating available information for assessing krill population dynamics
 
 # METHODOLOGY
 
-The study area for the assessment of krill populations in the Antarctic Peninsula is block 48.1 subarea and strata subdivision inside to account for spatial heterogeneity. The Antarctic Peninsula region is vast and encompasses a variety of habitats and environmental conditions that can influence the distribution and abundance of krill. Therefore, dividing the study area into strata allows for a more detailed and accurate assessment of krill populations by considering local variations in environmental factors.
+The study area for the assessment of krill populations in the Antarctic Peninsula is block 48.1 subarea and strata subdivision inside to account for spatial heterogeneity into strata sensu @Dornam2021.  Each stratum may have distinct characteristics that affect krill biology, such as sea ice cover, water temperature, and nutrient availability (Figure \@ref(fig:mapa)). The Antarctic Peninsula region is vast and encompasses a variety of habitats and environmental conditions that can influence the distribution and abundance of krill. Therefore, dividing the study area into strata allows for a more detailed and accurate assessment of krill populations by considering local variations in structure population.
 
-The strata in the Antarctic Peninsula may include different regions such as coastal areas, offshore waters, and areas influenced by major oceanographic features like currents and frontal systems. Each stratum may have distinct characteristics that affect krill biology, such as sea ice cover, water temperature, and nutrient availability (Figure \@ref(fig:mapa))
+## Data Sources 
 
-## Data Sources and Recolection
-
-Stock Synthesis relies on multiple sources of data to inform the population dynamics model. These data sources may include:
-
-1. **Fisheries Data:** Information on krill catches and fishing effort from commercial fisheries operating in the Antarctic Peninsula region.
-  
-2. **Population Monitoring Data:** Data collected from scientific research cruises and monitoring programs specifically designed to assess krill populations. This may include data on abundance, distribution, and biological characteristics of krill collected through net sampling, acoustic surveys, and other techniques.
-  
-3. **Environmental Data:** Environmental data such as sea surface temperature, chlorophyll concentration, and sea ice extent are also incorporated into the assessment. These data help to understand the influence of environmental factors on krill populations and their distribution.
-
-4. **Predator information:** MAPPPD. Predator “fleet” to add like M2 in an integrated stock assessment, in this case, we use a index of penguins abundance to consider this like another kind of natural mortality.
+Multiple sources of data to inform the population dynamics model are included in this analysis. These data sources include: 1) Data from the monitoring program of the krill fishery were used, which have been systematically collected on board fishing vessels by scientific observers as part of the CCAMLR Scheme of International Scientific Observation (SISO) program. This database has information about vessel, nationality, georeferenced, among others. Data handling for modeling purposes was elaborated with *tidyverse* library  and dependences [@Wickham2019]; 2) Data collected from scientific AMLR research cruises and monitoring programs specifically designed to assess krill populations. This may include data on abundance, distribution, and biological characteristics of krill collected through net sampling, acoustic surveys, and other techniques. All this data was proceses in @Dornam2021; 3) For this analysis, chlorophyll (Chl) was assessed as a primary environmental driver. Chl data was sourced from Bio-Geo-Chemical, L4 (monthly and interpolated) satellite observations, obtained through the E.U. Copernicus Marine Service Information (doi.org/10.48670/moi-00021; doi.org/10.48670/moi-00148). This data provides a detailed understanding of primary productivity levels, which are critical for evaluating ecosystem health and dynamics in the Western Antarctic Peninsula (WAP) area.  Data processing involved sophisticated techniques, including data cleaning, spatial manipulation, rasterization, and projection transformations. These processes were facilitated by the R libraries *sf* and *ncdf4* [@Pebezma2018; @Pierce2021], ensuring high-quality and accurate environmental datasets. To analyze the impact of chlorophyll on krill recruitment, We fitted a GLMM to predict Length with Year (formula: Length ~ Year + Chl + SIC + SST). The model included spatial component (cell) as random effect (formula: ~1 | cell). Krill length compositions from fishery data was correlated with environmental variables by using Pearson correlations test, and General Linear Mixed Model (GLMM) [@Bates2015; @Makowski2020]. All this analysis could be found in this [repo](https://mauromardones.github.io/Krill_Length_Cor/); 4) Predator **"fleet"** to add like M2 in an integrated stock assessment, in this case, we use a index of penguins abundance to consider this like another kind of natural mortality.
 
 
-In addition to existing data sources, researchers may submit requests to the Commission for the Conservation of Antarctic Marine Living Resources (CCAMLR) Secretariat for access to additional data relevant to krill population assessment. These requests may include data from scientific research programs, environmental monitoring initiatives, and other sources that can contribute to improving the accuracy and reliability of the assessment. all this component and road to construct models, diagnostics and check outputs is represented in Figure \@ref(fig:path).
 
 ## Conceptual Model 
 
@@ -179,6 +170,7 @@ In Table 1 we have eight scenarios to test different option in modeling about ma
 : Scenarios to modelling dynamics in krill in spatial implicit context
 
 
+These requests may include data from scientific research programs, environmental monitoring initiatives, and other sources that can contribute to improving the accuracy and reliability of the assessment. all this component and road to construct models, diagnostics and check outputs is represented in Figure \@ref(fig:path).
 
 
 # RESULTS
@@ -247,24 +239,70 @@ In summary, our proposed stock assessment represents a novel and integrated appr
 ```{r mapa, out.width='100%', fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, GERLASHE= Gerlashe strait, JOIN= Joinville Island, SSWI= South West)"}
 knitr::include_graphics('Figs/481.png')
 ```
+
 \begin{landscape}
 
 
 ```{r path, fig.cap="Framework path to stock assessment model in krill in WAP"}
 knitr::include_graphics('Figs/pathmod.png')
 ```
+
 \end{landscape}
 
 
-```{r concem, out.width='80%', fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
-knitr::include_graphics('Figs/conceptual.png')
+```{r parainit, fig.cap="Initial Parameters to modelling in stock process in krill in WAP"}
+parInit <- read_excel("DataKrill.xlsx", 
+    sheet = "parameters")
+parInit %>%
+  kbl(booktabs = TRUE,
+      format = "latex",
+      position="ht!",
+    caption = "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
+  kable_paper("hover", 
+              full_width = F)%>%
+  kable_styling(latex_options = c("striped"),
+                full_width = FALSE,
+                font_size=9)%>% 
+  pack_rows(index = c("Natural Mortality" = 1,
+                        "Growth"= 5,
+                        "Length-Weigth Relation" = 2,
+                        "Maturity"=2,
+                        "Stock-Recruit Relation"=5,
+                        "Catchability"=2,
+                        "Selectivity"=4))
 ```
 
 
-```{r datas2, out.width='60%', fig.cap="Data series using in s2 scenario"}
+```{r concem, out.width='40%', fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
+knitr::include_graphics('Figs/conceptual.jpeg')
+```
+
+
+```{r datas2, out.width='70%', fig.cap="Data series using in s2 scenario"}
 knitr::include_graphics('s2/plots/data_plot.png')
 ```
 
+
+
+```{r outs2, fig.cap="Main variables outputs from stock asssessment krill in WAP"}
+out_s2 <- read_excel("DataKrill.xlsx", 
+    sheet = "variable_s2")
+out_s2 %>%
+  kbl(booktabs = TRUE,
+      format = "latex",
+    caption = "Main variables outputs from stock asssessment krill in WAP") %>%
+  kable_paper("hover", 
+              full_width = TRUE)%>%
+  kable_styling(latex_options = c("striped",
+                                  "condensed"),
+                full_width = FALSE,
+                font_size=9)#%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
+```
+
+
+\newpage
 
 \begin{landscape}
 
@@ -275,6 +313,7 @@ knitr::include_graphics(c('compare8_Fvalue_uncertainty.png',
                           'compare4_Bratio_uncertainty.png',
                           'compare8_Fvalue_uncertainty.png'))
 ```
+
 \end{landscape}
 
 \newpage

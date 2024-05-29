@@ -29,6 +29,7 @@ editor_options:
 
 ```{r setup1, echo=FALSE}
 rm(list = ls())
+set.seed(999)
 knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
@@ -44,36 +45,6 @@ options(bitmapType = "cairo")
 # Lo mapas se hacen mas rapido
 ```
 
-# OVERVIEW
-
-
-In a simple way, the core of Stock Synthesis is its population dynamics model, which represents the dynamics of krill populations over time. This model incorporates key biological, environmental and predator data sources. The model is typically formulated using mathematical equations that describe how these parameters interact to determine the abundance and distribution of krill in the study area.
-
-## Statistical model (SS3)
-
-Stock Synthesis v.3.30.21 is a widely used software tool for assessing fish and invertebrate populations, including krill (Euphausia superba) in the Antarctic Peninsula region. The methodology employed by Stock Synthesis involves a comprehensive and integrated approach, utilizing various data sources and modeling techniques to estimate the main population variables of krill in WAP. 
-
-The stock assesment model was configured using Stock Synthesis (SS3 hereafter)[SS3](https://vlab.noaa.gov/web/stock-synthesis) [@Methot2013; @methot2020stock] with the most updated version (V.3.30.21). SS3 is a structured age and size stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"*. SS3 has a stock population sub-model that simulates growth, maturity, fecundity, recruitment, movement, and mortality processes, and observation sub-models and expected values for different types of data. The model is coded in `C++` with estimation parameters enabled by automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The analysis of results and outputs uses R tools and the graphical interface of the *r4ss* and *ss3diags* library [@Taylor2019; @Winker2023].
-
-By integrating data from multiple sources and considering spatial heterogeneity, the assessment methodology using Stock Synthesis v.3.30.21 provides a robust framework for evaluating the status of krill populations in the Antarctic Peninsula region. This information is essential for supporting management decisions aimed at ensuring the sustainable use of krill resources in this ecologically sensitive area.
-
-
-## Scenarios
-
-In Table 1 we have ten scenarios to test different option in modeling about main consideration in assessment of krill population.
-
-| Scenario | Description                                      |
-|:---------:|:-------------------------------------------------|
-|    s01     | Fishery, Predator, Survey, Environmental data agreggate (Whole 48.1) |
-|    s1     | Fishery data (Length, Index, Catch) by strata  and Predator and Env data      |
-|    s2    | Fishery and Survey (AMLR) data Length, Index, Catch by strata and Predator and Env data |
-|    s3     | Same "s2" Without S-R relation         |
-|    s4     | Same "s2" Ricker S-R relation estimated          |
-|    s5     | Same "s2" BH S-R relation weak (0.9 steepness)     |
-|    s6     | Same "s2" BH S-R relation strong (0.6 steepness)     |
-|    s7     | Same "s2" BH S-R relation mid-strong (0.65 steepness) estimated     |
-
-## Run Models
 
 ```{r message=FALSE, eval=TRUE}
 # install.packages("devtools")
@@ -91,6 +62,7 @@ detectCores()
 registerDoParallel(8)
 library(ggpubr)
 library(tibble)
+library(openxlsx)
 ```
 
 
@@ -104,6 +76,114 @@ dir5<-here("s5") # whitout S-R
 dir6<-here("s6") # whitout S-R
 dir7<-here("s7") # whitout S-R
 ```
+
+# OVERVIEW
+
+
+In a simple way, the core of Stock Synthesis is its population dynamics model, which represents the dynamics of krill populations over time. This model incorporates key biological, environmental and predator data sources. The model is typically formulated using mathematical equations that describe how these parameters interact to determine the abundance and distribution of krill in the study area.
+
+## Statistical model (SS3)
+
+Stock Synthesis v.3.30.21 is a widely used software tool for assessing fish and invertebrate populations, including krill (Euphausia superba) in the Antarctic Peninsula region. The methodology employed by Stock Synthesis involves a comprehensive and integrated approach, utilizing various data sources and modeling techniques to estimate the main population variables of krill in WAP. 
+
+The stock assesment model was configured using Stock Synthesis (SS3 hereafter)[SS3](https://vlab.noaa.gov/web/stock-synthesis) [@Methot2013; @methot2020stock] with the most updated version (V.3.30.21). SS3 is a structured age and size stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"*. SS3 has a stock population sub-model that simulates growth, maturity, fecundity, recruitment, movement, and mortality processes, and observation sub-models and expected values for different types of data. The model is coded in `C++` with estimation parameters enabled by automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The analysis of results and outputs uses R tools and the graphical interface of the *r4ss* and *ss3diags* library [@Taylor2019; @Winker2023].
+
+By integrating data from multiple sources and considering spatial heterogeneity, the assessment methodology using Stock Synthesis v.3.30.21 provides a robust framework for evaluating the status of krill populations in the Antarctic Peninsula region. This information is essential for supporting management decisions aimed at ensuring the sustainable use of krill resources in this ecologically sensitive area.
+
+## Parametres 
+
+read files
+
+```{r}
+# leo archivos para plotear y hacer tablas
+start2 <- SS_readstarter(file = file.path(dir2,
+                                          "starter.ss"),
+                              verbose = FALSE)
+# note the data and control file names can vary, so are determined from the 
+# starter file.
+dat2 <- SS_readdat(file = file.path(dir2, start2$datfile),
+                        verbose = FALSE)
+# Read in ctl file. Note that the data fileR object is needed so that SS_readctl
+# assumes the correct data structure
+ctl2 <-  r4ss::SS_readctl(file = file.path(dir2,
+                                    start2$ctlfil),
+                        verbose = FALSE,
+                        use_datlist = TRUE, 
+                   datlist = dat2)
+fore2 <- r4ss::SS_readforecast(file = file.path(dir2, 
+                                                "forecast.ss"),
+                              verbose = FALSE)
+# can also read in wtatage.ss for an empirical wt at age model using
+# r4ss::SS_readwtatage()
+```
+
+```{r}
+parbio<-ctl2$MG_parms[1:10,c(1:3,7)]
+ row.names( parbio)<-c("Nat M",
+                       "Lmin", 
+                       "Lmax",
+                       "VonBert K",
+                       "CV young",
+                       "CV old", 
+                       "Wt a", 
+                       "Wt b",
+                       "L50%", 
+                       "Mat slope")
+
+ SRpar<-ctl2$SR_parms[1:5,c(1:3,7)]
+ Qpar<-ctl2$Q_parms[1:2,c(1:3,7)]
+ Selpar<-ctl2$size_selex_parms[1:22,c(1:3,7)]
+ parInit<-rbind(parbio,SRpar,Qpar,Selpar)
+ 
+wb <- createWorkbook()
+
+addWorksheet(wb, "parameters")
+writeData(wb, "parameters", parInit)
+
+# Guardar el workbook
+saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+
+```
+
+
+```{r}
+parInit %>%
+  kbl(booktabs = T,
+      format = "latex",
+      position="ht!",
+    caption = "\\label{Tab1}Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
+  kable_paper("hover", 
+              full_width = F)%>%
+  kable_styling(latex_options = c("striped",
+                                  "condensed"),
+                full_width = FALSE,
+                font_size=9)%>% 
+  pack_rows(index = c("Mortalidad natural" = 1,
+                        "Crecimiento"= 5,
+                        "Relación longitud-peso" = 2,
+                        "Ojiva de madurez"=2,
+                        "Relación stock-recluta"=5,
+                        "Capturabilidad"=2,
+                        "Selectividad"=4))
+
+```
+## Scenarios
+
+In Table 1 we have ten scenarios to test different option in modeling about main consideration in assessment of krill population.
+
+| Scenario | Description                                      |
+|:---------:|:-------------------------------------------------|
+|    s01     | Fishery, Predator, Survey, Environmental data agreggate (Whole 48.1) |
+|    s1     | Fishery data (Length, Index, Catch) by strata  and Predator and Env data      |
+|    s2    | Fishery and Survey (AMLR) data Length, Index, Catch by strata and Predator and Env data |
+|    s3     | Same "s2" Without S-R relation         |
+|    s4     | Same "s2" Ricker S-R relation estimated          |
+|    s5     | Same "s2" BH S-R relation weak (0.9 steepness)     |
+|    s6     | Same "s2" BH S-R relation strong (0.6 steepness)     |
+|    s7     | Same "s2" BH S-R relation mid-strong (0.65 steepness) estimated     |
+
+## Run Models
+
 
 
 ```{r eval=FALSE, message=F, include=FALSE}
@@ -130,12 +210,12 @@ for (dir in directorios) {
 #shell(cmd="ss") # run SS to windows
 # or 
 #system('./ss_osx') # to mac
-# r4ss::run(
-#   dir = dir2,
-#   exe = "ss_osx",
-#   skipfinished = FALSE, # TRUE will skip running if Report.sso present
-#   show_in_console = TRUE # change to true to watch the output go past
-# )
+r4ss::run(
+  dir = dir2,
+  exe = "ss_osx",
+  skipfinished = FALSE, # TRUE will skip running if Report.sso present
+  show_in_console = TRUE # change to true to watch the output go past
+)
 ```
 
 Read outputs
@@ -712,6 +792,19 @@ abline(v = Baseval, lty=2)
 dev.off()
 ```
 
+## Outputs Model Base
+
+```{r}
+outps2 <- base.model2$timeseries[1:53, 2:8]
+
+addWorksheet(wb, "variable_s2")
+writeData(wb, "variable_s2", outps2)
+
+# Guardar el workbook
+saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+```
+
+
 ## Comparision outputs betwwen scenarios
 
 ```{r echo=FALSE}
@@ -761,7 +854,8 @@ SSplotComparisons(summaryoutput,
                             "Management target", 
                             "Minimum stock size threshold",
                             "Spawning output",
-                            "Harvest rate"))
+                            "Harvest rate"),
+                 plotdir = "~/Figs")
 
 comp <- SSplotComparisons(summaryoutput,
                   legendlabels = c("s01",
@@ -772,7 +866,8 @@ comp <- SSplotComparisons(summaryoutput,
                  "s5",
                  "s6",
                  "s7"),
-                 subplots = c(2, 16))
+                 subplots = c(2, 16),
+                 plotdir = "~/Figs")
 comp
 ```
 
