@@ -119,9 +119,11 @@ Where:
 
 This equation represents the basic dynamics of the krill population, with abundance changing over time due to growth, mortality, and recruitment.
 
-## Statistical model (SS3)
+## Statistical model Stock Synthesis (SS3)
 
-Stock Synthesis v.3.30.21 is a widely used software tool for assessing fish and invertebrate populations, including krill (Euphausia superba) in the Antarctic Peninsula region. The methodology employed by Stock Synthesis involves a comprehensive and integrated approach, utilizing various data sources and modeling techniques to estimate the main population variables of krill in WAP. 
+Like most invertebrates, krill is a species for which aging is complex. Therefore, a size-structured model with age dynamics is used, which is transformed through a transition matrix based on the probabilities of age groups relative to the detailed structure. Despite this, integrated models have the capacity to reproduce the age dynamics of these populations and simultaneously transform them into population variables.
+
+Stock Synthesis v.3.30.21 is a widely used software tool for assessing fish and invertebrate populations. The methodology employed by Stock Synthesis involves a comprehensive and integrated approach, utilizing various data sources and modeling techniques to estimate the main population variables of krill in WAP. 
 
 The stock assessment model was configured using Stock Synthesis (SS3 hereafter)[SS3](https://vlab.noaa.gov/web/stock-synthesis) [@Methot2013; @methot2020stock] with the most updated version (V.3.30.21). SS3 is a structured age and size stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"*. SS3 has a stock population sub-model that simulates growth, maturity, fecundity, recruitment, movement, and mortality processes, and observation sub-models and expected values for different types of data. The model is coded in `C++` with estimation parameters enabled by automatic differentiation (ADMB) [@Fournier2012; @Methot2013: @methot2020stock]. The analysis of results and outputs uses R tools and the graphical interface of the *r4ss*  and *ss3diags* libraries [@Taylor2019; @Winker2023].
 
@@ -222,7 +224,31 @@ accurately as a naïve baseline prediction; thus, the model has prediction skill
 \newpage
 # DISCUSION
 
+Development of an integrated stock assessment like this could be a support to adaptive management, wherein management procedures resulting, like status or quota, are adjusted based on ecosystem monitoring indices [@Wang2021]. Integrated models are not new to krill in SO. For several years, CCAMLR has been developing and applying integrated assessment methodologies that incorporate diverse data sources, such as acoustic and trawl surveys, to improve the accuracy of their stock assessments. In 2016, through an external review process,@Thomson2016 explicitly recommended *"the use of an Integrated Analysis model for assessment of Antarctic krill in FAO Subarea 48.1 is appropriate and would constitute an improvement over the modelling strategies currently in use to manage krill"* and he stated that the an integrated modelling framework *"has the potential to substantially improve the scientific basis for future krill management"*. 
 
+@Kinzey2015a, @Kinzey2011 and @Kinzey2019a used integrated models with fishery and survey data to test the impacts of selectivity and recruitment estimation in certain areas of Subarea 48.1. Additionally, @Wang2021 made significant contributions to integrated statistical models for the northern sector of the Western Antarctic Peninsula, focusing on the Bransfield Strait, testing different data weightings. Furthermore, examined correlations between recruitment and climatic variables such as the Southern Annular Mode (SAM) and El Niño.
+
+
+Wang..
+Lo que es nuevo aca es
+
+**Paragraph 3:**  
+From an ecological standpoint, the study area encompasses the primary spawning, breeding, and wintering regions of Antarctic krill in the southwest Atlantic Ocean. In terms of the krill fishery, this area includes a significant fishing ground, specifically subarea 48.1. Notably, recent years have seen a higher concentration of krill catches in this subarea, both temporally and spatially.
+
+**Paragraph 4:**  
+Model estimation concludes when a convergent Hessian matrix is achieved, and all data sources are fitted using maximum likelihood estimates from the assessment method.
+
+**Paragraph 5:**  
+The independent survey data, which include survey abundance and length composition data, were collected by the United States Antarctic Living Marine Resources (AMLR) Program of the National Marine Fisheries Service, Southwest Fisheries Science Center. These surveys, conducted during the austral summer from 1992 to 2011, utilized zooplankton nets to gather sample data.
+
+**Paragraph 6:**  
+The fishery-dependent data, encompassing length composition data and catch biomass, are derived from CCAMLR's public database. Catch biomass data are available from 1992 to 2011, while length composition data are available for the same period.
+
+**Paragraph 7:**  
+The estimated recruitment of krill exhibits cyclical variations with an average period of 3–4 years. This cyclical variation is influenced by the physical environment of the polar ecosystem (Kinzey et al., 2019) and the behavior of its predators (Fraser et al., 1992; Fraser and Trivelpiece, 1995; Reid et al., 1999, 2002).
+
+**Paragraph 8:**  
+When evaluating any fishery resource, the chosen evaluation method should ensure that the results meet the reference data requirements for production management and optimize the use of existing data (Punt et al., 2013).
 
  Some authors have idicated spatial heterogeneity and identified different zones, such as areas with higher or lower concentrations of juveniles or regions more affected by the environment, which structure the population differently even inside WAP (REF*).
 
