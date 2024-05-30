@@ -1,5 +1,5 @@
 ---
-title: "Implicit spatial model to krill Dynamic Population in Antarctic Peninsula, 48-1 SubArea. SS3 aplications"
+title: "Integrated approach to modeling to krill population dynamics in Wester Antarctic Peninsula: spatial and ecosystem considerations"
 subtitle: "Working Paper to be submitted in a CCAMLR EMM-WG 2024"
 author: "Mardones, M; Cárdenas, C., Krüger, L., Santa Cruz, F."
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
@@ -63,6 +63,8 @@ registerDoParallel(8)
 library(ggpubr)
 library(tibble)
 library(openxlsx)
+library(ggthemes)
+library(forecast)
 ```
 
 
@@ -75,6 +77,7 @@ dir4<-here("s4") #
 dir5<-here("s5") # whitout S-R
 dir6<-here("s6") # whitout S-R
 dir7<-here("s7") # whitout S-R
+dir8<-here("s8") # S2 set parametres EMM-2024/23 (Mardones)
 ```
 
 # OVERVIEW
@@ -173,14 +176,15 @@ In Table 1 we have ten scenarios to test different option in modeling about main
 
 | Scenario | Description                                      |
 |:---------:|:-------------------------------------------------|
-|    s01     | Fishery, Predator, Survey, Environmental data agreggate (Whole 48.1) |
+|    s01     |Fishery and Survey (AMLR) data, Predator, Environmental aggregate data in 48.1 |
 |    s1     | Fishery data (Length, Index, Catch) by strata  and Predator and Env data      |
-|    s2    | Fishery and Survey (AMLR) data Length, Index, Catch by strata and Predator and Env data |
-|    s3     | Same "s2" Without S-R relation         |
-|    s4     | Same "s2" Ricker S-R relation estimated          |
-|    s5     | Same "s2" BH S-R relation weak (0.9 steepness)     |
-|    s6     | Same "s2" BH S-R relation strong (0.6 steepness)     |
-|    s7     | Same "s2" BH S-R relation mid-strong (0.65 steepness) estimated     |
+|    s2    | Fishery and Survey (AMLR) data Length, Index, Catch by strata. Predator and Env data |
+|    s3     | "s2" without S-R relation         |
+|    s4     | "s2" Ricker S-R relation estimated          |
+|    s5     | "s2" BH S-R relation weak (0.9 steepness)     |
+|    s6     | "s2" BH S-R relation strong (0.6 steepness)     |
+|    s7     | "s2" BH S-R relation mid-strong (0.65 steepness) estimated     |
+|    s8     | "s2"  w/ set of parameters estimated in @EMM-204/32 |
 
 ## Run Models
 
@@ -195,7 +199,8 @@ directorios <- c("s01",
                  "s4",
                  "s5",
                  "s6",
-                 "s7")  # Agrega aquí todos los nombres de las carpetas que deseas procesar
+                 "s7",
+                 "s8")  # Agrega aquí todos los nombres de las carpetas que deseas procesar
 
 # Bucle para ejecutar el código en cada directorio
 for (dir in directorios) {
@@ -206,12 +211,16 @@ for (dir in directorios) {
     show_in_console = TRUE
   )
 }
+```
+
+
+```{r eval=FALSE, message=F, include=FALSE}
 #OR with rby separate
 #shell(cmd="ss") # run SS to windows
 # or 
 #system('./ss_osx') # to mac
 r4ss::run(
-  dir = dir2,
+  dir = dir01,
   exe = "ss_osx",
   skipfinished = FALSE, # TRUE will skip running if Report.sso present
   show_in_console = TRUE # change to true to watch the output go past
@@ -254,11 +263,16 @@ base.model6 <- SS_output(dir=dir6,
 base.model7 <- SS_output(dir=dir7,
                         covar=T,
                         forecast=T)
+
+#s7
+base.model8 <- SS_output(dir=dir8,
+                        covar=T,
+                        forecast=T)
 ```
 
 
 ```{r eval=FALSE, message=F, include=FALSE}
-SS_plots(base.model2, 
+SS_plots(base.model3, 
          uncertainty = TRUE,
          datplot = T, 
          png=T, 
@@ -337,7 +351,7 @@ SSplotPars(base.model2)
 Salida de las biomasas con las dos flotas
 
 ```{r}
-SSplotTimeseries(base.model01, subplot = 7)
+SSplotTimeseries(base.model2, subplot = 7)
 ```
 Salida de las biomasas con todas las flotas
 
@@ -365,7 +379,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Residual
 
 ```{r eval=FALSE}
-SSplotRunstest(base.model01, 
+SSplotRunstest(base.model8, 
                subplots = "cpue",
                add=T)
 SSplotRunstest(base.model2, 
@@ -375,12 +389,35 @@ SSplotRunstest(base.model2,
 
 
 ```{r}
-SSplotJABBAres(base.model2,
-               subplots = "cpue",
+SSplotJABBAres(base.model01,
+               subplots = "len",
+               add=T)
+SSplotJABBAres(base.model1,
+               subplots = "len",
                add=T)
 SSplotJABBAres(base.model2,
                subplots = "len",
                add=T)
+SSplotJABBAres(base.model3,
+               subplots = "len",
+               add=T)
+SSplotJABBAres(base.model4,
+               subplots = "len",
+               add=T)
+SSplotJABBAres(base.model5,
+               subplots = "len",
+               add=T)
+SSplotJABBAres(base.model6,
+               subplots = "len",
+               add=T)
+SSplotJABBAres(base.model7,
+               subplots = "len",
+               add=T)
+SSplotJABBAres(base.model7,
+               subplots = "len",
+               add=T)
+
+SSplotMnwt(base.model01, subplots = 2)
 ```
 
 
@@ -547,19 +584,19 @@ hci = SSplotHCxval(retroSummary2,
 ## Kobe (status)
 
 ```{r}
-mvln = SSdeltaMVLN(base.model01,
-                   Fref = "MSY", 
+mvln = SSdeltaMVLN(base.model8,
+                   Fref = "Btgt", 
                    plot = TRUE,
                    addprj=TRUE,
                    virgin = TRUE,
-                   mc=100)
+                   mc=1000)
 
 mvln = SSdeltaMVLN(base.model2,
-                   Fref = "MSY", 
+                   Fref = "Btgt", 
                    plot = TRUE,
                    addprj=TRUE,
                    virgin = TRUE,
-                   mc=100)
+                   mc=1000)
 ```
 
 
@@ -618,6 +655,9 @@ like6 <- rownames_to_column(like6, var = "Description")
 like7 <- base.model7$likelihoods_used
 like7$model <- rep("s7", nrow(like7))
 like7 <- rownames_to_column(like7, var = "Description")
+like8 <- base.model8$likelihoods_used
+like8$model <- rep("s8", nrow(like8))
+like8 <- rownames_to_column(like8, var = "Description")
 totalike <- rbind(like01,
                   like1,
                    like2,
@@ -625,7 +665,8 @@ totalike <- rbind(like01,
                    like4,
                    like5,
                    like6,
-                   like7)
+                   like7,
+                  like8)
 
 ```
 
@@ -635,10 +676,9 @@ ggplot(totalike)+
             stat = "identity", position = "dodge") +
   theme_few() +
   facet_wrap(.~model, 
-             ncol=4)+
+             ncol=3)+
   labs(y="",
        x="Likelihood")+
-  xlim(0, 1000)+
   theme(axis.text.x = element_text(angle = 90, 
                                    hjust = 1)) 
 ```
@@ -816,7 +856,8 @@ legend.labels <- c( "s01",
                  "s4",
                  "s5",
                  "s6",
-                 "s7")
+                 "s7",
+                 "s8")
 
 #read in all model runs
 #note if cover=T you need a hessian; if covar=F you do not need a hessian
@@ -828,21 +869,23 @@ biglist <- SSgetoutput(keyvec = NULL,
                                   dir4,
                                   dir5,
                                   dir6,
-                                  dir7),
+                                  dir7,
+                                  dir8),
                        getcovar = F)
 
 #create summary of model runs from list above
 summaryoutput <- SSsummarize(biglist)
 
 SSplotComparisons(summaryoutput,
-                  legendlabels = c("s01",
+                  legendlabels = c("No Spatial",
                                    "s1",
                                    "s2",
                  "s3",
                  "s4",
                  "s5",
                  "s6",
-                 "s7"),
+                 "s7",
+                 "s8"),
                  labels = c("Year", 
                             "Spawning biomass (t)",
                             "Relative spawning biomass", 
@@ -857,18 +900,6 @@ SSplotComparisons(summaryoutput,
                             "Harvest rate"),
                  plotdir = "~/Figs")
 
-comp <- SSplotComparisons(summaryoutput,
-                  legendlabels = c("s01",
-                                   "s1",
-                                   "s2",
-                 "s3",
-                 "s4",
-                 "s5",
-                 "s6",
-                 "s7"),
-                 subplots = c(2, 16),
-                 plotdir = "~/Figs")
-comp
 ```
 
 
@@ -905,6 +936,145 @@ kbl(comtable, booktabs = T,format = "latex",
     caption = "Comparacion likelihood y parámetros s01, s1, s2, s3, s4, s5, s6 y s7")  %>% 
     kable_styling(latex_options = "scale_down")
 
+```
+comparision between select models
+
+```{r echo=FALSE}
+#read in all model runs
+#note if cover=T you need a hessian; if covar=F you do not need a hessian
+biglist <- SSgetoutput(keyvec = NULL,
+                       dirvec = c(
+                                  dir8,
+                                  
+                                  dir2,
+                                  dir3),
+                       getcovar = F)
+
+#create summary of model runs from list above
+summaryoutput <- SSsummarize(biglist)
+
+SSplotComparisons(summaryoutput,
+                  legendlabels = c(
+                                   "s8",
+                 
+                 "s2",
+                 "s3"),
+                 labels = c("Year", 
+                            "Spawning biomass (t)",
+                            "Relative spawning biomass", 
+                            "Age-0 recruits (1,000s)",
+                            "Recruitment deviations", 
+                            "Index", "Log index", 
+                            "1 - SPR", 
+                            "Density",
+                            "Management target", 
+                            "Minimum stock size threshold",
+                            "Spawning output",
+                            "Harvest rate"),
+                 plotdir = "~/Figs")
+
+comp2_8 <- SSplotComparisons(summaryoutput,
+                  legendlabels = c(
+                                   "s8",
+                 
+                 "s2",
+                 "s3"),
+                 subplots = c(2, 16),
+                 plotdir = "~/Figs")
+comp2_8
+```
+## Comparsion in sd long term time series
+
+```{r}
+sblt01 <- base.model01$timeseries$Bio_all 
+sblt1 <- base.model1$timeseries$Bio_all 
+sblt2 <- base.model2$timeseries$Bio_all 
+sblt3 <- base.model3$timeseries$Bio_all 
+sblt4 <- base.model4$timeseries$Bio_all 
+sblt5 <- base.model5$timeseries$Bio_all 
+sblt6 <- base.model6$timeseries$Bio_all 
+sblt7 <- base.model7$timeseries$Bio_all 
+sblt8 <- base.model8$timeseries$Bio_all
+errt <- as.data.frame(cbind(sblt01,
+              sblt1,
+              sblt2,
+              sblt3,
+              sblt4,
+              sblt5,
+              sblt6,
+              sblt7,
+              sblt8))
+err_long <- errt %>%
+  pivot_longer(cols = everything(),
+               names_to = "variable",
+               values_to = "value")  
+
+ggplot(err_long, aes(x = variable, y = value)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.2, alpha = 0.3) +
+  labs(title = "",
+       x = "",
+       y = "Spawning B.(mt)") +
+  theme_few() +
+  theme(axis.text.x = element_text(angle = 90,
+                                   hjust = 1))
+base.model2$
+
+```
+
+## Autocorrelation in Recruit and Biomas
+
+```{r}
+recs01 <- base.model01$recruit$pred_recr
+recs1 <- base.model1$recruit$pred_recr
+recs2 <- base.model2$recruit$pred_recr
+recs3 <- base.model3$recruit$pred_recr
+recs4 <- base.model4$recruit$pred_recr
+recs5 <- base.model5$recruit$pred_recr
+recs6 <- base.model6$recruit$pred_recr
+recs7 <- base.model7$recruit$pred_recr
+recs8 <- base.model8$recruit$pred_recr
+
+
+p01 <- ggAcf(base.model01$recruit$pred_recr) +
+  ggtitle("S01") +
+  theme_few()
+p1 <- ggAcf(base.model1$recruit$pred_recr) +
+  ggtitle("S1") +
+  theme_few()
+p2 <- ggAcf(base.model2$recruit$pred_recr) +
+  ggtitle("S2") +
+  theme_few()
+p3 <- ggAcf(base.model3$recruit$pred_recr) +
+  ggtitle("S3") +
+  theme_few()
+p4 <- ggAcf(base.model4$recruit$pred_recr) +
+  ggtitle("S4") +
+  theme_few()
+p5 <- ggAcf(base.model5$recruit$pred_recr) +
+  ggtitle("S5") +
+  theme_few()
+p6 <- ggAcf(base.model6$recruit$pred_recr) +
+  ggtitle("S6") +
+  theme_few()
+p7 <- ggAcf(base.model7$recruit$pred_recr) +
+  ggtitle("S6") +
+  theme_few()
+p8 <- ggAcf(base.model8$recruit$pred_recr) +
+  ggtitle("S6") +
+  theme_few()
+
+
+
+ggarrange(p01,p1,
+          p2,
+          p3,
+          p4,
+          p5,
+          p6,
+          p7,
+          p8, ncol=3, nrow = 3,
+          common.legend = T)
 ```
 
 

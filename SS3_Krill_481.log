@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.5.6)  29 MAY 2024 16:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.5.6)  30 MAY 2024 15:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -636,73 +636,76 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 22
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [6] [7] [8] [9] [10] [11] [12]
-<Figs/481.png, id=201, 318.18875pt x 415.5525pt>
+<Figs/481.png, id=215, 318.18875pt x 415.5525pt>
 File: Figs/481.png Graphic file (type png)
 <use Figs/481.png>
-Package pdftex.def Info: Figs/481.png  used on input line 405.
+Package pdftex.def Info: Figs/481.png  used on input line 404.
 (pdftex.def)             Requested size: 318.20251pt x 415.5705pt.
 [13 <./Figs/481.png>]
-<Figs/pathmod.png, id=210, 1201.48875pt x 675.52374pt>
+<Figs/pathmod.png, id=224, 1201.48875pt x 675.52374pt>
 File: Figs/pathmod.png Graphic file (type png)
 <use Figs/pathmod.png>
-Package pdftex.def Info: Figs/pathmod.png  used on input line 417.
+Package pdftex.def Info: Figs/pathmod.png  used on input line 416.
 (pdftex.def)             Requested size: 576.7264pt x 324.25803pt.
 [14
 
  <./Figs/pathmod.png>]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 431.
-<Figs/conceptual.jpeg, id=216, 405.515pt x 529.98pt>
+(Font)              <9> on input line 430.
+<Figs/conceptual.jpeg, id=230, 405.515pt x 529.98pt>
 File: Figs/conceptual.jpeg Graphic file (type jpg)
 <use Figs/conceptual.jpeg>
-Package pdftex.def Info: Figs/conceptual.jpeg  used on input line 494.
+Package pdftex.def Info: Figs/conceptual.jpeg  used on input line 493.
 (pdftex.def)             Requested size: 187.90044pt x 245.57285pt.
 [15
 
 ]
-<s2/plots/data_plot.png, id=224, 1957.3125pt x 1957.3125pt>
+<s2/plots/data_plot.png, id=238, 1957.3125pt x 1957.3125pt>
 File: s2/plots/data_plot.png Graphic file (type png)
 <use s2/plots/data_plot.png>
-Package pdftex.def Info: s2/plots/data_plot.png  used on input line 503.
+Package pdftex.def Info: s2/plots/data_plot.png  used on input line 502.
 (pdftex.def)             Requested size: 328.82626pt x 328.82626pt.
 [16 <./Figs/conceptual.jpeg>]
 
-LaTeX Warning: Float too large for page by 37.53105pt on input line 579.
+LaTeX Warning: Float too large for page by 37.53105pt on input line 578.
 
 [17 <./s2/plots/data_plot.png>] [18]
-<compare8_Fvalue_uncertainty.png, id=242, 1957.3125pt x 1505.625pt>
+<compare8_Fvalue_uncertainty.png, id=256, 1957.3125pt x 1505.625pt>
 File: compare8_Fvalue_uncertainty.png Graphic file (type png)
 <use compare8_Fvalue_uncertainty.png>
-Package pdftex.def Info: compare8_Fvalue_uncertainty.png  used on input line 587.
+Package pdftex.def Info: compare8_Fvalue_uncertainty.png  used on input line 586.
 (pdftex.def)             Requested size: 469.73474pt x 361.33441pt.
-<compare2_spawnbio_uncertainty.png, id=243, 1957.3125pt x 1505.625pt>
+<compare2_spawnbio_uncertainty.png, id=257, 1957.3125pt x 1505.625pt>
 File: compare2_spawnbio_uncertainty.png Graphic file (type png)
 <use compare2_spawnbio_uncertainty.png>
-Package pdftex.def Info: compare2_spawnbio_uncertainty.png  used on input line 595.
+Package pdftex.def Info: compare2_spawnbio_uncertainty.png  used on input line 594.
 (pdftex.def)             Requested size: 469.73474pt x 361.33441pt.
-<compare4_Bratio_uncertainty.png, id=244, 1957.3125pt x 1505.625pt>
+<compare4_Bratio_uncertainty.png, id=258, 1957.3125pt x 1505.625pt>
 File: compare4_Bratio_uncertainty.png Graphic file (type png)
 <use compare4_Bratio_uncertainty.png>
-Package pdftex.def Info: compare4_Bratio_uncertainty.png  used on input line 603.
+Package pdftex.def Info: compare4_Bratio_uncertainty.png  used on input line 602.
 (pdftex.def)             Requested size: 469.73474pt x 361.33441pt.
 [19
 
  <./compare8_Fvalue_uncertainty.png>]
 File: compare8_Fvalue_uncertainty.png Graphic file (type png)
 <use compare8_Fvalue_uncertainty.png>
-Package pdftex.def Info: compare8_Fvalue_uncertainty.png  used on input line 611.
+Package pdftex.def Info: compare8_Fvalue_uncertainty.png  used on input line 610.
 (pdftex.def)             Requested size: 469.73474pt x 361.33441pt.
 [20 <./compare2_spawnbio_uncertainty.png>] [21 <./compare4_Bratio_uncertainty.png>] [22] [23
 
 ] [24] (./SS3_Krill_481.aux) ) 
 Here is how much of TeX's memory you used:
- 15944 strings out of 478033
- 259749 string characters out of 5838240
+ 15952 strings out of 478033
+ 259864 string characters out of 5838240
  1918330 words of memory out of 5000000
  35474 multiletter control sequences out of 15000+600000
- 594688 words of font info for 178 fonts, out of 8000000 for 9000
+ 594771 words of font info for 179 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 77i,15n,81p,2774b,560s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 77i,15n,81p,2774b,502s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{ref-EMM-204ux2f32} has been referenced but does not exist, replaced by a fixed one
+
 
 pdfTeX warning (dest): name{ref-Pierce2021} has been referenced but does not exist, replaced by a fixed one
 
@@ -710,10 +713,10 @@ pdfTeX warning (dest): name{ref-Pierce2021} has been referenced but does not exi
 pdfTeX warning (dest): name{ref-Pebezma2018} has been referenced but does not exist, replaced by a fixed one
 
 {/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on SS3_Krill_481.pdf (24 pages, 2509378 bytes).
+Output written on SS3_Krill_481.pdf (24 pages, 2512906 bytes).
 PDF statistics:
- 475 PDF objects out of 1000 (max. 8388607)
- 394 compressed objects within 4 object streams
- 109 named destinations out of 1000 (max. 500000)
+ 495 PDF objects out of 1000 (max. 8388607)
+ 413 compressed objects within 5 object streams
+ 115 named destinations out of 1000 (max. 500000)
  49364 words of extra memory for PDF output out of 51595 (max. 10000000)
 
