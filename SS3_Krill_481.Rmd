@@ -150,6 +150,8 @@ Furthermore, our integrated model will take into account environmental variables
 
 ## Predator components in modelation
 
+
+
 Additionally, our model will consider predator-prey interactions as a key driver of krill population dynamics. By incorporating information on predator distribution, abundance, and feeding ecology, our model will provide a more comprehensive understanding of the trophic interactions shaping krill dynamics.  In this analysis we incorporated penguin population index as predator *"fleets"*. This overall natural morality (M) to include explicit mortality (M2) caused by each major predator as M = M1 + sum(M2) [@methot2020stock].
 
 
