@@ -32,6 +32,8 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
+                      fig.height = 3,
+                      fig.width = 5,
                       fig.align = 'center',
                       fig.pos = "H",
                       dev = 'jpeg',
@@ -65,19 +67,20 @@ library(ggthemes)
 library(forecast)
 library(tidyr)
 library(mixR)
+library(readxl)
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, echo=TRUE}
 dir01 <- here("s01") # agreggate data (no spatial diferences)
 dir1<-here("s1") # Data strata flishery
 dir2<-here("s2") # Same 9 with areas (SubStrata) as fleet. Dif size comoposition and dif CPUE and dif survey length and biomass data by strata
 dir3<-here("s3") # whitout S-R
 dir4<-here("s4") # 
-dir5<-here("s5") # whitout S-R
-dir6<-here("s6") # whitout S-R
-dir7<-here("s7") # whitout S-R
+dir5<-here("s5") # 
+dir6<-here("s6") # 
+dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
 dirtest<-here("test")
-Figs <- here("Figs")# S2 set parametres EMM-2024/23 (Mardones)
+Figs <- here("Figs")# S
 ```
 
 # OVERVIEW
@@ -162,7 +165,10 @@ parbio<-ctl1$MG_parms[1:10,c(1:3,7)]
  Qpar<-ctl1$Q_parms[1:2,c(1:3,7)]
  Selpar<-ctl1$size_selex_parms[1:22,c(1:3,7)]
  parInit<-as.data.frame(rbind(parbio,SRpar,Qpar,Selpar))
- 
+```
+
+
+```{r eval=FALSE}
 wb <- createWorkbook()
 
 addWorksheet(wb, "parameters")
@@ -176,9 +182,9 @@ saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
 ```{r}
 parInit %>%
   kbl(booktabs = T,
-      format = "latex",
+      format = "html",
       position="ht!",
-    caption = "\\label{Tab1}Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
+    caption = "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
   kable_paper("hover", 
               full_width = F)%>%
   kable_styling(latex_options = c("striped",
@@ -213,7 +219,7 @@ about main consideration in assessment of krill population.
 
 ## Run Models
 
-```{r eval=FALSE, message=F, include=FALSE}
+```{r eval=FALSE, message=F, include=FALSE, echo=TRUE}
 # Lista de directorios para correro tordos juntos
 directorios <- c("s01", 
                  "s1", 
@@ -291,7 +297,7 @@ base.model7 <- SS_output(dir=dir7,
 
 Total biomass
 
-```{r}
+```{r eval=FALSE}
 total01 <- as.data.frame(base.model01$timeseries[1:50,c(2,5)]) %>%
   mutate(Serie = "No Spatial")
 total1 <- as.data.frame(base.model1$timeseries[,c(2,5)]) %>% 
@@ -349,7 +355,7 @@ SS_plots(base.model7,
 
 Data used en both (spatial and No spatial models)
 
-```{r fig.height=7}
+```{r }
 SSplotData(base.model01, subplot = 1, 
            fleetnames = c("Fishery", "Survey", "Predator"),
            fleetcol = c("blue","green", "red"))
@@ -363,7 +369,7 @@ SSplotData(base.model1,
 Respecto a los valores y parametros biologicos modelados, los siguientes
 graficos identifican los estimadores puntuales del recurso
 
-```{r}
+```{r fig.height=6}
 SSplotSelex(base.model01,
             subplots = 1)
 SSplotSelex(base.model1,
@@ -381,6 +387,12 @@ SSplotSelex(base.model6,
 SSplotSelex(base.model7,
             subplots = 1)
 ```
+```{r}
+SSplotComps(base.model1,
+            subplots = 1,
+            maxrows = 5,
+            maxcols = 5)
+```
 
 
 ```{r eval=FALSE}
@@ -388,7 +400,6 @@ SSplotComps(base.model01,
             subplots = 1,
             maxrows = 5,
             maxcols = 5)
-
 SSplotComps(base.model1,
             subplots = 1,
             maxrows = 5,
@@ -435,7 +446,15 @@ Step to do a good practice in model diagnosis is;
 all this framework try to follow recommendations of @Carvalho2021b
 
 ## Residual consistency 
+
 ```{r}
+SSplotRunstest(base.model1,
+               subplots = "len",
+               add=T)
+```
+
+
+```{r eval=FALSE, fig.width=4, fig.height=5}
 SSplotRunstest(base.model01,
                subplots = "len",
                add=T)
@@ -463,7 +482,14 @@ SSplotRunstest(base.model7,
 ```
 
 
+
 ```{r}
+SSplotRunstest(base.model1,
+               subplots = "cpue",
+               add=T)
+```
+
+```{r eval=FALSE}
 SSplotRunstest(base.model01,
                subplots = "cpue",
                add=T)
@@ -737,6 +763,14 @@ as accurately as a naïve baseline prediction; thus, the model has
 prediction skill.
 
 ```{r}
+hci = SSplotHCxval(retroSummary1, 
+                   add = T, 
+                   verbose = F, 
+                   legendcex = 0.7)
+```
+
+
+```{r eval=FALSE}
 hci = SSplotHCxval(retroSummary01, 
                    add = T, 
                    verbose = F, 
@@ -773,7 +807,18 @@ hci = SSplotHCxval(retroSummary7,
 
 ## Kobe (status)
 
+
 ```{r}
+mvln = SSdeltaMVLN(base.model1,
+                   Fref = "Btgt", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
+
+```
+
+```{r eval=FALSE}
 mvln = SSdeltaMVLN(base.model01,
                    Fref = "Btgt", 
                    plot = TRUE,
@@ -974,7 +1019,7 @@ kbl(tablebias7a, booktabs = T,format = "latex",
 
 ```
 
-## Verosimilitud
+## Likelihood
 
 ```{r}
 like01 <- base.model01$likelihoods_used
@@ -1129,9 +1174,6 @@ dev.off()
 0.0001 final convergence criteria (e.g. 1.0e-04) 
 
 
-
-## SSplotComparisons()
-
 ```{r eval=FALSE, echo = FALSE}
 
 # Comparación de series de tiempo 
@@ -1192,11 +1234,27 @@ dev.off()
 ```{r}
 outps1 <- base.model1$timeseries[1:53, 2:8]
 
-addWorksheet(wb, "variable_s2")
-writeData(wb, "variable_s2", outps1)
-
-# Guardar el workbook
-saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# addWorksheet(wb, "variable_s2")
+# writeData(wb, "variable_s2", outps1)
+# 
+# # Guardar el workbook
+# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# 
+# 
+# out_s2 <- read_excel("DataKrill.xlsx", 
+#     sheet = "variable_s2")
+outps1 %>%
+  kbl(booktabs = TRUE,
+      format = "html",
+    caption = "Main variables outputs from stock asssessment krill in WAP") %>%
+  kable_paper("hover", 
+              full_width = TRUE)%>%
+  kable_styling(latex_options = c("striped",
+                                  "condensed"),
+                full_width = FALSE,
+                font_size=9)#%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
 ```
 
 ## Comparision outputs betwwen scenarios
@@ -1297,7 +1355,7 @@ biglist01_1_7 <- SSgetoutput(keyvec = NULL,
 #create summary of model runs from list above
 summaryoutput01_1_7 <- SSsummarize(biglist01_1_7)
 
-comp01_1_7 <- SSplotComparisons(summaryoutput01_1_7,
+SSplotComparisons(summaryoutput01_1_7,
                   legendlabels = c(
                                    "No Spatial",
                  
@@ -1354,7 +1412,7 @@ comp1_7 <- SSplotComparisons(summaryoutput1_7,
 
 ## Comparsion in sd long term time series
 
-```{r}
+```{r fig.height=6, fig.width=8}
 
 sblt01 <- base.model01$timeseries$Bio_all[1:50]
 sblt1 <-  base.model1$timeseries$Bio_all
@@ -1401,7 +1459,7 @@ ggplot(err_long, aes(x = variable, y = value)) +
 
 ## Autocorrelation in Recruit and Biomas
 
-```{r}
+```{r fig.width=8, fig.height=7}
 recs01 <- base.model01$recruit$pred_recr
 recs1 <- base.model1$recruit$pred_recr
 recs2 <- base.model2$recruit$pred_recr
@@ -1452,7 +1510,7 @@ ggarrange(p01,p1,
 
 ## Recruit deviation
 
-```{r}
+```{r fig.width=8, fig.height=7}
 dev01 <- base.model01$recruit[1:43,c(1,7)] %>% 
   mutate(Serie = "S01")
 dev1 <- base.model1$recruit[1:43,c(1,7)]%>% 
