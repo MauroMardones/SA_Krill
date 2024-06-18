@@ -1394,7 +1394,7 @@ comp1_7 <- SSplotComparisons(summaryoutput1_7,
                   legendlabels = c(
                                    "Old Parameters",
                  
-                 "Parameters WG SAM 2024/23"),
+                 "Parameters WG SAM 2024/27"),
                  labels = c("Year", 
                             "Spawning biomass (t)",
                             "Relative spawning biomass", 
