@@ -481,8 +481,6 @@ SSplotRunstest(base.model7,
                add=T)
 ```
 
-
-
 ```{r}
 SSplotRunstest(base.model1,
                subplots = "cpue",
