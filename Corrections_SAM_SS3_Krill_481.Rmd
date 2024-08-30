@@ -6,7 +6,6 @@ author:
   - Francisco Santa Cruz ^[Instituto Antártico Chileno, Universidad de Magallanes, Milenio Base]
   - César Cárdenas^[Instituto Antártico Chileno, Milenio Base]
   - George Watters^[Ecosystem Science Division, Southwest Fisheries Science Center, NOAA, USA]
-    
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::pdf_document2:
@@ -40,10 +39,6 @@ knitr::opts_chunk$set(eval=TRUE,
                       dpi = 300,
                       tidy.opts=list(width.cutoff=50), 
                       tidy=TRUE)
-#XQuartz is a mess, put this in your onload to default to cairo instead
-options(bitmapType = "cairo") 
-# (https://github.com/tidyverse/ggplot2/issues/2655)
-# Lo mapas se hacen mas rapido
 ```
 
 ```{r message=FALSE, eval=TRUE}
@@ -60,12 +55,28 @@ dir1<-here("s1")
 
 # ABSTRACT 
 
-The integration of available sources of information is a challenge for any attempt to know dynamics populations for Antarctic Krill *Euphausia superba* in an integrated stock assessment model.Being able to identify sources of information, systematize and integrate it in a model and estimate krill population variables in a context of change and fisheries management is vital for management and decision making. This approach has three main objectives. Firstly, integrate fishing, environmental and ecological variables in an integrated stock assessment model and test his performance. On the other hand, consider the spatial heterogeneity of the krill population structure. Finally, to evaluate the impact of biological and structure population assumptions on the performance of this type of integrated stock assessment models. Consequently, by acknowledging and integrating different data sources, the stock assessment model can provide insights into the ecological dynamics of krill populations and improve CCAMLR fishery management and conservation strategies in this region.
+
+This study addresses key recommendations highlighted in the preliminary Report of the Working Group on Statistics, Assessment, and Modelling (WG-SAM-2024) regarding to analysis of integrating diverse information sources for understanding the population dynamics of Antarctic krill (*Euphausia superba*) within an integrated stock assessment model, especially in the face of environmental change and fisheries management challenges. This work systematically incorporates fishing, environmental, and ecological variables while accounting for the spatial heterogeneity of the krill population structure. Additionally, it evaluates the impact of biological and structural assumptions on model performance, calculates the harvest rate, and refines the proposed management procedures in a both conceptual and tactical approach. By acknowledging and integrating these diverse data sources, the model provides valuable insights into krill population dynamics, and continue contributing to the enhancement of CCAMLR fishery management and conservation strategies in the region.
 
 
 *Keywords: Krill populations, dynamic population, integrated model, Stock Synthesis (SS3), spatial implicit, ecosystem consideration, management, CCAMLR.*
 
 \newpage
+
+# RECOMMENDATIONS SAM - 23
+
+
+2.3 Noting that the authors recalled a previous independent review of an age-based integrated stock assessment for Antarctic krill which encouraged the development of such assessments (Thomson, 2016), the Working Group highlighted that the other reviewer on that panel noted that a length-based model could be considered due to the sparsity of direct age data (de Lestang, 2016). It also noted that this would avoid the approximations required when converting length data to age data. The Working Group further recalled that a similar comment had been made (WG-SAM-2023, paragraph 4.3) in relation to a pilot Casal2 age-based assessment (WG-SAM-2023/25). It encouraged the authors to provide standard model diagnostics, similar to those presented for toothfish assessments, to facilitate understanding of model performance (e.g., WG-SAM-2023, paragraphs 6.33 and 6.34).
+
+2.4 While noting that this study constituted interesting and important work, the Working Group noted that some issues needed further consideration including the change of trawl designs over the course of the collection of the data used as inputs to the model (e.g. changes in mesh sizes and the presence of fine-mesh codend inserts) and the likely invalid assumption of the Peninsula as being a closed system. It further highlighted the need to discuss the development of a standardised data collection plan to support the ongoing revision of the krill fishery management approach.
+
+2.5 Dr S. Kasatkina (Russian Federation) noted that data on krill length and biological composition from catches of fishing vessels will be not suitable for such a modelling approach, and recalled that comparisons of krill length composition from catches of fishing trawls and catches of scientific trawls within the same fishing ground revealed significant differences (WG-ASAM-2021/03). Moreover, Dr Kasatkina noted that there were significant differences in the length composition of catches between fishing vessels and these differences are random in nature, which may be due to both the selective properties of commercial trawls, different fishing methods (continuous and traditional fishing) as well as the efficiency of krill sampling by observers at-sea (WG-ASAM-2021/03; WG-EMM-2024/37). Dr Kasatkina noted that this modelling effort required clarity regarding the interaction between the fishery and krill-dependent predators, which requires regular observations to study the spatial overlap of fishing zones and predator foraging zones and could be accompanied by krill distribution patterns (for example, such complex ecosystem observations were provided on RV Atlantida in 2020; SC-CAMLR-42/07). Dr Kasatkina recalled that the spatial and temporal dynamics of groups from the Bellingshausen and Weddell Seas (Fach et al, 2002; Murphy et al, 2004; WG-EMM-2024/43; WG-EMM-2024/39) and noted that without data on krill transport and standardised acoustic surveys of krill, it is impossible to assess the influence of factors such as spatial heterogeneity and life history parameters on key krill population variables.
+
+2.6 The Working Group encouraged the authors to provide a progression of model implementations from simple to more complex to facilitate understanding and evaluate the evidence for the model assumptions. It further noted the presence of patterns in the residuals shown in the paper (Figures 5 and 6) which warranted further investigation, as well as the need to assess the realism of some parameter values used in the model. The Working Group also indicated that this work would benefit from taking into consideration recent findings by SKEG regarding the krill stock hypothesis (e.g. WG-EMM-2024/39).
+
+- Harvest Rate
+
+- Diagram management procedure
 
 # INTRODUCTION
 
