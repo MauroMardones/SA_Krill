@@ -79,6 +79,7 @@ dir4<-here("s4") #
 dir5<-here("s5") # 
 dir6<-here("s6") # 
 dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
+dir8<-here("s8") # s1 test data weigthing
 dirtest<-here("test")
 Figs <- here("Figs")# S
 ```
@@ -216,6 +217,7 @@ about main consideration in assessment of krill population.
 |    s5    | "s1" BH S-R relation mid-strong estimated                                            |
 |    s6    | "s1" Ricker S-R relation estimated                                                   |
 |    s7    | "s1" w/ set of parameters estimated in @EMM-204/32                                   |
+|    s8    | "s1" test data weighting                                                             |
 
 ## Run Models
 
@@ -228,7 +230,8 @@ directorios <- c("s01",
                  "s4",
                  "s5",
                  "s6",
-                 "s7")  # Agrega aquí todos los nombres de las carpetas que deseas procesar
+                 "s7",
+                 "s8")  # Agrega aquí todos los nombres de las carpetas que deseas procesar
 
 # Bucle para ejecutar el código en cada directorio
 for (dir in directorios) {
@@ -246,7 +249,7 @@ for (dir in directorios) {
 #shell(cmd="ss") # run SS to windows
 # or 
 r4ss::run(
-  dir = dir7,
+  dir = dir8,
   exe = "ss_osx",
   skipfinished = FALSE, # TRUE will skip running if Report.sso present
   show_in_console = TRUE # change to true to watch the output go past
@@ -289,6 +292,21 @@ base.model6 <- SS_output(dir=dir6,
 base.model7 <- SS_output(dir=dir7,
                         covar=T,
                         forecast=T)
+
+#s8
+base.model8 <- SS_output(dir=dir8,
+                        covar=T,
+                        forecast=T)
+
+# html
+SS_plots(base.model8,
+         uncertainty=T,
+         datplot = T, 
+         png=T, 
+         aalresids = F,
+         btarg=0.75,
+         minbthresh=0.20, 
+         forecast=T)
 
 ```
 # RESULTS
@@ -388,7 +406,7 @@ SSplotSelex(base.model7,
             subplots = 1)
 ```
 ```{r}
-SSplotComps(base.model1,
+SSplotComps(base.model8,
             subplots = 1,
             maxrows = 5,
             maxcols = 5)
@@ -1560,6 +1578,38 @@ combined_plot <- ggarrange(plotlist = plots, ncol = 3, nrow = 3)
 
 
 combined_plot
+```
+## Platoons analisis
+
+```{r}
+# Definir los valores del eje x
+x_values <- seq(0, 7, by=0.1)
+
+# Definir las medias y desviaciones estándar para los valores específicos
+means <- c( 2.9,  3.5, 4.1)
+std_devs <- c(0.65, 0.8, 0.65)
+
+
+# Crear un dataframe que contenga los valores de x, la media y las desviaciones estándar
+data <- data.frame(
+  x = rep(x_values, each = length(means)),
+  mean = rep(means, times = length(x_values)),
+  std_dev = rep(std_devs, times = length(x_values))
+)
+
+# Calcular las curvas de las desviaciones estándar
+data <- data %>%
+  mutate(y = exp(-((x - mean)^2) / (2 * std_dev^2)))
+
+# Graficar con ggplot
+ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
+  geom_line(size = 1) +
+  scale_linetype_manual(values = means,
+                        name ="Platoon") +
+  labs(x = "", y = "growth increment") +
+  theme_minimal()+
+  xlim(0,7)
+
 ```
 
 

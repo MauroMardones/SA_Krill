@@ -1,5 +1,6 @@
 ---
-title: "FSA Working Report Stock Assessment Krill WAP"
+title: "Integrated approach to modeling krill population dynamics in Western Antarctic Peninsula. Spatial and ecosystem considerations"
+subtitle: "WG-FSA 2024. Working Paper"
 author:
   - Mauricio Mardones^[Universidad de Magallanes, mamardon@umag.cl, Milenio Base]
   - Lucas Krüger ^[Instituto Antártico Chileno, Milenio Base]
@@ -25,7 +26,6 @@ header-includes:
 \newpage
 \tableofcontents
 \newpage
-
 
 ```{r setup1, echo=FALSE}
 rm(list = ls())
@@ -53,34 +53,11 @@ dir1<-here("s1")
 ```
 
 
-# ABSTRACT 
+# BACKGROUND 
 
 
-This study addresses key recommendations highlighted in the preliminary Report of the Working Group on Statistics, Assessment, and Modelling (WG-SAM-2024) regarding to analysis of integrating diverse information sources for understanding the population dynamics of Antarctic krill (*Euphausia superba*) within an integrated stock assessment model, especially in the face of environmental change and fisheries management challenges. This work systematically incorporates fishing, environmental, and ecological variables while accounting for the spatial heterogeneity of the krill population structure. Additionally, it evaluates the impact of biological and structural assumptions on model performance, calculates the harvest rate, and refines the proposed management procedures in a both conceptual and tactical approach. By acknowledging and integrating these diverse data sources, the model provides valuable insights into krill population dynamics, and continue contributing to the enhancement of CCAMLR fishery management and conservation strategies in the region.
+This study addresses key recommendations highlighted in the preliminary report of the Working Group on Statistics, Assessment, and Modelling (WG-SAM-2024/26) [@Mardones2023] regarding the integration of diverse information sources for understanding the population dynamics of Antarctic krill (*Euphausia superba*) within an integrated stock assessment model, particularly in the context of environmental change and fisheries management challenges. The main observations were: 1) Concerns about using a length-based model due to the scarcity of direct age data, as this approach avoids the approximations required when converting length data to age data; 2) The need to consider the impact of changes in trawl designs over time and to reassess the assumption that the Antarctic Peninsula is a closed system; 3) The limitations of using krill length and biological composition data from fishing vessels, given the significant variability and potential biases, and the importance of understanding the interaction between fisheries and krill-dependent predators; 4) A recommendation to present a progression of model implementations from simple to complex to better evaluate model assumptions, investigate patterns in residuals, and assess the realism of parameter values used, while also integrating recent findings on krill stock hypotheses, with special attention to harvest rate and management procedures.Each observation will be explained in theoretical terms and, where possible, analyzed in detail. This approach reflects an ongoing work in progress that is continuously refined based on interactions with the CCAMLR Working Groups. These interactions provide valuable feedback that helps to shape and improve the study's methodology and findings. It should be noted, of this approach is vital for contributing to management strategies based on quantitative methods that provide indicators of krill health, integrating ecosystem aspects into the assessment.
 
-
-*Keywords: Krill populations, dynamic population, integrated model, Stock Synthesis (SS3), spatial implicit, ecosystem consideration, management, CCAMLR.*
-
-\newpage
-
-# RECOMMENDATIONS SAM - 23
-
-
-2.3 Noting that the authors recalled a previous independent review of an age-based integrated stock assessment for Antarctic krill which encouraged the development of such assessments (Thomson, 2016), the Working Group highlighted that the other reviewer on that panel noted that a length-based model could be considered due to the sparsity of direct age data (de Lestang, 2016). It also noted that this would avoid the approximations required when converting length data to age data. The Working Group further recalled that a similar comment had been made (WG-SAM-2023, paragraph 4.3) in relation to a pilot Casal2 age-based assessment (WG-SAM-2023/25). It encouraged the authors to provide standard model diagnostics, similar to those presented for toothfish assessments, to facilitate understanding of model performance (e.g., WG-SAM-2023, paragraphs 6.33 and 6.34).
-
-2.4 While noting that this study constituted interesting and important work, the Working Group noted that some issues needed further consideration including the change of trawl designs over the course of the collection of the data used as inputs to the model (e.g. changes in mesh sizes and the presence of fine-mesh codend inserts) and the likely invalid assumption of the Peninsula as being a closed system. It further highlighted the need to discuss the development of a standardised data collection plan to support the ongoing revision of the krill fishery management approach.
-
-2.5 Dr S. Kasatkina (Russian Federation) noted that data on krill length and biological composition from catches of fishing vessels will be not suitable for such a modelling approach, and recalled that comparisons of krill length composition from catches of fishing trawls and catches of scientific trawls within the same fishing ground revealed significant differences (WG-ASAM-2021/03). Moreover, Dr Kasatkina noted that there were significant differences in the length composition of catches between fishing vessels and these differences are random in nature, which may be due to both the selective properties of commercial trawls, different fishing methods (continuous and traditional fishing) as well as the efficiency of krill sampling by observers at-sea (WG-ASAM-2021/03; WG-EMM-2024/37). Dr Kasatkina noted that this modelling effort required clarity regarding the interaction between the fishery and krill-dependent predators, which requires regular observations to study the spatial overlap of fishing zones and predator foraging zones and could be accompanied by krill distribution patterns (for example, such complex ecosystem observations were provided on RV Atlantida in 2020; SC-CAMLR-42/07). Dr Kasatkina recalled that the spatial and temporal dynamics of groups from the Bellingshausen and Weddell Seas (Fach et al, 2002; Murphy et al, 2004; WG-EMM-2024/43; WG-EMM-2024/39) and noted that without data on krill transport and standardised acoustic surveys of krill, it is impossible to assess the influence of factors such as spatial heterogeneity and life history parameters on key krill population variables.
-
-2.6 The Working Group encouraged the authors to provide a progression of model implementations from simple to more complex to facilitate understanding and evaluate the evidence for the model assumptions. It further noted the presence of patterns in the residuals shown in the paper (Figures 5 and 6) which warranted further investigation, as well as the need to assess the realism of some parameter values used in the model. The Working Group also indicated that this work would benefit from taking into consideration recent findings by SKEG regarding the krill stock hypothesis (e.g. WG-EMM-2024/39).
-
-- Harvest Rate
-
-- Diagram management procedure
-
-# INTRODUCTION
-
-Antarctic krill (*Euphausia superba* krill thereafter) population is predominantly concentrated in the Western Antarctic Peninsula (WAP), serving as a vital food source for predators and being targeted by increasing fishing activities. On the other hand, WAP is considered one of the most sensitive areas to Climate Change (CC) and has already experienced fast changes in various dimensions [@Turner2005; @Lima2013; @McBride2021; @Morley2020; @Atkinson2019a]. Given its ecological significance and economic value, effective management of krill stocks is paramount to ensure the sustainability of Antarctic ecosystems and support fisheries-dependent communities. As part of its mandate, CCAMLR promotes sustainable management of Antarctic krill through an ecosystem-based approach [@Watters2013]. CCAMLR has tried to conduct different modeling approaches to assess the status of important species, and to provide information for decision-making regarding fisheries management and conservation measures [@Hill2016]. Various stock assessment approaches on krill have been conducted to provide management advice to CCAMLR using model-based methodologies. Many of these models face challenges in aligning with management schemes or accurately representing the population dynamics of krill, due to its variability and heterogeneity in spatial distribution and ecosystem complexity. Traditionally, stock assessments have relied on single-source data, primarily from fisheries catch data or population monitoring surveys [@Green2023; @Watters2013]. However, these approaches may overlook critical aspects of krill dynamics, such as integrated different data components, spatial heterogeneity in abundance and distribution, as well as the influence of environmental factors and predator-prey interactions. There is a growing consensus on the need for using stock assessment models that incorporate multiple sources of information, capture spatial heterogeneity and consider the complex interplay of ecosystem variables in krill. Integrating the complexity of krill population dynamics presents several challenges. Firstly, data consistency over the years has been problematic, as many monitoring programs and studies have not adhered to a uniform standard throughout their temporal and spatial extension. Additionally, certain regions or areas lack sufficient data or possess only limited information regarding krill dynamics. Furthermore, interpreting indirect indicators that may affect the krill population, such as environmental variables, predator abundance, and fishery data, adds another layer of complexity. Despite these gaps, the existing data about krill population dynamics is abundant, considered data rich, and this availability allows building an integrated model to get population signals and estimate main variables such as spawning biomass, recruitment, and fishing mortality, among others. In response to this need, we propose a conceptual model to conduct a statistical model in Antarctic krill population in the Antarctic Peninsula, which in turn allows the application of an integrated model that incorporates the fishery, surveys and ecosystem information on krill population over the past 40 years.
 
 \newpage
 
@@ -162,18 +139,134 @@ For `s1` scenario, the gradient of the likelihood profile for the penalty on the
 
 Once the performance of the model was corroborated, it was possible to have an estimate and forecasting of the main population variables over the years in absolute terms, which can be seen in the Table \@ref(tab:mainvar)
 
-## Comparision outputs between scenarios
+\newpage
 
-In comparative terms with all the tested scenarios, we check the consistency through recruitment diversions (Figure \@(fig:recdev)). We do this through spatial autocorrelation analysis, checking the fluctuation of recruitment through the time series analyzed, that is, between 1979 and 2020 and which has consistency as described by other authors regarding pulses between three and five years [@Perry2020; @@McBride2021].
+# RECOMMENDATIONS SAM - 23
 
-Autocorrelation in krill recruitment in time series analyzed by scenarios, models `s01`, `s1`, `s2`, and `s5` exhibit significant autocorrelations at various lags, indicating dependencies and potential cyclical patterns in recruitment. Models `s3` and `s4` show minimal to no significant autocorrelations, suggesting more random recruitment patterns. Model `s6` shows moderate autocorrelations, indicating some predictability based on recent past values, In summary, `s01`, `s4`, and `s6` exhibit no significant autocorrelation, suggesting randomness (Figure \@ref(fig:acf)).
+The main recommendations were extracted from @CCAMLRWGSAM2024
 
-To evaluate consistency of the source of information used in each of the tested scenarios, we verify its influence on the estimate of R0 through likelihood components and, like scenario 1, we verify that all scenarios show a high dependence on the composition lengths of lengths with respect to the estimate of the variable (as show the (Figure \@ref(fig:likeall)).
+*2.3 Noting that the authors recalled a previous independent review of an age-based integrated stock assessment for Antarctic krill which encouraged the development of such assessments (Thomson, 2016), the Working Group highlighted that the other reviewer on that panel noted that a length-based model could be considered due to the sparsity of direct age data (de Lestang, 2016). It also noted that this would avoid the approximations required when converting length data to age data. The Working Group further recalled that a similar comment had been made (WG-SAM-2023, paragraph 4.3) in relation to a pilot Casal2 age-based assessment (WG-SAM-2023/25). *
+
+- **Response**: 
+
+We consider that a length-based model as an alternative to the age-based approach, especially given the scarcity of direct age data. We recognize that using a length-based model could reduce the need for approximations when converting length data to age data. We plan to explore this alternative by developing a length-based model to compare its performance and results with the current age-based model. Additionally, we will incorporate standard model diagnostics, as suggested, similar to those used in toothfish assessments, to ensure transparency and facilitate understanding of model performance.
+   
+   
+Aging techniques for krill have not been available historically, although some recent progress has been made [@Kilada2017]. In this sense, when reading of hard parts is difficult like in krill, catch-at-length data are more plentiful, as the collection of length information is relatively cheap. Length offers insights into the age structure of the population, as there is a correlation between age and length. However, it's still necessary to convert catch-at-length data into catch-at-age data. Several methods are available to achieve this [@ICCA2003].
 
 
-We identify differences in the different scenarios related with population variables with respect to the long-term estimates where the implicit model `s1` and the models without stock recruit relation or with a low density-dependence on the stock-recruit relation (`s2`and `s3`) show higher predictions than the rest of the tested scenarios. This is relevant given that these scenarios consider low spatial dependence, density-dependence spawning biomass with respect to recruitment, which is plausible for resources such as krill where environmental dynamics shape population dynamics (Figure \@ref(fig:longterm)).
+#### Age-Length Keys (ALKs)
 
-We carried out a specific comparison between the most divergent scenarios that we tested in this case, `s1`,  `s01` and `s7` which according to the description are the aggregated spatial scenario, disaggregate spatial scenario and scenario with new set of parameters, respectively. All with ecosystem components such as predators and an environmental variable.In this sense, the impacts and difference on the estimates of recruitment,  R0, virginal biomass and relative biomass are high (Figure \@ref(fig:comparision)), demonstrating the impact of initial considerations and assumptions on population variables estimation.
+Put simple, age-length keys (ALKs) are generated through the ageing of a sub-sample of the population, and used to convert larger length samples from a population into ages. ALKs describe distributions of size for each age, and the relative number of individuals at each age, i.e. they represent a matrix detailing the probability that a fish of a given length is of a particular age. Once such a key is available, samples of fish that were only measured for length can be distributed over age groups according to the key. The use of ALKs assumes that the sample of aged fish and the sample of fish measured for length are simple random samples from the same population. Then, the probability that a fish is of a particular age, given its length is the same for both samples.
+The ALK should generally be applied to length data from the same time period, since variability in recruitment and survivorship at age will change the age-length composition over time, and hence the number of survivors at age used to weight the size at age compositions will vary. The ALK may need to be seasonal if growth is temporally distinctive or seasonal migration occurs. A single ALK should only be applied to size data from a number of years if growth is reasonably stationary, and the approach of Kimura and Chikuni (1987) is used. Suitable justification should be presented for multi-seasonal or multi-annual application of ALKs. It must also be noted that the application of an ALK derived from a single time of year can cause serious bias if used to compute catch at age for the entire year.
+Age-at-length data from hard parts should be combined into suitable length groups for required gears, time periods and locations. The size of these length groups will depend on the spread of lengths found within the catch length frequencies, the growth rate of the species, and the variability in length-at-age. Length-stratified sampling is required to ensure that the required number of fish (determined by the variability of length-at-age) is available over all length groups. Developing ALKs represent is laborious, and hence the optimum collection of information is desirable. Formulae exist to estimate the number of age determinations and length measurements necessary to guarantee a given level of accuracy. Oeberst (2000) developed a universal cost function for ALKs, for example [@ICCA2003].
+
+
+
+The proportion at age is calculated as:
+$$
+\frac{\text{Number at age for a length group}}{\text{Number of fish aged in that length group}}
+$$
+
+The ALK for the time period is raised to the length distribution for that time period:
+
+$$
+\text{Raised numbers at age by length group} = \text{Numbers at length} \times \text{Proportion at age for that length}
+$$
+
+If the ALK does not contain data for all the length groups in the length distribution then data in the length distribution may be assigned to adjacent length groups where data are present in the ALK. An appropriate age- length distribution by gear group and time period is then produced. Care must be taken since considerable biases can result, particularly at large lengths where individuals may be distributed over a wide range of ages.
+
+
+The numbers at age by length group are summed over the length range to give numbers at age. The variances are also summed over the length groups and the two components labelled variance due to ageing and variance due to length sampling. This gives the age composition for the required time period. Numbers at age for all gears can be calculated as:
+
+$$
+\sum N_a \times \left(\frac{W_{ct}}{W_{cs}}\right)
+$$
+where $\sum N_a$ is the sum of sampled numbers at age, W~ct~ is the total commercial catch weight, and W~cs~ is the
+sampled commercial catch weight.
+Variance due to ageing of numbers at age for all gears can be calculated as:
+  
+$$
+\sum \text{Var}_a
+$$
+where $\sum Var_a$  is the sum of variances due to ageing.
+Variance due to length sampling of numbers at age can be calculated as:
+
+$$
+\sum \text{Var}_l
+$$
+where $\sum Var_a$  is the sum of variances due to length sampling.
+The variances should be raised by:
+
+$$
+\frac{W_{ct}}{W_{cs}}
+$$
+where W~ct~ is the total commercial catch weight, and W~cs~ is the sampled commercial catch weight.
+
+The proportions-at-age are then adjusted to find the best fit between the observed size frequency data and that predicted by the proportion-at-age and the ALK. The method can work well where the distributions of size for each age are close to those in the length frequency, but convergence can be slow. The reader is referred to the paper for more information.
+
+
+Then Numbers-at-age in the model were converted to numbers-at-length (mm) using a von Bertalanffy growth relationship withestimated parameters L~inf~, k, and v(Eq. (A.6)). This length-at-age relationship, mediated by survey catchability and selectivity (Eqs.(A.2) and (A.3)), was used to compare survey biomasses with model estimates of vulnerable biomass (Eq. (A.4)). Weight-at-length was assumed known and calculated using Eq. 3 from Hewitt et al. (2004)(W(L) = 2.236 × 10-6L3.314). (REF Kindzey)
+
+
+Another way that we implemented in `SS3` is regarding *platoons*. This approach allows for the exploration of survivorship that varies with size. A value of 1 will not create additional groups. Odd-numbered values (e.g., 3, 5) will divide the overall morph into that many groups, resulting in smaller, larger, and average growth groups. Increasing the number of groups slows down the model's performance, so it's recommended not to exceed a value of 5. The fraction of each morph assigned to each group can be either user-defined or approximated using a normal distribution. When multiple groups are designated, an additional input is required to specify the ratio of variability in size-at-age between groups versus within groups. This ratio is used to distribute the total growth variability. The size-at-age for each group is then calculated as a factor (based on the between-group and within-group variability) times the size-at-age of the central morph, which is determined from the growth parameters specific to that Growth Pattern x Sex combination [@methot2020stock].
+
+The age specific rates of fishing mortality can be linked to length specific selectivity. If growth platoons are invoked, then each platoon can have different age specific F due to interaction of length selectivity with their different size at age (Methot, *com pers*)
+
+In `SS3` colud be conditioned in this way;
+
+```{r eval=FALSE, echo=TRUE}
+#_N_Growth_Patterns (Growth Patterns, Morphs, Bio Patterns, GP are terms used interchangeably in SS)
+1  
+#_N_platoons_Within_GrowthPattern
+3 
+ #_Platoon_between/within_stdev_ratio (no read if N_platoons=1)
+0.4
+#vector_platoon_dist_(-1_in_first_val_gives_normal_approx)
+c(0.237, 0.464, 0.237)
+```
+
+
+```{r platoon, out.width='70%', fig.cap="Reprsentation of platoons in Krill lenght frencuecies"}
+knitr::include_graphics('Figs/Plattoons.png')
+```
+
+
+Regarding to observation in SAM -2023 (paragraph 4.3) that say;
+
+*4.3 its usefulness in providing an additional approach to assessing krill stock status, it recalled that the development of an integrated stock assessment for krill was considered desirable within three to five years"* but considering this;
+
+*(i) the impact of using an age-based or a length-based implementation could be assessed, noting that a preservation of the source data would be preferred (i.e. the conversion between length composition and age composition should be considered, with conversions from length to age to length avoided)*
+
+
+
+
+
+
+
+
+
+*It encouraged the authors to provide standard model diagnostics, similar to those presented for toothfish assessments, to facilitate understanding of model performance (e.g., WG-SAM-2023, paragraphs 6.33 and 6.34).*
+
+*2.4 While noting that this study constituted interesting and important work, the Working Group noted that some issues needed further consideration including the change of trawl designs over the course of the collection of the data used as inputs to the model (e.g. changes in mesh sizes and the presence of fine-mesh codend inserts) and the likely invalid assumption of the Peninsula as being a closed system. It further highlighted the need to discuss the development of a standardized data collection plan to support the ongoing revision of the krill fishery management approach.*
+
+  - **Response**: 
+
+We appreciate the identification of potential issues related to changes in trawl designs and the assumption of the Peninsula as a closed system. We will review the trawl data to assess the impact of changes in mesh sizes and fine-mesh codend inserts on the model inputs. Moreover, we acknowledge the need to reconsider the assumption of the Peninsula being a closed system, and we will explore alternative approaches to address this. Moving forward, we will engage in discussions to develop a standardized data collection plan that aligns with the revision of the krill fishery management approach, ensuring that future data inputs are consistent and reliable.
+
+*2.5 Dr S. Kasatkina (Russian Federation) noted that data on krill length and biological composition from catches of fishing vessels will be not suitable for such a modelling approach, and recalled that comparisons of krill length composition from catches of fishing trawls and catches of scientific trawls within the same fishing ground revealed significant differences (WG-ASAM-2021/03). Moreover, Dr Kasatkina noted that there were significant differences in the length composition of catches between fishing vessels and these differences are random in nature, which may be due to both the selective properties of commercial trawls, different fishing methods (continuous and traditional fishing) as well as the efficiency of krill sampling by observers at-sea (WG-ASAM-2021/03; WG-EMM-2024/37). Dr Kasatkina noted that this modelling effort required clarity regarding the interaction between the fishery and krill-dependent predators, which requires regular observations to study the spatial overlap of fishing zones and predator foraging zones and could be accompanied by krill distribution patterns (for example, such complex ecosystem observations were provided on RV Atlantida in 2020; SC-CAMLR-42/07). Dr Kasatkina recalled that the spatial and temporal dynamics of groups from the Bellingshausen and Weddell Seas (Fach et al, 2002; Murphy et al, 2004; WG-EMM-2024/43; WG-EMM-2024/39) and noted that without data on krill transport and standardised acoustic surveys of krill, it is impossible to assess the influence of factors such as spatial heterogeneity and life history parameters on key krill population variables.*
+
+- **Response**: We understand the concerns raised regarding the suitability of krill length and biological composition data from fishing vessels for this modeling approach. We agree that significant differences in length composition between commercial and scientific trawls, as well as among different vessels, pose challenges. To address this, we will review the selection criteria for the data used in our model and consider incorporating data exclusively from standardized scientific trawls to improve the reliability of the model outputs. We also acknowledge the importance of understanding the interaction between fisheries and krill-dependent predators. We will explore opportunities to integrate regular observations and data on the spatial overlap of fishing zones and predator foraging areas into the model, possibly leveraging existing ecosystem observations like those from RV Atlantida.
+
+*2.6 The Working Group encouraged the authors to provide a progression of model implementations from simple to more complex to facilitate understanding and evaluate the evidence for the model assumptions. It further noted the presence of patterns in the residuals shown in the paper (Figures 5 and 6) which warranted further investigation, as well as the need to assess the realism of some parameter values used in the model. The Working Group also indicated that this work would benefit from taking into consideration recent findings by SKEG regarding the krill stock hypothesis (e.g. WG-EMM-2024/39).*
+
+ - **Response**: We agree that a progression from simple to more complex model implementations would facilitate understanding and provide a clearer evaluation of the model assumptions. We will outline a plan to present this progression in future work, beginning with a simpler model and gradually incorporating complexity. Furthermore, we acknowledge the presence of patterns in the residuals and the need to investigate these further. We will conduct a thorough analysis of the residuals to identify any underlying issues and reassess the realism of the parameter values used in the model. In addition, we will incorporate recent findings from SKEG regarding the krill stock hypothesis to ensure that our model assumptions are up-to-date and reflect the latest scientific understanding.
+
+*show  Harvest Rate*
+
+*Diagram management procedure*
+
+
 
 \newpage
 
@@ -194,19 +287,6 @@ By comparing model outputs under scenarios where spatial heterogeneity is assume
 
 Nowadays, one of the frontiers of stock assessment is the incorporation of ecosystem and spatial considerations into modeling. In this context, the features of the SS3 platform allow us to advance in this direction and contribute to the discussion, both in understanding the population dynamics of krill and providing advice for sustainable management. In summary, our proposed stock assessment scheme represents a pivotal approach to understanding the complex population dynamics of Antarctic krill in Subarea 48.1.
 
-\newpage
-
-# CONCLUSION AND FUTURE WORK
-
-
-- The main challenge in this analysis has been to identify sources of information about krill population dynamic (fishery, survey, environmental, predator and life history parameters) and model it into an integrated model, in this case, with Stock Synthesis platform. This approach is not related to the *"best model"*, but rather to the implementation of the different options of scenarios that krill faces in multiple natural dimensions and evaluate the impact of this on population estimates. 
-
-- Regarding to spatial heterogeneity, this can be considered in two ways in a modeling approach. First one, the complexity and differences in distribution in abundance and other components of the krill population can be incorporated into an stock assessment in advance, as was carried out in this exercise, to have a more reliable estimate of the population variables that and transfer these considerations to the management for decision making. Second one, spatial heterogeneity can be considered for the decomposition of the management procedures that are established into the population assessed. For this, it is necessary. have a spatially explicit model, which was not our case but can be considered a future approach to be analysed.
-
-- Ecosystem considerations for a model integrated with stock assessment are vital. Although SS3 does not model the ecosystem variables, it allows for these variables to be incorporated to model krill population dynamics. SS3 presents characteristics that allow the incorporation of this kind of variable. This ecosystem information into stock assessment serve as an input to condition the moderate population dynamics, in any case we consider this an advance that can be perfected but that is inside discussion with the ecosystem management in the new strategy proposed by CCAMLR.
-
-
-- We consider that an integrated modeling of the krill adding the available information sources (fishery and surveys), as well as, the spatial heterogeneity and ecosystem variables is on the right path of the recommendation that has emerged in the last 10 years with respect to population dynamics and its link with the management procedure carried out by CCAMLR.
 
 \newpage
 
