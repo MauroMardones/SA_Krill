@@ -49,6 +49,7 @@ dir1<-here("s1")
 
 \newpage
 
+
 # OBSERVATION SAM - 23
 
 The main recommendations were extracted from @CCAMLRWGSAM2024.
