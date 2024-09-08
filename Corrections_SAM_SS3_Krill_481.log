@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.3)  4 SEP 2024 16:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.3)  6 SEP 2024 14:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -516,7 +516,14 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count317
 \l__pdf_internal_box=\box75
-) (./Corrections_SAM_SS3_Krill_481.aux)
+) (./Corrections_SAM_SS3_Krill_481.aux
+
+LaTeX Warning: Label `tab:datasources' multiply defined.
+
+
+LaTeX Warning: Label `tab:runtable' multiply defined.
+
+)
 \openout1 = `Corrections_SAM_SS3_Krill_481.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 176.
@@ -642,210 +649,209 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 3.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 6.
-(/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-))
+)
 \tf@toc=\write4
 \openout4 = `Corrections_SAM_SS3_Krill_481.toc'.
 
-[2] [3] [4]
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 212.
-[5] [6] [7]
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 288.
-[8] [9] [10]
-<Figs/Plattoons.png, id=190, 1406.25375pt x 869.2475pt>
-File: Figs/Plattoons.png Graphic file (type png)
-<use Figs/Plattoons.png>
-Package pdftex.def Info: Figs/Plattoons.png  used on input line 387.
-(pdftex.def)             Requested size: 328.81743pt x 203.25189pt.
-[11] [12 <./Figs/Plattoons.png>] [13] [14] [15] [16]
-<Figs/481.png, id=251, 318.18875pt x 415.5525pt>
+[2] [3]
+<Figs/481.png, id=66, 318.18875pt x 415.5525pt>
 File: Figs/481.png Graphic file (type png)
 <use Figs/481.png>
-Package pdftex.def Info: Figs/481.png  used on input line 466.
-(pdftex.def)             Requested size: 187.89479pt x 245.38943pt.
-<Figs/conceptual.jpeg, id=252, 405.515pt x 529.98pt>
-File: Figs/conceptual.jpeg Graphic file (type jpg)
-<use Figs/conceptual.jpeg>
-Package pdftex.def Info: Figs/conceptual.jpeg  used on input line 475.
-(pdftex.def)             Requested size: 187.90044pt x 245.57285pt.
-<Figs/data_plot_s2.png, id=253, 1957.3125pt x 1957.3125pt>
-File: Figs/data_plot_s2.png Graphic file (type png)
-<use Figs/data_plot_s2.png>
-Package pdftex.def Info: Figs/data_plot_s2.png  used on input line 484.
-(pdftex.def)             Requested size: 328.82626pt x 328.82626pt.
-[17 <./Figs/481.png> <./Figs/conceptual.jpeg>]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 496.
-[18 <./Figs/data_plot_s2.png>] [19]
-<Figs/pathmod.png, id=273, 1201.48875pt x 675.52374pt>
+Package pdftex.def Info: Figs/481.png  used on input line 198.
+(pdftex.def)             Requested size: 234.87335pt x 306.74313pt.
+[4 <./Figs/481.png>] [5]
+<Figs/pathmod.png, id=96, 1201.48875pt x 675.52374pt>
 File: Figs/pathmod.png Graphic file (type png)
 <use Figs/pathmod.png>
-Package pdftex.def Info: Figs/pathmod.png  used on input line 561.
+Package pdftex.def Info: Figs/pathmod.png  used on input line 214.
 (pdftex.def)             Requested size: 576.7264pt x 324.25803pt.
-[20
+[6
 
- <./Figs/pathmod.png>]
-<s1/plots/comp_lenfit__page1_multi-fleet_comparison.png, id=279, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit__page1_multi-fleet_comparison.png Graphic file (type png)
-<use s1/plots/comp_lenfit__page1_multi-fleet_comparison.png>
-Package pdftex.def Info: s1/plots/comp_lenfit__page1_multi-fleet_comparison.png  used on input line 572.
-(pdftex.def)             Requested size: 469.73474pt x 469.73474pt.
-<s1/plots/comp_lenfit__page2_multi-fleet_comparison.png, id=280, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit__page2_multi-fleet_comparison.png Graphic file (type png)
-<use s1/plots/comp_lenfit__page2_multi-fleet_comparison.png>
-Package pdftex.def Info: s1/plots/comp_lenfit__page2_multi-fleet_comparison.png  used on input line 581.
-(pdftex.def)             Requested size: 469.73474pt x 469.73474pt.
-[21
+ <./Figs/pathmod.png>] [7
 
- <./s1/plots/comp_lenfit__page1_multi-fleet_comparison.png>]
-<s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYBS.png, id=286, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYBS.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYBS.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYBS.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYEI.png, id=287, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYEI.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYEI.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYEI.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYGS.png, id=288, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYGS.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYGS.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYGS.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYJOIN.png, id=289, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYJOIN.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYJOIN.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYJOIN.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYSSIW.png, id=290, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYSSIW.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYSSIW.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYSSIW.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_PREDATOR.png, id=291, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_PREDATOR.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_PREDATOR.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_PREDATOR.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYBS.png, id=292, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYBS.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYBS.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYBS.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYEI.png, id=293, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYEI.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYEI.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYEI.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYGS.png, id=294, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYGS.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYGS.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYGS.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-<s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYJOIN.png, id=295, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYJOIN.png Graphic file (type png)
-<use s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYJOIN.png>
-Package pdftex.def Info: s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYJOIN.png  used on input line 590.
-(pdftex.def)             Requested size: 140.90846pt x 140.90846pt.
-[22 <./s1/plots/comp_lenfit__page2_multi-fleet_comparison.png>]
-<s1/plots/comp_lenfit__aggregated_across_time.png, id=301, 1957.3125pt x 1957.3125pt>
-File: s1/plots/comp_lenfit__aggregated_across_time.png Graphic file (type png)
-<use s1/plots/comp_lenfit__aggregated_across_time.png>
-Package pdftex.def Info: s1/plots/comp_lenfit__aggregated_across_time.png  used on input line 599.
-(pdftex.def)             Requested size: 375.80571pt x 375.80571pt.
-[23 <./s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYBS.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYEI.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYGS.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYJOIN.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYSSIW.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_PREDATOR.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYBS.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYEI.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYGS.png> <./s1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYJOIN.png>]
-<Figs/retros1.png, id=316, 529.98pt x 326.93571pt>
-File: Figs/retros1.png Graphic file (type png)
-<use Figs/retros1.png>
-Package pdftex.def Info: Figs/retros1.png  used on input line 608.
-(pdftex.def)             Requested size: 328.8268pt x 202.8477pt.
-[24 <./s1/plots/comp_lenfit__aggregated_across_time.png>]
-<Figs/rmse21.png, id=322, 529.98pt x 326.93571pt>
-File: Figs/rmse21.png Graphic file (type png)
-<use Figs/rmse21.png>
-Package pdftex.def Info: Figs/rmse21.png  used on input line 617.
-(pdftex.def)             Requested size: 281.85847pt x 173.87373pt.
-<Figs/rmselens1.png, id=323, 529.98pt x 326.93571pt>
-File: Figs/rmselens1.png Graphic file (type png)
-<use Figs/rmselens1.png>
-Package pdftex.def Info: Figs/rmselens1.png  used on input line 617.
-(pdftex.def)             Requested size: 281.85847pt x 173.87373pt.
-<Figs/Profile_s1.png, id=324, 529.98pt x 326.93571pt>
+]
+<Figs/data_plot_s2.png, id=112, 1957.3125pt x 1957.3125pt>
+File: Figs/data_plot_s2.png Graphic file (type png)
+<use Figs/data_plot_s2.png>
+Package pdftex.def Info: Figs/data_plot_s2.png  used on input line 244.
+(pdftex.def)             Requested size: 328.82626pt x 328.82626pt.
+[8] [9 <./Figs/data_plot_s2.png>]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 256.
+(/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [10] [11] [12]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 367.
+<Figs/Plattoons.png, id=168, 1406.25375pt x 869.2475pt>
+File: Figs/Plattoons.png Graphic file (type png)
+<use Figs/Plattoons.png>
+Package pdftex.def Info: Figs/Plattoons.png  used on input line 373.
+(pdftex.def)             Requested size: 328.81743pt x 203.25189pt.
+[13 <./Figs/Plattoons.png>]
+<Figs/Profile_s1.png, id=183, 529.98pt x 326.93571pt>
 File: Figs/Profile_s1.png Graphic file (type png)
 <use Figs/Profile_s1.png>
-Package pdftex.def Info: Figs/Profile_s1.png  used on input line 626.
+Package pdftex.def Info: Figs/Profile_s1.png  used on input line 409.
 (pdftex.def)             Requested size: 328.8268pt x 202.8477pt.
-[25 <./Figs/retros1.png (PNG copy)> <./Figs/rmse21.png (PNG copy)> <./Figs/rmselens1.png (PNG copy)>]
-
-LaTeX Warning: Float too large for page by 37.53105pt on input line 702.
-
-[26 <./Figs/Profile_s1.png (PNG copy)>] [27]
-<index_files/figure-html/unnamed-chunk-47-1.jpeg, id=340, 578.16pt x 505.89pt>
-File: index_files/figure-html/unnamed-chunk-47-1.jpeg Graphic file (type jpg)
-<use index_files/figure-html/unnamed-chunk-47-1.jpeg>
-Package pdftex.def Info: index_files/figure-html/unnamed-chunk-47-1.jpeg  used on input line 707.
-(pdftex.def)             Requested size: 422.77669pt x 369.9296pt.
-<index_files/figure-html/unnamed-chunk-46-1.jpeg, id=341, 578.16pt x 505.89pt>
+<s1/plots/comp_lenfit_residsflt6mkt0.png, id=184, 1957.3125pt x 1957.3125pt>
+File: s1/plots/comp_lenfit_residsflt6mkt0.png Graphic file (type png)
+<use s1/plots/comp_lenfit_residsflt6mkt0.png>
+Package pdftex.def Info: s1/plots/comp_lenfit_residsflt6mkt0.png  used on input line 429.
+(pdftex.def)             Requested size: 234.86737pt x 234.86737pt.
+[14 <./Figs/Profile_s1.png (PNG copy)>]
+<s1/plots/comp_lenfit_residsflt7mkt0.png, id=193, 1957.3125pt x 1957.3125pt>
+File: s1/plots/comp_lenfit_residsflt7mkt0.png Graphic file (type png)
+<use s1/plots/comp_lenfit_residsflt7mkt0.png>
+Package pdftex.def Info: s1/plots/comp_lenfit_residsflt7mkt0.png  used on input line 438.
+(pdftex.def)             Requested size: 234.86737pt x 234.86737pt.
+<s1/plots/numbers6_len_sex1.png, id=194, 1957.3125pt x 1957.3125pt>
+File: s1/plots/numbers6_len_sex1.png Graphic file (type png)
+<use s1/plots/numbers6_len_sex1.png>
+Package pdftex.def Info: s1/plots/numbers6_len_sex1.png  used on input line 458.
+(pdftex.def)             Requested size: 234.86737pt x 234.86737pt.
+[15 <./s1/plots/comp_lenfit_residsflt6mkt0.png> <./s1/plots/comp_lenfit_residsflt7mkt0.png>]
+<s1/plots/parameter_distributions_page1.png, id=204, 1957.3125pt x 1957.3125pt>
+File: s1/plots/parameter_distributions_page1.png Graphic file (type png)
+<use s1/plots/parameter_distributions_page1.png>
+Package pdftex.def Info: s1/plots/parameter_distributions_page1.png  used on input line 478.
+(pdftex.def)             Requested size: 422.7553pt x 422.7553pt.
+<s1/plots/parameter_distributions_page2.png, id=205, 1957.3125pt x 1957.3125pt>
+File: s1/plots/parameter_distributions_page2.png Graphic file (type png)
+<use s1/plots/parameter_distributions_page2.png>
+Package pdftex.def Info: s1/plots/parameter_distributions_page2.png  used on input line 486.
+(pdftex.def)             Requested size: 422.7553pt x 422.7553pt.
+[16 <./s1/plots/numbers6_len_sex1.png>]
+<s1/plots/parameter_distributions_page3.png, id=213, 1957.3125pt x 1957.3125pt>
+File: s1/plots/parameter_distributions_page3.png Graphic file (type png)
+<use s1/plots/parameter_distributions_page3.png>
+Package pdftex.def Info: s1/plots/parameter_distributions_page3.png  used on input line 494.
+(pdftex.def)             Requested size: 422.7553pt x 422.7553pt.
+[17 <./s1/plots/parameter_distributions_page1.png>]
+<s1/plots/parameter_distributions_page4.png, id=220, 1957.3125pt x 1957.3125pt>
+File: s1/plots/parameter_distributions_page4.png Graphic file (type png)
+<use s1/plots/parameter_distributions_page4.png>
+Package pdftex.def Info: s1/plots/parameter_distributions_page4.png  used on input line 502.
+(pdftex.def)             Requested size: 422.7553pt x 422.7553pt.
+[18 <./s1/plots/parameter_distributions_page2.png>]
+<s1/plots/parameter_distributions_page5.png, id=227, 1957.3125pt x 1957.3125pt>
+File: s1/plots/parameter_distributions_page5.png Graphic file (type png)
+<use s1/plots/parameter_distributions_page5.png>
+Package pdftex.def Info: s1/plots/parameter_distributions_page5.png  used on input line 510.
+(pdftex.def)             Requested size: 422.7553pt x 422.7553pt.
+[19 <./s1/plots/parameter_distributions_page3.png>]
+<s1/plots/parameter_distributions_page6.png, id=235, 1957.3125pt x 1957.3125pt>
+File: s1/plots/parameter_distributions_page6.png Graphic file (type png)
+<use s1/plots/parameter_distributions_page6.png>
+Package pdftex.def Info: s1/plots/parameter_distributions_page6.png  used on input line 518.
+(pdftex.def)             Requested size: 422.7553pt x 422.7553pt.
+[20 <./s1/plots/parameter_distributions_page4.png>] [21 <./s1/plots/parameter_distributions_page5.png>]
+<index_files/figure-html/unnamed-chunk-46-1.jpeg, id=248, 578.16pt x 505.89pt>
 File: index_files/figure-html/unnamed-chunk-46-1.jpeg Graphic file (type jpg)
 <use index_files/figure-html/unnamed-chunk-46-1.jpeg>
-Package pdftex.def Info: index_files/figure-html/unnamed-chunk-46-1.jpeg  used on input line 716.
+Package pdftex.def Info: index_files/figure-html/unnamed-chunk-46-1.jpeg  used on input line 538.
 (pdftex.def)             Requested size: 422.77669pt x 369.9296pt.
-[28 <./index_files/figure-html/unnamed-chunk-47-1.jpeg>]
-<Figs/Likelihoodtotal.png, id=347, 772.8875pt x 476.78125pt>
+[22 <./s1/plots/parameter_distributions_page6.png>]
+<Figs/Likelihoodtotal.png, id=256, 772.8875pt x 476.78125pt>
 File: Figs/Likelihoodtotal.png Graphic file (type png)
 <use Figs/Likelihoodtotal.png>
-Package pdftex.def Info: Figs/Likelihoodtotal.png  used on input line 725.
+Package pdftex.def Info: Figs/Likelihoodtotal.png  used on input line 558.
 (pdftex.def)             Requested size: 422.77795pt x 260.80457pt.
-[29 <./index_files/figure-html/unnamed-chunk-46-1.jpeg>]
-<Figs/longtermsb.png, id=353, 529.98pt x 326.93571pt>
-File: Figs/longtermsb.png Graphic file (type png)
-<use Figs/longtermsb.png>
-Package pdftex.def Info: Figs/longtermsb.png  used on input line 734.
-(pdftex.def)             Requested size: 469.75603pt x 289.78456pt.
-[30 <./Figs/Likelihoodtotal.png> <./Figs/longtermsb.png>]
-<Figs/compare10_recruits_uncertainty.png, id=362, 1957.3125pt x 1505.625pt>
-File: Figs/compare10_recruits_uncertainty.png Graphic file (type png)
-<use Figs/compare10_recruits_uncertainty.png>
-Package pdftex.def Info: Figs/compare10_recruits_uncertainty.png  used on input line 747.
-(pdftex.def)             Requested size: 260.16399pt x 200.12614pt.
-<Figs/compare2_spawnbio_uncertainty.png, id=363, 1957.3125pt x 1505.625pt>
-File: Figs/compare2_spawnbio_uncertainty.png Graphic file (type png)
-<use Figs/compare2_spawnbio_uncertainty.png>
-Package pdftex.def Info: Figs/compare2_spawnbio_uncertainty.png  used on input line 747.
-(pdftex.def)             Requested size: 260.16399pt x 200.12614pt.
-<Figs/compare4_Bratio_uncertainty.png, id=364, 1957.3125pt x 1505.625pt>
+[23 <./index_files/figure-html/unnamed-chunk-46-1.jpeg>]
+<Figs/recipediags.png, id=265, 435.6275pt x 597.23125pt>
+File: Figs/recipediags.png Graphic file (type png)
+<use Figs/recipediags.png>
+Package pdftex.def Info: Figs/recipediags.png  used on input line 569.
+(pdftex.def)             Requested size: 375.80225pt x 515.21274pt.
+[24 <./Figs/Likelihoodtotal.png>] [25 <./Figs/recipediags.png>]
+<Figs/compare4_Bratio_uncertainty.png, id=283, 1957.3125pt x 1505.625pt>
 File: Figs/compare4_Bratio_uncertainty.png Graphic file (type png)
 <use Figs/compare4_Bratio_uncertainty.png>
-Package pdftex.def Info: Figs/compare4_Bratio_uncertainty.png  used on input line 747.
-(pdftex.def)             Requested size: 260.16399pt x 200.12614pt.
-<Figs/compare17_densities_SSB_Virgin.png, id=365, 1957.3125pt x 1505.625pt>
-File: Figs/compare17_densities_SSB_Virgin.png Graphic file (type png)
-<use Figs/compare17_densities_SSB_Virgin.png>
-Package pdftex.def Info: Figs/compare17_densities_SSB_Virgin.png  used on input line 747.
-(pdftex.def)             Requested size: 260.16399pt x 200.12614pt.
-[31
+Package pdftex.def Info: Figs/compare4_Bratio_uncertainty.png  used on input line 600.
+(pdftex.def)             Requested size: 375.80571pt x 289.08131pt.
+<Figs/compare10_recruits_uncertainty.png, id=284, 1957.3125pt x 1505.625pt>
+File: Figs/compare10_recruits_uncertainty.png Graphic file (type png)
+<use Figs/compare10_recruits_uncertainty.png>
+Package pdftex.def Info: Figs/compare10_recruits_uncertainty.png  used on input line 609.
+(pdftex.def)             Requested size: 375.80571pt x 289.08131pt.
+[26 <./Figs/compare4_Bratio_uncertainty.png>]
+<Figs/KSH.png, id=295, 548.0475pt x 378.41376pt>
+File: Figs/KSH.png Graphic file (type png)
+<use Figs/KSH.png>
+Package pdftex.def Info: Figs/KSH.png  used on input line 633.
+(pdftex.def)             Requested size: 375.81168pt x 259.48901pt.
+[27 <./Figs/compare10_recruits_uncertainty.png>] [28 <./Figs/KSH.png>]
+<Figs/trawl.png, id=309, 225.789pt x 325.215pt>
+File: Figs/trawl.png Graphic file (type png)
+<use Figs/trawl.png>
+Package pdftex.def Info: Figs/trawl.png  used on input line 650.
+(pdftex.def)             Requested size: 225.80565pt x 325.23901pt.
+[29] [30 <./Figs/trawl.png>]
+<Figs/run1.png, id=322, 1405.25pt x 868.24374pt>
+File: Figs/run1.png Graphic file (type png)
+<use Figs/run1.png>
+Package pdftex.def Info: Figs/run1.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+<Figs/run2.png, id=323, 1405.25pt x 868.24374pt>
+File: Figs/run2.png Graphic file (type png)
+<use Figs/run2.png>
+Package pdftex.def Info: Figs/run2.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+<Figs/run3.png, id=324, 1405.25pt x 868.24374pt>
+File: Figs/run3.png Graphic file (type png)
+<use Figs/run3.png>
+Package pdftex.def Info: Figs/run3.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+<Figs/run4.png, id=325, 1405.25pt x 868.24374pt>
+File: Figs/run4.png Graphic file (type png)
+<use Figs/run4.png>
+Package pdftex.def Info: Figs/run4.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+<Figs/run5.png, id=326, 1405.25pt x 868.24374pt>
+File: Figs/run5.png Graphic file (type png)
+<use Figs/run5.png>
+Package pdftex.def Info: Figs/run5.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+<Figs/run6.png, id=327, 1405.25pt x 868.24374pt>
+File: Figs/run6.png Graphic file (type png)
+<use Figs/run6.png>
+Package pdftex.def Info: Figs/run6.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+<Figs/run7.png, id=328, 1405.25pt x 868.24374pt>
+File: Figs/run7.png Graphic file (type png)
+<use Figs/run7.png>
+Package pdftex.def Info: Figs/run7.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+<Figs/run8.png, id=329, 1405.25pt x 868.24374pt>
+File: Figs/run8.png Graphic file (type png)
+<use Figs/run8.png>
+Package pdftex.def Info: Figs/run8.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+<Figs/run9.png, id=330, 1405.25pt x 868.24374pt>
+File: Figs/run9.png Graphic file (type png)
+<use Figs/run9.png>
+Package pdftex.def Info: Figs/run9.png  used on input line 671.
+(pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
+[31] [32 <./Figs/run1.png> <./Figs/run2.png> <./Figs/run3.png> <./Figs/run4.png> <./Figs/run5.png> <./Figs/run6.png> <./Figs/run7.png> <./Figs/run8.png> <./Figs/run9.png>] [33]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 707.
+[34] [35] [36] [37] [38] [39] (./Corrections_SAM_SS3_Krill_481.aux)
 
- <./Figs/compare10_recruits_uncertainty.png> <./Figs/compare2_spawnbio_uncertainty.png> <./Figs/compare4_Bratio_uncertainty.png> <./Figs/compare17_densities_SSB_Virgin.png>] [32
+LaTeX Warning: There were multiply-defined labels.
 
-] [33] (./Corrections_SAM_SS3_Krill_481.aux) ) 
+ ) 
 Here is how much of TeX's memory you used:
- 16776 strings out of 478033
- 281281 string characters out of 5838240
- 1918330 words of memory out of 5000000
- 36204 multiletter control sequences out of 15000+600000
- 598102 words of font info for 202 fonts, out of 8000000 for 9000
+ 16645 strings out of 478033
+ 274997 string characters out of 5838240
+ 1884330 words of memory out of 5000000
+ 36088 multiletter control sequences out of 15000+600000
+ 597369 words of font info for 196 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 77i,15n,81p,2621b,502s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Corrections_SAM_SS3_Krill_481.pdf (33 pages, 6049043 bytes).
+ 77i,12n,81p,2166b,556s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on Corrections_SAM_SS3_Krill_481.pdf (39 pages, 5479487 bytes).
 PDF statistics:
- 586 PDF objects out of 1000 (max. 8388607)
- 451 compressed objects within 5 object streams
- 121 named destinations out of 1000 (max. 500000)
- 49439 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 594 PDF objects out of 1000 (max. 8388607)
+ 450 compressed objects within 5 object streams
+ 127 named destinations out of 1000 (max. 500000)
+ 49431 words of extra memory for PDF output out of 51595 (max. 10000000)
 

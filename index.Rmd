@@ -80,6 +80,7 @@ dir5<-here("s5") #
 dir6<-here("s6") # 
 dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
 dir8<-here("s8") # s1 test data weigthing
+dir9<-here("s9") # s1 w/ blocks
 dirtest<-here("test")
 Figs <- here("Figs")# S
 ```
@@ -218,6 +219,7 @@ about main consideration in assessment of krill population.
 |    s6    | "s1" Ricker S-R relation estimated                                                   |
 |    s7    | "s1" w/ set of parameters estimated in @EMM-204/32                                   |
 |    s8    | "s1" test data weighting                                                             |
+|    s9    | "s1" w/ selectivity blocks                                                             |
 
 ## Run Models
 
@@ -231,7 +233,8 @@ directorios <- c("s01",
                  "s5",
                  "s6",
                  "s7",
-                 "s8")  # Agrega aquí todos los nombres de las carpetas que deseas procesar
+                 "s8",
+                 "s9")  # Agrega aquí todos los nombres de las carpetas que deseas procesar
 
 # Bucle para ejecutar el código en cada directorio
 for (dir in directorios) {
@@ -249,7 +252,7 @@ for (dir in directorios) {
 #shell(cmd="ss") # run SS to windows
 # or 
 r4ss::run(
-  dir = dir8,
+  dir = dir9,
   exe = "ss_osx",
   skipfinished = FALSE, # TRUE will skip running if Report.sso present
   show_in_console = TRUE # change to true to watch the output go past
@@ -298,8 +301,13 @@ base.model8 <- SS_output(dir=dir8,
                         covar=T,
                         forecast=T)
 
+#s9
+base.model9 <- SS_output(dir=dir9,
+                        covar=T,
+                        forecast=T)
+
 # html
-SS_plots(base.model8,
+SS_plots(base.model9,
          uncertainty=T,
          datplot = T, 
          png=T, 
@@ -468,7 +476,9 @@ all this framework try to follow recommendations of @Carvalho2021b
 ```{r}
 SSplotRunstest(base.model1,
                subplots = "len",
-               add=T)
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
 ```
 
 
@@ -1425,7 +1435,38 @@ comp1_7 <- SSplotComparisons(summaryoutput1_7,
                             "Harvest rate"),
                  png=TRUE,plotdir=Figs)
 ```
+### Comparision between select models `s1` and `s9`
 
+```{r echo=FALSE}
+#read in all model runs
+#note if cover=T you need a hessian; if covar=F you do not need a hessian
+biglist1_9 <- SSgetoutput(keyvec = NULL,
+                       dirvec = c(
+                                  dir1,
+                                  dir9),
+                       getcovar = F)
+
+#create summary of model runs from list above
+summaryoutput1_9 <- SSsummarize(biglist1_9)
+
+comp1_9 <- SSplotComparisons(summaryoutput1_9,
+                  legendlabels = c(
+                                   "Base",
+                 "selectivity Block 2006"),
+                 labels = c("Year", 
+                            "Spawning biomass (t)",
+                            "Relative spawning biomass", 
+                            "Age-0 recruits (1,000s)",
+                            "Recruitment deviations", 
+                            "Index", "Log index", 
+                            "1 - SPR", 
+                            "Density",
+                            "Management target", 
+                            "Minimum stock size threshold",
+                            "Spawning output",
+                            "Harvest rate"),
+                 png=TRUE,plotdir=Figs)
+```
 ## Comparsion in sd long term time series
 
 ```{r fig.height=6, fig.width=8}

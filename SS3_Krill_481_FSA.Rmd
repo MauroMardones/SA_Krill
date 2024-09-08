@@ -1,0 +1,540 @@
+---
+title: "Integrated approach to modeling krill population dynamics in Western Antarctic Peninsula. Spatial and ecosystem considerations"
+author:
+  - Mauricio Mardones^[Universidad de Magallanes, mamardon@umag.cl, Milenio Base]
+  - Lucas Krüger ^[Instituto Antártico Chileno, Milenio Base]
+  - Francisco Santa Cruz ^[Instituto Antártico Chileno, Universidad de Magallanes, Milenio Base]
+  - César Cárdenas^[Instituto Antártico Chileno, Milenio Base]
+  - George Watters^[Ecosystem Science Division, Southwest Fisheries Science Center, NOAA, USA]
+    
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::pdf_document2:
+    number_sections: false
+fig_caption: yes
+bibliography: SA_krill.bib
+csl: apa.csl
+link-citations: yes
+toc: false
+linkcolor: blue
+linestretch: 1.3
+header-includes:
+- \fontsize{12}{16}
+- \selectfont
+- \usepackage{lscape}
+---
+\newpage
+\tableofcontents
+\newpage
+
+
+```{r setup1, echo=FALSE}
+rm(list = ls())
+knitr::opts_chunk$set(eval=TRUE,
+                      echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = 'center',
+                      fig.pos = "H",
+                      dev = 'jpeg',
+                      dpi = 300,
+                      tidy.opts=list(width.cutoff=50), 
+                      tidy=TRUE)
+#XQuartz is a mess, put this in your onload to default to cairo instead
+options(bitmapType = "cairo") 
+# (https://github.com/tidyverse/ggplot2/issues/2655)
+# Lo mapas se hacen mas rapido
+```
+
+```{r message=FALSE, eval=TRUE}
+library(here)
+library(kableExtra)
+library(ggpubr)
+library(tibble)
+library(readxl)
+library(openxlsx)
+library(r4ss)
+dir1<-here("s1")
+```
+
+
+# ABSTRACT 
+
+The integration of available sources of information is a challenge for any attempt to know dynamics populations for Antarctic Krill *Euphausia superba* in an integrated stock assessment model.Being able to identify sources of information, systematize and integrate it in a model and estimate krill population variables in a context of change and fisheries management is vital for management and decision making. This approach has three main objectives. Firstly, integrate fishing, environmental and ecological variables in an integrated stock assessment model and test his performance. On the other hand, consider the spatial heterogeneity of the krill population structure. Finally, to evaluate the impact of biological and structure population assumptions on the performance of this type of integrated stock assessment models. Consequently, by acknowledging and integrating different data sources, the stock assessment model can provide insights into the ecological dynamics of krill populations and improve CCAMLR fishery management and conservation strategies in this region. This study addresses key recommendations highlighted in the preliminary report of the Working Group on Statistics, Assessment, and Modelling (WG-SAM-2024/26), where main observations were: 1) Concerns about using a length-based model due to the scarcity of direct age data, as this approach avoids the approximations required when converting length data to age data; 2) The need to consider the impact of changes in trawl designs over time and to reassess the assumption that the Antarctic Peninsula is a closed system; 3) The limitations of using krill length and biological composition data from fishing vessels, given the significant variability and potential biases, and the importance of understanding the interaction between fisheries and krill-dependent predators; 4) A recommendation to present a progression of model implementations from simple to complex to better evaluate model assumptions, investigate patterns in residuals, and assess the realism of parameter values used, while also integrating recent findings on krill stock hypotheses, with special attention to harvest rate and management procedures. Each observation will be explained in theoretical terms and, where possible, analyzed in detail (Appendix). This approach reflects an ongoing work in progress that is continuously refined based on interactions with the CCAMLR Working Groups. These interactions provide valuable feedback that helps to shape and improve the study's methodology and findings. It should be noted, of this approach is vital for contributing to management strategies based on quantitative methods that provide indicators of krill health, integrating ecosystem aspects into the assessment.
+
+
+*Keywords: Krill populations, dynamic population, integrated model, Stock Synthesis (SS3), spatial implicit, ecosystem consideration, management, CCAMLR.*
+
+\newpage
+
+# INTRODUCTION
+
+Antarctic krill (*Euphausia superba* krill thereafter) population is predominantly concentrated in the Western Antarctic Peninsula (WAP), serving as a vital food source for predators and being targeted by increasing fishing activities. On the other hand, WAP is considered one of the most sensitive areas to Climate Change (CC) and has already experienced fast changes in various dimensions [@Turner2005; @Lima2013; @McBride2021; @Morley2020; @Atkinson2019a]. Given its ecological significance and economic value, effective management of krill stocks is paramount to ensure the sustainability of Antarctic ecosystems and support fisheries-dependent communities. As part of its mandate, CCAMLR promotes sustainable management of Antarctic krill through an ecosystem-based approach [@Watters2013]. CCAMLR has tried to conduct different modeling approaches to assess the status of important species, and to provide information for decision-making regarding fisheries management and conservation measures [@Hill2016]. Various stock assessment approaches on krill have been conducted to provide management advice to CCAMLR using model-based methodologies. Many of these models face challenges in aligning with management schemes or accurately representing the population dynamics of krill, due to its variability and heterogeneity in spatial distribution and ecosystem complexity. Traditionally, stock assessments have relied on single-source data, primarily from fisheries catch data or population monitoring surveys [@Green2023; @Watters2013]. However, these approaches may overlook critical aspects of krill dynamics, such as integrated different data components, spatial heterogeneity in abundance and distribution, as well as the influence of environmental factors and predator-prey interactions. There is a growing consensus on the need for using stock assessment models that incorporate multiple sources of information, capture spatial heterogeneity and consider the complex interplay of ecosystem variables in krill. Integrating the complexity of krill population dynamics presents several challenges. Firstly, data consistency over the years has been problematic, as many monitoring programs and studies have not adhered to a uniform standard throughout their temporal and spatial extension. Additionally, certain regions or areas lack sufficient data or possess only limited information regarding krill dynamics. Furthermore, interpreting indirect indicators that may affect the krill population, such as environmental variables, predator abundance, and fishery data, adds another layer of complexity. Despite these gaps, the existing data about krill population dynamics is abundant, considered data rich, and this availability allows building an integrated model to get population signals and estimate main variables such as spawning biomass, recruitment, and fishing mortality, among others. In response to this need, we propose a conceptual model to conduct a statistical model in Antarctic krill population in the Antarctic Peninsula, which in turn allows the application of an integrated model that incorporates the fishery, surveys and ecosystem information on krill population over the past 40 years.
+
+\newpage
+
+# METHODOLOGY
+
+The study area for the assessment of krill populations in the Antarctic Peninsula is Subarea 48.1 and strata subdivision to account for spatial heterogeneity [@Dornam2021] (Figure \@ref(fig:mapa)). The Antarctic Peninsula region is vast and encompasses a variety of habitats and environmental conditions that can influence the distribution and abundance of krill. Therefore, dividing the study area into strata allows to compartmentalize information related to fishing and surveys to model krill populations by considering local variations in structure population.
+
+## Data Sources 
+
+Multiple sources of data to inform the population dynamics model are included in this analysis. These data sources include those listed in Table \@ref(tab:datasources). These data sources include: 1) Data from the monitoring program of the krill fishery were used, as CPUE and length compositions, which have been systematically collected on board fishing vessels by scientific observers as part of the CCAMLR Scheme of International Scientific Observation (SISO) program. This database has information about vessel, nationality, georeferenced, among others; 2) Data collected from scientific AMLR research cruises and monitoring programs specifically designed to assess krill populations, including: data on abundance by strata, and biological characteristics of krill collected through net sampling. All this data was processed in @Dornam2021; and length compositions from AMLR survey (provided by Ecosystem Science Division, NOAA) was handled according to the evaluation template requirements (Suppl. Mat. 2; 3). For this analysis, chlorophyll-a concentration (Chl) was assessed as a primary environmental driver. Chl data was sourced from Bio-Geo-Chemical, L4 (monthly and interpolated) satellite observations, obtained through the E.U. Copernicus Marine Service Information (doi.org/10.48670/moi-00021; doi.org/10.48670/moi-00148). This data provides a detailed understanding of primary productivity levels, which are critical for evaluating ecosystem health and  krill dynamics in the WAP. We fitted a GLMM to predict Length with Year (formula: Length ~ Year + Chl + Sea Ice Concentration (SIC) + Sea Surface Temperature (SST)). The model included spatial component (cell) as random effect (formula: ~1 | cell). Krill length compositions from fishery data was correlated with environmental variables by using Pearson correlations test, and General Linear Mixed Model (GLMM) [@Bates2015; @Makowski2020] (Suppl. Mat 3); 4) Predator abundance data from "MAPPPD". Although the penguin colonies that live within the study area behave differently in terms of dynamics throughout the analyzed series, we systematized a vectorized indicator for the purposes of considering it as a fleet to add like M2 in an integrated stock assessment. Source data and temporal scale used in this stock assessment is showed in Figure \@ref(fig:datas2). Data handling for modeling purposes was elaborated with *tidyverse* library  and dependences [@Wickham2019]. 
+
+## Conceptual Model 
+
+A conceptual model for krill in SubArea 48.1 includes the five spatial strata described previously. Despite differences among strata, the krill population is closed for emigration and immigration, and their spatial distribution and interactions occur within this single, cohesive population (Figure \@ref(fig:concem)).Ecological and environmental variables that have an impact on the krill population include predator abundance (e.g., whales, seals, penguins), phytoplankton concentration, and nutrient levels. The model considers interannual fluctuations of growth dynamics , maturity and reproduction, with a spawning pulse per year.
+
+
+## Statistical model Stock Synthesis (SS3)
+
+Integrated models have the capacity to reproduce the age dynamics of these populations and simultaneously transform them into population variables. The stock assessment model to krill was configured using Stock Synthesis (SS3 hereafter) [@Methot2013] with the updated version 3.30.21. SS3 is a widely used software tool for assessing fish and invertebrate populations widely used in the main regional fishing organizations to have approximations of the population dynamics of the exploited resource as well as to support management decisions. SS3 is a structured stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"* and has a set of sub-model that simulates growth, maturity, fecundity, recruitment,  and mortality processes, and observation, with expected values for different types of data. The model is coded in Automatic Differentiation Model Builder (ADMB) [@Fournier2012; @Methot2013: @methot2020stock] with estimation parameters. The methodology employed by Stock Synthesis involves a comprehensive and integrated approach, utilizing various data sources and modeling techniques to estimate the main population variables of krill in WAP, and unlike other integrated models, it has features that allow the integration of information related to the ecosystem, such as predators and environmental variables that have proven influence on the analyzed population. All analysis were executed in  R-CRAN [@R-base]and the graphical interface of the SS3 through *r4ss* [@Taylor2019]  and *ss3diags* packages [@Winker2023]. Life history parameters, like growth, weight-length relation, natural mortality and maturity was used as priors to model initial condition was taken from @Smith2023a, @Maschette2020 and @Kinzey2011 and can be found in Table \@ref(tab:parainit). 
+
+Like most invertebrates, krill is a species for which aging is complex [@Punt2013]. Therefore, a size-structured model with age dynamics is used, which is transformed through a transition matrix based on the probabilities of age groups relative to the detailed structure. Regarding this, we consider that a length-based model as an alternative to the age-based approach, especially given the scarcity of direct age data in krill monitoring. Aging techniques for krill have not been available historically, although some recent progress has been made [@Kilada2017]. In this sense, when reading of hard parts is difficult like in krill, catch-at-length data are more plentiful, as the collection of length information is relatively cheap. Length offers insights into the age structure of the population, as there is a correlation between age and length.  So far, all integrated models for krill have been of the Catch-at-Length type [@Kinzey2015a; @Kinzey2019a; @Wang2021]. This means they are approaches that internally model age through growth parameters and the Age-length-key (ALK). To perform this conversion, various methods have been used, but the AKL matrix is perhaps the most important one [@ICCA2003]. ALK are generated by aging a sub-sample of a population and used to estimate the age distribution from larger length samples. ALKs assume both aged and measured fish are random samples from the same population and should be applied within the same time period to avoid biases. Seasonal or multi-annual applications require careful justification, as using an ALK from a single period can introduce significant bias. Length-stratified sampling is essential, and the process of developing ALKs is labor-intensive, requiring optimal data collection to ensure accuracy  [@ICCA2003]. Formulae exist to estimate the number of age determinations and length measurements is calculated as;
+
+
+$$
+\frac{\text{Number at age for a length group}}{\text{Number of fish aged in that length group}}
+$$
+
+The ALK for the time period is raised to the length distribution for that time period:
+
+$$
+\text{Raised numbers at age by length group} = \text{Numbers at length} \times \text{Proportion at age for that length}
+$$
+
+If the ALK lacks data for certain length groups, data from those groups may be assigned to adjacent ones in the ALK. This process generates an age-length distribution by gear and time period, but caution is needed to avoid significant biases, especially for larger lengths with a broad age range. The numbers at age are summed across length groups, combining variances from ageing and length sampling to produce the age composition for the specified period. Numbers at age for all gears can then be calculated. Numbers at age for all gears can be calculated as:
+
+$$
+\sum N_a \times \left(\frac{W_{ct}}{W_{cs}}\right)
+$$
+
+where $\sum N_a$ is the sum of sampled numbers at age, W~ct~ is the total commercial catch weight, and W~cs~ is the
+sampled commercial catch weight. Variance due to ageing of numbers at age for all gears can be calculated as:
+  
+$$
+\sum \text{Var}_a
+$$
+where $\sum Var_a$  is the sum of variances due to ageing. Variance due to length sampling of numbers at age can be calculated as:
+
+$$
+\sum \text{Var}_l
+$$
+where $\sum Var_a$  is the sum of variances due to length sampling. The variances should be raised by:
+
+$$
+\frac{W_{ct}}{W_{cs}}
+$$
+where W~ct~ is the total commercial catch weight, and W~cs~ is the sampled commercial catch weight.
+
+The proportions-at-age are then adjusted to find the best fit between the observed size frequency data and that predicted by the proportion-at-age and the ALK. The majority of ALKs are based on growth parameters according to the most suitable formula for the species. In the case of krill, these parameters are derived from the von Bertalanffy growth curve. In @Mardones2023, using `SS3` stock assessment catch-at-lenght model, we use a von Bertalanffy growth relationship with estimated parameters L~inf~, k, and CV. This length-at-age relationship, mediated by survey catchability and selectivity, was used to compare survey biomasses with model estimates of vulnerable biomass.  Weight-at-length was assumed known and calculated using @Maschette2020 parametres. in krill, a AKL is exposed in Figure \@ref(fig:AKL)).
+
+```{r AKL, out.width='60%',  fig.cap="ALK Matrix Heatmap to krill in 48.1}
+alk_matrix <- base.model1$ALK[,,1] # Ajusta las dimensiones según tu matriz
+
+# Convertir la matriz en un data.frame
+alk_df <- as.data.frame(as.table(alk_matrix))
+
+# Renombrar columnas para mayor claridad
+colnames(alk_df) <- c("Length", "TrueAge", "Value")
+
+# Asegúrate de que las columnas Length y TrueAge sean numéricas
+alk_df$Length <- as.numeric(as.character(alk_df$Length))
+alk_df$TrueAge <- as.numeric(as.character(alk_df$TrueAge))
+
+# Asegúrate de que la columna Value sea numérica
+alk_df$Value <- as.numeric(alk_df$Value)
+
+# Crear el plot usando ggplot
+ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(x = "True Age",
+       y = "Length",
+       fill = "Value") +
+  theme_bw()+
+  theme(legend.position = "none")
+```
+
+One way to avoid dependence on converting variables such as size selectivity to age implemented in `SS3` is through the use of *platoons*. This approach allows for the exploration of survivorship that varies with size against the age. A value of 1 will not create additional groups. Odd-numbered values (e.g., 3, 5) will divide the overall morph into that many groups, resulting in smaller, larger, and average growth groups. Increasing the number of groups slows down the model's performance, so it's recommended not to exceed a value of 5. The fraction of each morph assigned to each group can be either user-defined or approximated using a normal distribution. When multiple groups are designated, an additional input is required to specify the ratio of variability in size-at-age between groups versus within groups. This ratio is used to distribute the total growth variability. The size-at-age for each group is then calculated as a factor (based on the between-group and within-group variability) times the size-at-age of the central morph, which is determined from the growth parameters specific to that Growth Pattern x Sex combination [@methot2020stock].
+
+The age specific rates of fishing mortality can be linked to length specific selectivity. If growth platoons are invoked, then each platoon can have different age specific F due to interaction of length selectivity with their different size at age (Methot, *com pers*)
+
+In `SS3`, this approach was conditioned as follows;
+
+```{r eval=FALSE, echo=TRUE}
+#_N_Growth_Patterns (Growth Patterns, Morphs, Bio Patterns, GP are terms used interchangeably in SS)
+1  
+#_N_platoons_Within_GrowthPattern
+3 
+ #_Platoon_between/within_stdev_ratio (no read if N_platoons=1)
+0.4
+#vector_platoon_dist_(-1_in_first_val_gives_normal_approx)
+c(0.237, 0.464, 0.237)
+```
+
+Since we don't have age data monitoring program, we plan to explore *platoon* (Figure \@ref(fig:platoon)) alternative to compare its performance and results with the current length-based model using currently in WG-SAM-2024/26.
+
+
+### Environmental variable modelling in `SS3`
+
+One of the key challenges in this stock assessment framework is integrating ecosystem variables and drivers into the primary process of krill population dynamics and SS3 addresses these approaches [@methot2020stock]. The estimated level of krill recruitment depends on the spawning biomass from the previous season, an environmental time series—specifically, the 2000-2022 Chlorophyll-a time series—and a log-bias adjustment.
+
+\[
+E(\text{Recruitment}) = f(\text{SpBio}) \times \exp(B \times \text{envdata}) \times \exp\left(-0.5 \times \pi_R^2\right)
+\]
+
+\(R\) represents the variability of deviations, adding to the variance caused by environmental factors. \(SpBio\) represent spawning biomass, \(envdata\) is vector of time series of environmental variable. Consequently, as the environmental effect accounts for more of the total recruitment variability, the residual \(R\) should be reduced. However, the model does not automatically adjust for this.
+
+Furthermore, this integrated model took into account environmental variables, as chlorophyll (Chl), known to influence krill abundance and reproductive outputs. These environmental factors play a critical role in shaping krill habitat suitability and productivity, thereby affecting their population dynamics. By integrating environmental data into our model, we aim to elucidate the relationships between environmental conditions and krill abundance, enabling more robust predictions of krill population dynamics under future climate scenarios.
+
+
+### Predator components modelling in `SS3`
+
+This stock assessment approach consider predator-prey interactions as a key driver of krill population dynamics. By incorporating information on predator  abundance and feeding ecology, our model provide a more comprehensive understanding of the tropic interactions shaping krill dynamics.  In this analysis we incorporated penguin population index as predator *"fleets"* as we describe previously. This overall natural morality (M) to include explicit mortality (M2) caused by each major predator as M = M1 + sum(M2) [@methot2020stock], and in this way transfer to total mortality in form Z = M1 + M2+ F.
+
+All this component and path to construct models, diagnostics and check outputs is represented in Figure \@ref(fig:path).
+
+\newpage
+
+## Stock Assessment Scenarios 
+
+To consider the uncertainty associated with the krill nature scenarios, we considered a set of configurations associated with spatial heterogeneity, influence of life history parameters on the estimates and uncertainty associated with the relationship that exists between spawning biomass and krill recruitment. The methodology involves comparing the statistical performance of the model regarding these configurations. We have eight scenarios that were used to test different options in modeling about main considerations in assessment of krill population, and for comparative purposes, we consider `s1` as the base model (Table 1).
+
+
+| Scenario | Description                                                                          |
+|:------------:|:---------------------------------------------------------|
+|   s01    | Fishery and Survey (AMLR) data, Predator, Environmental data, aggregated at 48.1 level               |
+|    s1    | Fishery and Survey (AMLR) Length data, CPUE, Catch by strata. Predator and Env data |
+|    s2    | "s1" without Stock-Recruit relation                                      |
+|    s3    | "s1" Beverton & Holt S-R relation weak (0.9 steepness)                   |
+|    s4    | "s1" BH S-R relation strong (0.6 steepness)   |
+|    s5    | "s1" BH S-R relation mid-strong estimated    |
+|    s6    | "s1" Ricker S-R relation estimated    |
+|    s7    | "s1" w/ set of parameters estimated in @Mardones2024par   |
+|    s8    | "s1" w/ platoons conditions   |
+|    s9    | "s1" w/ Selectivity blocks in 2006   |
+
+: Scenarios to modelling dynamics in krill
+
+
+For the purposes of this working document, a comparative analysis of models `s01`, `s1` and `s7` will be evaluated, given that they contain elements such as aggregate data, spatially structured data and another set of life history parameters according to @Mardones2024par (unpublished). 
+
+\newpage
+
+# RESULTS
+
+## Diagnosis Base Model 
+
+All models tested was the final gradient using maximum likelihood is achieve and was relatively small (< 1.00e-04), and the Hessian matrix for the parameter estimates was positive, which shows that the performance is within what was expected for this type of analysis. About goodness-of-fit, Figure \@ref(fig:res1) and Figure \@ref(fig:res1a) display the residuals of length of krill captured by fleets over the years in `s1`. In the first graph, we observe multiple fishing fleets (FISHERYBS, FISHERYEI, FISHERYGS, FISHERYJOIN, FISHERYSSIW) and a survey (SURVEYBS). The second graph shows surveys (SURVEYEI, SURVEYGS, SURVEYJOIN) and predator data (PREDATOR) for `s1`. For many fleets and surveys, greater consistency in krill sizes is observed after the year 2000. However, there was variability in the width of the distributions over time, which may reflect changes in abundance or sampling selectivity. For instance, in FISHERYBS and FISHERYEI, the distributions widen and slightly shift towards larger sizes in recent years, indicating a possible change in the krill population or fishing practices. The residuals from the model fit suggest that the model captures the inter annual and inter-fleet lengths variability well, although some deviations indicate that additional unmodeled factors might be influencing the observed sizes (Figure \@ref(fig:resall),  \@ref(fig:fitcom)).
+
+## Retrospective analysis
+
+Retrospective analysis shows the pattern of bias that exists in the models and is one of the ways in which we have identified that in all the tested scenarios there is a pattern, however, model S1 is the one that performs better. @Carvalho2021b indicate that values of rho parameter that fall outside (-0.15 to 0.20) for SSB for longer-lived species, or outside (-0.22 to 0.30) for shorter-lived species indicates an undesirable retrospective pattern (Figure \@(fig:retros1)). To evaluate the overall model fit of the relative abundance indices and composition data in `s1`, we used the joint-index residual. Overall, `s1` had a good performance when evaluating the lengths compositions (14.2%), however  RMSE showed a low predictive power with respect to the indices (71.3%). A loess-smoother indicated there appeared to be increased variability in the residuals of model fit to CPUE over time (Figure \@ref(fig:rmses1)).
+
+## Likelihood profile in spatial Model `s1`
+
+For `s1` scenario, the gradient of the likelihood profile for the penalty on the index deviations was greater than other data sources. The second strongest gradient in the log-likelihood profile was observed for the length compositions Figure \@ref(fig:likepro). The gradient of the likelihood profile supported by the length-composition data is higher than those supported by the penalty for the recruitment deviates and CPUE indices. 
+
+Once the performance of the model was corroborated, it was possible to have an estimate and forecasting of the main population variables over the years in absolute terms, which can be seen in the Table \@ref(tab:mainvar)
+
+## Comparision outputs between scenarios
+
+In comparative terms with all the tested scenarios, we check the consistency through recruitment diversions (Figure \@(fig:recdev)). We do this through spatial autocorrelation analysis, checking the fluctuation of recruitment through the time series analyzed, that is, between 1979 and 2020 and which has consistency as described by other authors regarding pulses between three and five years [@Perry2020; @@McBride2021].
+
+Autocorrelation in krill recruitment in time series analyzed by scenarios, models `s01`, `s1`, `s2`, and `s5` exhibit significant autocorrelations at various lags, indicating dependencies and potential cyclical patterns in recruitment. Models `s3` and `s4` show minimal to no significant autocorrelations, suggesting more random recruitment patterns. Model `s6` shows moderate autocorrelations, indicating some predictability based on recent past values, In summary, `s01`, `s4`, and `s6` exhibit no significant autocorrelation, suggesting randomness (Figure \@ref(fig:acf)).
+
+To evaluate consistency of the source of information used in each of the tested scenarios, we verify its influence on the estimate of R0 through likelihood components and, like scenario 1, we verify that all scenarios show a high dependence on the composition lengths of lengths with respect to the estimate of the variable (as show the (Figure \@ref(fig:likeall)).
+
+
+We identify differences in the different scenarios related with population variables with respect to the long-term estimates where the implicit model `s1` and the models without stock recruit relation or with a low density-dependence on the stock-recruit relation (`s2`and `s3`) show higher predictions than the rest of the tested scenarios. This is relevant given that these scenarios consider low spatial dependence, density-dependence spawning biomass with respect to recruitment, which is plausible for resources such as krill where environmental dynamics shape population dynamics (Figure \@ref(fig:longterm)).
+
+We carried out a specific comparison between the most divergent scenarios that we tested in this case, `s1`,  `s01` and `s7` which according to the description are the aggregated spatial scenario, disaggregate spatial scenario and scenario with new set of parameters, respectively. All with ecosystem components such as predators and an environmental variable.In this sense, the impacts and difference on the estimates of recruitment,  R0, virginal biomass and relative biomass are high (Figure \@ref(fig:comparision)), demonstrating the impact of initial considerations and assumptions on population variables estimation.
+
+\newpage
+
+# DISCUSSION
+
+
+The analysis presented here represents a modern approach for stock assessment of complex dynamics such as krill and the integration of ecosystem components as environmental variables and ecological aspects such as predators. The development of an integrated stock assessment model like could provide support to adaptive management, wherein management procedures resulting, like status or quota, are adjusted based on ecosystem monitoring indices [@Wang2021]. However, integrated models are not new to krill in SO. For several years, CCAMLR has been developing and applying integrated assessment methodologies that incorporate diverse data sources, such as acoustic and trawl surveys, to improve the accuracy of their stock assessments. In 2016, through an external review process,@Thomson2016 explicitly recommended *"the use of an Integrated Analysis model for assessment of Antarctic krill in FAO Subarea 48.1 is appropriate and would constitute an improvement over the modeling strategies currently in use to manage krill"* and he stated that the an integrated modeling framework *"has the potential to substantially improve the scientific basis for future krill management"*. 
+
+@Kinzey2015a and @Kinzey2019a used integrated models with survey data to test the impacts of selectivity and recruitment estimation in certain areas of Subarea 48.1. @Kinzey2011 implemented a model to test spawning biomass, recruitment and movement between areas associated with the northern Antarctic Peninsula. Although these models had convergence issues, they represented significant advances in this type of framework. Additionally, @Wang2021 made contributions to integrated statistical models with survey and fishery data for the northern sector of the Western Antarctic Peninsula, focusing on the Bransfield Strait, testing different data weightings. Furthermore, examined correlations between recruitment and climatic variables such as the Southern Annular Mode (SAM) El Niño Oscillation Southern (ENSO). In absolute values and with respect to biomass levels, although the estimates of our model were lower than the previously described models, there is a coincidence with respect to recruitment pulses as well as mortality levels.
+
+Spatial heterogeneity is a fundamental aspect of krill ecology, driven by a myriad of factors including oceanographic conditions and predator foraging behavior. By incorporating spatial heterogeneity into our model considering the strata as part of the analysis, we aim to capture the complex spatial patterns of krill distribution. This spatially implicit approach will allow us to identify krill hotspots, areas of high productivity, and potential ecological corridors, providing valuable insights for conservation planning and management strategies [@Watters2013] and transfer those signals of differences in krill population structure into the model to generate its estimates. 
+
+From an ecological point of view, the study area encompasses the primary spawning, breeding, and wintering regions of Antarctic krill in the southwest Atlantic Ocean. There are many studies that confirm the influence of predation on krill populations within the Antarctic Peninsula [@Silvestro2023; @Reisinger2022]. For this, we consider the penguin  population as one of the most powerful elements of natural predation on krill because they have direct correlations between this type of taxonomic group and krill  [@Kruger2021]. The intention to incorporate elements of predation in a stock is necessary to improve the modeling, because it did not account for uncertainty in natural mortality underestimated uncertainty in current stock biomass by as much as 20% [@Hollowed2000]. 
+
+In a scientifically rigorous stock assessment, this analysis included comparisons between various natural scenarios and assumptions used to model krill population dynamics. It is important to note that the models presented here can be refined in terms of initial conditioning to improve fits on length compositions of predators and indices that were initially low. However, a primary objective was to evaluate the impact on key population variables, considering factors such as spatial heterogeneity and life history parameters. This impact was verified in this stock assessment approach, identifying aspects that must be considered when making recommendations for krill management by CCAMLR using models.
+
+By comparing model outputs under scenarios where spatial heterogeneity is assumed versus not assumed, the significance of incorporating spatial variation into the model can be assessed. This methodology enables researchers to make informed decisions about the necessity of accounting for spatial heterogeneity in understanding krill distribution and abundance, thereby enhancing the accuracy and reliability of ecological modeling efforts.
+
+Nowadays, one of the frontiers of stock assessment is the incorporation of ecosystem and spatial considerations into modeling. In this context, the features of the SS3 platform allow us to advance in this direction and contribute to the discussion, both in understanding the population dynamics of krill and providing advice for sustainable management. In summary, our proposed stock assessment scheme represents a pivotal approach to understanding the complex population dynamics of Antarctic krill in Subarea 48.1.
+
+\newpage
+
+# CONCLUSION AND FUTURE WORK
+
+
+- The main challenge in this analysis has been to identify sources of information about krill population dynamic (fishery, survey, environmental, predator and life history parameters) and model it into an integrated model, in this case, with Stock Synthesis platform. This approach is not related to the *"best model"*, but rather to the implementation of the different options of scenarios that krill faces in multiple natural dimensions and evaluate the impact of this on population estimates. 
+
+- Regarding to spatial heterogeneity, this can be considered in two ways in a modeling approach. First one, the complexity and differences in distribution in abundance and other components of the krill population can be incorporated into an stock assessment in advance, as was carried out in this exercise, to have a more reliable estimate of the population variables that and transfer these considerations to the management for decision making. Second one, spatial heterogeneity can be considered for the decomposition of the management procedures that are established into the population assessed. For this, it is necessary. have a spatially explicit model, which was not our case but can be considered a future approach to be analysed.
+
+- Ecosystem considerations for a model integrated with stock assessment are vital. Although SS3 does not model the ecosystem variables, it allows for these variables to be incorporated to model krill population dynamics. SS3 presents characteristics that allow the incorporation of this kind of variable. This ecosystem information into stock assessment serve as an input to condition the moderate population dynamics, in any case we consider this an advance that can be perfected but that is inside discussion with the ecosystem management in the new strategy proposed by CCAMLR.
+
+
+- We consider that an integrated modeling of the krill adding the available information sources (fishery and surveys), as well as, the spatial heterogeneity and ecosystem variables is on the right path of the recommendation that has emerged in the last 10 years with respect to population dynamics and its link with the management procedure carried out by CCAMLR.
+
+\newpage
+
+
+# SUPPLEMENTARY MATERIAL 
+
+- Supplementary Material 1:  Model template example and initial condition to `s1` scenario can be found in this [repo](https://github.com/MauroMardones/SA_Krill/tree/main/test) and the executable version (3.30.21) can be download from NOAA Virtual Lab [SS3](https://vlab.noaa.gov/web/stock-synthesis) 
+
+- Supplementary Material 2:  Length composition templates preparation to SS3 from AMLR can be found [link](https://mauromardones.github.io/AMLR_Length_Data/) and routine code in this [repo](https://github.com/MauroMardones/AMLR_Length_Data)
+
+- Supplementary Material 3:  Correlation analysis between krill biology and environmental variables can be found in this [link](https://mauromardones.github.io/Krill_Length_Cor/) and routine code in this [repo](https://github.com/MauroMardones/Krill_Length_Cor)
+
+\newpage
+
+# FIGURES AND TABLES
+
+```{r mapa, out.width='40%', fig.show='hold',fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)"}
+knitr::include_graphics('Figs/481.png')
+```
+
+```{r datasources, echo=FALSE}
+data_sources <- data.frame(
+  `Data Source` = c("1. Krill Fishery Monitoring Program", 
+                    "2. AMLR Research Cruises & Monitoring Programs", 
+                    "3. Chlorophyll-a Concentration (Chl) Data", 
+                    "4. Predator Abundance Data from MAPPPD"),
+  Description = c("Data from CPUE and length compositions systematically collected on board fishing vessels by scientific observers as part of the CCAMLR Scheme of International Scientific Observation (SISO) program. This database includes information about vessel, nationality, and georeferenced data, among others.",
+                  "Data from scientific AMLR research cruises and monitoring programs designed to assess krill populations, including abundance by strata and biological characteristics of krill collected through net sampling. Length compositions from AMLR surveys (provided by Ecosystem Science Division, NOAA) were handled according to evaluation template requirements (Suppl. Mat. 2).",
+                  "Chl was assessed as a primary environmental driver. Data was sourced from Bio-Geo-Chemical, L4 satellite observations (monthly and interpolated) obtained through the E.U. Copernicus Marine Service Information. This data helps evaluate ecosystem health and krill dynamics in the WAP. Fitted a GLMM to predict Length with Year and environmental factors.",
+                  "Data on penguin colonies within the study area, systematized as a vectorized indicator to consider as a fleet (M2) in an integrated stock assessment. Although penguin dynamics differ throughout the analyzed series, this data was included to account for predator abundance."),
+  `Temporal Scale` = c("2000 - Present", "Annual Surveys, 1990s - Present", "Monthly, 2002 - Present", "1979 - Present"),
+  `Reference/Notes` = c("Handled according to Dornam (2021).",
+                        "Processed in Dornam (2021).",
+                        "Processed with GLMM model.",
+                        "Handled with *tidyverse* library and dependencies (Wickham, 2019).")
+)
+kable(data_sources, format = "markdown", col.names = c("Data Source", "Description", "Temporal Scale", "Reference Notes"),
+      caption = "Summary of data sources used to inform the population dynamics model") %>%
+  kable_styling(full_width = FALSE) %>%
+  column_spec(1, width = "1in") %>%
+  column_spec(2, width = "2in") %>%
+  column_spec(3, width = "1in") %>%
+  column_spec(4, width = "1in")
+```
+
+```{r concem, out.width='40%', fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
+knitr::include_graphics('Figs/conceptual.jpeg')
+```
+
+```{r datas2, out.width='70%', fig.cap="Source information time series for each fleet used in s1 scenario"}
+knitr::include_graphics('Figs/data_plot_s2.png')
+```
+
+
+```{r parainit, fig.cap="Initial biology and fishery parameters to set a model s1 in krill in WAP"}
+
+# leo archivos para plotear y hacer tablas
+start1 <- SS_readstarter(file = file.path(dir1,
+                                          "starter.ss"),
+                              verbose = FALSE)
+# note the data and control file names can vary, so are determined from the 
+# starter file.
+dat1 <- SS_readdat(file = file.path(dir1, start1$datfile),
+                        verbose = FALSE)
+# Read in ctl file. Note that the data fileR object is needed so that SS_readctl
+# assumes the correct data structure
+ctl1 <-  r4ss::SS_readctl(file = file.path(dir1,
+                                    start1$ctlfil),
+                        verbose = FALSE,
+                        use_datlist = TRUE, 
+                   datlist = dat1)
+fore1 <- r4ss::SS_readforecast(file = file.path(dir1, 
+                                                "forecast.ss"),
+                              verbose = FALSE)
+# can also read in wtatage.ss for an empirical wt at age model using
+# r4ss::SS_readwtatage()
+
+parbio<-ctl1$MG_parms[1:10,c(1:4,7)]
+ row.names( parbio)<-c("Nat M",
+                       "Lmin", 
+                       "Lmax",
+                       "VonBert K",
+                       "CV young",
+                       "CV old", 
+                       "Wt a", 
+                       "Wt b",
+                       "L50%", 
+                       "Mat slope")
+
+ SRpar<-ctl1$SR_parms[1:5,c(1:4,7)]
+ Qpar<-ctl1$Q_parms[1:2,c(1:4,7)]
+ Selpar<-ctl1$size_selex_parms[1:22,c(1:4,7)]
+ parInit<-as.data.frame(rbind(parbio,SRpar,Qpar,Selpar))
+
+parInit %>%
+  kbl(booktabs = TRUE,
+      format = "latex",
+      position="ht!",
+    caption = "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
+  kable_paper("hover", 
+              full_width = F)%>%
+  kable_styling(latex_options = c("striped"),
+                full_width = FALSE,
+                font_size=9)%>% 
+  pack_rows(index = c("Natural Mortality" = 1,
+                        "Growth"= 5,
+                        "Length-Weigth Relation" = 2,
+                        "Maturity"=2,
+                        "Stock-Recruit Relation"=5,
+                        "Catchability"=2,
+                        "Selectivity"=4))
+```
+
+\begin{landscape}
+
+```{r path, out.width='70%', fig.cap="Framework path to stock assessment model in krill in WAP (Yellow boxes is not implemeted yet)."}
+knitr::include_graphics('Figs/pathmod.png')
+```
+
+\end{landscape}
+
+```{r platoon, out.width='70%', fig.cap="Reprsentation of platoons in Krill lenght frencuecies"}
+
+x_values <- seq(0, 7, by=0.1)
+means <- c( 2.9,  3.5, 4.1)
+std_devs <- c(0.65, 0.8, 0.65)
+data <- data.frame(
+  x = rep(x_values, each = length(means)),
+  mean = rep(means, times = length(x_values)),
+  std_dev = rep(std_devs, times = length(x_values))
+)
+
+data <- data %>%
+  mutate(y = exp(-((x - mean)^2) / (2 * std_dev^2)))
+
+ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
+  geom_line(size = 1) +
+  scale_linetype_manual(values = means,
+                        name ="Platoon") +
+  labs(x = "", y = "growth increment") +
+  theme_minimal()+
+  xlim(0,7)
+```
+
+
+```{r res1, fig.cap = "Pearson residuals, comparing across fleets. Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected)."}
+knitr::include_graphics('s1/plots/comp_lenfit__page1_multi-fleet_comparison.png')
+```
+
+
+```{r res1a, fig.cap = "Pearson residuals, comparing across fleets. Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected) (continued)."}
+knitr::include_graphics('s1/plots/comp_lenfit__page2_multi-fleet_comparison.png')
+```
+
+
+
+```{r resall, out.width='30%', fig.show='hold', fig.cap="Mean length for each with 95% confidence intervals based on current sample sizes. blue line represent estimated"}
+par(mfrow=c(5,2))
+knitr::include_graphics(c('s1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYBS.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYEI.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYGS.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYJOIN.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_FISHERYSSIW.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_PREDATOR.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYBS.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYEI.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYGS.png',
+                          's1/plots/comp_lenfit_data_weighting_TA1.8_SURVEYJOIN.png'))
+
+```
+
+
+
+```{r fitcom, out.width='80%', fig.show='hold', fig.cap="Fits to lengths compositions in different fleets in s1 scenario"}
+knitr::include_graphics('s1/plots/comp_lenfit__aggregated_across_time.png')
+
+```
+
+
+```{r retros1, out.width='70%', fig.cap="Retrospective pattern in s1 scenario in Antarctic krill"}
+knitr::include_graphics('Figs/retros1.png')
+```
+
+
+```{r rmses1, out.width='60%', fig.show='hold',  fig.cap="Joint residual plots for index (upper panel) and lengths (bottom panel) fits from different fleets in Antarctic krill"}
+par(mfrow=c(2,1))
+knitr::include_graphics(c('Figs/rmse21.png',
+                          'Figs/rmselens1.png'))
+```
+
+
+```{r likepro, out.width='70%', fig.cap="Log-likelihood profiles for R0 for the various data components included in Antarctic krill"}
+knitr::include_graphics('Figs/Profile_s1.png')
+```
+
+
+```{r mainvar, fig.cap="Main variables outputs (Total Biomass, Biomass at 75%, Spawining biomass and Recruit in t) from estimation in s1 model krill in WAP"}
+out_s2 <- read_excel("DataKrill.xlsx", 
+    sheet = "variable_s2")
+out_s2 %>%
+  kbl(booktabs = TRUE,
+      format = "latex",
+    caption = "Main variables outputs from stock asssessment krill in WAP") %>%
+  kable_paper("hover", 
+              full_width = TRUE)%>%
+  kable_styling(latex_options = c("striped",
+                                  "condensed"),
+                full_width = TRUE,
+                font_size=6 )#%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
+```
+
+\newpage
+```{r recdev, out.width='90%', fig.cap="Recruit deviation for all scenarios in krill population"}
+knitr::include_graphics('index_files/figure-html/unnamed-chunk-47-1.jpeg')
+```
+
+
+```{r acf, out.width='90%', fig.cap="Cross correlation in autoregresive analysis for all scenarios in krill population"}
+knitr::include_graphics('index_files/figure-html/unnamed-chunk-46-1.jpeg')
+```
+
+
+
+```{r likeall, out.width='90%', fig.cap="Components of total likelihood for all sources and all tested scenarios"}
+knitr::include_graphics('Figs/Likelihoodtotal.png')
+```
+
+
+
+
+```{r longterm, out.width='100%', fig.cap="Long term estimation for different scenarios in krill spawning biomass for whole time series (1979-2020"}
+knitr::include_graphics('Figs/longtermsb.png')
+```
+
+
+
+\newpage
+
+\begin{landscape}
+
+```{r comparision, out.width='40%', fig.show='hold', fig.cap="Comparative perfomance with scenarios s01, s1 and s7 to recruit, spawing biomass, biomass ratio (hopefully equal to fraction of unfished) and Virgin biomas probability"}
+par(mfrow=c(2,2))
+knitr::include_graphics(c('Figs/compare10_recruits_uncertainty.png',
+                          'Figs/compare2_spawnbio_uncertainty.png',
+                          'Figs/compare4_Bratio_uncertainty.png',
+                          'Figs/compare17_densities_SSB_Virgin.png'))
+```
+
+\end{landscape}
+
+\newpage
+
+# REFERENCES
