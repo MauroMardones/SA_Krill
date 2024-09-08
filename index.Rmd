@@ -1570,7 +1570,7 @@ ggarrange(p01,p1,
 
 ## Recruit deviation
 
-```{r fig.width=8, fig.height=7}
+```{r}
 dev01 <- base.model01$recruit[1:43,c(1,7)] %>% 
   mutate(Serie = "S01")
 dev1 <- base.model1$recruit[1:43,c(1,7)]%>% 

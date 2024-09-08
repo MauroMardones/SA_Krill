@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.3)  8 SEP 2024 23:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.3)  9 SEP 2024 00:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**Corrections_SAM_SS3_Krill_481.tex
-(./Corrections_SAM_SS3_Krill_481.tex
+**Observations_SAM_SS3_Krill_481.tex
+(./Observations_SAM_SS3_Krill_481.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-01-16> (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -516,12 +516,12 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count317
 \l__pdf_internal_box=\box75
-) (./Corrections_SAM_SS3_Krill_481.aux
+) (./Observations_SAM_SS3_Krill_481.aux
 
 LaTeX Warning: Label `tab:runtable' multiply defined.
 
 )
-\openout1 = `Corrections_SAM_SS3_Krill_481.aux'.
+\openout1 = `Observations_SAM_SS3_Krill_481.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 175.
 LaTeX Font Info:    ... okay on input line 175.
@@ -634,7 +634,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) [1
 
-{/Users/mauriciomardones/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./Corrections_SAM_SS3_Krill_481.toc
+{/Users/mauriciomardones/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./Observations_SAM_SS3_Krill_481.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -643,7 +643,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 2.
 )
 \tf@toc=\write4
-\openout4 = `Corrections_SAM_SS3_Krill_481.toc'.
+\openout4 = `Observations_SAM_SS3_Krill_481.toc'.
 
 [2]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 198.
@@ -654,15 +654,15 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 23
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<Corrections_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg, id=63, 1957.3125pt x 1355.0625pt>
-File: Corrections_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg Graphic file (type jpg)
-<use Corrections_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg>
-Package pdftex.def Info: Corrections_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg  used on input line 240.
+<Observations_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg, id=63, 1957.3125pt x 1355.0625pt>
+File: Observations_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg Graphic file (type jpg)
+<use Observations_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg>
+Package pdftex.def Info: Observations_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg  used on input line 240.
 (pdftex.def)             Requested size: 469.73474pt x 325.20097pt.
 [4]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 258.
-[5 <./Corrections_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg>]
+[5 <./Observations_SAM_SS3_Krill_481_files/figure-latex/AKL-1.jpeg>]
 <Figs/Plattoons.png, id=82, 1406.25375pt x 869.2475pt>
 File: Figs/Plattoons.png Graphic file (type png)
 <use Figs/Plattoons.png>
@@ -744,70 +744,70 @@ File: Figs/recipediags.png Graphic file (type png)
 Package pdftex.def Info: Figs/recipediags.png  used on input line 462.
 (pdftex.def)             Requested size: 375.80225pt x 515.21274pt.
 [17 <./Figs/Likelihoodtotal.png>] [18 <./Figs/recipediags.png>]
-<Figs/COM1_9compare4_Bratio_uncertainty.png, id=197, 1957.3125pt x 1505.625pt>
+<Figs/COM1_9compare4_Bratio_uncertainty.png, id=197, 469.755pt x 361.35pt>
 File: Figs/COM1_9compare4_Bratio_uncertainty.png Graphic file (type png)
 <use Figs/COM1_9compare4_Bratio_uncertainty.png>
 Package pdftex.def Info: Figs/COM1_9compare4_Bratio_uncertainty.png  used on input line 493.
-(pdftex.def)             Requested size: 375.80571pt x 289.08131pt.
-<Figs/COM1_9compare10_recruits_uncertainty.png, id=198, 1957.3125pt x 1505.625pt>
+(pdftex.def)             Requested size: 375.80452pt x 289.0804pt.
+<Figs/COM1_9compare10_recruits_uncertainty.png, id=198, 469.755pt x 361.35pt>
 File: Figs/COM1_9compare10_recruits_uncertainty.png Graphic file (type png)
 <use Figs/COM1_9compare10_recruits_uncertainty.png>
 Package pdftex.def Info: Figs/COM1_9compare10_recruits_uncertainty.png  used on input line 502.
-(pdftex.def)             Requested size: 375.80571pt x 289.08131pt.
-[19 <./Figs/COM1_9compare4_Bratio_uncertainty.png>]
-<Figs/KSH.png, id=211, 548.0475pt x 378.41376pt>
+(pdftex.def)             Requested size: 375.80452pt x 289.0804pt.
+[19 <./Figs/COM1_9compare4_Bratio_uncertainty.png (PNG copy)>]
+<Figs/KSH.png, id=210, 548.0475pt x 378.41376pt>
 File: Figs/KSH.png Graphic file (type png)
 <use Figs/KSH.png>
 Package pdftex.def Info: Figs/KSH.png  used on input line 520.
 (pdftex.def)             Requested size: 375.81168pt x 259.48901pt.
-[20 <./Figs/COM1_9compare10_recruits_uncertainty.png>] [21 <./Figs/KSH.png>]
-<Figs/trawl.png, id=226, 225.789pt x 325.215pt>
+[20 <./Figs/COM1_9compare10_recruits_uncertainty.png (PNG copy)>] [21 <./Figs/KSH.png>]
+<Figs/trawl.png, id=224, 225.789pt x 325.215pt>
 File: Figs/trawl.png Graphic file (type png)
 <use Figs/trawl.png>
 Package pdftex.def Info: Figs/trawl.png  used on input line 537.
 (pdftex.def)             Requested size: 225.80565pt x 325.23901pt.
 [22] [23 <./Figs/trawl.png>]
-<Figs/run1.png, id=239, 1405.25pt x 868.24374pt>
+<Figs/run1.png, id=237, 1405.25pt x 868.24374pt>
 File: Figs/run1.png Graphic file (type png)
 <use Figs/run1.png>
 Package pdftex.def Info: Figs/run1.png  used on input line 558.
 (pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
-<Figs/run2.png, id=240, 1405.25pt x 868.24374pt>
+<Figs/run2.png, id=238, 1405.25pt x 868.24374pt>
 File: Figs/run2.png Graphic file (type png)
 <use Figs/run2.png>
 Package pdftex.def Info: Figs/run2.png  used on input line 558.
 (pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
-<Figs/run3.png, id=241, 1405.25pt x 868.24374pt>
+<Figs/run3.png, id=239, 1405.25pt x 868.24374pt>
 File: Figs/run3.png Graphic file (type png)
 <use Figs/run3.png>
 Package pdftex.def Info: Figs/run3.png  used on input line 558.
 (pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
-<Figs/run4.png, id=242, 1405.25pt x 868.24374pt>
+<Figs/run4.png, id=240, 1405.25pt x 868.24374pt>
 File: Figs/run4.png Graphic file (type png)
 <use Figs/run4.png>
 Package pdftex.def Info: Figs/run4.png  used on input line 558.
 (pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
-<Figs/run5.png, id=243, 1405.25pt x 868.24374pt>
+<Figs/run5.png, id=241, 1405.25pt x 868.24374pt>
 File: Figs/run5.png Graphic file (type png)
 <use Figs/run5.png>
 Package pdftex.def Info: Figs/run5.png  used on input line 558.
 (pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
-<Figs/run6.png, id=244, 1405.25pt x 868.24374pt>
+<Figs/run6.png, id=242, 1405.25pt x 868.24374pt>
 File: Figs/run6.png Graphic file (type png)
 <use Figs/run6.png>
 Package pdftex.def Info: Figs/run6.png  used on input line 558.
 (pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
-<Figs/run7.png, id=245, 1405.25pt x 868.24374pt>
+<Figs/run7.png, id=243, 1405.25pt x 868.24374pt>
 File: Figs/run7.png Graphic file (type png)
 <use Figs/run7.png>
 Package pdftex.def Info: Figs/run7.png  used on input line 558.
 (pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
-<Figs/run8.png, id=246, 1405.25pt x 868.24374pt>
+<Figs/run8.png, id=244, 1405.25pt x 868.24374pt>
 File: Figs/run8.png Graphic file (type png)
 <use Figs/run8.png>
 Package pdftex.def Info: Figs/run8.png  used on input line 558.
 (pdftex.def)             Requested size: 187.8994pt x 116.09499pt.
-<Figs/run9.png, id=247, 1405.25pt x 868.24374pt>
+<Figs/run9.png, id=245, 1405.25pt x 868.24374pt>
 File: Figs/run9.png Graphic file (type png)
 <use Figs/run9.png>
 Package pdftex.def Info: Figs/run9.png  used on input line 558.
@@ -816,28 +816,28 @@ Package pdftex.def Info: Figs/run9.png  used on input line 558.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <9> on input line 594.
 [27]
-<Corrections_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg, id=288, 1957.3125pt x 1355.0625pt>
-File: Corrections_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg Graphic file (type jpg)
-<use Corrections_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg>
-Package pdftex.def Info: Corrections_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg  used on input line 664.
+<Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg, id=286, 1957.3125pt x 1355.0625pt>
+File: Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg Graphic file (type jpg)
+<use Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg>
+Package pdftex.def Info: Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg  used on input line 664.
 (pdftex.def)             Requested size: 375.80571pt x 260.17317pt.
-[28 <./Corrections_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg>] [29] (./Corrections_SAM_SS3_Krill_481.aux)
+[28 <./Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg>] [29] (./Observations_SAM_SS3_Krill_481.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16549 strings out of 478033
- 275361 string characters out of 5838240
+ 16547 strings out of 478033
+ 275389 string characters out of 5838240
  1884330 words of memory out of 5000000
  36059 multiletter control sequences out of 15000+600000
- 589450 words of font info for 178 fonts, out of 8000000 for 9000
+ 589345 words of font info for 177 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 77i,9n,81p,1694b,534s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 77i,9n,81p,1695b,534s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Corrections_SAM_SS3_Krill_481.pdf (29 pages, 5123489 bytes).
+Output written on Observations_SAM_SS3_Krill_481.pdf (29 pages, 5116699 bytes).
 PDF statistics:
- 443 PDF objects out of 1000 (max. 8388607)
+ 441 PDF objects out of 1000 (max. 8388607)
  320 compressed objects within 4 object streams
  92 named destinations out of 1000 (max. 500000)
  41178 words of extra memory for PDF output out of 42996 (max. 10000000)

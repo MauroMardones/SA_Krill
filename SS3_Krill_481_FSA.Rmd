@@ -13,6 +13,7 @@ output:
     number_sections: false
 fig_caption: yes
 bibliography: SA_krill.bib
+always_allow_html: true
 csl: apa.csl
 link-citations: yes
 toc: false
@@ -426,7 +427,7 @@ knitr::include_graphics('s1/plots/comp_lenfit__aggregated_across_time.png')
 
 ## Retrospective analysis
 
-Retrospective analysis shows the pattern of bias that exists in the models and is one of the ways in which we have identified that in all the tested scenarios there is a pattern, however, model S1 is the one that performs better. @Carvalho2021b indicate that values of rho parameter that fall outside (-0.15 to 0.20) for SSB for longer-lived species, or outside (-0.22 to 0.30) for shorter-lived species indicates an undesirable retrospective pattern (Figure \@(fig:retros1)). To evaluate the overall model fit of the relative abundance indices and composition data in `s1`, we used the joint-index residual. Overall, `s1` had a good performance when evaluating the lengths compositions (14.2%), however  RMSE showed a low predictive power with respect to the indices (71.3%). A loess-smoother indicated there appeared to be increased variability in the residuals of model fit to CPUE over time (Figure \@ref(fig:rmses1)).
+Retrospective analysis shows the pattern of bias that exists in the models and is one of the ways in which we have identified that in all the tested scenarios there is a pattern, however, model S1 is the one that performs better. @Carvalho2021b indicate that values of rho parameter that fall outside (-0.15 to 0.20) for SSB for longer-lived species, or outside (-0.22 to 0.30) for shorter-lived species indicates an undesirable retrospective pattern (Figure \@ref(fig:retros1)). To evaluate the overall model fit of the relative abundance indices and composition data in `s1`, we used the joint-index residual. Overall, `s1` had a good performance when evaluating the lengths compositions (14.2%), however  RMSE showed a low predictive power with respect to the indices (71.3%). A loess-smoother indicated there appeared to be increased variability in the residuals of model fit to CPUE over time (Figure \@ref(fig:rmses1)).
 
 
 
@@ -489,7 +490,7 @@ We identify differences in the different scenarios related with population varia
 
 
 ```{r recdev, out.width='90%', fig.cap="Recruit deviation for all scenarios in krill population"}
-knitr::include_graphics('index_files/figure-html/unnamed-chunk-47-1.jpeg')
+knitr::include_graphics('Figs/recruitdev.png')
 ```
 
 

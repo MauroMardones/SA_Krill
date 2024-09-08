@@ -1,6 +1,6 @@
 ---
-title: "Recommentations: Integrated approach to modeling krill population dynamics in Western Antarctic Peninsula. Spatial and ecosystem considerations"
-subtitle: "Appendix 1 WP- SAM 2024/26"
+title: "APPENDIX 1: Integrated approach to modeling krill population dynamics in Western Antarctic Peninsula. Spatial and ecosystem considerations"
+subtitle: "Observations WP- SAM 2024/26"
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::pdf_document2:
