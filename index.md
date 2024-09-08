@@ -2,7 +2,7 @@
 title: "Integrated approach to modeling to krill population dynamics in Wester Antarctic Peninsula: spatial and ecosystem considerations"
 subtitle: "Working Paper to be submitted in a CCAMLR EMM-WG 2024"
 author: "Mardones, M; Cárdenas, C., Krüger, L., Santa Cruz, F."
-date:  "06 June, 2024"
+date:  "08 September, 2024"
 bibliography: SA_krill.bib
 csl: apa.csl
 link-citations: yes
@@ -43,6 +43,8 @@ dir4 <- here("s4")  #
 dir5 <- here("s5")  # 
 dir6 <- here("s6")  # 
 dir7 <- here("s7")  # 2 set parametres EMM-2024/23 (Mardones)
+dir8 <- here("s8")  # s1 test data weigthing
+dir9 <- here("s9")  # s1 w/ blocks
 dirtest <- here("test")
 Figs <- here("Figs")  # S
 ```
@@ -406,6 +408,8 @@ about main consideration in assessment of krill population.
 |    s5    | "s1" BH S-R relation mid-strong estimated                                            |
 |    s6    | "s1" Ricker S-R relation estimated                                                   |
 |    s7    | "s1" w/ set of parameters estimated in @EMM-204/32                                   |
+|    s8    | "s1" test data weighting                                                             |
+|    s9    | "s1" w/ selectivity blocks                                                             |
 
 ## Run Models
 
@@ -414,6 +418,9 @@ about main consideration in assessment of krill population.
 
 
 Read outputs
+
+
+
 
 
 # RESULTS
@@ -428,14 +435,14 @@ Total biomass
 
 Data used en both (spatial and No spatial models)
 
-<img src="index_files/figure-html/unnamed-chunk-12-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-12-2.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-13-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-13-2.jpeg" style="display: block; margin: auto;" />
 
 
 Respecto a los valores y parametros biologicos modelados, los siguientes
 graficos identifican los estimadores puntuales del recurso
 
-<img src="index_files/figure-html/unnamed-chunk-13-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-13-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-13-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-13-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-13-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-13-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-13-7.jpeg" style="display: block; margin: auto;" />
-<img src="index_files/figure-html/unnamed-chunk-14-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-7.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-8.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-9.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-10.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-11.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-14-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-7.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-15-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-7.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-8.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-9.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-10.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-11.jpeg" style="display: block; margin: auto;" />
 
 
 
@@ -464,7 +471,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting Residual Runs Tests
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-16-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-7.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-8.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-9.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-17-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-7.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-8.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-9.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -489,15 +496,13 @@ all this framework try to follow recommendations of @Carvalho2021b
 
 
 
-
-
 ```
 ## 
 ##  Running Runs Test Diagnosics for Index 
 ## Plotting Residual Runs Tests
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-18-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-7.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-8.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-9.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-18-10.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-19-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-7.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-8.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-9.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-19-10.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -529,7 +534,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting JABBA residual plot
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-21-1.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-22-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -548,7 +553,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting JABBA residual plot
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-21-2.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-22-2.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -575,7 +580,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting JABBA residual plot
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-21-3.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-22-3.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -602,7 +607,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting JABBA residual plot
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-21-4.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-22-4.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -629,7 +634,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting JABBA residual plot
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-21-5.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-22-5.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -656,7 +661,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting JABBA residual plot
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-21-6.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-22-6.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -683,7 +688,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting JABBA residual plot
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-21-7.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-22-7.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -710,7 +715,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Plotting JABBA residual plot
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-21-8.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-22-8.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -753,7 +758,7 @@ Los análisis retrospectivo, dan cuenta de diferencias de estimación
 
 
 
-<img src="index_files/figure-html/unnamed-chunk-27-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-27-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-27-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-27-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-27-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-27-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-27-7.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-28-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-28-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-28-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-28-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-28-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-28-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-28-7.jpeg" style="display: block; margin: auto;" />
 
 
 
@@ -771,7 +776,7 @@ Conversely, a MASE score of 0.5 indicates that the model forecasts twice
 as accurately as a naïve baseline prediction; thus, the model has
 prediction skill.
 
-<img src="index_files/figure-html/unnamed-chunk-29-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-29-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-29-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-29-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-29-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-29-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-29-7.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-29-8.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-29-9.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-30-1.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-30-2.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-30-3.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-30-4.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-30-5.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-30-6.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-30-7.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-30-8.jpeg" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-30-9.jpeg" style="display: block; margin: auto;" />
 
 
 
@@ -786,7 +791,7 @@ prediction skill.
 ## 
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-31-1.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-32-1.jpeg" style="display: block; margin: auto;" />
 
 
 
@@ -796,7 +801,7 @@ another
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in SSB model s01}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in SSB model s01}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -815,7 +820,7 @@ SSB & Combined & 5.296721 & 7.827407\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in F model s01}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in F model s01}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -834,7 +839,7 @@ F & Combined & 0.0930700 & -0.1297017\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in SSB model s1}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in SSB model s1}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -853,7 +858,7 @@ SSB & Combined & 0.1116767 & 0.0884462\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in F model s1}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in F model s1}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -872,7 +877,7 @@ F & Combined & 4.6970083 & 6.6058762\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in SSB model s2}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in SSB model s2}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -891,7 +896,7 @@ SSB & Combined & 46.8317044 & 45.9525852\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in F model s2}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in F model s2}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -910,7 +915,7 @@ F & Combined & 8.2863079 & 15.4273039\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in SSB model s3}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in SSB model s3}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -929,7 +934,7 @@ SSB & Combined & 46.8317044 & 45.9525852\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in F model s3}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in F model s3}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -948,7 +953,7 @@ F & Combined & 8.2863079 & 15.4273039\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in SSB model s4}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in SSB model s4}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -967,7 +972,7 @@ SSB & Combined & 4.8885770 & 5.0644304\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in F model s4}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in F model s4}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -986,7 +991,7 @@ F & Combined & -0.2949932 & -0.2707807\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in SSB model s5}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in SSB model s5}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1005,7 +1010,7 @@ SSB & Combined & -0.3057593 & -0.3604988\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in F model s5}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in F model s5}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1024,7 +1029,7 @@ F & Combined & 0.2193591 & 0.4660230\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in SSB model s6}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in SSB model s6}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1043,7 +1048,7 @@ SSB & Combined & -0.1147858 & -0.1601572\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in F model s6}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in F model s6}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1062,7 +1067,7 @@ F & Combined & -0.1043820 & 0.0370475\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in SSB model s7}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in SSB model s7}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1081,7 +1086,7 @@ SSB & Combined & 1.1217675 & 1.1629501\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-34}Rho parameter in F model s7}
+\caption{\label{tab:unnamed-chunk-35}Rho parameter in F model s7}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1102,7 +1107,7 @@ F & Combined & 1.5853048 & 2.3906078\\
 
 
 
-<img src="index_files/figure-html/unnamed-chunk-36-1.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-37-1.jpeg" style="display: block; margin: auto;" />
 
 
 
@@ -1674,7 +1679,7 @@ F & Combined & 1.5853048 & 2.3906078\\
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-42}Comparacion likelihood y parámetros s01, s1, s2, s3, s4, s5, s6 y s7}
+\caption{\label{tab:unnamed-chunk-43}Comparacion likelihood y parámetros s01, s1, s2, s3, s4, s5, s6 y s7}
 \centering
 \resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
 \begin{tabular}[t]{lrrrrrrrr}
@@ -1700,26 +1705,36 @@ SPRratio\_2020 & 4.799030 & 0.514616 & 0.459701 & 0.459701 & 2.104990 & 3.37645e
 \end{tabular}}
 \end{table}
 
-comparision between select models `No spatial`and `Spatial implicit` and `Spatial W/ new set parametres`
+## Comparision between select models `No spatial`and `Spatial implicit` and `Spatial W/ new set parametres`
 
 
 
 comparision between select models `Old Paramters` and `New Parameters WG SAM 2024/23`
 
 
+### Comparision between select models `s1` and `s9`
+
 
 ## Comparsion in sd long term time series
 
-<img src="index_files/figure-html/unnamed-chunk-45-1.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-47-1.jpeg" style="display: block; margin: auto;" />
 
 ## Autocorrelation in Recruit and Biomas
 
-<img src="index_files/figure-html/unnamed-chunk-46-1.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-48-1.jpeg" style="display: block; margin: auto;" />
 
 ## Recruit deviation
 
-<img src="index_files/figure-html/unnamed-chunk-47-1.jpeg" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-49-1.jpeg" style="display: block; margin: auto;" />
+## Platoons analisis
 
+<img src="index_files/figure-html/unnamed-chunk-50-1.jpeg" style="display: block; margin: auto;" />
+## AKL
+
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/AKL-1.jpeg" alt="Representation of ALK Matrix to krill in 48.1" width="60%" />
+<p class="caption">Representation of ALK Matrix to krill in 48.1</p>
+</div>
 
 \newpage
 

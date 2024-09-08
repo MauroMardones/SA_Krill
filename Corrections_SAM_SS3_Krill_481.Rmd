@@ -1,6 +1,6 @@
 ---
 title: "Recommentations: Integrated approach to modeling krill population dynamics in Western Antarctic Peninsula. Spatial and ecosystem considerations"
-subtitle: "Appendix WP- SAM 2024/26"
+subtitle: "Appendix 1 WP- SAM 2024/26"
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::pdf_document2:
@@ -51,7 +51,7 @@ dir1<-here("s1")
 
 # OBSERVATION SAM - 23
 
-The main recommendations were extracted from @CCAMLRWGSAM2024-
+The main recommendations were extracted from @CCAMLRWGSAM2024.
 
 ## Observation 1
 
@@ -98,6 +98,14 @@ $$
 where W~ct~ is the total commercial catch weight, and W~cs~ is the sampled commercial catch weight.
 
 The proportions-at-age are then adjusted to find the best fit between the observed size frequency data and that predicted by the proportion-at-age and the ALK. The majority of ALKs are based on growth parameters according to the most suitable formula for the species. In the case of krill, these parameters are derived from the von Bertalanffy growth curve. In @Mardones2023, using `SS3` stock assessment catch-at-lenght model, we use a von Bertalanffy growth relationship with estimated parameters L~inf~, k, and CV. This length-at-age relationship, mediated by survey catchability and selectivity, was used to compare survey biomasses with model estimates of vulnerable biomass (Eq. (A.4)). Weight-at-length was assumed known and calculated using @Maschette2020 parametres.
+
+```{r include=FALSE, message=FALSE}
+base.model1 <- SS_output(dir=dir1,
+                        covar=T,
+                        forecast=T)
+```
+
+
 
 ```{r AKL}
 alk_matrix <- base.model1$ALK[,,1] # Ajusta las dimensiones según tu matriz
@@ -155,6 +163,9 @@ in this way, regarding to observation in SAM -2023 (paragraph 4.3);
 *(i) the impact of using an age-based or a length-based implementation could be assessed, noting that a preservation of the source data would be preferred (i.e. the conversion between length composition and age composition should be considered, with conversions from length to age to length avoided)*
 
 Since we don't have age data monitoring program, we plan to explore *platoon* alternative to compare its performance and results with the current length-based model using currently in WG-SAM-2024/26. 
+
+
+\newpage 
 
 ## Observation 2
 
@@ -239,23 +250,17 @@ c(1980,2006,2006,2020)
 The comparison of the main evaluation results with both scenarios is presented in the estimates of the population variables of biomass (Figure \@ref(fig:comparebio)) and recruitment (Figure \@ref(fig:comparerec)). It can be observed that there are no significant differences, at least in the state variables.
 
 ```{r comparebio, out.width='80%', fig.cap="biomass estimates  in s1 and s9 scenarios."}
-knitr::include_graphics('Figs/compare4_Bratio_uncertainty.png')
+knitr::include_graphics('Figs/COM1_9compare4_Bratio_uncertainty.png')
 ```
 
 ```{r comparerec, out.width='80%', fig.cap="biomass estimates  in s1 and s9 scenarios."}
-knitr::include_graphics('Figs/compare10_recruits_uncertainty.png')
+knitr::include_graphics('Figs/COM1_9compare10_recruits_uncertainty.png')
 ```
 ## Observation 3.2
 
 *...and the likely invalid assumption of the Peninsula as being a closed system. It further highlighted the need to discuss the development of a standardized data collection plan to support the ongoing revision of the krill fishery management approach.*
 
-Regarding stock unit issue, in the last online workshop of the SCAR Krill Expert Group (SKEG), conclude that The opinion of the SKEG was that the southern boundary of the ACC (sbACC) serves as an
-important potential pathway for krill flux into Subarea 48.1, from the Bellingshausen Sea to the
-northern Antarctic Peninsula, and into Subarea 48.2. The Weddell Front and Antarctic Slope
-Front were also considered important pathways for krill flux into Subarea 48.2, but with focus in 48.1, with a importance of retention and flux (source to destination relation) identified by SKEG
-should be taken into account when allocation of catch limits, particularly the importance
-of retention in the Gerlach Strait, Bransfield Strait and Joinville Island strata, and the
-directions of the important fluxes [WGEMM2439] (Figure \@ref(fig:ksh)).
+Regarding stock unit issue, in the last online workshop of the SCAR Krill Expert Group (SKEG), conclude that The opinion of the SKEG was that the southern boundary of the ACC (sbACC) serves as an important potential pathway for krill flux into Subarea 48.1, from the Bellingshausen Sea to the northern Antarctic Peninsula, and into Subarea 48.2. The Weddell Front and Antarctic Slope Front were also considered important pathways for krill flux into Subarea 48.2, but with focus in 48.1, with a importance of retention and flux (source to destination relation) identified by SKEG should be taken into account when allocation of catch limits, particularly the importance of retention in the Gerlach Strait, Bransfield Strait and Joinville Island strata, and the directions of the important fluxes [@WGEMM2439] (Figure \@ref(fig:ksh)). 
 
 There are two important issues related to the current stock assessment approach presented in WG-SAM 24/27. The first one, while we understand that there are krill flows to and from Area 48.1, the challenge of having time series data to implement a model that covers most of Subarea 48 becomes difficult. However, we note that as monitoring programs provide the necessary data to implement models of this nature, we are open to a more comprehensive approach in the Southern Ocean. Secondly, the current model implemented in `SS3` considered the spatial heterogeneity of the krill stock structure within Area 48.1, as illustrated in the Figure \@ref(fig:ksh), however, a model that involves movement between strata has not yet been developed, and is part of the ongoing work presented at the SAM.
 
@@ -275,7 +280,7 @@ We appreciate the identification of potential issues related to changes in trawl
 knitr::include_graphics('Figs/trawl.png')
 ```
 
-This consideration was implemented as a new scenario (`s9`) as previously described.
+This consideration was implemented as a new scenario (`s9`) as previously described and implemented in stock assessment of krill.
 
 \newpage
 
@@ -298,10 +303,9 @@ knitr::include_graphics(c('Figs/run1.png',
                           'Figs/run8.png',
                           'Figs/run9.png'))
 ```
-
 To facilitate automated processing, results from several diagnostic tests can also be called as table. Table \@ref(tab:runtable)
 
-```{r eval=TRUE, runtable, echo=FALSE}
+```{r runtable, eval=TRUE, echo=FALSE}
 data <- data.frame(
   Index = c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FISHERYSSIW", 
             "SURVEYBS", "SURVEYEI", "SURVEYGS", "SURVEYJOIN", "PREDATOR"),
@@ -387,34 +391,30 @@ parInit %>%
 
 ## Observation 6
 
+Although it was not recorded in the WGSAM-2024 report, one of the questions raised was related to the representation of population variables, such as the harvest rate. In this document, we present them in Figure \@ref(fig:hr). for the entire analyzed series and for each stratum.
 
-Graph the Harvest Rate
+```{r hr, out.width='80%', fig.show='hold',  fig.cap="Harvest rate by strata in time series (1980-2020) in Antarctic krill fishey"}
+# Convertir la matriz en un formato largo (long format) para ggplot
+exploitation_long <- tidyr::pivot_longer(base.model1$exploitation, 
+                                         cols = starts_with("FISHERY"), 
+                                         names_to = "Fishery", 
+                                         values_to = "Exploitation")
 
-
-```{r}
-y <- base.model1$exploitation[,1]
-x <- base.model1$exploitation[,4]
-
-hr <- ggplot()+
-  geom_line(aes(y,x))+
-  geom_point(aes(y,x))+
+# Crear el gráfico
+ggplot(exploitation_long, 
+       aes(x = Yr, y = Exploitation, color = Fishery)) +
+  geom_point() +
+  geom_line() +
+   geom_line(aes(y = annual_F), color = "black", linetype = "dashed", size = 1) + 
+  scale_color_viridis_d()+
+  labs(title = "",
+       x = "Year",
+       y = "Harvest Rat",
+       color = "Strata") +
   theme_bw()+
-  labs(y="Harvest Rate",
-       x ="")+
-  ylim(0, 0.3)
-hr
+  xlim(1980,2020)
+
 ```
-
-\newpage
-
-
-# SUPPLEMENTARY MATERIAL 
-
-- Supplementary Material 1:  Model template example and initial condition to `s1` scenario can be found in this [repo](https://github.com/MauroMardones/SA_Krill/tree/main/test) and the executable version (3.30.21) can be download from NOAA Virtual Lab [SS3](https://vlab.noaa.gov/web/stock-synthesis) 
-
-- Supplementary Material 2:  Length composition templates preparation to SS3 from AMLR can be found [link](https://mauromardones.github.io/AMLR_Length_Data/) and routine code in this [repo](https://github.com/MauroMardones/AMLR_Length_Data)
-
-- Supplementary Material 3:  Correlation analysis between krill biology and environmental variables can be found in this [link](https://mauromardones.github.io/Krill_Length_Cor/) and routine code in this [repo](https://github.com/MauroMardones/Krill_Length_Cor)
 
 \newpage
 

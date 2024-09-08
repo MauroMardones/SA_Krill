@@ -32,8 +32,6 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
-                      fig.height = 5,
-                      fig.width = 7,
                       fig.align = 'center',
                       fig.pos = "H",
                       dev = 'jpeg',
@@ -305,7 +303,10 @@ base.model8 <- SS_output(dir=dir8,
 base.model9 <- SS_output(dir=dir9,
                         covar=T,
                         forecast=T)
+```
 
+
+```{r eval= FALSE, message=F, include=FALSE}
 # html
 SS_plots(base.model9,
          uncertainty=T,
@@ -1366,7 +1367,7 @@ kbl(comtable, booktabs = T,format = "latex",
 
 ```
 
-comparision between select models `No spatial`and `Spatial implicit` and `Spatial W/ new set parametres`
+## Comparision between select models `No spatial`and `Spatial implicit` and `Spatial W/ new set parametres`
 
 ```{r echo=FALSE}
 #read in all model runs
@@ -1387,6 +1388,7 @@ SSplotComparisons(summaryoutput01_1_7,
                  
                  "Spatial",
                  "Spatial w/ new set LH paramters"),
+                 filenameprefix = "COM1",
                  labels = c("Year", 
                             "Spawning biomass (t)",
                             "Relative spawning biomass", 
@@ -1453,6 +1455,7 @@ comp1_9 <- SSplotComparisons(summaryoutput1_9,
                   legendlabels = c(
                                    "Base",
                  "selectivity Block 2006"),
+                 filenameprefix = "COM1_9",
                  labels = c("Year", 
                             "Spawning biomass (t)",
                             "Relative spawning biomass", 
@@ -1652,7 +1655,34 @@ ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
   xlim(0,7)
 
 ```
+## AKL
 
+```{r AKL, out.width='60%',  fig.cap="Representation of ALK Matrix to krill in 48.1"}
+alk_matrix <- base.model1$ALK[,,1] # Ajusta las dimensiones según tu matriz
+
+# Convertir la matriz en un data.frame
+alk_df <- as.data.frame(as.table(alk_matrix))
+
+# Renombrar columnas para mayor claridad
+colnames(alk_df) <- c("Length", "TrueAge", "Value")
+
+# Asegúrate de que las columnas Length y TrueAge sean numéricas
+alk_df$Length <- as.numeric(as.character(alk_df$Length))
+alk_df$TrueAge <- as.numeric(as.character(alk_df$TrueAge))
+
+# Asegúrate de que la columna Value sea numérica
+alk_df$Value <- as.numeric(alk_df$Value)
+
+# Crear el plot usando ggplot
+ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(x = "True Age",
+       y = "Length",
+       fill = "Value") +
+  theme_bw()+
+  theme(legend.position = "none")
+```
 
 \newpage
 
