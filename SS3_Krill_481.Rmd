@@ -1,13 +1,11 @@
 ---
-title: "Integrated approach to modeling krill population dynamics in Western Antarctic Peninsula. Spatial and ecosystem considerations"
+title: "Integrated approach to modeling krill population dynamics in the Western Antarctic Peninsula: spatial and ecosystem considerations"
 author:
-  - Mauricio Mardones^[Universidad de Magallanes, mamardon@umag.cl, Milenio Base]
-  - Lucas Krüger ^[Instituto Antártico Chileno, Milenio Base]
-  - Francisco Santa Cruz ^[Instituto Antártico Chileno, Universidad de Magallanes, Milenio Base]
-  - César Cárdenas^[Instituto Antártico Chileno, Milenio Base]
+  - Mauricio Mardones^[Universidad de Magallanes, mamardon@umag.cl, Instituto Milenio Base]
+  - Lucas Krüger ^[Instituto Antártico Chileno, Instituto Milenio Base]
+  - Francisco Santa Cruz ^[Instituto Antártico Chileno, Universidad de Magallanes, Instituto Milenio Base]
+  - César Cárdenas^[Instituto Antártico Chileno, Instituto Milenio Base]
   - George Watters^[Ecosystem Science Division, Southwest Fisheries Science Center, NOAA, USA]
-    
-date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::pdf_document2:
     number_sections: false

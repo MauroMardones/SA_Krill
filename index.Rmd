@@ -456,7 +456,95 @@ SSplotComps(base.model7,
             maxrows = 5,
             maxcols = 5)
 ```
+Heatmap
 
+```{r}
+df <- base.model1$lendbase
+
+# Filtra el dataframe
+df1 <- df %>% 
+  dplyr::filter(Pearson<5) %>% 
+  dplyr::select(c(1, 6, 19, 16)) %>% 
+  dplyr::mutate(Fleet = dplyr::case_when(
+    Fleet == 1 ~ "FISHERYBS",
+    Fleet == 2 ~ "FISHERYEI",
+    Fleet == 3 ~ "FISHERYGS",
+    Fleet == 4 ~ "FISHERYJOIN",
+    Fleet == 5 ~ "FISHERYSSIW",
+    Fleet == 6 ~ "SURVEYBS",
+    Fleet == 7 ~ "SURVEYEI",
+    Fleet == 8 ~ "SURVEYGS",
+    Fleet == 9 ~ "SURVEYJOIN",
+    Fleet == 10 ~ "SURVEYSSIW",
+    Fleet == 11 ~ "PREDATOR",
+    TRUE ~ NA_character_  # Para manejar cualquier valor que no coincida
+  ))
+
+# Crea el heatmap
+ggplot(df1, aes(x = Yr, y = Bin, fill = Pearson)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", 
+                       mid = "white", 
+                       high = "red",
+                       midpoint = 0) +
+  facet_wrap(Fleet~., ncol=5) + 
+  labs(title = "",
+       x = "",
+       y = "Length",
+       fill = "Pearson") +
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 90,
+                                   hjust = 1))
+
+```
+hexagon
+
+
+```{r eval=FALSE}
+# Assuming your data is in a data frame called 'lendbase'
+# Filter and select relevant columns
+data <- base.model1$lendbase %>%
+  dplyr::filter(Pearson<5) %>% 
+  dplyr::select(c(1, 6, 19, 16)) %>% 
+  dplyr::mutate(Fleet = dplyr::case_when(
+    Fleet == 1 ~ "FISHERYBS",
+    Fleet == 2 ~ "FISHERYEI",
+    Fleet == 3 ~ "FISHERYGS",
+    Fleet == 4 ~ "FISHERYJOIN",
+    Fleet == 5 ~ "FISHERYSSIW",
+    Fleet == 6 ~ "SURVEYBS",
+    Fleet == 7 ~ "SURVEYEI",
+    Fleet == 8 ~ "SURVEYGS",
+    Fleet == 9 ~ "SURVEYJOIN",
+    Fleet == 10 ~ "SURVEYSSIW",
+    Fleet == 11 ~ "PREDATOR",
+    TRUE ~ NA_character_  # Para manejar cualquier valor que no coincida
+  )) %>% 
+  dplyr::select(Yr, Bin, Pearson) 
+
+# Create the hexagonal heatmap
+ggplot(data, aes(x = Yr, y = Bin)) +
+  geom_hex(bins=50) +  # Hexagonal bins
+  scale_fill_gradient2(low = "blue", 
+                       mid = "white", 
+                       high = "red", 
+                       midpoint = 0) +  # Color scale
+  theme_minimal() +  # Minimal theme for cleaner look
+  labs(title = "Hexagonal Heatmap of Pearson Residuals",
+       x = "Year",
+       y = "Bin",
+       fill = "Pearson Residual")  # Labels for plot and axes
+
+
+ggplot(data, aes(x = Yr, y = Bin)) +
+  geom_hex(bins = 50) +
+  scale_fill_gradient2(low = "blue", 
+                       mid = "white", 
+                       high = "red", midpoint = median(data$Bin)) +
+  theme_minimal() +
+  labs(title = "Hexagonal Heatmap of Pearson Residuals",
+       x = "Year", y = "Bin", fill = "Pearson Residual")
+```
 
 ## Diagnosis Base Model
 
@@ -1099,7 +1187,7 @@ ggplot(totalike)+
   xlim(0,20)
 ```
 
-
+## Likelihood Profile 
 
 ```{r eval=FALSE, echo = FALSE}
 # 1. Identificar el directorio donde se encuentra el modelo base ----
@@ -1169,8 +1257,14 @@ mainlike_components_labels  <- c('Total likelihood',
                                  "Catch Likelihood",
                                  'Size_at_age likelihood',
                                  'Recruitment likelihood') 
-# 19. Funciones para generar plots de perfil de verosimilitud ----
+
+```
+
+Funciones para generar plots de perfil de verosimilitud ----
+
 ### SSplotProfile() ----
+
+```{r eval=FALSE, echo = FALSE}
 png(file.path(plotdir,"R0_profile_plot.png"),
     width=7,
     height=4.5,
@@ -1202,7 +1296,6 @@ dev.off()
 
 
 ```{r eval=FALSE, echo = FALSE}
-
 # Comparación de series de tiempo 
 labs <- paste("SR_Ln(R0) = ",R0.vec)
 labs[which(round(R0.vec,2)==Baseval)] <- paste("SR_Ln(R0) = ",
@@ -1214,7 +1307,12 @@ SSplotComparisons(prof.R0.summary,
                   plotdir=plotdir,
                   legendloc='bottomleft')
 
-### PinerPlot() ----
+
+```
+
+piner Plot
+
+```{r echo = FALSE}
 #### R0_profile_plot_Length_like ----
 png(file.path(plotdir,"R0_profile_plot_Length_like.png"),
     width=7,
@@ -1235,6 +1333,10 @@ axis(1,at=Baseval,
      label=Baselab)
 abline(v = Baseval, lty=2)
 dev.off()
+```
+
+
+```{r echo = FALSE}
 #### R0_profile_plot_Survey_like ----
 png(file.path(plotdir,"R0_profile_plot_Survey_like.png"),
     width=7,
@@ -1683,6 +1785,7 @@ ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
   theme_bw()+
   theme(legend.position = "none")
 ```
+
 
 \newpage
 
