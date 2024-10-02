@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.3)  10 SEP 2024 12:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.3)  13 SEP 2024 14:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -841,45 +841,45 @@ LaTeX Warning: Float too large for page by 37.53105pt on input line 669.
 <Figs/recruitdev.png, id=376, 1545.775pt x 954.56625pt>
 File: Figs/recruitdev.png Graphic file (type png)
 <use Figs/recruitdev.png>
-Package pdftex.def Info: Figs/recruitdev.png  used on input line 684.
+Package pdftex.def Info: Figs/recruitdev.png  used on input line 682.
 (pdftex.def)             Requested size: 422.76616pt x 261.07182pt.
 <index_files/figure-html/unnamed-chunk-46-1.jpeg, id=377, 578.16pt x 505.89pt>
 File: index_files/figure-html/unnamed-chunk-46-1.jpeg Graphic file (type jpg)
 <use index_files/figure-html/unnamed-chunk-46-1.jpeg>
-Package pdftex.def Info: index_files/figure-html/unnamed-chunk-46-1.jpeg  used on input line 693.
+Package pdftex.def Info: index_files/figure-html/unnamed-chunk-46-1.jpeg  used on input line 691.
 (pdftex.def)             Requested size: 422.77669pt x 369.9296pt.
 [27 <./Figs/recruitdev.png>]
 <Figs/Likelihoodtotal.png, id=384, 772.8875pt x 476.78125pt>
 File: Figs/Likelihoodtotal.png Graphic file (type png)
 <use Figs/Likelihoodtotal.png>
-Package pdftex.def Info: Figs/Likelihoodtotal.png  used on input line 702.
+Package pdftex.def Info: Figs/Likelihoodtotal.png  used on input line 700.
 (pdftex.def)             Requested size: 422.77795pt x 260.80457pt.
 [28 <./index_files/figure-html/unnamed-chunk-46-1.jpeg>]
 <Figs/longtermsb.png, id=389, 529.98pt x 326.93571pt>
 File: Figs/longtermsb.png Graphic file (type png)
 <use Figs/longtermsb.png>
-Package pdftex.def Info: Figs/longtermsb.png  used on input line 711.
+Package pdftex.def Info: Figs/longtermsb.png  used on input line 709.
 (pdftex.def)             Requested size: 469.75603pt x 289.78456pt.
 [29 <./Figs/Likelihoodtotal.png> <./Figs/longtermsb.png>] [30]
 <Figs/COM1compare10_recruits_uncertainty.png, id=402, 469.755pt x 361.35pt>
 File: Figs/COM1compare10_recruits_uncertainty.png Graphic file (type png)
 <use Figs/COM1compare10_recruits_uncertainty.png>
-Package pdftex.def Info: Figs/COM1compare10_recruits_uncertainty.png  used on input line 726.
+Package pdftex.def Info: Figs/COM1compare10_recruits_uncertainty.png  used on input line 724.
 (pdftex.def)             Requested size: 260.16519pt x 200.12706pt.
 <Figs/COM1compare2_spawnbio_uncertainty.png, id=403, 469.755pt x 361.35pt>
 File: Figs/COM1compare2_spawnbio_uncertainty.png Graphic file (type png)
 <use Figs/COM1compare2_spawnbio_uncertainty.png>
-Package pdftex.def Info: Figs/COM1compare2_spawnbio_uncertainty.png  used on input line 726.
+Package pdftex.def Info: Figs/COM1compare2_spawnbio_uncertainty.png  used on input line 724.
 (pdftex.def)             Requested size: 260.16519pt x 200.12706pt.
 <Figs/COM1compare4_Bratio_uncertainty.png, id=404, 469.755pt x 361.35pt>
 File: Figs/COM1compare4_Bratio_uncertainty.png Graphic file (type png)
 <use Figs/COM1compare4_Bratio_uncertainty.png>
-Package pdftex.def Info: Figs/COM1compare4_Bratio_uncertainty.png  used on input line 726.
+Package pdftex.def Info: Figs/COM1compare4_Bratio_uncertainty.png  used on input line 724.
 (pdftex.def)             Requested size: 260.16519pt x 200.12706pt.
 <Figs/COM1compare17_densities_SSB_Virgin.png, id=405, 469.755pt x 361.35pt>
 File: Figs/COM1compare17_densities_SSB_Virgin.png Graphic file (type png)
 <use Figs/COM1compare17_densities_SSB_Virgin.png>
-Package pdftex.def Info: Figs/COM1compare17_densities_SSB_Virgin.png  used on input line 726.
+Package pdftex.def Info: Figs/COM1compare17_densities_SSB_Virgin.png  used on input line 724.
 (pdftex.def)             Requested size: 260.16519pt x 200.12706pt.
 [31
 
@@ -889,22 +889,22 @@ Package pdftex.def Info: Figs/COM1compare17_densities_SSB_Virgin.png  used on in
 <Figs/COM1_9compare10_recruits_uncertainty.png, id=417, 469.755pt x 361.35pt>
 File: Figs/COM1_9compare10_recruits_uncertainty.png Graphic file (type png)
 <use Figs/COM1_9compare10_recruits_uncertainty.png>
-Package pdftex.def Info: Figs/COM1_9compare10_recruits_uncertainty.png  used on input line 745.
+Package pdftex.def Info: Figs/COM1_9compare10_recruits_uncertainty.png  used on input line 743.
 (pdftex.def)             Requested size: 260.16519pt x 200.12706pt.
 <Figs/COM1_9compare2_spawnbio_uncertainty.png, id=418, 469.755pt x 361.35pt>
 File: Figs/COM1_9compare2_spawnbio_uncertainty.png Graphic file (type png)
 <use Figs/COM1_9compare2_spawnbio_uncertainty.png>
-Package pdftex.def Info: Figs/COM1_9compare2_spawnbio_uncertainty.png  used on input line 745.
+Package pdftex.def Info: Figs/COM1_9compare2_spawnbio_uncertainty.png  used on input line 743.
 (pdftex.def)             Requested size: 260.16519pt x 200.12706pt.
 <Figs/COM1_9compare4_Bratio_uncertainty.png, id=419, 469.755pt x 361.35pt>
 File: Figs/COM1_9compare4_Bratio_uncertainty.png Graphic file (type png)
 <use Figs/COM1_9compare4_Bratio_uncertainty.png>
-Package pdftex.def Info: Figs/COM1_9compare4_Bratio_uncertainty.png  used on input line 745.
+Package pdftex.def Info: Figs/COM1_9compare4_Bratio_uncertainty.png  used on input line 743.
 (pdftex.def)             Requested size: 260.16519pt x 200.12706pt.
 <Figs/COM1_9compare17_densities_SSB_Virgin.png, id=420, 469.755pt x 361.35pt>
 File: Figs/COM1_9compare17_densities_SSB_Virgin.png Graphic file (type png)
 <use Figs/COM1_9compare17_densities_SSB_Virgin.png>
-Package pdftex.def Info: Figs/COM1_9compare17_densities_SSB_Virgin.png  used on input line 745.
+Package pdftex.def Info: Figs/COM1_9compare17_densities_SSB_Virgin.png  used on input line 743.
 (pdftex.def)             Requested size: 260.16519pt x 200.12706pt.
 [33
 
@@ -916,18 +916,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16930 strings out of 478033
- 284443 string characters out of 5838240
+ 16929 strings out of 478033
+ 284417 string characters out of 5838240
  1918330 words of memory out of 5000000
  36337 multiletter control sequences out of 15000+600000
  597051 words of font info for 193 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  77i,15n,81p,3711b,554s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on SS3_Krill_481_FSA.pdf (40 pages, 5514602 bytes).
+Output written on SS3_Krill_481_FSA.pdf (40 pages, 5514306 bytes).
 PDF statistics:
- 714 PDF objects out of 1000 (max. 8388607)
- 553 compressed objects within 6 object streams
- 146 named destinations out of 1000 (max. 500000)
+ 711 PDF objects out of 1000 (max. 8388607)
+ 550 compressed objects within 6 object streams
+ 145 named destinations out of 1000 (max. 500000)
  49528 words of extra memory for PDF output out of 51595 (max. 10000000)
 

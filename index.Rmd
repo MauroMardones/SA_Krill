@@ -190,7 +190,8 @@ parInit %>%
   kable_styling(latex_options = c("striped",
                                   "condensed"),
                 full_width = FALSE,
-                font_size=9)%>% 
+                font_size=10,
+                html_font = "arial")%>% 
   pack_rows(index = c("Mortalidad natural" = 1,
                         "Crecimiento"= 5,
                         "Relación longitud-peso" = 2,
@@ -250,7 +251,7 @@ for (dir in directorios) {
 #shell(cmd="ss") # run SS to windows
 # or 
 r4ss::run(
-  dir = dir9,
+  dir = dir1,
   exe = "ss_osx",
   skipfinished = FALSE, # TRUE will skip running if Report.sso present
   show_in_console = TRUE # change to true to watch the output go past
@@ -308,7 +309,7 @@ base.model9 <- SS_output(dir=dir9,
 
 ```{r eval= FALSE, message=F, include=FALSE}
 # html
-SS_plots(base.model9,
+SS_plots(base.model1,
          uncertainty=T,
          datplot = T, 
          png=T, 
@@ -415,7 +416,7 @@ SSplotSelex(base.model7,
             subplots = 1)
 ```
 ```{r}
-SSplotComps(base.model8,
+SSplotComps(base.model1,
             subplots = 1,
             maxrows = 5,
             maxcols = 5)
@@ -1381,7 +1382,8 @@ outps1 %>%
   kable_styling(latex_options = c("striped",
                                   "condensed"),
                 full_width = FALSE,
-                font_size=9)#%>% 
+                font_size=9,
+                html_font = "arial")#%>% 
   #pack_rows(index = c("Estimation" = 1,
    #                     "Prediction" = 45))
 ```
@@ -1758,6 +1760,8 @@ ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
 
 ```
 ## AKL
+
+In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process
 
 ```{r AKL, out.width='60%',  fig.cap="Representation of ALK Matrix to krill in 48.1"}
 alk_matrix <- base.model1$ALK[,,1] # Ajusta las dimensiones según tu matriz

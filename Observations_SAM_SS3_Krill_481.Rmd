@@ -127,7 +127,7 @@ alk_df$Value <- as.numeric(alk_df$Value)
 ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
   geom_tile() +
   scale_fill_gradient(low = "white", high = "blue") +
-  labs(x = "True Age",
+  labs(x = "Age",
        y = "Length",
        fill = "Value") +
   theme_bw()+
@@ -323,14 +323,14 @@ data <- data.frame(
 
 kable(data, format = "markdown", 
       col.names = c("Index", "runs.p", "test", "sigma3.lo", "sigma3.hi", "type"),
-      caption = "Table 1: Runs tests results for fits differente fleet used in SS3 krill assessment") %>%
+      caption = "Runs tests results for fits differente fleet used in SS3 krill assessment") %>%
   kable_styling(full_width = FALSE)
 ```
 
 Regarding the reliability of the parameters, it is important to note that the model is conditioned with input parameters gathered from the literature [@Smith2023a; @Maschette2020; @Kinzey2011], as is shown in Table \@ref(tab:parainit). However, the model calculates the most essential parameters through an iterative process, ensuring that their correlation is carefully managed. This calculation process is specifically designed to avoid dependence on the initial conditioning parameters of the model.
 
 \newpage
-```{r eval=TRUE,, parainit, fig.cap="Initial biology and fishery parameters to set a model s1 in krill in WAP"}
+```{r parainit, eval=TRUE}
 
 # leo archivos para plotear y hacer tablas
 start1 <- SS_readstarter(file = file.path(dir1,
@@ -418,7 +418,54 @@ ggplot(exploitation_long,
 
 ```
 
+And total Harvest rate could be noted in Table \@ref(tab:hrt) and Harvest Rate by Strata regarding outputs of `SS3` in Table \@ref(tab:hrt2)
+
 \newpage
 
+```{r hrt}
+# Calcular el acumulado anual de F_std por año
+data <- exploitation_long %>%
+  dplyr::filter(Yr<2021) %>% 
+  group_by(Yr) %>%
+  dplyr::summarize(F_std_accumulated = mean(F_std)) %>% 
+  dplyr::select(Yr,  F_std_accumulated) %>% 
+  dplyr::rename("Harvest Rate" ="F_std_accumulated" ,
+                "Year" = "Yr")
+
+data %>%
+  kbl(booktabs = TRUE,
+      format = "latex",
+      position="ht!",
+  caption = "Accumulate Harvest Rate by year in whole 48.1 Subarea") %>%
+  kable_paper("hover", 
+              full_width = F)%>%
+  kable_styling(latex_options = c("striped"),
+                full_width = FALSE,
+                font_size=9)
+
+
+```
+
+\newpage
+
+```{r hrt2}
+data2 <- base.model1$exploitation %>% 
+  dplyr::select(1, 7:11) %>% 
+  dplyr::rename("Year" = "Yr")
+data2 %>% 
+  kbl(booktabs = TRUE,
+      format = "latex",
+      position="ht!",
+      digits = 3,
+  caption = "Harvest Rate by strata and year") %>%
+  kable_paper("hover", 
+              full_width = F)%>%
+  kable_styling(latex_options = c("striped"),
+                full_width = FALSE,
+                font_size=9) %>% 
+  pack_rows("Forecast", 44, 44)
+```
+
+\newpage
 
 # REFERENCES

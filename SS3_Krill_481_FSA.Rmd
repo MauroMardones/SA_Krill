@@ -60,7 +60,7 @@ dir1<-here("s1")
 
 # ABSTRACT 
 
-The integration of available sources of information is a challenge for any attempt to know dynamics populations for Antarctic Krill (*Euphausia superba*) in an integrated stock assessment model. Being able to identify sources of information, systematize and integrate it in a model and estimate krill population variables in a context of change and fisheries management is vital for management and decision making. The analysis represents a modern approach for stock assessment of complex dynamics such as krill and the integration of ecosystem components as environmental variables and ecological aspects such as predators. We have three main objectives. i)integrate fishing, environmental and ecological variables in an integrated stock assessment model and test his performance; ii) to consider the spatial heterogeneity of the krill population structure and, iii) to evaluate the impact of biological and  population structure assumptions on the performance of this type of integrated stock assessment models. Consequently, by acknowledging and integrating different data sources, the stock assessment model can provide insights into the ecological dynamics of krill populations and improve CCAMLR fishery management strategies in this region. This study addresses key recommendations provided by the Working Group on Statistics, Assessment, and Modelling (WG-SAM-2024/26) . The base model (s1) performed well in capturing the inter-annual and inter-fleet variability in krill length compositions. Retrospective analysis showed a slight underestimation bias in spawning biomass; however, this was within an acceptable range. The model suggests a higher dependence on length composition data compared to other sources for estimating recruitment. Spatial considerations and assumptions about stock-recruitment relationships significantly impact population variable estimates. The inclusion of a selectivity block into the model (`s9`) improved the fit to some length composition data compared to the base model (`s1`). Overall, this study demonstrates the potential of using a spatially explicit integrated model for krill stock assessment. The model provides valuable insights into krill population dynamics and can be used to inform sustainable management practices.
+The integration of available sources of information is a challenge for any attempt to know dynamics populations for Antarctic Krill (*Euphausia superba*) in an integrated stock assessment model. Being able to identify sources of information, systematize and integrate it in a model and estimate krill population variables in a context of change and fisheries management is vital for management and decision making. The analysis represents a modern approach for stock assessment of complex dynamics such as krill and the integration of ecosystem components as environmental variables and ecological aspects such as predators. We have three main objectives. i)integrate fishing, environmental and ecological variables in an integrated stock assessment model and test his performance; ii) to consider the spatial heterogeneity of the krill population structure and, iii) to evaluate the impact of biological and  population structure assumptions on the performance of this type of integrated stock assessment models. Consequently, by acknowledging and integrating different data sources, the stock assessment model can provide insights into the ecological dynamics of krill populations and improve CCAMLR fishery management strategies in this region. This study addresses key recommendations provided by the Working Group on Statistics, Assessment, and Modelling (WG-SAM-2024/26) . The reference model (s1) performed well in capturing the inter-annual and inter-fleet variability in krill length compositions. Retrospective analysis showed a slight underestimation bias in spawning biomass; however, this was within an acceptable range. The model suggests a higher dependence on length composition data compared to other sources for estimating recruitment. Spatial considerations and assumptions about stock-recruitment relationships significantly impact population variable estimates. The inclusion of a selectivity block into the model (`s9`) improved the fit to some length composition data compared to the reference model (`s1`). Overall, this study demonstrates the potential of using a spatially explicit integrated model for krill stock assessment. The model provides valuable insights into krill population dynamics and can be used to inform sustainable management practices.
 
 
 
@@ -285,7 +285,7 @@ ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
 
 ### Selectivity Blocks
 
-Here we have incorporated a scenario (`s9`) with a selectivity block for krill. The inclusion of selectivity blocks aims to reduce the effect of autocorrelation in the model fitting process, and also, to explicitly account for fleet behavior in exploring new extraction areas, whether in bathymetric or latitudinal terms. According to the data identified, a shift from traditional to continuous trawling occurred in 2006. As a result, two blocks have been established (1980-2006 and 2007-2020) as improvements. This is compared with the base scenario.
+Here we have incorporated a scenario (`s9`) with a selectivity block for krill. The inclusion of selectivity blocks aims to reduce the effect of autocorrelation in the model fitting process, and also, to explicitly account for fleet behavior in exploring new extraction areas, whether in bathymetric or latitudinal terms. According to the data identified, a shift from traditional to continuous trawling occurred in 2006. As a result, two blocks have been established (1980-2006 and 2007-2020) as improvements. This is compared with the reference scenario.
 
 
 ### Environmental variable modelling in `SS3`
@@ -322,7 +322,7 @@ knitr::include_graphics('Figs/pathmod.png')
 It is important to note that there is a degree of consistency in how the performance of stock assessment models for toothfish and krill is evaluated. For krill, the primary diagnostics conducted adhere to the "best practices" outlined in @Carvalho2021b work. This recipe of steps for testing model performance is illustrated in Figure \@ref(fig:recipediags).
 
 
-```{r recipediags, out.width='80%', fig.cap="Conceptual process flow chart illustrating a series of interconnected diagnostic tests recommended when developing a base model."}
+```{r recipediags, out.width='80%', fig.cap="Conceptual process flow chart illustrating a series of interconnected diagnostic tests recommended when developing a reference model."}
 knitr::include_graphics('Figs/recipediags.png')
 ```
 
@@ -330,7 +330,7 @@ While we acknowledge the work done by @WGSAM2114 in toothfish stock assessment, 
 
 ## Stock Assessment Scenarios 
 
-To consider the uncertainty associated with the krill nature scenarios, we considered a set of configurations associated with spatial heterogeneity, influence of life history parameters on the estimates and uncertainty associated with the relationship that exists between spawning biomass and krill recruitment. The methodology involves comparing the statistical performance of the model regarding these configurations. We have eight scenarios that were used to test different options in modeling about main considerations in assessment of krill population, and for comparative purposes, we consider `s1` as the base model (Table 1).
+To consider the uncertainty associated with the krill nature scenarios, we considered a set of configurations associated with spatial heterogeneity, influence of life history parameters on the estimates and uncertainty associated with the relationship that exists between spawning biomass and krill recruitment. The methodology involves comparing the statistical performance of the model regarding these configurations. We have eight scenarios that were used to test different options in modeling about main considerations in assessment of krill population, and for comparative purposes, we consider `s1` as the reference model (Table 1).
 
 
 | Scenario | Description                                                                          |
@@ -355,7 +355,7 @@ A comparative analysis of models `s01`, `s1`, and `s7` will be conducted, as the
 
 # RESULTS
 
-## Diagnosis Base Model 
+## Diagnosis Model 
 
 All models tested were the final gradient using maximum likelihood is achieved and was relatively small (< 1.00e-04), and the Hessian matrix for the parameter estimates was positive, which shows that the performance is within what was expected for this type of analysis. Regarding goodness-of-fit, Figure \@ref(fig:res1) display the residuals of krill length caught by fleets over the years in `s1`. ultiple fishing fleets (FISHERYBS, FISHERYEI, FISHERYGS, FISHERYJOIN, FISHERYSSIW) and a survey (SURVEYBS) are recorded Figure \@ref(fig:res1). SURVEYEI, SURVEYGS, SURVEYJOIN and PREDATOR have consistency after the year 2000. However, there was variability in the width of the distributions over time, which may reflect changes in abundance or sampling selectivity. For instance, in FISHERYBS and FISHERYEI, the distribution widened and slightly shifted towards larger sizes in recent years, indicating a possible change in the krill population or fishing practices.
 
@@ -524,7 +524,7 @@ knitr::include_graphics(c('Figs/COM1compare10_recruits_uncertainty.png',
 
 \newpage
 
-A selectivity block in an alternative scenario (`s9`) related trawl thecnics and mesh changes was implemented and compared its performance with the base model (`s1`). The comparison of the main evaluation results with both scenarios is presented in the estimates of the population variables of recruit, spawning biomass, relative biomass and virgin biomass  (Figure \@ref(fig:comparisionselec)). No significant differences were detected in the state variables.
+A selectivity block in an alternative scenario (`s9`) related trawl thecnics and mesh changes was implemented and compared its performance with the reference model (`s1`). The comparison of the main evaluation results with both scenarios is presented in the estimates of the population variables of recruit, spawning biomass, relative biomass and virgin biomass  (Figure \@ref(fig:comparisionselec)). No significant differences were detected in the state variables.
 
 
 \newpage

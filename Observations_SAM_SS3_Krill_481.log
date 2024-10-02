@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.3)  10 SEP 2024 13:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.3)  12 SEP 2024 13:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -821,24 +821,24 @@ File: Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg Graphic file (
 <use Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg>
 Package pdftex.def Info: Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg  used on input line 664.
 (pdftex.def)             Requested size: 375.80571pt x 260.17317pt.
-[28 <./Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg>] [29] (./Observations_SAM_SS3_Krill_481.aux)
+[28 <./Observations_SAM_SS3_Krill_481_files/figure-latex/hr-1.jpeg>] [29] [30] [31] (./Observations_SAM_SS3_Krill_481.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16549 strings out of 478033
- 275409 string characters out of 5838240
- 1884330 words of memory out of 5000000
- 36059 multiletter control sequences out of 15000+600000
+ 16555 strings out of 478033
+ 275456 string characters out of 5838240
+ 1894330 words of memory out of 5000000
+ 36061 multiletter control sequences out of 15000+600000
  589428 words of font info for 178 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  77i,9n,81p,1695b,534s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Observations_SAM_SS3_Krill_481.pdf (29 pages, 5118657 bytes).
+Output written on Observations_SAM_SS3_Krill_481.pdf (31 pages, 5123117 bytes).
 PDF statistics:
- 442 PDF objects out of 1000 (max. 8388607)
- 321 compressed objects within 4 object streams
- 92 named destinations out of 1000 (max. 500000)
+ 455 PDF objects out of 1000 (max. 8388607)
+ 332 compressed objects within 4 object streams
+ 96 named destinations out of 1000 (max. 500000)
  41178 words of extra memory for PDF output out of 42996 (max. 10000000)
 
