@@ -25,16 +25,16 @@
 #_Cond 1.0 # first age that moves (real age at begin of season, not integer) also cond on do_migration>0
 #_Cond 1 1 1 2 4 10 # example move definition for seas=1, morph=1, source=1 dest=2, age1=4, age2=10
 #
-0 #_Nblock_Patterns
+  0 #_Nblock_Patterns
 #_Cond 0 #_blocks_per_pattern 
 # begin and end years of blocks
 #  1978 2020
 #
 # controls for all timevary parameters 
-1 #_time-vary parm bound check (1=warn relative to base parm bounds; 3=no bound check); Also see env (3) and dev (5) options to constrain with base bounds
+  1 #_time-vary parm bound check (1=warn relative to base parm bounds; 3=no bound check); Also see env (3) and dev (5) options to constrain with base bounds
 #
 # AUTOGEN
-1 0 0 0 0 # autogen: 1st element for biology, 2nd for SR, 3rd for Q, 4th reserved, 5th for selex
+  1 0 0 0 0 # autogen: 1st element for biology, 2nd for SR, 3rd for Q, 4th reserved, 5th for selex
 # where: 0 = autogen time-varying parms of this category; 1 = read each time-varying parm line; 2 = read then autogen if parm min==-12345
 #
 #_Available timevary codes
@@ -48,7 +48,7 @@
 #
 # setup for M, growth, wt-len, maturity, fecundity, (hermaphro), recr_distr, cohort_grow, (movement), (age error), (catch_mult), sex ratio 
 #_NATMORT
-0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate;_5=BETA:_Maunder_link_to_maturity;_6=Lorenzen_range
+  0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate;_5=BETA:_Maunder_link_to_maturity;_6=Lorenzen_range
 #_no additional input for selected M option; read 1P per morph
 #
 1 # GrowthModel: 1=vonBert with L1&L2; 2=Richards with L1&L2; 3=age_specific_K_incr; 4=age_specific_K_decr; 5=age_specific_K_each; 6=NA; 7=NA; 8=growth cessation
@@ -60,8 +60,8 @@
 0 #_SD_add_to_LAA (set to 0.1 for SS2 V1.x compatibility)
 0 #_CV_Growth_Pattern:  0 CV=f(LAA); 1 CV=F(A); 2 SD=F(LAA); 3 SD=F(A); 4 logSD=F(A)
 #
-2 #_maturity_option:  1=length logistic; 2=age logistic; 3=read age-maturity matrix by growth_pattern; 4=read age-fecundity; 5=disabled; 6=read length-maturity
-2 #_First_Mature_Age
+1 #_maturity_option:  1=length logistic; 2=age logistic; 3=read age-maturity matrix by growth_pattern; 4=read age-fecundity; 5=disabled; 6=read length-maturity
+3 #_First_Mature_Age
 1 #_fecundity_at_length option:(1)eggs=Wt*(a+b*Wt);(2)eggs=a*L^b;(3)eggs=a*Wt^b; (4)eggs=a+b*L; (5)eggs=a+b*W
 0 #_hermaphroditism option:  0=none; 1=female-to-male age-specific fxn; -1=male-to-female age-specific fxn
 1 #_parameter_offset_approach for M, G, CV_G:  1- direct, no offset**; 2- male=fem_parm*exp(male_parm); 3: male=female*exp(parm) then old=young*exp(parm)
@@ -70,21 +70,21 @@
 #_growth_parms
 #_ LO HI INIT PRIOR PR_SD PR_type PHASE env_var&link dev_link dev_minyr dev_maxyr dev_PH Block Block_Fxn
 # Sex: 1  BioPattern: 1  NatMort
-0.2  0.8 0.4 0.4 0.5 0 3  0 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1
+0.2  0.5 0.4 0.4 0.5 0 3  0 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1
 # Sex: 1  BioPattern: 1  Growth
 0 3  1 1 0.5 6 2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
-1  10  7 7 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
+1  10  6 6 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
 0.05  0.8 0.45  0.4 0.5 6 4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
-0  0.25  0.05 0.05 0.5 0 -3  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
-0  0.25  0.05 0.05 0.5 0 -3  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
+0.05 0.25 0.2 1 0.5 0 -3  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
+0.05 0.25 0.2 1 0.5 0 -3  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
 # Sex: 1  BioPattern: 1  WtLen
 0 3 5.00E-06  5.00E-06  0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_1_Fem_GP_1
 1 4 3.34694 3.34694 0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_2_Fem_GP_1
 # Sex: 1  BioPattern: 1  Maturity&Fecundity
- 0.2  5 2.4 2.4 0.8 0 4  0 0 0 0 0 0 0 # Mat50%_Fem_GP_1 
--3 3 -1.2 -0.25 0.8 0 -99 0 0 0 0 0 0 0 # Mat_slope_Fem_GP_1 
--3 3 1 1 0.8 0 -99 0 0 0 0 0 0 0 # Eggs/kg_inter_Fem_GP_1
--3 3 0 0 0.8 0 -99 0 0 0 0 0 0 0 # Eggs/kg_slope_wt_Fem_GP_1
+0.2  2 2.4 2.4 0.8 0 -4  0 0 0 0 0 0 0 # Mat50%_Fem_GP_1 
+-3 3 -0.25 -0.25 0.8 0 -4  0 0 0 0 0 0 0 # Mat_slope_Fem_GP_1  
+-3 3 2 1 0.8 0 -3  0 0 0 0 0 0 0 # Eggs/kg_inter_Fem_GP_1  
+-3 3 0 0 0.8 0 -3  0 0 0 0 0 0 0 # Eggs/kg_slope_wt_Fem_GP_1 
 # Sex:  2 BioPattern: 1 NatMort                       
 # 0.05 0.5 0 0.4 0.5 0 -3 0  0 0 0 0 0 0 # NatM_uniform_Mal_GP_1 
 # Sex:  2 BioPattern: 1 Growth                        
@@ -104,17 +104,17 @@
 #  Age Error from parameters
 #  catch multiplier
 #  fraction female, by GP
- 1e-06 0.999999 0.5 0.5 0.5 0 -99 0 0 0 0 0 0 0 # FracFemale_GP_1
+1e-06 0.999999 0.5 0.5 0.5 0 -99 0 0 0 0 0 0 0 # FracFemale_GP_1
 #  M2 parameter for each predator fleet
-0.01 0.5 0.2 0.2 0.8 0 3 0 5 1979 2020 2 0 0 # M2_pred1
-0.0001 2 1.7 0.5 0.5 6 5 # M2_pred1_dev_se
--0.99 0.99 0 0 0.5 6 6 # M2_pred1_dev_autocorr
-                              
+0.01 0.5 0.2 0.1 0.8 0 3 0 5 1979 2020 2 0 0 # M2_pred1
+0.0001 2 1.7 0.5 0.5 -6 -5 # M2_pred1_dev_se
+-0.99 0.99 0 0 0.5 -6 -6 # M2_pred1_dev_autocorr
+          
 #
 #_no timevary MG parameters
 #
 #_seasonal_effects_on_biology_parms
- 0 0 0 0 0 0 0 0 0 0 #_femwtlen1,femwtlen2,mat1,mat2,fec1,fec2,Malewtlen1,malewtlen2,L1,K
+0 0 0 0 0 0 0 0 0 0 #_femwtlen1,femwtlen2,mat1,mat2,fec1,fec2,Malewtlen1,malewtlen2,L1,K
 #_ LO HI INIT PRIOR PR_SD PR_type PHASE
 #_Cond -2 2 0 0 -1 99 -2 #_placeholder when no seasonal MG parameters
 #
@@ -122,8 +122,8 @@
 1  # 0/1 to use steepness in initial equ recruitment calculation
 0  #  future feature:  0/1 to make realized sigmaR a function of SR curvature
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn #  parm_name
-3            30           10        10            5             0          1          0          0          0          0          0          0          0 # SR_LN(R0)
-0.2             1           0.75           0.75             1             0         -4          0          0          0          0          0          0          0 # SR_BH_steep
+3            30           10         10            10             0          1          0          0          0          0          0          0          0 # SR_LN(R0)
+0.2             1           0.8           0.8             1             0         -4          0          0          0          0          0          0          0 # SR_BH_steep
 0             2           0.6           0.8           0.8             0         -4          0          0          0          0          0          0          0 # SR_sigmaR
 -5             5             0             0             1             0         -4          1          0          0          0          0          0          0 # SR_regime
 0             0             0             0             0             0        -99          0          0          0          0          0          0          0 # SR_autocorr
@@ -137,11 +137,11 @@
 -4 #_recdev_early_phase
 0 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
 1 #_lambda for Fcast_recr_like occurring before endyr+1
-1980 #_last_yr_nobias_adj_in_MPD; begin of ramp
-1980 #_first_yr_fullbias_adj_in_MPD; begin of plateau
-2001 #_last_yr_fullbias_adj_in_MPD
-2002 #_end_yr_for_ramp_in_MPD (can be in forecast to shape ramp, but SS3 sets bias_adj to 0.0 for fcast yrs)
-1 #_max_bias_adj_in_MPD (typical ~0.8; -3 sets all years to 0.0; -2 sets all non-forecast yrs w/ estimated recdevs to 1.0; -1 sets biasadj=1.0 for all yrs w/ recdevs)
+1983.0   #_last_early_yr_nobias_adj_in_MPD 
+1993.5   #_first_yr_fullbias_adj_in_MPD 
+2015.3   #_last_yr_fullbias_adj_in_MPD 
+2021.7   #_first_recent_yr_nobias_adj_in_MPD 
+0.6706  #_max_bias_adj_in_MPD (1.0 to mimic pre-2009 models) 
 0 #_period of cycles in recruitment (N parms read below)
 -5 #min rec_dev
 5 #max rec_dev
@@ -181,43 +181,43 @@
 #_5:  0/1 for biasadj or not
 #_6:  0/1 to float
 #_   fleet      link link_info  extra_se   biasadj     float  #  fleetname
-1	1	0	1	0	0	#	FISHERYBS
-2	1	0	1	0	0	#	FISHERYEI
-3	1	0	1	0	0	#	FISHERYGS
-4	1	0	1	0	0	#	FISHERYJOIN
-5	1	0	1	0	0	#	FISHERYSSIW
-6	1	0	1	0	0	#	SURVEYBS
-7	1	0	1	0	0	#	SURVEYEI
-8	1	0	1	0	0	#	SURVEYGS
-9	1	0	1	0	0	#	SURVEYJOIN
-10 1	0	1	0	0	#	SURVEYSSIW
-11 1	0	1	0	0	#	PREDATOR
--9999 0 0 0 0 0                                               
+                  1	1	0	1	0	0	#	FISHERYBS
+                2	1	0	1	0	0	#	FISHERYEI
+                3	1	0	1	0	0	#	FISHERYGS
+                4	1	0	1	0	0	#	FISHERYJOIN
+                5	1	0	1	0	0	#	FISHERYSSIW
+                6	1	0	1	0	0	#	SURVEYBS
+                7	1	0	1	0	0	#	SURVEYEI
+                8	1	0	1	0	0	#	SURVEYGS
+                9	1	0	1	0	0	#	SURVEYJOIN
+                10 1	0	1	0	0	#	SURVEYSSIW
+                11 1	0	1	0	0	#	PREDATOR
+                -9999 0 0 0 0 0                                               
 #
 #_Q_parms(if_any);Qunits_are_ln(q)
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name
 -25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(1)	
-0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(1)	
+0	1	0.5	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(1)	
 -25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(2)	
-0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(2)	
+0	1	0.5	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(2)	
 -25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(3)	
-0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(3)	
--25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(4)	
-0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(4)	
--25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(5)	
-0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(5)	
--7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(6)	
-0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(6)	
--7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(7)	
-0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(7)	
--7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(8)	
-0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(8)	
--7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(9)	
-0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(9)	
--7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(10)	
-0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(10)	
--25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_PREDATOR(11)
-0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(11)	
+0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(3)
+                  -25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(4)	
+                  0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(4)	
+                  -25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(5)	
+                  0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(5)	
+                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(6)	
+                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(6)	
+                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(7)	
+                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(7)	
+                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(8)	
+                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(8)	
+                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(9)	
+                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(9)	
+                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(10)	
+                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(10)	
+                  -10	25	0	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_PREDATOR(11)
+                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(11)	
 #_no timevary Q parameters
 #
 #_size_selex_patterns
@@ -240,17 +240,17 @@
 #Pattern:_42; parm=special+3+2; cubic spline; like 27, with 2 additional param for scaling (average over bin range)
 #_discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead;_4=define_dome-shaped_retention
 #_Pattern Discard Male Special
-1	0	0	0	#		FISHERYBS
-1	0	0	0	#		FISHERYEI
-1	0	0	0	#		FISHERYGS
-1	0	0	0	#		FISHERYJOIN
-1	0	0	0	#		FISHERYSSIW
-1	0	0	0	#		SURVEYBS
-1	0	0	0	#		SURVEYEI
-1	0	0	0	#		SURVEYGS
-1	0	0	0	#		SURVEYJOIN
-1	0	0	0	#		SURVEYSSIW
-1	0	0	0	#		PREDATOR                                            
+                  1	0	0	0	#		FISHERYBS
+                1	0	0	0	#		FISHERYEI
+                1	0	0	0	#		FISHERYGS
+                1	0	0	0	#		FISHERYJOIN
+                1	0	0	0	#		FISHERYSSIW
+                1	0	0	0	#		SURVEYBS
+                1	0	0	0	#		SURVEYEI
+                1	0	0	0	#		SURVEYGS
+                1	0	0	0	#		SURVEYJOIN
+                1	0	0	0	#		SURVEYSSIW
+                1	0	0	0	#		PREDATOR                                            
 #
 #_age_selex_patterns
 #Pattern:_0; parm=0; selex=1.0 for ages 0 to maxage
@@ -271,17 +271,17 @@
 #Pattern:_42; parm=2+special+3; // cubic spline; with 2 additional param for scaling (average over bin range)
 #Age patterns entered with value >100 create Min_selage from first digit and pattern from remainder
 #_Pattern Discard Male Special
-0	0	0	0	#		FISHERYBS
-0	0	0	0	#		FISHERYEI
-0	0	0	0	#		FISHERYGS
-0	0	0	0	#		FISHERYJOIN
-0	0	0	0	#		FISHERYSSIW
-0	0	0	0	#		SURVEYBS
-0	0	0	0	#		SURVEYEI
-0	0	0	0	#		SURVEYGS
-0	0	0	0	#		SURVEYJOIN
-0	0	0	0	#		SURVEYSSIW
-0	0	0	0	#		PREDATOR                                               
+                0	0	0	0	#		FISHERYBS
+                0	0	0	0	#		FISHERYEI
+                0	0	0	0	#		FISHERYGS
+                0	0	0	0	#		FISHERYJOIN
+                0	0	0	0	#		FISHERYSSIW
+                0	0	0	0	#		SURVEYBS
+                0	0	0	0	#		SURVEYEI
+                0	0	0	0	#		SURVEYGS
+                0	0	0	0	#		SURVEYJOIN
+                0	0	0	0	#		SURVEYSSIW
+                0	0	0	0	#		PREDATOR                                               
 #
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name
 #	1	FISHERY	LenSelex														
@@ -294,38 +294,38 @@
 0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(3)		
 1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(3)	
 #	1	FISHERY	LenSelex														
-0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(4)		
-1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(4)	
+                  0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(4)		
+                  1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(4)	
 #	1	FISHERY	LenSelex														
-0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(5)		
-1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(5)		
+                  0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(5)		
+                  1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(5)		
 #	2	SURVEY1	LenSelex														
-1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(6)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(6)		
+                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(6)		
+                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(6)		
 #	2	SURVEY1	LenSelex														
-1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(7)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(7)		
+                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(7)		
+                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(7)		
 #	2	SURVEY1	LenSelex														
-1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(8)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(8)		
+                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(8)		
+                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(8)		
 #	2	SURVEY1	LenSelex														
-1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(9)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(9)		
+                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(9)		
+                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(9)		
 #	2	SURVEY1	LenSelex														
-1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(10)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(10)		
+                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(10)		
+                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(10)		
 #	2	PREDATOR	LenSelex														
-1	7	1	1	1	1	2	0	0	0	0	0	0	0	#	Size_inflection_PREDATOR(11)		
-0.01	7	2	2	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_PREDATOR(11)		   
-                                                
+0	3	0.5	0.5	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_PREDATOR(11)		
+0	3	1	0.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_PREDATOR(11)		   
+              
 #_No_Dirichlet parameters
 #_no timevary selex parameters
 #
-  0   #  use 2D_AR1 selectivity(0/1)
+0   #  use 2D_AR1 selectivity(0/1)
 #_no 2D_AR1 selex offset used
 #
 # Tag loss and Tag reporting parameters go next
- 0  # TG_custom:  0=no read and autogen if tag data exist; 1=read
+0  # TG_custom:  0=no read and autogen if tag data exist; 1=read
 #_Cond -6 6 1 1 2 0.01 -4 0 0 0 0 0 0 0  #_placeholder if no parameters
 #
 # no timevary parameters
@@ -340,7 +340,17 @@
 #_6=mult_by_size-at-age_N
 #_7=mult_by_generalized_sizecomp
 #_Factor  Fleet  Value
- -9999   1    0  # terminator
+4     1          0.385229 # 
+4     2          0.292459 # 
+4     3          0.322293 # 
+4     4          0.328148 # 
+4     5          0.331887 # 
+4     6          0.300346 #    
+4     7          0.334107 # 
+4     8          0.309753 # 
+4     9          0.231557 # 
+4    11          0.347818 # 
+-9999   1    0  # terminator
 #
 4 #_maxlambdaphase
 1 #_sd_offset; must be 1 if any growthCV, sigmaR, or survey extraSD is an estimated parameter
@@ -349,8 +359,8 @@
 # 10=recrdev; 11=parm_prior; 12=parm_dev; 13=CrashPen; 14=Morphcomp; 15=Tag-comp; 16=Tag-negbin; 17=F_ballpark; 18=initEQregime
 #like_comp fleet  phase  value  sizefreq_method
 1 2 2 1 1
-4 6 2 1 1
-4 11 3 1 1
+4 2 2 1 1
+4 2 3 1 1
 -9999  1  1  1  1  #  terminator
 #
 # lambdas (for info only; columns are phases)
@@ -374,8 +384,9 @@
 #  1 1 1 1 #_parameter-dev-vectors
 #  1 1 1 1 #_crashPenLambda
 #  0 0 0 0 # F_ballpark_lambda
- 0 # (0/1/2) read specs for more stddev reporting: 0 = skip, 1 = read specs for reporting stdev for selectivity, size, and numbers, 2 = add options for M,Dyn. Bzero, SmryBio
-                                                        
-  999
-                                                      
-                                                      
+                    0 # (0/1/2) read specs for more stddev reporting: 0 = skip, 1 = read specs for reporting stdev for selectivity, size, and numbers, 2 = add options for M,Dyn. Bzero, SmryBio
+                    
+                    999
+                    
+                    
+                    

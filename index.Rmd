@@ -251,7 +251,7 @@ for (dir in directorios) {
 #shell(cmd="ss") # run SS to windows
 # or 
 r4ss::run(
-  dir = dir1,
+  dir = dirtest,
   exe = "ss_osx",
   skipfinished = FALSE, # TRUE will skip running if Report.sso present
   show_in_console = TRUE # change to true to watch the output go past
@@ -304,12 +304,17 @@ base.model8 <- SS_output(dir=dir8,
 base.model9 <- SS_output(dir=dir9,
                         covar=T,
                         forecast=T)
+
+#stest
+base.modeltest <- SS_output(dir=dirtest,
+                        covar=T,
+                        forecast=T)
 ```
 
 
 ```{r eval= FALSE, message=F, include=FALSE}
 # html
-SS_plots(base.model1,
+SS_plots(base.modeltest,
          uncertainty=T,
          datplot = T, 
          png=T, 
@@ -416,7 +421,7 @@ SSplotSelex(base.model7,
             subplots = 1)
 ```
 ```{r}
-SSplotComps(base.model1,
+SSplotComps(base.modeltest,
             subplots = 1,
             maxrows = 5,
             maxcols = 5)
@@ -564,7 +569,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Residual consistency 
 
 ```{r}
-SSplotRunstest(base.model1,
+SSplotRunstest(base.modeltest,
                subplots = "len",
                add=T,
                plot = TRUE,
@@ -594,13 +599,13 @@ SSplotRunstest(base.model5,
 SSplotRunstest(base.model6,
                subplots = "len",
                add=T)
-SSplotRunstest(base.model7,
+SSplotRunstest(base.modeltest,
                subplots = "len",
                add=T)
 ```
 
 ```{r}
-SSplotRunstest(base.model1,
+SSplotRunstest(base.modeltest,
                subplots = "cpue",
                add=T)
 ```
@@ -627,7 +632,7 @@ SSplotRunstest(base.model5,
 SSplotRunstest(base.model6,
                subplots = "cpue",
                add=T)
-SSplotRunstest(base.model7,
+SSplotRunstest(base.modeltest,
                subplots = "cpue",
                add=T)
 ```
@@ -655,7 +660,7 @@ SSplotJABBAres(base.model5,
 SSplotJABBAres(base.model6,
                subplots = "len",
                add=T)
-SSplotJABBAres(base.model7,
+SSplotJABBAres(base.modeltest,
                subplots = "len",
                add=T)
 ```
@@ -682,7 +687,7 @@ SSplotJABBAres(base.model5,
 SSplotJABBAres(base.model6,
                subplots = "cpue",
                add=T)
-SSplotJABBAres(base.model7,
+SSplotJABBAres(base.modeltest,
                subplots = "cpue",
                add=T)
 ```
@@ -710,10 +715,10 @@ Los análisis retrospectivo, dan cuenta de diferencias de estimación
 ```{r eval=FALSE}
 #one by one
 retro(
-    dir = dir1,
+    dir = dirtest,
     oldsubdir = "",
     newsubdir = "Retrospective",
-    years = 0:-5,
+    years = 0:-4,
     exe = "ss_osx",
     extras = "-nox",
     skipfinished = FALSE)
@@ -801,7 +806,7 @@ retroModelstest <- SSgetoutput(dirvec=file.path(dirtest,
                                             paste("retro",0:-3,
                                                   sep="")))
 
-retroSummary <- SSsummarize(retroModelstest)
+retroSummarytest <- SSsummarize(retroModelstest)
 
 
 ```
@@ -853,6 +858,11 @@ retro7 <- SSplotRetro(retroSummary7,
             legend = T,
             verbose=F)
 
+retrotest <- SSplotRetro(retroSummarytest,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F)
 
 ```
 
