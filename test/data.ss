@@ -12,7 +12,7 @@
 1978 #_StartYr
 2020 #_EndYr
 1 #_Nseas
- 12 #_months/season
+12 #_months/season
 2 #_Nsubseasons (even number, minimum is 2)
 1 #_spawn_month
 1 #_Ngenders: 1, 2, -1  (use -1 for 1 sex setup with SSB multiplied by female_frac parameter)

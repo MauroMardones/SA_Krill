@@ -312,6 +312,23 @@ base.modeltest <- SS_output(dir=dirtest,
 ```
 
 
+Just some time series plots
+
+```{r}
+SSplotTimeseries(base.modeltest,
+                 subplot = 1)
+SSplotTimeseries(base.modeltest,
+                 subplot = 9)
+```
+and fits
+
+```{r}
+SSplotComps(base.modeltest,
+            subplots = 1,
+            maxrows = 5,
+            maxcols = 5)
+```
+
 ```{r eval= FALSE, message=F, include=FALSE}
 # html
 SS_plots(base.modeltest,
@@ -417,15 +434,10 @@ SSplotSelex(base.model5,
             subplots = 1)
 SSplotSelex(base.model6,
             subplots = 1)
-SSplotSelex(base.model7,
+SSplotSelex(base.modeltest,
             subplots = 1)
 ```
-```{r}
-SSplotComps(base.modeltest,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-```
+
 
 
 ```{r eval=FALSE}
@@ -1205,10 +1217,14 @@ ggplot(totalike)+
 dirname.model.run <- here("s1")
 # 2. Crear un nuevo directorio para el "Perfil_Verosimilitud"  
 dirname.R0.profile <- here("Ejercicios","Perfil_Verosimilitud")
-dir.create(path=dirname.R0.profile, showWarnings = TRUE, recursive = TRUE)
+dir.create(path=dirname.R0.profile, 
+           showWarnings = TRUE, 
+           recursive = TRUE)
 # 3. Crear un subdirectorio llamado "plots_Verosimilitud" ----
 plotdir=paste0(dirname.R0.profile, "/plots_Verosimilitud")
-dir.create(path=plotdir, showWarnings = TRUE, recursive = TRUE)
+dir.create(path=plotdir,
+           showWarnings = TRUE, 
+           recursive = TRUE)
 # 4. Crear un subdirectorio llamado "simple" ----
 reference.dir <- paste0(dirname.R0.profile,'/simple') 
 dir.create(path=reference.dir, showWarnings = TRUE, recursive = TRUE)

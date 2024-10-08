@@ -25,13 +25,13 @@
 #_Cond 1.0 # first age that moves (real age at begin of season, not integer) also cond on do_migration>0
 #_Cond 1 1 1 2 4 10 # example move definition for seas=1, morph=1, source=1 dest=2, age1=4, age2=10
 #
-  0 #_Nblock_Patterns
+0 #_Nblock_Patterns
 #_Cond 0 #_blocks_per_pattern 
 # begin and end years of blocks
 #  1978 2020
 #
 # controls for all timevary parameters 
-  1 #_time-vary parm bound check (1=warn relative to base parm bounds; 3=no bound check); Also see env (3) and dev (5) options to constrain with base bounds
+1 #_time-vary parm bound check (1=warn relative to base parm bounds; 3=no bound check); Also see env (3) and dev (5) options to constrain with base bounds
 #
 # AUTOGEN
   1 0 0 0 0 # autogen: 1st element for biology, 2nd for SR, 3rd for Q, 4th reserved, 5th for selex
@@ -70,19 +70,19 @@
 #_growth_parms
 #_ LO HI INIT PRIOR PR_SD PR_type PHASE env_var&link dev_link dev_minyr dev_maxyr dev_PH Block Block_Fxn
 # Sex: 1  BioPattern: 1  NatMort
-0.2  0.5 0.4 0.4 0.5 0 3  0 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1
+0.2  0.5 0.4 0.4 0.5 0 3 0 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1
 # Sex: 1  BioPattern: 1  Growth
 0 3  1 1 0.5 6 2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
-1  10  6 6 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
+1  10  7 7 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
 0.05  0.8 0.45  0.4 0.5 6 4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
-0.05 0.25 0.2 1 0.5 0 -3  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
-0.05 0.25 0.2 1 0.5 0 -3  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
+0.05 0.25 0.1 0.1 0.5 0 4  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
+0.05 0.25 0.1 0.1 0.5 0 4  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
 # Sex: 1  BioPattern: 1  WtLen
 0 3 5.00E-06  5.00E-06  0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_1_Fem_GP_1
 1 4 3.34694 3.34694 0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_2_Fem_GP_1
 # Sex: 1  BioPattern: 1  Maturity&Fecundity
-0.2  2 2.4 2.4 0.8 0 -4  0 0 0 0 0 0 0 # Mat50%_Fem_GP_1 
--3 3 -0.25 -0.25 0.8 0 -4  0 0 0 0 0 0 0 # Mat_slope_Fem_GP_1  
+0.2  2 2.4 2.4 0.8 0 4 0 0 0 0 0 0 0 # Mat50%_Fem_GP_1 
+-3 3 -0.25 -0.25 0.8 0 4  0 0 0 0 0 0 0 # Mat_slope_Fem_GP_1  
 -3 3 2 1 0.8 0 -3  0 0 0 0 0 0 0 # Eggs/kg_inter_Fem_GP_1  
 -3 3 0 0 0.8 0 -3  0 0 0 0 0 0 0 # Eggs/kg_slope_wt_Fem_GP_1 
 # Sex:  2 BioPattern: 1 NatMort                       
@@ -181,43 +181,43 @@
 #_5:  0/1 for biasadj or not
 #_6:  0/1 to float
 #_   fleet      link link_info  extra_se   biasadj     float  #  fleetname
-                  1	1	0	1	0	0	#	FISHERYBS
-                2	1	0	1	0	0	#	FISHERYEI
-                3	1	0	1	0	0	#	FISHERYGS
-                4	1	0	1	0	0	#	FISHERYJOIN
-                5	1	0	1	0	0	#	FISHERYSSIW
-                6	1	0	1	0	0	#	SURVEYBS
-                7	1	0	1	0	0	#	SURVEYEI
-                8	1	0	1	0	0	#	SURVEYGS
-                9	1	0	1	0	0	#	SURVEYJOIN
-                10 1	0	1	0	0	#	SURVEYSSIW
-                11 1	0	1	0	0	#	PREDATOR
-                -9999 0 0 0 0 0                                               
+1	1	0	1	0	0	#	FISHERYBS
+2	1	0	1	0	0	#	FISHERYEI
+3	1	0	1	0	0	#	FISHERYGS
+4	1	0	1	0	0	#	FISHERYJOIN
+5	1	0	1	0	0	#	FISHERYSSIW
+6	1	0	1	0	0	#	SURVEYBS
+7	1	0	1	0	0	#	SURVEYEI
+8	1	0	1	0	0	#	SURVEYGS
+9	1	0	1	0	0	#	SURVEYJOIN
+10 1	0	1	0	0	#	SURVEYSSIW
+11 1	0	1	0	0	#	PREDATOR
+-9999 0 0 0 0 0                                               
 #
 #_Q_parms(if_any);Qunits_are_ln(q)
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name
--25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(1)	
+-25	25	-5.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(1)	
 0	1	0.5	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(1)	
--25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(2)	
+-25	25	-5.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(2)	
 0	1	0.5	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(2)	
--25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(3)	
+-25	25	-5.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(3)	
 0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(3)
-                  -25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(4)	
-                  0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(4)	
-                  -25	25	-3.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(5)	
-                  0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(5)	
-                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(6)	
-                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(6)	
-                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(7)	
-                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(7)	
-                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(8)	
-                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(8)	
-                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(9)	
-                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(9)	
-                  -7	25	0.476759	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(10)	
-                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(10)	
-                  -10	25	0	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_PREDATOR(11)
-                  0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(11)	
+-25	25	-5.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(4)	
+0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(4)	
+-25	25	-5.72231	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(5)	
+0	1	0	0.1	0.1	0	3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(5)	
+-7	25	1	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(6)	
+0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(6)	
+-7	25	1	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(7)	
+0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(7)	
+-7	25	1	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(8)	
+0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(8)	
+-7	25	1	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(9)	
+0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(9)	
+-7	25	1	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_SURVEY(10)	
+0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(10)	
+-7	25	1	0	1	0	1	0	0	0	0	0	0	0	#	LnQ_base_PREDATOR(11)
+0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_PREDATOR(11)	
 #_no timevary Q parameters
 #
 #_size_selex_patterns
@@ -271,17 +271,17 @@
 #Pattern:_42; parm=2+special+3; // cubic spline; with 2 additional param for scaling (average over bin range)
 #Age patterns entered with value >100 create Min_selage from first digit and pattern from remainder
 #_Pattern Discard Male Special
-                0	0	0	0	#		FISHERYBS
-                0	0	0	0	#		FISHERYEI
-                0	0	0	0	#		FISHERYGS
-                0	0	0	0	#		FISHERYJOIN
-                0	0	0	0	#		FISHERYSSIW
-                0	0	0	0	#		SURVEYBS
-                0	0	0	0	#		SURVEYEI
-                0	0	0	0	#		SURVEYGS
-                0	0	0	0	#		SURVEYJOIN
-                0	0	0	0	#		SURVEYSSIW
-                0	0	0	0	#		PREDATOR                                               
+0	0	0	0	#		FISHERYBS
+0	0	0	0	#		FISHERYEI
+0	0	0	0	#		FISHERYGS
+0	0	0	0	#		FISHERYJOIN
+0	0	0	0	#		FISHERYSSIW
+0	0	0	0	#		SURVEYBS
+0	0	0	0	#		SURVEYEI
+0	0	0	0	#		SURVEYGS
+0	0	0	0	#		SURVEYJOIN
+0	0	0	0	#		SURVEYSSIW
+0	0	0	0	#		PREDATOR                                               
 #
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name
 #	1	FISHERY	LenSelex														
@@ -294,30 +294,30 @@
 0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(3)		
 1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(3)	
 #	1	FISHERY	LenSelex														
-                  0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(4)		
-                  1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(4)	
+0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(4)		
+1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(4)	
 #	1	FISHERY	LenSelex														
-                  0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(5)		
-                  1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(5)		
+0.01	8	2.5	2.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(5)		
+1.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(5)		
 #	2	SURVEY1	LenSelex														
-                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(6)		
-                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(6)		
+1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(6)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(6)		
 #	2	SURVEY1	LenSelex														
-                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(7)		
-                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(7)		
+1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(7)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(7)		
 #	2	SURVEY1	LenSelex														
-                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(8)		
-                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(8)		
+1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(8)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(8)		
 #	2	SURVEY1	LenSelex														
-                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(9)		
-                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(9)		
+1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(9)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(9)		
 #	2	SURVEY1	LenSelex														
-                  1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(10)		
-                  1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(10)		
+1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(10)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(10)		
 #	2	PREDATOR	LenSelex														
-0	3	0.5	0.5	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_PREDATOR(11)		
-0	3	1	0.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_PREDATOR(11)		   
-              
+0	3	0.2	0.2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_PREDATOR(11)		
+0	3	0.2 0.2	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_PREDATOR(11)		   
+
 #_No_Dirichlet parameters
 #_no timevary selex parameters
 #
@@ -384,9 +384,8 @@
 #  1 1 1 1 #_parameter-dev-vectors
 #  1 1 1 1 #_crashPenLambda
 #  0 0 0 0 # F_ballpark_lambda
-                    0 # (0/1/2) read specs for more stddev reporting: 0 = skip, 1 = read specs for reporting stdev for selectivity, size, and numbers, 2 = add options for M,Dyn. Bzero, SmryBio
-                    
-                    999
+0 # (0/1/2) read specs for more stddev reporting: 0 = skip, 1 = read specs for reporting stdev for selectivity, size, and numbers, 2 = add options for M,Dyn. Bzero, SmryBio
+999
                     
                     
                     
