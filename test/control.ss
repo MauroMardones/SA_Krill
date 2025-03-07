@@ -48,11 +48,11 @@
 #
 # setup for M, growth, wt-len, maturity, fecundity, (hermaphro), recr_distr, cohort_grow, (movement), (age error), (catch_mult), sex ratio 
 #_NATMORT
-  0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate;_5=BETA:_Maunder_link_to_maturity;_6=Lorenzen_range
+0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate;_5=BETA:_Maunder_link_to_maturity;_6=Lorenzen_range
 #_no additional input for selected M option; read 1P per morph
 #
 1 # GrowthModel: 1=vonBert with L1&L2; 2=Richards with L1&L2; 3=age_specific_K_incr; 4=age_specific_K_decr; 5=age_specific_K_each; 6=NA; 7=NA; 8=growth cessation
-1 #_Age(post-settlement)_for_L1;linear growth below this
+1.5 #_Age(post-settlement)_for_L1;linear growth below this
 999 #_Growth_Age_for_L2 (999 to use as Linf)
 -999 #_exponential decay for growth above maxage (value should approx initial Z; -999 replicates 3.24; -998 to not allow growth above maxage)
 0  #_placeholder for future growth feature
@@ -75,8 +75,8 @@
 0 3  1 1 0.5 6 2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
 1  10  7 7 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
 0.05  0.8 0.45  0.4 0.5 6 4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
-0.05 0.25 0.1 0.1 0.5 0 4  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
-0.05 0.25 0.1 0.1 0.5 0 4  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
+0.05 0.25 0.1 0.1 0.5 0 -4  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
+0.05 0.25 0.1 0.1 0.5 0 -4  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
 # Sex: 1  BioPattern: 1  WtLen
 0 3 5.00E-06  5.00E-06  0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_1_Fem_GP_1
 1 4 3.34694 3.34694 0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_2_Fem_GP_1
@@ -119,11 +119,11 @@
 #_Cond -2 2 0 0 -1 99 -2 #_placeholder when no seasonal MG parameters
 #
 3 #_Spawner-Recruitment; Options: 1=NA; 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm; 8=Shepherd_3Parm; 9=RickerPower_3parm
-1  # 0/1 to use steepness in initial equ recruitment calculation
+0  # 0/1 to use steepness in initial equ recruitment calculation
 0  #  future feature:  0/1 to make realized sigmaR a function of SR curvature
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn #  parm_name
 3            30           10         10            10             0          1          0          0          0          0          0          0          0 # SR_LN(R0)
-0.2             1           0.8           0.8             1             0         -4          0          0          0          0          0          0          0 # SR_BH_steep
+0.2             1           0.9           0.9             1             0         4          0          0          0          0          0          0          0 # SR_BH_steep
 0             2           0.6           0.8           0.8             0         -4          0          0          0          0          0          0          0 # SR_sigmaR
 -5             5             0             0             1             0         -4          1          0          0          0          0          0          0 # SR_regime
 0             0             0             0             0             0        -99          0          0          0          0          0          0          0 # SR_autocorr
@@ -317,7 +317,6 @@
 #	2	PREDATOR	LenSelex														
 0	3	0.2	0.2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_PREDATOR(11)		
 0	3	0.2 0.2	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_PREDATOR(11)		   
-
 #_No_Dirichlet parameters
 #_no timevary selex parameters
 #
@@ -327,10 +326,6 @@
 # Tag loss and Tag reporting parameters go next
 0  # TG_custom:  0=no read and autogen if tag data exist; 1=read
 #_Cond -6 6 1 1 2 0.01 -4 0 0 0 0 0 0 0  #_placeholder if no parameters
-#
-# no timevary parameters
-#
-#
 # Input variance adjustments factors: 
 #_1=add_to_survey_CV
 #_2=add_to_discard_stddev

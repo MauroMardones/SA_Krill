@@ -72,7 +72,7 @@ library(readxl)
 dir01 <- here("s01") # agreggate data (no spatial diferences)
 dir1<-here("s1") # Data strata flishery
 dir2<-here("s2") # Same 9 with areas (SubStrata) as fleet. Dif size comoposition and dif CPUE and dif survey length and biomass data by strata
-dir3<-here("s3") # whitout S-R
+dir3<-here("s3") # without S-R
 dir4<-here("s4") # 
 dir5<-here("s5") # 
 dir6<-here("s6") # 
@@ -251,7 +251,7 @@ for (dir in directorios) {
 #shell(cmd="ss") # run SS to windows
 # or 
 r4ss::run(
-  dir = dir8,
+  dir = dirtest,
   exe = "ss_osx",
   skipfinished = FALSE, # TRUE will skip running if Report.sso present
   show_in_console = TRUE # change to true to watch the output go past
@@ -304,7 +304,10 @@ base.model8 <- SS_output(dir=dir8,
 base.model9 <- SS_output(dir=dir9,
                         covar=T,
                         forecast=T)
+```
 
+
+```{r message=F, include=FALSE}
 #stest
 base.modeltest <- SS_output(dir=dirtest,
                         covar=T,
@@ -316,7 +319,7 @@ Just some time series plots
 
 ```{r}
 SSplotTimeseries(base.modeltest,
-                 subplot = 1)
+                 subplot = 7)
 SSplotTimeseries(base.modeltest,
                  subplot = 9)
 ```
@@ -406,9 +409,7 @@ SS_plots(base.model7,
 Data used en both (spatial and No spatial models)
 
 ```{r }
-SSplotData(base.model01, subplot = 1, 
-           fleetnames = c("Fishery", "Survey", "Predator"),
-           fleetcol = c("blue","green", "red"))
+SSplotData(base.modeltest, subplot = 1)
 
 SSplotData(base.model1, 
            subplot = 1,
@@ -508,11 +509,12 @@ ggplot(df1, aes(x = Yr, y = Bin, fill = Pearson)) +
   facet_wrap(Fleet~., ncol=5) + 
   labs(title = "",
        x = "",
-       y = "Length",
+       y = "Length (cm)",
        fill = "Pearson") +
-  theme_bw()+
+  theme_few()+
   theme(axis.text.x = element_text(angle = 90,
-                                   hjust = 1))
+                                   hjust = 1, 
+                                   size = 7))
 
 ```
 hexagon
@@ -815,7 +817,7 @@ retroSummary7 <- SSsummarize(retroModels7)
 #stest
 retroModelstest <- SSgetoutput(dirvec=file.path(dirtest,
                                             "Retrospective",
-                                            paste("retro",0:-3,
+                                            paste("retro",0:-4,
                                                   sep="")))
 
 retroSummarytest <- SSsummarize(retroModelstest)
@@ -880,7 +882,7 @@ retrotest <- SSplotRetro(retroSummarytest,
 
 
 ```{r eval=FALSE}
-retrotest <- SSplotRetro(retroSummarytest,
+SSplotRetro(retroSummarytest,
             add=T,
             forecast = F,
             legend = T,
@@ -901,7 +903,7 @@ as accurately as a naïve baseline prediction; thus, the model has
 prediction skill.
 
 ```{r}
-hci = SSplotHCxval(retroSummary1, 
+hci = SSplotHCxval(retroSummarytest, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
@@ -947,7 +949,7 @@ hci = SSplotHCxval(retroSummary7,
 
 
 ```{r}
-mvln = SSdeltaMVLN(base.model1,
+mvln = SSdeltaMVLN(base.modeltest,
                    Fref = "Btgt", 
                    plot = TRUE,
                    addprj=TRUE,
@@ -1388,7 +1390,7 @@ dev.off()
 ## Outputs Model Base
 
 ```{r}
-outps1 <- base.model1$timeseries[1:53, 2:8]
+outps1 <- base.modeltest$timeseries[1:53, 2:8]
 
 # addWorksheet(wb, "variable_s2")
 # writeData(wb, "variable_s2", outps1)
@@ -1730,7 +1732,6 @@ titles <- c("No Spatial",
 # Lista para almacenar los gráficos
 plots <- list()
 
-# Crear los gráficos en un ciclo for
 for (i in 1:length(data_list)) {
   p <- ggplot(data_list[[i]], aes(x = Yr, y = dev)) +
     geom_point() +
@@ -1749,7 +1750,6 @@ for (i in 1:length(data_list)) {
 
 # Organizar los gráficos con ggarrange
 combined_plot <- ggarrange(plotlist = plots, ncol = 3, nrow = 3)
-
 
 combined_plot
 ```
