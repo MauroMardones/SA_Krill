@@ -75,8 +75,8 @@
 0 3  1 1 0.5 6 2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
 1  10  7 7 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
 0.05  0.8 0.45  0.4 0.5 6 4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
-0.05 0.25 0.1 0.1 0.5 0 -4  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
-0.05 0.25 0.1 0.1 0.5 0 -4  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
+0.05 0.25 0.1 0.1 0.5 0 4  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
+0.05 0.25 0.1 0.1 0.5 0 4  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
 # Sex: 1  BioPattern: 1  WtLen
 0 3 5.00E-06  5.00E-06  0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_1_Fem_GP_1
 1 4 3.34694 3.34694 0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_2_Fem_GP_1
@@ -240,17 +240,17 @@
 #Pattern:_42; parm=special+3+2; cubic spline; like 27, with 2 additional param for scaling (average over bin range)
 #_discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead;_4=define_dome-shaped_retention
 #_Pattern Discard Male Special
-                  1	0	0	0	#		FISHERYBS
-                1	0	0	0	#		FISHERYEI
-                1	0	0	0	#		FISHERYGS
-                1	0	0	0	#		FISHERYJOIN
-                1	0	0	0	#		FISHERYSSIW
-                1	0	0	0	#		SURVEYBS
-                1	0	0	0	#		SURVEYEI
-                1	0	0	0	#		SURVEYGS
-                1	0	0	0	#		SURVEYJOIN
-                1	0	0	0	#		SURVEYSSIW
-                1	0	0	0	#		PREDATOR                                            
+1	0	0	0	#		FISHERYBS
+1	0	0	0	#		FISHERYEI
+1	0	0	0	#		FISHERYGS
+1	0	0	0	#		FISHERYJOIN
+1	0	0	0	#		FISHERYSSIW
+1	0	0	0	#		SURVEYBS
+1	0	0	0	#		SURVEYEI
+1	0	0	0	#		SURVEYGS
+1	0	0	0	#		SURVEYJOIN
+1	0	0	0	#		SURVEYSSIW
+1	0	0	0	#		PREDATOR                                            
 #
 #_age_selex_patterns
 #Pattern:_0; parm=0; selex=1.0 for ages 0 to maxage

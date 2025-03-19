@@ -79,7 +79,8 @@ dir6<-here("s6") #
 dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
 dir8<-here("s8") # s1 platoons
 dir9<-here("s9") # s1 w/ blocks
-dirtest<-here("test")
+dirtest<-here("test") # con todo
+dirtest2 <- here("test2") # sin predador ni ambiental
 Figs <- here("Figs")# S
 ```
 
@@ -309,19 +310,25 @@ base.model9 <- SS_output(dir=dir9,
 
 ```{r message=F, include=FALSE}
 #stest
+r4ss::run(
+  dir = dirtest,
+  exe = "ss_osx",
+  skipfinished = FALSE, # TRUE will skip running if Report.sso present
+  show_in_console = TRUE # change to true to watch the output go past
+)
 base.modeltest <- SS_output(dir=dirtest,
                         covar=T,
                         forecast=T)
 ```
 
 
-Just some time series plots
-
 ```{r}
 SSplotTimeseries(base.modeltest,
-                 subplot = 7)
+                 subplot = 1)
 SSplotTimeseries(base.modeltest,
                  subplot = 9)
+SSplotTimeseries(base.modeltest,
+                 subplot = 7)
 ```
 and fits
 
