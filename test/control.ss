@@ -81,7 +81,7 @@
 0 3 5.00E-06  5.00E-06  0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_1_Fem_GP_1
 1 4 3.34694 3.34694 0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_2_Fem_GP_1
 # Sex: 1  BioPattern: 1  Maturity&Fecundity
-0.2  2 2.4 2.4 0.8 0 4 0 0 0 0 0 0 0 # Mat50%_Fem_GP_1 
+0.2  3 2.4 2.4 0.8 0 4 0 0 0 0 0 0 0 # Mat50%_Fem_GP_1 
 -3 3 -0.25 -0.25 0.8 0 4  0 0 0 0 0 0 0 # Mat_slope_Fem_GP_1  
 -3 3 2 1 0.8 0 -3  0 0 0 0 0 0 0 # Eggs/kg_inter_Fem_GP_1  
 -3 3 0 0 0.8 0 -3  0 0 0 0 0 0 0 # Eggs/kg_slope_wt_Fem_GP_1 
