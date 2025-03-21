@@ -79,8 +79,9 @@ dir6<-here("s6") #
 dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
 dir8<-here("s8") # s1 platoons
 dir9<-here("s9") # s1 w/ blocks
-dirtest<-here("test") # con todo
-dirtest2 <- here("test2") # sin predador ni ambiental
+dir1.1<-here("s1.1") # con todo
+dir1.2 <- here("s1.2") # sin predador ni ambiental
+dir1.3 <- here("s1.3") # borrado los registros de prreddador )igual q el S2
 Figs <- here("Figs")# S
 ```
 
@@ -128,21 +129,21 @@ read files
 
 ```{r}
 # leo archivos para plotear y hacer tablas
-start1 <- SS_readstarter(file = file.path(dir1,
+start1 <- SS_readstarter(file = file.path(dir1.1,
                                           "starter.ss"),
                               verbose = FALSE)
 # note the data and control file names can vary, so are determined from the 
 # starter file.
-dat1 <- SS_readdat(file = file.path(dir1, start1$datfile),
+dat1 <- SS_readdat(file = file.path(dir1.1, start1$datfile),
                         verbose = FALSE)
 # Read in ctl file. Note that the data fileR object is needed so that SS_readctl
 # assumes the correct data structure
-ctl1 <-  r4ss::SS_readctl(file = file.path(dir1,
+ctl1 <-  r4ss::SS_readctl(file = file.path(dir1.1,
                                     start1$ctlfil),
                         verbose = FALSE,
                         use_datlist = TRUE, 
                    datlist = dat1)
-fore1 <- r4ss::SS_readforecast(file = file.path(dir1, 
+fore1 <- r4ss::SS_readforecast(file = file.path(dir1.1, 
                                                 "forecast.ss"),
                               verbose = FALSE)
 # can also read in wtatage.ss for an empirical wt at age model using
@@ -182,24 +183,23 @@ saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
 
 ```{r}
 parInit %>%
-  kbl(booktabs = T,
+  mutate(across(where(is.numeric), ~ round(., 3)))  %>% 
+  kbl(booktabs = TRUE,
       format = "html",
-      position="ht!",
-    caption = "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
-  kable_paper("hover", 
-              full_width = F)%>%
-  kable_styling(latex_options = c("striped",
-                                  "condensed"),
-                full_width = FALSE,
-                font_size=10,
-                html_font = "arial")%>% 
+      position = "ht!",
+      caption = "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
+  kable_paper("hover", full_width = TRUE) %>%  # Expande el ancho
+  kable_styling(latex_options = c("striped", "condensed"),
+                full_width = TRUE,  # Expande la tabla al ancho completo
+                font_size = 12,
+                html_font = "Times New Roman") %>%  # Aplica la fuente Times New Roman
   pack_rows(index = c("Mortalidad natural" = 1,
-                        "Crecimiento"= 5,
-                        "Relación longitud-peso" = 2,
-                        "Ojiva de madurez"=2,
-                        "Relación stock-recluta"=5,
-                        "Capturabilidad"=2,
-                        "Selectividad"=4))
+                      "Crecimiento" = 5,
+                      "Relación longitud-peso" = 2,
+                      "Ojiva de madurez" = 2,
+                      "Relación stock-recluta" = 5,
+                      "Capturabilidad" = 2,
+                      "Selectividad" = 4))
 
 ```
 
@@ -219,24 +219,18 @@ about main consideration in assessment of krill population.
 |    s6    | "s1" Ricker S-R relation estimated                                                   |
 |    s7    | "s1" w/ set of parameters estimated in @EMM-204/32                                   |
 |    s8    | "s1" test data weighting                                                             |
-|    s9    | "s1" w/ selectivity blocks                                                             |
+|    s9    | "s1" w/ selectivity blocks                                                           |
+|    s1.1  | Spatial data without environmental and predator components                          |
+|    s1.2  | "s1.1" with environmental and predator components                                    |
+|    s1.3  | "s1.2" w/ selectivity blocks                                                         |
 
 ## Run Models
 
 ```{r eval=FALSE, message=F, include=FALSE, echo=TRUE}
-# Lista de directorios para correro tordos juntos
-directorios <- c("s01", 
-                 "s1", 
-                 "s2",
-                 "s3",
-                 "s4",
-                 "s5",
-                 "s6",
-                 "s7",
-                 "s8",
-                 "s9")  # Agrega aquí todos los nombres de las carpetas que deseas procesar
+directorios <- c("s1.1",
+                 "s1.2",
+                 "s1.3")  
 
-# Bucle para ejecutar el código en cada directorio
 for (dir in directorios) {
   r4ss::run(
     dir = dir,
@@ -252,106 +246,81 @@ for (dir in directorios) {
 #shell(cmd="ss") # run SS to windows
 # or 
 r4ss::run(
-  dir = dirtest2,
+  dir = dir1.1,
   exe = "ss_osx",
   skipfinished = FALSE, # TRUE will skip running if Report.sso present
   show_in_console = TRUE # change to true to watch the output go past
 )
+
+
+base.model1.1 <- SS_output(dir=dir1.1,
+                        covar=T,
+                        forecast=T)
 ```
 
 Read outputs
 
 ```{r message=F, include=FALSE}
-#s01
-base.model01 <- SS_output(dir=dir01,
-                        covar=T,
-                        forecast=T)
-#s1
-base.model1 <- SS_output(dir=dir1,
-                        covar=T,
-                        forecast=T)
-#s2
-base.model2 <- SS_output(dir=dir2,
-                        covar=T,
-                        forecast=T)
-#s3
-base.model3 <- SS_output(dir=dir3,
-                        covar=T,
-                        forecast=T)
-#s4
-base.model4 <- SS_output(dir=dir4,
-                        covar=T,
-                        forecast=T)
-#s5
-base.model5 <- SS_output(dir=dir5,
-                        covar=T,
-                        forecast=T)
-#s6
-base.model6 <- SS_output(dir=dir6,
-                        covar=T,
-                        forecast=T)
 
-#s7
-base.model7 <- SS_output(dir=dir7,
+#s1.1
+base.model1.1 <- SS_output(dir=dir1.1,
                         covar=T,
                         forecast=T)
-
-#s8
-base.model8 <- SS_output(dir=dir8,
+#s1.2
+base.model1.2 <- SS_output(dir=dir1.2,
                         covar=T,
                         forecast=T)
-
-#s9
-base.model9 <- SS_output(dir=dir9,
-                        covar=T,
-                        forecast=T)
-```
-
-
-```{r message=F, include=FALSE}
-#stest
-r4ss::run(
-  dir = dirtest,
-  exe = "ss_osx",
-  skipfinished = FALSE, # TRUE will skip running if Report.sso present
-  show_in_console = TRUE # change to true to watch the output go past
-)
-base.modeltest <- SS_output(dir=dirtest,
+#s1.3
+base.model1.3 <- SS_output(dir=dir1.3,
                         covar=T,
                         forecast=T)
 ```
 
 
 ```{r}
-SSplotTimeseries(base.modeltest,
+SSplotTimeseries(base.model1.1,
                  subplot = 1)
-SSplotTimeseries(base.modeltest,
+SSplotTimeseries(base.model1.1,
                  subplot = 9)
-SSplotTimeseries(base.modeltest,
+SSplotTimeseries(base.model1.1,
                  subplot = 7)
 ```
 and fits
 
 ```{r}
-SSplotComps(base.modeltest,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
+SSplotBiology(base.model1.1,
+            subplots = 1:32)
 ```
 
-```{r eval= FALSE, message=F, include=FALSE}
-# html
-SS_plots(base.modeltest,
-         uncertainty=T,
+```{r}
+SSplotComps(base.model1.1,
+            subplots = 1)
+
+```
+
+
+# RESULTS
+```{r eval=FALSE, message=F, include=FALSE}
+# Definir la ruta de la carpeta
+folder_path <- "s1.1/plots"
+# Verificar si la carpeta existe y eliminarla
+if (dir.exists(folder_path)) {
+  unlink(folder_path, recursive = TRUE)
+  message("La carpeta 'plots' ha sido eliminada.")
+} else {
+  message("La carpeta 'plots' no existe.")
+}
+
+SS_plots(base.model1.1, 
+         uncertainty = TRUE,
          datplot = T, 
          png=T, 
          aalresids = F,
-         btarg=0.75,
-         minbthresh=0.20, 
+         btarg=0.75, 
+         minbthresh=0.2, 
          forecast=T)
-
 ```
-# RESULTS
+
 
 ### Main Variables poulation
 
@@ -402,23 +371,11 @@ ggplot(totalbio, aes(x = Yr, y = Bio_all, color=Serie)) +
                                    hjust = 1))
 ```
 
-```{r eval=FALSE, message=F, include=FALSE}
-SS_plots(base.model7, 
-         uncertainty = TRUE,
-         datplot = T, 
-         png=T, 
-         aalresids = F,
-         btarg=0.75, 
-         minbthresh=0.2, 
-         forecast=T)
-```
 
 Data used en both (spatial and No spatial models)
 
 ```{r }
-SSplotData(base.modeltest, subplot = 1)
-
-SSplotData(base.model1, 
+SSplotData(base.model1.1, 
            subplot = 1,
            pheight = 15)
 ```
@@ -442,7 +399,7 @@ SSplotSelex(base.model5,
             subplots = 1)
 SSplotSelex(base.model6,
             subplots = 1)
-SSplotSelex(base.modeltest,
+SSplotSelex(base.model1.1,
             subplots = 1)
 ```
 
@@ -590,7 +547,7 @@ all this framework try to follow recommendations of @Carvalho2021b
 ## Residual consistency 
 
 ```{r}
-SSplotRunstest(base.modeltest,
+SSplotRunstest(base.model1.1,
                subplots = "len",
                add=T,
                plot = TRUE,
@@ -598,7 +555,7 @@ SSplotRunstest(base.modeltest,
 ```
 
 
-```{r eval=FALSE, fig.width=4, fig.height=5}
+```{r eval=FALSE}
 SSplotRunstest(base.model01,
                subplots = "len",
                add=T)
@@ -626,7 +583,7 @@ SSplotRunstest(base.modeltest,
 ```
 
 ```{r}
-SSplotRunstest(base.modeltest,
+SSplotRunstest(base.model1.1,
                subplots = "cpue",
                add=T)
 ```
@@ -681,7 +638,7 @@ SSplotJABBAres(base.model5,
 SSplotJABBAres(base.model6,
                subplots = "len",
                add=T)
-SSplotJABBAres(base.modeltest,
+SSplotJABBAres(base.model1.1,
                subplots = "len",
                add=T)
 ```
@@ -708,24 +665,24 @@ SSplotJABBAres(base.model5,
 SSplotJABBAres(base.model6,
                subplots = "cpue",
                add=T)
-SSplotJABBAres(base.modeltest,
+SSplotJABBAres(base.model1.1,
                subplots = "cpue",
                add=T)
 ```
-
-
 ## Relationship Stock-Recruit
 
 ```{r eval=FALSE}
-l <- base.model1$recruit$SpawnBio
-m <- base.model1$recruit$pred_recr
-ggplot()+
-  aes(l,m)+
-  geom_point()+
-  geom_smooth(method = "loess", 
-              se =F)+
-  theme_few()+
-  ylim(0, max(base.model1$recruit$pred_recr))
+l <- base.modeltest$recruit$SpawnBio
+m <- base.modeltest$recruit$pred_recr
+ggplot() +
+  aes(l, m) +
+  geom_point() +
+  geom_smooth(method = "loess",
+              se = TRUE, 
+              color = "blue") +
+  theme_few() +
+  ylim(0, max(base.modeltest$recruit$pred_recr))
+
 ```
 
 ## Retrospective analysis
@@ -736,7 +693,7 @@ Los análisis retrospectivo, dan cuenta de diferencias de estimación
 ```{r eval=FALSE}
 #one by one
 retro(
-    dir = dirtest,
+    dir = dir1.1,
     oldsubdir = "",
     newsubdir = "Retrospective",
     years = 0:-4,
@@ -822,12 +779,12 @@ retroSummary7 <- SSsummarize(retroModels7)
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
 #stest
-retroModelstest <- SSgetoutput(dirvec=file.path(dirtest,
+retroModels1.1 <- SSgetoutput(dirvec=file.path(dir1.1,
                                             "Retrospective",
                                             paste("retro",0:-4,
                                                   sep="")))
 
-retroSummarytest <- SSsummarize(retroModelstest)
+retroSummary1.1 <- SSsummarize(retroModels1.1)
 
 
 ```
@@ -879,21 +836,12 @@ retro7 <- SSplotRetro(retroSummary7,
             legend = T,
             verbose=F)
 
-retrotest <- SSplotRetro(retroSummarytest,
+retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
             forecast = F,
             legend = T,
-            verbose=F)
-
-```
-
-
-```{r eval=FALSE}
-SSplotRetro(retroSummarytest,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
+            verbose=F,
+            subplots = c("SSB"))
 ```
 
 
@@ -1015,7 +963,7 @@ mvln = SSdeltaMVLN(base.model6,
                    virgin = TRUE,
                    mc=100)
 
-mvln = SSdeltaMVLN(base.model7,
+mvln = SSdeltaMVLN(base.model1.1,
                    Fref = "Btgt", 
                    plot = TRUE,
                    addprj=TRUE,
