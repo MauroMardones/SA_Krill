@@ -20,9 +20,6 @@ s5*/
 s6*/
 s7*/
 s8*/
-test*/
-test2*/
-test3*/
 # Exceptuar algunos archivos o carpetas
 !test2/data.ss
 !test2/control.ss
