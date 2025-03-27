@@ -1,10 +1,11 @@
 ---
-title: "Integrated approach to modeling to krill population dynamics in Wester Antarctic Peninsula: spatial and ecosystem considerations"
-subtitle: "Working Paper to be submitted in a CCAMLR EMM-WG 2024"
-author: "Mardones, M; Cárdenas, C., Krüger, L., Santa Cruz, F."
+title: "Supplementary Information 1"
+subtitle: "Assessing ecosystem effects on the stock productivity of Antarctic Krill (*Euphausia superba*): An Integrated modeling perspective"
+author: "Mardones, M; Jarvis Mason, E.T.; Pinones, A.;  Santa Cruz, F.; Cárdenas, C.A"
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
 bibliography: SA_krill.bib
-csl: apa.csl
+#csl: apa.csl
+csl: icesjournal.csl
 link-citations: yes
 linkcolor: blue
 output:
@@ -35,6 +36,7 @@ knitr::opts_chunk$set(echo = FALSE,
                       fig.align = 'center',
                       fig.pos = "H",
                       dev = 'jpeg',
+                      fig.path = "Figs/",
                       dpi = 300,
                       tidy.opts=list(width.cutoff=50), 
                       tidy=TRUE)
@@ -43,6 +45,7 @@ options(bitmapType = "cairo")
 # (https://github.com/tidyverse/ggplot2/issues/2655)
 # Lo mapas se hacen mas rapido
 ```
+
 
 ```{r message=FALSE, eval=TRUE}
 # install.packages("devtools")
@@ -66,78 +69,49 @@ library(forecast)
 library(tidyr)
 library(mixR)
 library(readxl)
+library(tidyverse)
+library(ggridges)
 ```
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE}
-dir01 <- here("s01") # agreggate data (no spatial diferences)
-dir1<-here("s1") # Data strata flishery
-dir2<-here("s2") # Same 9 with areas (SubStrata) as fleet. Dif size comoposition and dif CPUE and dif survey length and biomass data by strata
-dir3<-here("s3") # without S-R
-dir4<-here("s4") # 
-dir5<-here("s5") # 
-dir6<-here("s6") # 
-dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
-dir8<-here("s8") # s1 platoons
-dir9<-here("s9") # s1 w/ blocks
+# dir01 <- here("s01") # agreggate data (no spatial diferences)
+# dir1<-here("s1") # Data strata flishery
+# dir2<-here("s2") # Same 9 with areas (SubStrata) as fleet. Dif size comoposition and dif CPUE and dif survey length and biomass data by strata
+# dir3<-here("s3") # without S-R
+# dir4<-here("s4") # 
+# dir5<-here("s5") # 
+# dir6<-here("s6") # 
+# dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
+# dir8<-here("s8") # s1 platoons
+# dir9<-here("s9") # s1 w/ blocks
 dir1.1<-here("s1.1") # con todo
 dir1.2 <- here("s1.2") # sin predador ni ambiental
 dir1.3 <- here("s1.3") # borrado los registros de prreddador )igual q el S2
 Figs <- here("Figs")# S
 ```
 
-# OVERVIEW
 
-In a simple way, the core of Stock Synthesis is its population dynamics
-model, which represents the dynamics of krill populations over time.
-This model incorporates key biological, environmental and predator data
-sources. The model is typically formulated using mathematical equations
-that describe how these parameters interact to determine the abundance
-and distribution of krill in the study area.
+## Overview
 
-## Statistical model (SS3)
+This study aims to evaluate the impact of ecosystem components—such as environmental variables and predator-prey interactions—on the productivity and key population dynamics of *Euphausia superba* in Subarea 48.1. By incorporating these factors into the assessment, we analyze how krill population variables respond to ecological variability, providing insights into their resilience and potential management implications.  
 
-Stock Synthesis v.3.30.21 is a widely used software tool for assessing
-fish and invertebrate populations, including krill (Euphausia superba)
-in the Antarctic Peninsula region. The methodology employed by Stock
-Synthesis involves a comprehensive and integrated approach, utilizing
-various data sources and modeling techniques to estimate the main
-population variables of krill in WAP.
+Here, the **reference model** represents a baseline assessment of *Euphausia superba* population dynamics in Subarea 48.1, excluding environmental and ecological variables. This model assumes that krill productivity and population parameters are driven  by intrinsic biological processes, such as growth, mortality, and recruitment and fishery impacts without accounting for external influences like environmental variability or predation pressure. By serving as a *control scenario*, this model provides a benchmark against which the impact of ecosystem components in productivity can be evaluated, allowing for a direct comparison of how environmental and ecological factors influence krill stock dynamics.  
 
-The stock assesment model was configured using Stock Synthesis (SS3
-hereafter)[SS3](https://vlab.noaa.gov/web/stock-synthesis) [@Methot2013;
-@methot2020stock] with the most updated version (V.3.30.21). SS3 is a
-structured age and size stock evaluation model, in the class of models
-called *"Integrated stock evaluation analysis model"*. SS3 has a stock
-population sub-model that simulates growth, maturity, fecundity,
-recruitment, movement, and mortality processes, and observation
-sub-models and expected values for different types of data. The model is
-coded in `C++` with estimation parameters enabled by automatic
-differentiation (ADMB) [@Fournier2012; @Methot2013]. The analysis of
-results and outputs uses R tools and the graphical interface of the
-*r4ss* and *ss3diags* library [@Taylor2019; @Winker2023].
 
-By integrating data from multiple sources and considering spatial
-heterogeneity, the assessment methodology using Stock Synthesis
-v.3.30.21 provides a robust framework for evaluating the status of krill
-populations in the Antarctic Peninsula region. This information is
-essential for supporting management decisions aimed at ensuring the
-sustainable use of krill resources in this ecologically sensitive area.
+## Statistical Model (SS3)
 
-## Parametres
+Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. In this exercise, SS3 is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. By leveraging a spatially implicit, ecosystem-informed approach, this assessment provides a robust framework for evaluating krill stock dynamics under changing environmental conditions. These insights are crucial for informing sustainable management strategies in the Antarctic Peninsula region, where krill plays a foundational role in the marine food web.  
 
-read files
+## Parameters
+
+The following table summarizes the key parameters to conditioning the reference model, including biological, growth, and population dynamics factors.
 
 ```{r}
-# leo archivos para plotear y hacer tablas
 start1 <- SS_readstarter(file = file.path(dir1.1,
                                           "starter.ss"),
                               verbose = FALSE)
-# note the data and control file names can vary, so are determined from the 
-# starter file.
-dat1 <- SS_readdat(file = file.path(dir1.1, start1$datfile),
+dat1 <- SS_readdat(file = file.path(dir1.2, start1$datfile),
                         verbose = FALSE)
-# Read in ctl file. Note that the data fileR object is needed so that SS_readctl
-# assumes the correct data structure
 ctl1 <-  r4ss::SS_readctl(file = file.path(dir1.1,
                                     start1$ctlfil),
                         verbose = FALSE,
@@ -149,6 +123,7 @@ fore1 <- r4ss::SS_readforecast(file = file.path(dir1.1,
 # can also read in wtatage.ss for an empirical wt at age model using
 # r4ss::SS_readwtatage()
 ```
+
 
 ```{r}
 parbio<-ctl1$MG_parms[1:10,c(1:3,7)]
@@ -167,17 +142,14 @@ parbio<-ctl1$MG_parms[1:10,c(1:3,7)]
  Qpar<-ctl1$Q_parms[1:2,c(1:3,7)]
  Selpar<-ctl1$size_selex_parms[1:22,c(1:3,7)]
  parInit<-as.data.frame(rbind(parbio,SRpar,Qpar,Selpar))
-```
 
-
-```{r eval=FALSE}
 wb <- createWorkbook()
 
 addWorksheet(wb, "parameters")
 writeData(wb, "parameters", parInit)
 
 # Guardar el workbook
-saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+#saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
 
 ```
 
@@ -193,14 +165,106 @@ parInit %>%
                 full_width = TRUE,  # Expande la tabla al ancho completo
                 font_size = 12,
                 html_font = "Times New Roman") %>%  # Aplica la fuente Times New Roman
-  pack_rows(index = c("Mortalidad natural" = 1,
-                      "Crecimiento" = 5,
-                      "Relación longitud-peso" = 2,
-                      "Ojiva de madurez" = 2,
-                      "Relación stock-recluta" = 5,
-                      "Capturabilidad" = 2,
-                      "Selectividad" = 4))
+  pack_rows(index = c("Natural Mortality" = 1,
+                      "Growth" = 5,
+                      "relationship Length-Weigth" = 2,
+                      "Maturity" = 2,
+                      "S-R relation" = 5,
+                      "Catchability" = 2,
+                      "Selectivity" = 4))
 
+```
+Source of data inpit
+
+```{r fig.width=9, fig.height=4}
+dat1_std <- dat1$CPUE %>%
+  group_by(index) %>%
+  mutate(index_std = obs / mean(obs, na.rm = TRUE)) %>%
+  ungroup() %>% 
+  mutate(index = recode(index,
+                        `1` = "FISHERYBS",
+                        `2` = "FISHERYEI",
+                        `3` = "FISHERYGS",
+                        `4` = "FISHERYJOIN",
+                        `5` = "FISHERYSSIW",
+                        `6` = "SURVEYBS",
+                        `7` = "SURVEYEI",
+                        `8` = "SURVEYGS",
+                        `9` = "SURVEYJOIN",
+                        `10` = "SURVEYSSIW",
+                        `11` = "PREDATOR"))
+ggplot(dat1_std, aes(x = year, y = index_std, group=index))+
+  geom_point() +
+  geom_smooth(method="lm",
+              se=F)+
+  facet_wrap(.~index,
+             scales = "free_y",
+             ncol=6)+
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1))+
+  labs(title = "",
+       x = "",
+       y = "Standar index",
+       color = "index")
+```
+
+
+```{r fig.width=10, fig.height=4}
+dat_long <- dat1$lencomp %>% 
+  pivot_longer(cols = starts_with("l"),  
+               names_to = "Talla",  
+               values_to = "Frecuencia") %>% 
+  mutate(Talla = as.numeric(sub("l", "", Talla))) %>%  
+  mutate(FltSvy = recode(FltSvy,
+                         `1` = "FISHERYBS",
+                         `2` = "FISHERYEI",
+                         `3` = "FISHERYGS",
+                         `4` = "FISHERYJOIN",
+                         `5` = "FISHERYSSIW",
+                         `6` = "SURVEYBS",
+                         `7` = "SURVEYEI",
+                         `8` = "SURVEYGS",
+                         `9` = "SURVEYJOIN",
+                         `10` = "SURVEYSSIW",
+                         `11` = "PREDATOR")) %>%
+  mutate(FltSvy = factor(FltSvy, levels = c("FISHERYBS", 
+                                            "FISHERYEI", 
+                                            "FISHERYGS",
+                                            "FISHERYJOIN", 
+                                            "FISHERYSSIW",
+                                            "SURVEYBS",
+                                            "SURVEYEI", 
+                                            "SURVEYGS", 
+                                            "SURVEYJOIN",
+                                            "SURVEYSSIW",
+                                            "PREDATOR"))) 
+
+mean_talla <- dat_long %>%
+  group_by(FltSvy) %>%
+  summarise(mean_Talla = mean(Talla, na.rm = TRUE))
+
+# Expandir datos según la frecuencia
+dat_expanded <- dat_long %>%
+  uncount(weights = Frecuencia)
+
+# Crear el gráfico con líneas verticales en cada facet
+ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), 
+                         fill = stat(x))) +
+  geom_density_ridges_gradient(scale = 1.8,
+                               rel_min_height = 0.001,
+                               col = "black",
+                               fill = "grey") +
+  facet_wrap(~FltSvy, ncol = 10) +
+  geom_vline(data = mean_talla, aes(xintercept = mean_Talla), 
+             color = "red", 
+             size = 0.7,
+             alpha=0.5) +
+  labs(title = "",
+       x = "cm",
+       y = "",
+       fill = "Densidad") +
+  theme_few()
 ```
 
 ## Scenarios
@@ -210,19 +274,11 @@ about main consideration in assessment of krill population.
 
 | Scenario | Description                                                                          |
 |:------------:|:---------------------------------------------------------|
-|   s01    | Fishery and Survey (AMLR) data, Predator, Environmental aggregate data in 48.1       |
-|    s1    | Fishery and Survey (AMLR) data Length, Index, Catch by strata. Predator and Env data |
-|    s2    | "s1" without S-R relation                                                            |
-|    s3    | "s1" BH S-R relation weak (0.9 steepness)                                            |
-|    s4    | "s1" BH S-R relation strong (0.6 steepness)                                          |
-|    s5    | "s1" BH S-R relation mid-strong estimated                                            |
-|    s6    | "s1" Ricker S-R relation estimated                                                   |
-|    s7    | "s1" w/ set of parameters estimated in @EMM-204/32                                   |
-|    s8    | "s1" test data weighting                                                             |
-|    s9    | "s1" w/ selectivity blocks                                                           |
-|    s1.1  | Spatial data without environmental and predator components                          |
+|    s1.1  | Spatial data without environmental and predator components                           |
 |    s1.2  | "s1.1" with environmental and predator components                                    |
 |    s1.3  | "s1.2" w/ selectivity blocks                                                         |
+
+
 
 ## Run Models
 
@@ -253,15 +309,28 @@ r4ss::run(
 )
 
 
-base.model1.1 <- SS_output(dir=dir1.1,
-                        covar=T,
-                        forecast=T)
+# s1.2
+r4ss::run(
+  dir = dir1.2,
+  exe = "ss_osx",
+  skipfinished = FALSE, # TRUE will skip running if Report.sso present
+  show_in_console = TRUE # change to true to watch the output go past
+)
+
+
+# s1.3
+r4ss::run(
+  dir = dir1.3,
+  exe = "ss_osx",
+  skipfinished = FALSE, # TRUE will skip running if Report.sso present
+  show_in_console = TRUE # change to true to watch the output go past
+)
+
 ```
 
-Read outputs
+
 
 ```{r message=F, include=FALSE}
-
 #s1.1
 base.model1.1 <- SS_output(dir=dir1.1,
                         covar=T,
@@ -277,29 +346,20 @@ base.model1.3 <- SS_output(dir=dir1.3,
 ```
 
 
-```{r}
-SSplotTimeseries(base.model1.1,
-                 subplot = 1)
-SSplotTimeseries(base.model1.1,
-                 subplot = 9)
-SSplotTimeseries(base.model1.1,
-                 subplot = 7)
+Data used en both (spatial and No spatial models)
+
+```{r }
+SSplotData(base.model1.1, 
+           subplot = 1,
+           pheight = 15)
+
+
+SSplotData(base.model1.2, 
+           subplot = 1,
+           pheight = 15)
 ```
-and fits
-
-```{r}
-SSplotBiology(base.model1.1,
-            subplots = 1:32)
-```
-
-```{r}
-SSplotComps(base.model1.1,
-            subplots = 1)
-
-```
-
-
 # RESULTS
+
 ```{r eval=FALSE, message=F, include=FALSE}
 # Definir la ruta de la carpeta
 folder_path <- "s1.1/plots"
@@ -319,17 +379,118 @@ SS_plots(base.model1.1,
          btarg=0.75, 
          minbthresh=0.2, 
          forecast=T)
+
+# S 1.2
+
+# Definir la ruta de la carpeta
+folder_path2 <- "s1.2/plots"
+# Verificar si la carpeta existe y eliminarla
+if (dir.exists(folder_path2)) {
+  unlink(folder_path2, 
+         recursive = TRUE)
+  message("La carpeta 'plots' ha sido eliminada.")
+} else {
+  message("La carpeta 'plots' no existe.")
+}
+
+SS_plots(base.model1.2, 
+         uncertainty = TRUE,
+         datplot = T, 
+         png=T, 
+         aalresids = F,
+         btarg=0.75, 
+         minbthresh=0.2, 
+         forecast=T)
+
+# S 1.3
+
+# Definir la ruta de la carpeta
+folder_path3 <- "s1.3/plots"
+# Verificar si la carpeta existe y eliminarla
+if (dir.exists(folder_path3)) {
+  unlink(folder_path3, 
+         recursive = TRUE)
+  message("La carpeta 'plots' ha sido eliminada.")
+} else {
+  message("La carpeta 'plots' no existe.")
+}
+
+SS_plots(base.model1.3, 
+         uncertainty = TRUE,
+         datplot = T, 
+         png=T, 
+         aalresids = F,
+         btarg=0.75, 
+         minbthresh=0.2, 
+         forecast=T)
 ```
 
 
-### Main Variables poulation
+
+### Main Variables poulation in `s1.1` scenario
+
+```{r}
+SSplotTimeseries(base.model1.1,
+                 subplot = 1)
+SSplotTimeseries(base.model1.1,
+                 subplot = 9)
+SSplotTimeseries(base.model1.1,
+                 subplot = 7)
+```
+
+### Main Variables poulation in `s1.2` scenario
+
+```{r}
+SSplotTimeseries(base.model1.2,
+                 subplot = 1)
+SSplotTimeseries(base.model1.2,
+                 subplot = 9)
+SSplotTimeseries(base.model1.2,
+                 subplot = 7)
+```
+
+### Main Variables poulation in `s1.3` scenario
+
+```{r}
+SSplotTimeseries(base.model1.3,
+                 subplot = 1)
+SSplotTimeseries(base.model1.3,
+                 subplot = 9)
+SSplotTimeseries(base.model1.3,
+                 subplot = 7)
+```
+
+Selectivity
+
+```{r fig.height=6}
+SSplotSelex(base.model1.1,
+            subplots = 1)
+
+SSplotSelex(base.model1.2,
+            subplots = 1)
+```
+
+
+
+```{r}
+SSplotBiology(base.model1.1,
+            subplots = 1:32)
+```
+
+```{r}
+SSplotComps(base.model1.2,
+            subplots = 1)
+
+```
+
+
 
 Total biomass
 
 ```{r eval=FALSE}
-total01 <- as.data.frame(base.model01$timeseries[1:50,c(2,5)]) %>%
+total01 <- as.data.frame(base.model1.1$timeseries[1:31,c(2,5)]) %>%
   mutate(Serie = "No Spatial")
-total1 <- as.data.frame(base.model1$timeseries[,c(2,5)]) %>% 
+total1 <- as.data.frame(base.model1.2$timeseries[,c(2,5)]) %>% 
   mutate(Serie = "Spatial implicit")
 total2 <- as.data.frame(base.model2$timeseries[,c(2,5)]) %>% 
   mutate(Serie = "Spatial w/ without S-R relation")
@@ -371,37 +532,6 @@ ggplot(totalbio, aes(x = Yr, y = Bio_all, color=Serie)) +
                                    hjust = 1))
 ```
 
-
-Data used en both (spatial and No spatial models)
-
-```{r }
-SSplotData(base.model1.1, 
-           subplot = 1,
-           pheight = 15)
-```
-
-
-Respecto a los valores y parametros biologicos modelados, los siguientes
-graficos identifican los estimadores puntuales del recurso
-
-```{r fig.height=6}
-SSplotSelex(base.model01,
-            subplots = 1)
-SSplotSelex(base.model1,
-            subplots = 1)
-SSplotSelex(base.model2,
-            subplots = 1)
-SSplotSelex(base.model3,
-            subplots = 1)
-SSplotSelex(base.model4,
-            subplots = 1)
-SSplotSelex(base.model5,
-            subplots = 1)
-SSplotSelex(base.model6,
-            subplots = 1)
-SSplotSelex(base.model1.1,
-            subplots = 1)
-```
 
 
 
@@ -552,6 +682,11 @@ SSplotRunstest(base.model1.1,
                add=T,
                plot = TRUE,
                plotdir = Figs)
+SSplotRunstest(base.model1.2,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
 ```
 
 
@@ -586,6 +721,9 @@ SSplotRunstest(base.modeltest,
 SSplotRunstest(base.model1.1,
                subplots = "cpue",
                add=T)
+SSplotRunstest(base.model1.2,
+               subplots = "cpue",
+               add=T)
 ```
 
 ```{r eval=FALSE}
@@ -638,7 +776,7 @@ SSplotJABBAres(base.model5,
 SSplotJABBAres(base.model6,
                subplots = "len",
                add=T)
-SSplotJABBAres(base.model1.1,
+SSplotJABBAres(base.model1.2,
                subplots = "len",
                add=T)
 ```
@@ -665,7 +803,7 @@ SSplotJABBAres(base.model5,
 SSplotJABBAres(base.model6,
                subplots = "cpue",
                add=T)
-SSplotJABBAres(base.model1.1,
+SSplotJABBAres(base.model1.2,
                subplots = "cpue",
                add=T)
 ```
@@ -1114,7 +1252,7 @@ kbl(tablebias7a, booktabs = T,format = "latex",
 
 ```
 
-## Likelihood
+## Likelihood tables
 
 ```{r}
 like01 <- base.model01$likelihoods_used
@@ -1171,9 +1309,10 @@ ggplot(totalike)+
 
 ```{r eval=FALSE, echo = FALSE}
 # 1. Identificar el directorio donde se encuentra el modelo base ----
-dirname.model.run <- here("s1")
+dirname.model.run <- here("s1.2")
 # 2. Crear un nuevo directorio para el "Perfil_Verosimilitud"  
-dirname.R0.profile <- here("Ejercicios","Perfil_Verosimilitud")
+dirname.R0.profile <- here("s1.2",
+                           "Perfil_Verosimilitud")
 dir.create(path=dirname.R0.profile, 
            showWarnings = TRUE, 
            recursive = TRUE)
@@ -1203,7 +1342,7 @@ inputs$ctl$recdev_phase <- 1
 # 10. Editar el archivo starter para leer los valores de inicio ----
 inputs$start$init_values_src <- 0
 # 11. Vector de valores para el perfil ----
-R0.vec <- seq(15,30,1)  
+R0.vec <- seq(18,30,1)  
 Nprof.R0 <- length(R0.vec)
 # 12. Cambiar el nombre del archivo control en el archivo starter.ss ----
 inputs$start$ctlfile <- "control_modified.ss" 
@@ -1459,22 +1598,20 @@ kbl(comtable, booktabs = T,format = "latex",
 ```{r echo=FALSE}
 #read in all model runs
 #note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist01_1_7 <- SSgetoutput(keyvec = NULL,
+biglist1_2_3 <- SSgetoutput(keyvec = NULL,
                        dirvec = c(
-                                  dir01,
-                                  dir1,
-                                  dir7),
+                                  dir1.1,
+                                  dir1.2,
+                                  dir1.3),
                        getcovar = F)
 
 #create summary of model runs from list above
-summaryoutput01_1_7 <- SSsummarize(biglist01_1_7)
+summaryoutput1_2_3 <- SSsummarize(biglist1_2_3)
 
-SSplotComparisons(summaryoutput01_1_7,
-                  legendlabels = c(
-                                   "No Spatial",
-                 
-                 "Spatial",
-                 "Spatial w/ new set LH paramters"),
+SSplotComparisons(summaryoutput1_2_3,
+                  legendlabels = c("Ref Model: No Env-Predator",
+                 "S1.1 w/ Predator data",
+                 "S1.1 w/ Env and Predator data"),
                  filenameprefix = "COM1",
                  labels = c("Year", 
                             "Spawning biomass (t)",
@@ -1488,7 +1625,8 @@ SSplotComparisons(summaryoutput01_1_7,
                             "Minimum stock size threshold",
                             "Spawning output",
                             "Harvest rate"),
-                 png=TRUE,plotdir=Figs)
+                 png=TRUE,
+                 plotdir=Figs)
 ```
 
 comparision between select models `Old Paramters` and `New Parameters WG SAM 2024/23`

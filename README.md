@@ -11,7 +11,7 @@ This repository contains the Stock Synthesis 3 (SS3) assessment model for *Eupha
 │── 📂 Figs/           # Output figures from the model  
 │── 📂 Results/        # Processed results and reports  
 │── 📄 README.md       # Project overview    
-│── 📄 SA_krill-bib    # bibtex files with references 
+│── 📄 SA_krill.bib    # bibtex files with references 
 ```  
 
 ## **Reproducibility**  
@@ -20,5 +20,5 @@ All necessary information to fully reproduce the analysis can be shared upon req
 
 ## **Outputs and Reports**  
 
-This assessment contributes to the **WG-SAM 2024** working group discussions by providing updated model outputs and analyses relevant to krill stock management.  
+This assessment contributes to the **WG-SAM 2025** working group discussions by providing updated model outputs and analyses relevant to krill stock management.  
 
