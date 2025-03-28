@@ -84,9 +84,10 @@ library(ggridges)
 # dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
 # dir8<-here("s8") # s1 platoons
 # dir9<-here("s9") # s1 w/ blocks
-dir1.1<-here("s1.1") # con todo
-dir1.2 <- here("s1.2") # sin predador ni ambiental
-dir1.3 <- here("s1.3") # borrado los registros de prreddador )igual q el S2
+dir1.1<-here("s1.1") # sin predador ni ambiental
+dir1.2 <- here("s1.2") # s1.1 C/ predador
+dir1.3 <- here("s1.3") # s1.1 solo env
+dir1.4 <- here("s1.4") # s1.2 predator and env
 Figs <- here("Figs")# S
 ```
 
@@ -275,8 +276,9 @@ about main consideration in assessment of krill population.
 | Scenario | Description                                                                          |
 |:------------:|:---------------------------------------------------------|
 |    s1.1  | Spatial data without environmental and predator components                           |
-|    s1.2  | "s1.1" with environmental and predator components                                    |
-|    s1.3  | "s1.2" w/ selectivity blocks                                                         |
+|    s1.2  | "s1.1" with predator components                                                      |
+|    s1.3  | "s1.1" with environmental variable                                              |
+|    s1.4  | "s1.1" w/ both, predator fleet and environmental variable                        |
 
 
 
@@ -326,6 +328,14 @@ r4ss::run(
   show_in_console = TRUE # change to true to watch the output go past
 )
 
+
+# s1.4
+r4ss::run(
+  dir = dir1.4,
+  exe = "ss_osx",
+  skipfinished = FALSE, # TRUE will skip running if Report.sso present
+  show_in_console = TRUE # change to true to watch the output go past
+)
 ```
 
 
@@ -343,6 +353,11 @@ base.model1.2 <- SS_output(dir=dir1.2,
 base.model1.3 <- SS_output(dir=dir1.3,
                         covar=T,
                         forecast=T)
+#s1.4
+base.model1.4 <- SS_output(dir=dir1.4,
+                        covar=T,
+                        forecast=T)
+
 ```
 
 
@@ -1598,19 +1613,21 @@ kbl(comtable, booktabs = T,format = "latex",
 ```{r echo=FALSE}
 #read in all model runs
 #note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist1_2_3 <- SSgetoutput(keyvec = NULL,
+biglist1_4 <- SSgetoutput(keyvec = NULL,
                        dirvec = c(
                                   dir1.1,
                                   dir1.2,
-                                  dir1.3),
+                                  dir1.3,
+                                  dir1.4),
                        getcovar = F)
 
 #create summary of model runs from list above
-summaryoutput1_2_3 <- SSsummarize(biglist1_2_3)
+summaryoutput1_4 <- SSsummarize(biglist1_4)
 
-SSplotComparisons(summaryoutput1_2_3,
+SSplotComparisons(summaryoutput1_4,
                   legendlabels = c("Ref Model: No Env-Predator",
                  "S1.1 w/ Predator data",
+                 "S1.1 w/ Env data",
                  "S1.1 w/ Env and Predator data"),
                  filenameprefix = "COM1",
                  labels = c("Year", 
@@ -1846,6 +1863,86 @@ combined_plot <- ggarrange(plotlist = plots, ncol = 3, nrow = 3)
 
 combined_plot
 ```
+
+## Comparision RMSE
+
+```{r}
+# Crear un data frame con los valores de RMSE
+df <- data.frame(
+  Model1.1 = as.numeric(base.model1.1$index_variance_tuning_check$RMSE),
+  Model1.2 = as.numeric(base.model1.2$index_variance_tuning_check$RMSE[1:10]),
+  Model1.3 = as.numeric(base.model1.3$index_variance_tuning_check$RMSE[1:10])
+)
+
+# Comparación de estadísticas descriptivas
+summary(df)
+
+# Comparación con boxplot
+boxplot(df, main = "Comparación de RMSE entre modelos", col = c("red", "blue", "green"))
+
+# Prueba de diferencias estadísticas (ANOVA)
+anova_result <- aov(as.numeric(unlist(df)) ~ rep(1:3, each=nrow(df)))
+summary(anova_result)
+
+
+
+t.test(df$Model1.1, df$Model1.2)  # Comparar Model1.1 vs Model1.2
+t.test(df$Model1.1, df$Model1.3)  # Comparar Model1.1 vs Model1.3
+t.test(df$Model1.2, df$Model1.3)  # Comparar Model1.2 vs Model1.3
+
+# ANOVA para ver si hay diferencias globales
+anova_rmse <- aov(as.numeric(unlist(df)) ~ rep(1:3, each=nrow(df)))
+summary(anova_rmse)
+
+# Prueba post-hoc si ANOVA es significativa
+TukeyHSD(anova_rmse)
+
+
+df_long <- reshape2::melt(df)
+ggplot(df_long, aes(x = variable, y = value, fill = variable)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Comparación de RMSE entre modelos", x = "Modelo", y = "RMSE")
+
+```
+
+```{r}
+
+# Unir los modelos en un solo dataframe y asegurarse de que los nombres de filas se mantienen
+df1 <- base.model1.1$likelihoods_used %>%
+  select(values) %>%
+  mutate(Componente = rownames(base.model1.1$likelihoods_used), Modelo = "M1.1")
+
+df2 <- base.model1.2$likelihoods_used %>%
+  select(values) %>%
+  mutate(Componente = rownames(base.model1.2$likelihoods_used), Modelo = "M1.2")
+
+df3 <- base.model1.3$likelihoods_used %>%
+  select(values) %>%
+  mutate(Componente = rownames(base.model1.3$likelihoods_used), Modelo = "M1.3")
+
+# Combinar todos los modelos
+df <- bind_rows(df1, df2, df3)
+
+
+
+# Crear gráfico de barras con valores transformados
+ggplot(df, aes(x = Componente, y = values, fill = Modelo)) +
+  geom_col(position = position_dodge(), width = 0.7) +  # Barras separadas por modelo
+  theme_bw() +
+  coord_flip() +  # Para que sea horizontal
+  scale_fill_manual(values = c("S1.1" = "grey",
+                               "S1.2" = "red", 
+                               "S1.3" = "black")) +  # Colores personalizados
+  labs(x = "",
+       y = "Log-Normal Likelihood", 
+       title = "") 
+
+
+
+
+```
+
 ## Platoons analisis
 
 ```{r}

@@ -17,7 +17,7 @@ csl: icesjournal.csl
 link-citations: yes
 toc: false
 linkcolor: blue
-linestretch: 1.3
+linestretch: 1.5
 header-includes:
 - \fontsize{12}{16}
 - \selectfont
@@ -56,30 +56,31 @@ library(openxlsx)
 library(r4ss)
 ```
 
+\newpage
 
 # ABSTRACT  
 
-Understanding the drivers of krill (*Euphausia superba*) population dynamics is crucial for sustainable management. This study evaluates the impact of environmental variables and predation components on krill productivity, specifically stock-recruitment relationships and other population parameters, in the Western Antarctic Peninsula. Using an integrated Catch-at-Length model, we assess how ecosystem factors influence recruitment, biomass trends, and stock status.  Our results indicate that krill population variables, as well as productivity estimates, tend to be more optimistic in terms of stock status when environmental and predators variables are not considered. This highlights a critical challenge in developing management recommendations and harvest control rules, as ignoring ecosystem influences may lead to overly optimistic assessments of krill stock health.  Our findings emphasize the necessity of incorporating ecosystem variables into population stock assessments process, as neglecting these factors may lead to biased estimations of krill population dynamics. We consider that the use of integrated models, which leverage the extensive population, fisheries, and ecosystem data available through various scientific programs, can provide valuable insights for management aligned with CCAMLR conservation and harvesting objectives.  
+Understanding the drivers of krill (*Euphausia superba*) population dynamics is crucial for sustainable management. This study evaluates the impact of environmental variables and predation components on krill productivity and other population parameters, in the Western Antarctic Peninsula (WAP). Using an integrated Catch-at-Length model, we assess how ecosystem factors influence recruitment, biomass trends, and stock status.  Our results indicate that krill population variables, as well as productivity estimates, tend to be more optimistic in terms of stock status when environmental and predators variables are not considered. This highlights a critical challenge in developing management recommendations and harvest control rules, as ignoring ecosystem influences may lead to overly optimistic assessments of krill stock health.  Our findings emphasize the necessity of incorporating ecosystem variables into population stock assessments process, as neglecting these factors may lead to biased estimations of krill population dynamics. We consider that the use of integrated models, which leverage the extensive population, fisheries, and ecosystem data available through various scientific programs, can provide valuable insights for management aligned with CCAMLR conservation and harvesting objectives.  
 
 
-**Keywords:** Antarctic krill, population dynamics, stock-recruitment, ecosystem variables, Catch-to-Length model, environmental factors, predation, fisheries management.  
+*Keywords: Antarctic krill, population dynamics, stock-recruitment, ecosystem variables, Catch-to-Length model, environmental factors, predation components, fisheries management.*
 
+\newpage
 
 # INTRODUCTION
 
-Antarctic krill (*Euphausia superba*) is a keystone species in the Antarctic ecosystem and represents one of the largest living populations on the planet in terms of biomass (REF). This species is widely distributed across the Antarctic continental shelf; however, its populations are currently concentrated mainly in the Antarctic Peninsula region (REF). This spatial concentration has heightened scientific interest in understanding the population dynamics of krill, both from an ecological perspective—due to its crucial role as a prey species for whales, penguins, and other marine organisms (REF)—and from an economic standpoint, given the commercial fishing pressure exerted on this resource (REF).  
 
-Recognizing the ecological and economic importance of krill, the Commission for the Conservation of Antarctic Marine Living Resources (CCAMLR) has prioritized conservation and management strategies aimed at ensuring the sustainability of this resource. The primary objective has been to reconcile commercial exploitation with a precautionary approach that safeguards the ecological community dependent on krill (REF). CCAMLR’s management framework relies on sustainable exploitation recommendations based largely on survey data obtained from acoustic biomass estimation campaigns and fisheries monitoring programs (REF). Over time, these efforts have advanced toward integrating multiple sources of information into assessment models that guide decision-making. One such approach is the use of annual yield models, which recommend catch limits based on predefined exploitation thresholds (REF).  
+Antarctic krill (*Euphausia superba*) is a keystone species in the Antarctic ecosystem and one of the largest populations on the planet in terms of biomass (REF). Currently, its population is predominantly concentrated in the Western Antarctic Peninsula (WAP), a critical feeding ground for predators and the primary area for krill harvesting over the past four decades (REF). At the same time, the WAP is one of the most vulnerable regions to climate change (CC) and has already undergone rapid environmental shifts [@Turner2005; @Lima2013; @McBride2021; @Morley2020; @Atkinson2019a]. These overlapping pressures have intensified scientific interest in understanding krill population dynamics from both an ecological and fisheries perspective. Given its ecological significance and commercial value, effective management of krill stocks is essential to maintaining the balance of the Antarctic ecosystem while supporting sustainable fisheries.  
 
-In this study, we integrate multiple sources of biological and fisheries-related data, including estimates of biomass from scientific surveys, fisheries catch data, and biological parameters, to construct a modern stock assessment model that evaluates key population variables and krill productivity. However, contemporary stock assessment models require the incorporation of ecosystem variables—such as environmental conditions and predator-prey interactions—which are essential components of the Antarctic ecosystem and must be considered when modeling krill population dynamics (REF).  
+Recognizing this, the Commission for the Conservation of Antarctic Marine Living Resources (CCAMLR) has adopted a new management strategy (CCAMLR 2019) that follows an ecosystem-based approach. This strategy seeks to balance commercial harvesting with a precautionary framework that safeguards krill-dependent species. It includes three key components: (i) stock assessments to determine precautionary harvest rates, (ii) periodic updates of krill biomass estimates at multiple spatial scales, and (iii) a risk assessment framework, now referred to as spatial overlap analysis, to guide the spatial allocation of catches and mitigate ecosystem-wide risks.  
 
-To address these challenges, we integrate environmental information that influences krill population dynamics, as well as data on predator species that are affected by krill population variability. We employ an integrated catch-at-length stock synthesis model to compare different scenarios and assess the impact of ecosystem variability on key productivity indicators, such as recruitment and other critical population variables (REF). By incorporating these ecosystem drivers into our stock assessment approach, we aim to enhance our understanding of krill population fluctuations and improve the scientific basis for sustainable management recommendations.  
+As part of this strategy, CCAMLR has tested various modeling approaches to assess krill stock status and support fisheries management decisions [@Hill2016]. While model-based stock assessments have been widely used (REF), many struggle to align with management objectives or accurately represent krill population dynamics due to their spatial variability and ecosystem complexity. One widely applied approach is the General Yield Model (GRYM) (REF), which provides global catch limits based on predefined harvest thresholds. Traditionally, stock assessments have relied on single-source data, either from fisheries catches [@Kindzey; @Wang] or population monitoring surveys [@Green2023; @Watters2013]. However, these approaches often overlook critical factors such as spatial heterogeneity in krill abundance, environmental drivers, and predator-prey interactions. Given the influence of environmental variables on krill recruitment and the role of predators in adding an additional component of natural mortality, any stock assessment framework must integrate these ecosystem factors to better represent population dynamics.  
 
-Antarctic krill (*Euphausia superba*) plays a fundamental role in the Southern Ocean ecosystem, linking primary production to higher trophic levels, including marine mammals, seabirds, and fish. Krill populations are subject to complex ecological pressures, including environmental variability (e.g., sea ice extent, temperature fluctuations, and primary productivity) and predation from key species such as penguins. In addition, commercial fisheries target krill, further influencing population dynamics.  
+There is now broad scientific consensus on the need for stock assessment models that incorporate multiple data sources, capture spatial variability, and account for ecosystem interactions. However, integrating these complexities presents several challenges. Long-term data consistency is often lacking due to variations in monitoring programs and sampling methodologies. Additionally, some areas have sparse or incomplete datasets on krill dynamics. Furthermore, indirect drivers, such as environmental variability and predator abundance, introduce another layer of complexity. Despite these gaps, a substantial amount of data exists on krill populations and their ecosystem, making it crucial to identify knowledge gaps and integrate available information into comprehensive models that support management recommendations. This requires not only refining existing datasets but also adopting a fully ecosystem-based management approach.  
 
-Traditional stock assessments primarily rely on fishery-dependent and survey-based data but often overlook ecosystem variables that may significantly impact population structure and productivity. Integrating environmental and biological drivers into stock assessments is essential to improving our understanding of krill dynamics and ensuring robust management strategies.  
+To address this need, we propose a conceptual framework for developing a statistical model that integrates multiple data sources to assess the population dynamics of Antarctic krill in the Western Antarctic Peninsula (WAP) over the past four decades. This approach incorporates biological, fishery, survey, and ecosystem-related information to provide a more comprehensive understanding of krill stock fluctuations. Specifically, we employ an integrated catch-at-length stock synthesis model that allows us to evaluate the effects of environmental drivers on krill recruitment and productivity, as well as the impact of predator-prey interactions on overall population dynamics.  Our approach involves comparing different scenarios, one incorporating ecosystem-related variables and another based solely on traditional stock assessment data, to determine how environmental fluctuations and predator abundance influence key population variables and parameters. By analyzing differences in estimated biomass, recruitment patterns, and overall krill productivity across these scenarios, we aim to quantify the extent to which ecosystem factors drive krill population trends. This comparative approach enables us to assess the relative importance of environmental conditions and predator dynamics in shaping krill stocks, providing critical insights for both fisheries management and conservation efforts.  
 
-This study aims to assess the impact of ecosystem variables, particularly environmental conditions and predation pressure from penguins, on krill productivity and population structure. Using an integrated Catch-to-Length model, we evaluate stock-recruitment relationships and other key population parameters to determine how ecosystem drivers shape krill dynamics.  
+By integrating ecosystem drivers into the stock assessment process, we enhance the accuracy of population estimates and improve our ability to predict future stock trends under changing environmental conditions. This broader ecological perspective strengthens the scientific foundation for sustainable management recommendations, ensuring that harvesting strategies align with an ecosystem-based management approach. Ultimately, the insights gained from this integrated modeling effort contribute to the ongoing efforts of CCAMLR's new strategy to balance krill fishery sustainability with the conservation of the broader Antarctic marine ecosystem.
 
 
 
@@ -109,6 +110,65 @@ Our model results indicate that ecosystem variables significantly influence kril
 3. **Biomass Trends**: Environmental drivers accounted for a substantial portion of biomass fluctuations, with warm years showing lower krill abundance, likely due to reduced primary productivity.  
 4. **Fisheries Interaction**: Years with high krill harvest coincided with lower biomass estimates, highlighting the cumulative impact of both natural and anthropogenic pressures on krill stocks.  
 
+
+Para reportar los distintos escenarios obtenidos del stock assessment en SS3, puedes enfocarte en comparar las diferencias clave entre el escenario base y el que incorpora variables ecosistémicas. Como mencionaste, el escenario con variables ecosistémicas es más pesimista en términos de reclutamiento y otras variables poblacionales. Aquí tienes algunas ideas de tablas y gráficos para reportar los resultados:
+
+### **Tablas a incluir**
+1. **Comparación de parámetros clave entre escenarios:**
+   - Biomasa desovante (SSB, Spawning Stock Biomass) en años clave.
+   - Tasa de explotación (F).
+   - Reclutamiento medio.
+   - Relación B/B0 (biomasa actual respecto a la virgen).
+   - Relación F/FMSY.
+
+   | Parámetro       | Base | Con variables ecosistémicas |
+   |----------------|------|----------------------------|
+   | SSB (2020)     | X    | Y                          |
+   | SSB (2025)     | X    | Y                          |
+   | F (2020)       | X    | Y                          |
+   | Reclutamiento medio | X | Y                        |
+   | B/B0 (2020)    | X    | Y                          |
+   | F/FMSY (2020)  | X    | Y                          |
+
+2. **Resumen del ajuste del modelo:**
+   - Log-verosimilitud total.
+   - Verosimilitud de los datos de captura, índices de abundancia y composición de tallas/edades.
+   - Número de parámetros estimados.
+   - Error estándar de las estimaciones clave.
+
+3. **Comparación de reclutamiento por año:**
+   - Media y desviación estándar del reclutamiento en periodos clave (por ejemplo, 1990-2000, 2000-2010, 2010-2020).
+   - Probabilidad de años de reclutamiento bajo.
+
+### **Gráficos recomendados**
+1. **Evolución de la biomasa desovante (SSB) en el tiempo**  
+   - Líneas para cada escenario mostrando tendencias divergentes.
+   - Inclusión de intervalos de confianza.
+
+2. **Reclutamiento anual estimado por escenario**  
+   - Barras para cada año con comparación entre escenarios.
+   - Promedio móvil para suavizar tendencias.
+
+3. **Relación stock-reclutamiento con diferentes ajustes**  
+   - Ajustes de la curva con y sin variables ecosistémicas.
+   - Comparación de la fuerza del reclutamiento en diferentes condiciones ambientales.
+
+4. **Proyecciones de biomasa y F bajo diferentes escenarios de explotación**  
+   - Predicciones de la biomasa y la explotación para los próximos 5-10 años.
+   - Comparación entre políticas de manejo con y sin ecosistema.
+
+5. **Distribución de longitudes o edades en el tiempo**  
+   - Para ver si el escenario con variables ecosistémicas predice cambios en la estructura de la población.
+
+6. **Curvas de Kobe plot (B/BMSY vs. F/FMSY)**  
+   - Comparar el estado del stock en cada escenario respecto a puntos de referencia de manejo.
+
+
+(Imagen Verosimilitud)
+
+
+The comparison of likelihood components across the three scenarios revealed notable differences in their fit to the data. Scenario S1.1 had the lowest total likelihood, suggesting a better overall fit compared to S1.2 and S1.3. The catch and equilibrium catch components showed minor variations among scenarios, indicating that these data had a limited influence on the overall likelihood differences. In terms of survey likelihood, S1.1 exhibited a slightly better fit to survey abundance data, while S1.2 and S1.3 showed higher likelihood values, suggesting a reduced agreement with observed biomass trends. The length composition component differed significantly, with S1.2 and S1.3 having higher likelihood values than S1.1, implying a poorer fit to observed length distributions. Recruitment likelihood was highest in S1.1, indicating stronger consistency with recruitment estimates compared to S1.2 and S1.3. Additionally, parameter deviations were more constrained in S1.1, whereas S1.2 and S1.3 exhibited greater variability. These results suggest that S1.1 provides a better overall fit, particularly in survey abundance and length composition components, while S1.2 and S1.3 show greater discrepancies in these aspects.
+
 ---
 
 ### **4. Discussion**  
@@ -130,22 +190,6 @@ Future research should explore additional ecosystem interactions and refine pred
 ### **Acknowledgments**  
 We thank CCAMLR for providing access to data and acknowledge the support of the scientific community contributing to krill population research.  
 
----
-
-This draft presents a formal scientific structure suitable for submission to a peer-reviewed journal. Let me know if you need modifications or additional details! 🚀
-
-# ABSTRACT 
-
-The integration of available sources of information is a challenge for any attempt to know dynamics populations for Antarctic Krill *Euphausia superba* in an integrated stock assessment model.Being able to identify sources of information, systematize and integrate it in a model and estimate krill population variables in a context of change and fisheries management is vital for management and decision making. This approach has three main objectives. Firstly, integrate fishing, environmental and ecological variables in an integrated stock assessment model and test his performance. On the other hand, consider the spatial heterogeneity of the krill population structure. Finally, to evaluate the impact of biological and structure population assumptions on the performance of this type of integrated stock assessment models. Consequently, by acknowledging and integrating different data sources, the stock assessment model can provide insights into the ecological dynamics of krill populations and improve CCAMLR fishery management and conservation strategies in this region.
-
-
-*Keywords: Krill populations, dynamic population, integrated model, Stock Synthesis (SS3), spatial implicit, ecosystem consideration, management, CCAMLR.*
-
-\newpage
-
-# INTRODUCTION
-
-Antarctic krill (*Euphausia superba* krill thereafter) population is predominantly concentrated in the Western Antarctic Peninsula (WAP), serving as a vital food source for predators and being targeted by increasing fishing activities. On the other hand, WAP is considered one of the most sensitive areas to Climate Change (CC) and has already experienced fast changes in various dimensions [@Turner2005; @Lima2013; @McBride2021; @Morley2020; @Atkinson2019a]. Given its ecological significance and economic value, effective management of krill stocks is paramount to ensure the sustainability of Antarctic ecosystems and support fisheries-dependent communities. As part of its mandate, CCAMLR promotes sustainable management of Antarctic krill through an ecosystem-based approach [@Watters2013]. CCAMLR has tried to conduct different modeling approaches to assess the status of important species, and to provide information for decision-making regarding fisheries management and conservation measures [@Hill2016]. Various stock assessment approaches on krill have been conducted to provide management advice to CCAMLR using model-based methodologies. Many of these models face challenges in aligning with management schemes or accurately representing the population dynamics of krill, due to its variability and heterogeneity in spatial distribution and ecosystem complexity. Traditionally, stock assessments have relied on single-source data, primarily from fisheries catch data or population monitoring surveys [@Green2023; @Watters2013]. However, these approaches may overlook critical aspects of krill dynamics, such as integrated different data components, spatial heterogeneity in abundance and distribution, as well as the influence of environmental factors and predator-prey interactions. There is a growing consensus on the need for using stock assessment models that incorporate multiple sources of information, capture spatial heterogeneity and consider the complex interplay of ecosystem variables in krill. Integrating the complexity of krill population dynamics presents several challenges. Firstly, data consistency over the years has been problematic, as many monitoring programs and studies have not adhered to a uniform standard throughout their temporal and spatial extension. Additionally, certain regions or areas lack sufficient data or possess only limited information regarding krill dynamics. Furthermore, interpreting indirect indicators that may affect the krill population, such as environmental variables, predator abundance, and fishery data, adds another layer of complexity. Despite these gaps, the existing data about krill population dynamics is abundant, considered data rich, and this availability allows building an integrated model to get population signals and estimate main variables such as spawning biomass, recruitment, and fishing mortality, among others. In response to this need, we propose a conceptual model to conduct a statistical model in Antarctic krill population in the Antarctic Peninsula, which in turn allows the application of an integrated model that incorporates the fishery, surveys and ecosystem information on krill population over the past 40 years.
 
 \newpage
 
@@ -259,6 +303,16 @@ In a scientifically rigorous stock assessment, this analysis included comparison
 By comparing model outputs under scenarios where spatial heterogeneity is assumed versus not assumed, the significance of incorporating spatial variation into the model can be assessed. This methodology enables researchers to make informed decisions about the necessity of accounting for spatial heterogeneity in understanding krill distribution and abundance, thereby enhancing the accuracy and reliability of ecological modeling efforts.
 
 Nowadays, one of the frontiers of stock assessment is the incorporation of ecosystem and spatial considerations into modeling. In this context, the features of the SS3 platform allow us to advance in this direction and contribute to the discussion, both in understanding the population dynamics of krill and providing advice for sustainable management. In summary, our proposed stock assessment scheme represents a pivotal approach to understanding the complex population dynamics of Antarctic krill in Subarea 48.1.
+
+Predator indesx
+
+A simple predation pressure index for modeling changes in naturalmortality: Application to Gulf of Maine northern shrimp stockassessment (Richard et al 2016)
+
+Env index.
+
+Simulation analyses indicated that the integrated approach with additional process error is superior to the traditional method of correlating model estimates with environmental variables outside the estimation procedure. The results suggest that, for the snapper stock, recruitment is positively correlated with SST at the time of spawning. (Maunder et al 2003)
+
+The ecosystem variables used in stock assessment processes vary in both their definition and how they are applied. Marshall et al. (2019) classify ecosystem variables based on their impact on population dynamics, as well as the ways in which they are incorporated into analytical models. 
 
 \newpage
 
