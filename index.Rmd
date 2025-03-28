@@ -365,12 +365,12 @@ Data used en both (spatial and No spatial models)
 
 ```{r }
 SSplotData(base.model1.1, 
-           subplot = 1,
+           subplots = 1,
            pheight = 15)
 
 
-SSplotData(base.model1.2, 
-           subplot = 1,
+SSplotData(base.model1.4, 
+           subplots = 1,
            pheight = 15)
 ```
 # RESULTS
@@ -431,6 +431,29 @@ if (dir.exists(folder_path3)) {
 }
 
 SS_plots(base.model1.3, 
+         uncertainty = TRUE,
+         datplot = T, 
+         png=T, 
+         aalresids = F,
+         btarg=0.75, 
+         minbthresh=0.2, 
+         forecast=T)
+
+
+# S 1.4
+
+# Definir la ruta de la carpeta
+folder_path4 <- "s1.4/plots"
+# Verificar si la carpeta existe y eliminarla
+if (dir.exists(folder_path4)) {
+  unlink(folder_path4, 
+         recursive = TRUE)
+  message("La carpeta 'plots' ha sido eliminada.")
+} else {
+  message("La carpeta 'plots' no existe.")
+}
+
+SS_plots(base.model1.4, 
          uncertainty = TRUE,
          datplot = T, 
          png=T, 
@@ -1980,7 +2003,7 @@ ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
 In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process
 
 ```{r AKL, out.width='60%',  fig.cap="Representation of ALK Matrix to krill in 48.1"}
-alk_matrix <- base.model1$ALK[,,1] # Ajusta las dimensiones según tu matriz
+alk_matrix <- base.model1.2$ALK[,,1] # Ajusta las dimensiones según tu matriz
 
 # Convertir la matriz en un data.frame
 alk_df <- as.data.frame(as.table(alk_matrix))
