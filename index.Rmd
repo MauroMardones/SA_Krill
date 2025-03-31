@@ -490,11 +490,11 @@ SSplotTimeseries(base.model1.2,
 ### Main Variables poulation in `s1.3` scenario
 
 ```{r}
-SSplotTimeseries(base.model1.3,
+SSplotTimeseries(base.model1.4,
                  subplot = 1)
-SSplotTimeseries(base.model1.3,
+SSplotTimeseries(base.model1.4,
                  subplot = 9)
-SSplotTimeseries(base.model1.3,
+SSplotTimeseries(base.model1.4,
                  subplot = 7)
 ```
 
@@ -506,12 +506,17 @@ SSplotSelex(base.model1.1,
 
 SSplotSelex(base.model1.2,
             subplots = 1)
+SSplotSelex(base.model1.3,
+            subplots = 1)
+
+SSplotSelex(base.model1.4,
+            subplots = 1)
 ```
 
 
 
 ```{r}
-SSplotBiology(base.model1.1,
+SSplotIndices(base.model1.1,
             subplots = 1:32)
 ```
 
