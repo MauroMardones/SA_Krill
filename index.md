@@ -418,27 +418,27 @@ and `s1.4`
 
 Main Variables poulation in `s1.1` scenario
 
-<img src="Figs/unnamed-chunk-14-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-14-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-14-3.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-14-1.jpeg" style="display: block; margin: auto;" />
 
 Main Variables poulation in `s1.2` scenario
 
-<img src="Figs/unnamed-chunk-15-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-15-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-15-3.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-15-1.jpeg" style="display: block; margin: auto;" />
 
 Main Variables poulation in `s1.3` scenario
 
-<img src="Figs/unnamed-chunk-16-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-16-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-16-3.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-16-1.jpeg" style="display: block; margin: auto;" />
 
 
 Main Variables poulation in `s1.4` scenario
 
-<img src="Figs/unnamed-chunk-17-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-17-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-17-3.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-17-1.jpeg" style="display: block; margin: auto;" />
 Selectivity
 
-<img src="Figs/unnamed-chunk-18-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-18-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-18-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-18-4.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-18-1.jpeg" style="display: block; margin: auto;" />
 
 
 
-<img src="Figs/unnamed-chunk-19-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-19-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-19-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-19-4.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-19-1.jpeg" style="display: block; margin: auto;" />
 
 <img src="Figs/unnamed-chunk-20-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-20-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-20-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-20-4.jpeg" style="display: block; margin: auto;" />
 
@@ -490,7 +490,7 @@ By integrating these residual analyses for both length and abundance indices, st
 ## Plotting Residual Runs Tests
 ```
 
-<img src="Figs/unnamed-chunk-24-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-4.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-5.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-6.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-7.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-8.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-24-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -510,13 +510,15 @@ By integrating these residual analyses for both length and abundance indices, st
 ## 9  SURVEYJOIN  0.541   Passed -0.4156365 0.4156365  len
 ```
 
+
+
 ```
 ## 
 ##  Running Runs Test Diagnosics for Mean length 
 ## Plotting Residual Runs Tests
 ```
 
-<img src="Figs/unnamed-chunk-24-9.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-10.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-11.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-12.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-13.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-14.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-15.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-16.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-17.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-25-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -537,13 +539,15 @@ By integrating these residual analyses for both length and abundance indices, st
 ## 10    PREDATOR  0.607   Passed -0.18346375 0.18346375  len
 ```
 
+
+
 ```
 ## 
 ##  Running Runs Test Diagnosics for Mean length 
 ## Plotting Residual Runs Tests
 ```
 
-<img src="Figs/unnamed-chunk-24-18.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-19.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-20.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-21.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-22.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-23.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-24.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-25.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-26-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -563,13 +567,15 @@ By integrating these residual analyses for both length and abundance indices, st
 ## 9  SURVEYJOIN  0.500   Passed -0.41808588 0.41808588  len
 ```
 
+
+
 ```
 ## 
 ##  Running Runs Test Diagnosics for Mean length 
 ## Plotting Residual Runs Tests
 ```
 
-<img src="Figs/unnamed-chunk-24-26.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-27.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-28.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-29.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-30.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-31.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-32.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-33.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-24-34.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-27-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -592,115 +598,6 @@ By integrating these residual analyses for both length and abundance indices, st
 
 
 
-```
-## 
-##  Running Runs Test Diagnosics for Index 
-## Plotting Residual Runs Tests
-```
-
-<img src="Figs/unnamed-chunk-25-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-4.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-5.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-6.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-7.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-8.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-9.jpeg" style="display: block; margin: auto;" />
-
-```
-## 
-## Runs Test stats by Index:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.001   Failed -0.8964068 0.8964068 cpue
-## 2    FISHERYEI  0.100   Passed -1.1328816 1.1328816 cpue
-## 3    FISHERYGS  0.797   Passed -1.9827363 1.9827363 cpue
-## 4  FISHERYJOIN  0.140   Passed -1.1347812 1.1347812 cpue
-## 5  FISHERYSSIW  0.001   Failed -0.7101892 0.7101892 cpue
-## 6     SURVEYBS  0.333   Passed -2.9583720 2.9583720 cpue
-## 7     SURVEYEI  0.771   Passed -2.6776080 2.6776080 cpue
-## 8     SURVEYGS  0.448   Passed -3.2527164 3.2527164 cpue
-## 9   SURVEYJOIN  0.001   Failed -3.1976327 3.1976327 cpue
-## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
-```
-
-```
-## 
-##  Running Runs Test Diagnosics for Index 
-## Plotting Residual Runs Tests
-```
-
-<img src="Figs/unnamed-chunk-25-10.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-11.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-12.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-13.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-14.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-15.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-16.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-17.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-18.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-19.jpeg" style="display: block; margin: auto;" />
-
-```
-## 
-## Runs Test stats by Index:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.143   Passed -1.1809409 1.1809409 cpue
-## 2    FISHERYEI  0.100   Passed -1.4337655 1.4337655 cpue
-## 3    FISHERYGS  0.797   Passed -2.5816226 2.5816226 cpue
-## 4  FISHERYJOIN  0.582   Passed -1.2562104 1.2562104 cpue
-## 5  FISHERYSSIW  0.285   Passed -0.8795652 0.8795652 cpue
-## 6     SURVEYBS  0.001   Failed -2.3451953 2.3451953 cpue
-## 7     SURVEYEI  0.684   Passed -2.5556960 2.5556960 cpue
-## 8     SURVEYGS  0.753   Passed -3.4160804 3.4160804 cpue
-## 9   SURVEYJOIN  0.268   Passed -3.2923986 3.2923986 cpue
-## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
-## 11    PREDATOR  0.001   Failed -0.5495260 0.5495260 cpue
-```
-
-```
-## 
-##  Running Runs Test Diagnosics for Index 
-## Plotting Residual Runs Tests
-```
-
-<img src="Figs/unnamed-chunk-25-20.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-21.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-22.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-23.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-24.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-25.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-26.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-27.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-28.jpeg" style="display: block; margin: auto;" />
-
-```
-## 
-## Runs Test stats by Index:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.089   Passed -0.9902968 0.9902968 cpue
-## 2    FISHERYEI  0.095   Passed -1.3237393 1.3237393 cpue
-## 3    FISHERYGS  0.530   Passed -2.0049843 2.0049843 cpue
-## 4  FISHERYJOIN  0.140   Passed -1.0956169 1.0956169 cpue
-## 5  FISHERYSSIW  0.000   Failed -0.7352820 0.7352820 cpue
-## 6     SURVEYBS  0.184   Passed -2.4899491 2.4899491 cpue
-## 7     SURVEYEI  0.684   Passed -2.6109770 2.6109770 cpue
-## 8     SURVEYGS  0.448   Passed -3.2352437 3.2352437 cpue
-## 9   SURVEYJOIN  0.718   Passed -3.1776396 3.1776396 cpue
-## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
-```
-
-```
-## 
-##  Running Runs Test Diagnosics for Index 
-## Plotting Residual Runs Tests
-```
-
-<img src="Figs/unnamed-chunk-25-29.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-30.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-31.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-32.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-33.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-34.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-35.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-36.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-37.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-25-38.jpeg" style="display: block; margin: auto;" />
-
-```
-## 
-## Runs Test stats by Index:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.219   Passed -1.1501113 1.1501113 cpue
-## 2    FISHERYEI  0.095   Passed -1.3504415 1.3504415 cpue
-## 3    FISHERYGS  0.240   Passed -2.3793664 2.3793664 cpue
-## 4  FISHERYJOIN  0.582   Passed -1.0623026 1.0623026 cpue
-## 5  FISHERYSSIW  0.028   Failed -0.8070684 0.8070684 cpue
-## 6     SURVEYBS  0.001   Failed -2.3397865 2.3397865 cpue
-## 7     SURVEYEI  0.684   Passed -2.6620650 2.6620650 cpue
-## 8     SURVEYGS  0.753   Passed -3.3140560 3.3140560 cpue
-## 9   SURVEYJOIN  0.268   Passed -3.4145689 3.4145689 cpue
-## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
-## 11    PREDATOR  0.001   Failed -0.5495260 0.5495260 cpue
-```
 
 ### Residual Analysis and RMSE 
 
@@ -716,8 +613,6 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ```
 ## Plotting JABBA residual plot
 ```
-
-<img src="Figs/unnamed-chunk-26-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -741,8 +636,6 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ```
 ## Plotting JABBA residual plot
 ```
-
-<img src="Figs/unnamed-chunk-26-2.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -768,8 +661,6 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Plotting JABBA residual plot
 ```
 
-<img src="Figs/unnamed-chunk-26-3.jpeg" style="display: block; margin: auto;" />
-
 ```
 ## 
 ## RMSE stats by Index:
@@ -793,7 +684,7 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Plotting JABBA residual plot
 ```
 
-<img src="Figs/unnamed-chunk-26-4.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-29-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -820,8 +711,6 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Plotting JABBA residual plot
 ```
 
-<img src="Figs/unnamed-chunk-27-1.jpeg" style="display: block; margin: auto;" />
-
 ```
 ## 
 ## RMSE stats by Index:
@@ -845,8 +734,6 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ```
 ## Plotting JABBA residual plot
 ```
-
-<img src="Figs/unnamed-chunk-27-2.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -873,8 +760,6 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Plotting JABBA residual plot
 ```
 
-<img src="Figs/unnamed-chunk-27-3.jpeg" style="display: block; margin: auto;" />
-
 ```
 ## 
 ## RMSE stats by Index:
@@ -899,7 +784,7 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Plotting JABBA residual plot
 ```
 
-<img src="Figs/unnamed-chunk-27-4.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-30-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -937,7 +822,7 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ##  Max.   :1.8820   Max.   :1.5809   Max.   :1.6408   Max.   :1.5163
 ```
 
-<img src="Figs/unnamed-chunk-28-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-31-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ##                               Df Sum Sq Mean Sq F value Pr(>F)
@@ -1007,7 +892,7 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Residuals                     38  6.638 0.17469
 ```
 
-<img src="Figs/unnamed-chunk-28-2.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-31-2.jpeg" style="display: block; margin: auto;" />
 This boxplot compares a summary of the Root Mean Square Error (RMSE) across four different models (s1.1, s1.2, s1.3, and s1.4) used to evaluate recruitment estimates of Antarctic krill. RMSE serves as an indicator of model accuracy, with lower values representing better predictive performance.
 
 s1.1 exhibits the lowest median RMSE, suggesting it has the best overall fit among the four models. In contrast, Models 1.2, 1.3, and 1.4 show higher RMSE values, indicating comparatively lower predictive accuracy. The interquartile range (IQR) of these models is relatively similar, suggesting comparable variability in RMSE across models. Additionally, s1.1 has an outlier above 1.5 RMSE, which could indicate a case where the model's predictions deviated significantly from observed values.
@@ -1030,7 +915,7 @@ Where:
 The blue line will show the asymptotic curve that describes the relationship between spawning stock biomass and recruitment.
 
 
-<img src="Figs/unnamed-chunk-29-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-32-1.jpeg" style="display: block; margin: auto;" />
 
 ### Retrospective Analysis in Model Evaluation
 
@@ -1047,8 +932,8 @@ The retrospective patterns were assessed by calculating the relative error betwe
 
 
 
-<img src="Figs/unnamed-chunk-33-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-33-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-33-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-33-4.jpeg" style="display: block; margin: auto;" />
-
+<img src="Figs/unnamed-chunk-36-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-37-1.jpeg" style="display: block; margin: auto;" />
 
 ### Hindcast Cross-Validation and Prediction Skill
 
@@ -1064,7 +949,16 @@ To assess prediction skill, we employ the Mean Absolute Scaled Error (MASE) as a
 This approach provides a rigorous evaluation of model forecasting capabilities and helps identify improvements for model calibration.
 
 
-<img src="Figs/unnamed-chunk-34-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-4.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-5.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-6.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-7.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-8.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-9.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-10.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-11.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-12.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-13.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-14.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-15.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-16.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-17.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-18.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-19.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-20.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-21.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-22.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-23.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-24.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-25.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-26.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-27.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-28.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-29.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-30.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-31.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-32.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-33.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-34-34.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-38-1.jpeg" style="display: block; margin: auto;" />
+
+
+<img src="Figs/unnamed-chunk-39-1.jpeg" style="display: block; margin: auto;" />
+
+
+<img src="Figs/unnamed-chunk-40-1.jpeg" style="display: block; margin: auto;" />
+
+
+<img src="Figs/unnamed-chunk-41-1.jpeg" style="display: block; margin: auto;" />
 
 ### Kobe (status)
 
@@ -1076,139 +970,140 @@ another
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-37}Rho parameter in SSB model s01}
+\caption{\label{tab:unnamed-chunk-44}Rho parameter in SSB model s01}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
 \midrule
-SSB & 2019 & -0.2221760 & -0.2029340\\
-SSB & 2018 & -0.1592795 & -0.3508103\\
-SSB & 2017 & -0.1020015 & -0.1995048\\
-SSB & 2016 & -0.1008203 & -0.1079496\\
-SSB & Combined & -0.1460693 & -0.2152997\\
+SSB & 2019 & -0.2970246 & -0.2944080\\
+SSB & 2018 & -0.2707308 & -0.5103302\\
+SSB & 2017 & -0.1872940 & -0.3297243\\
+SSB & 2016 & -0.1779392 & -0.1957271\\
+SSB & Combined & -0.2332471 & -0.3325474\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-37}Rho parameter in F model s01}
+\caption{\label{tab:unnamed-chunk-44}Rho parameter in F model s01}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
 \midrule
-F & 2019 & 0.6088250 & 1.7133649\\
-F & 2018 & 0.4184129 & 1.0573244\\
-F & 2017 & 0.5151146 & 0.6784906\\
-F & 2016 & 0.2009759 & 0.7418092\\
-F & Combined & 0.4358321 & 1.0477473\\
+F & 2019 & 1.1909249 & 2.568655\\
+F & 2018 & 0.7828193 & 1.577364\\
+F & 2017 & 0.8435982 & 1.076523\\
+F & 2016 & 0.3245750 & 1.117414\\
+F & Combined & 0.7854794 & 1.584989\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-37}Rho parameter in SSB model s2}
+\caption{\label{tab:unnamed-chunk-44}Rho parameter in SSB model s2}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
 \midrule
-SSB & 2019 & -0.0399511 & -0.0738296\\
-SSB & 2018 & 0.0503928 & -0.0303679\\
-SSB & 2017 & -0.0103780 & -0.0071376\\
-SSB & 2016 & 0.1531692 & 0.0241755\\
-SSB & Combined & 0.0383082 & -0.0217899\\
+SSB & 2019 & -0.0827150 & -0.1016893\\
+SSB & 2018 & -0.4893559 & -0.5608395\\
+SSB & 2017 & -0.7272409 & -0.7935804\\
+SSB & 2016 & -0.4875969 & -0.8027882\\
+SSB & Combined & -0.4467272 & -0.5647244\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-37}Rho parameter in F model s2}
+\caption{\label{tab:unnamed-chunk-44}Rho parameter in F model s2}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
 \midrule
-F & 2019 & 0.3867815 & 1.3192677\\
-F & 2018 & 0.0328011 & 0.5865243\\
-F & 2017 & 0.0269262 & 0.1437923\\
-F & 2016 & -0.0676379 & 0.0448928\\
-F & Combined & 0.0947177 & 0.5236193\\
+F & 2019 & 1.0251379 & 3.486361\\
+F & 2018 & 1.0700408 & 3.124036\\
+F & 2017 & 3.5165245 & 3.496168\\
+F & 2016 & 0.8270261 & 5.119180\\
+F & Combined & 1.6096823 & 3.806436\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-37}Rho parameter in SSB model s3}
+\caption{\label{tab:unnamed-chunk-44}Rho parameter in SSB model s3}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
 \midrule
-SSB & 2019 & -0.2221760 & -0.2029340\\
-SSB & 2018 & -0.1592795 & -0.3508103\\
-SSB & 2017 & -0.1020015 & -0.1995048\\
-SSB & 2016 & -0.1008203 & -0.1079496\\
-SSB & Combined & -0.1460693 & -0.2152997\\
+SSB & 2019 & -0.2631174 & -0.3176714\\
+SSB & 2018 & -0.3709787 & -0.4678843\\
+SSB & 2017 & -0.3342903 & -0.5396513\\
+SSB & 2016 & -0.3209827 & -0.3946523\\
+SSB & Combined & -0.3223423 & -0.4299648\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-37}Rho parameter in F model s3}
+\caption{\label{tab:unnamed-chunk-44}Rho parameter in F model s3}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
 \midrule
-F & 2019 & 0.6088250 & 1.7133649\\
-F & 2018 & 0.4184129 & 1.0573244\\
-F & 2017 & 0.5151146 & 0.6784906\\
-F & 2016 & 0.2009759 & 0.7418092\\
-F & Combined & 0.4358321 & 1.0477473\\
+F & 2019 & 1.1085776 & 2.972650\\
+F & 2018 & 0.8449169 & 2.328095\\
+F & 2017 & 1.3134959 & 2.078487\\
+F & 2016 & 0.7604930 & 2.122290\\
+F & Combined & 1.0068708 & 2.375380\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-37}Rho parameter in SSB model s4}
+\caption{\label{tab:unnamed-chunk-44}Rho parameter in SSB model s4}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
 \midrule
-SSB & 2019 & -0.1979996 & -0.2312302\\
-SSB & 2018 & -0.3231815 & -0.3628268\\
-SSB & 2017 & -0.3733517 & -0.4005422\\
-SSB & 2016 & -0.3076141 & -0.3528780\\
-SSB & Combined & -0.3005367 & -0.3368693\\
+SSB & 2019 & -0.1266622 & -0.2006111\\
+SSB & 2018 & -0.4523622 & -0.6020788\\
+SSB & 2017 & -0.6106873 & -0.8405322\\
+SSB & 2016 & -0.4535118 & -0.7243463\\
+SSB & Combined & -0.4108059 & -0.5918921\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-37}Rho parameter in F model s4}
+\caption{\label{tab:unnamed-chunk-44}Rho parameter in F model s4}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
 \midrule
-F & 2019 & 0.5374308 & 1.6132591\\
-F & 2018 & 0.5862939 & 1.2685401\\
-F & 2017 & 0.6675260 & 0.9032683\\
-F & 2016 & 0.4829955 & 0.7001844\\
-F & Combined & 0.5685616 & 1.1213130\\
+F & 2019 & 0.8803373 & 3.315551\\
+F & 2018 & 0.8286323 & 3.190590\\
+F & 2017 & 3.6632985 & 6.712691\\
+F & 2016 & 0.4471872 & 14.430025\\
+F & Combined & 1.4548638 & 6.912214\\
 \bottomrule
 \end{tabular}
 \end{table}
+
 
 <table class="table" style="color: black; margin-left: auto; margin-right: auto;">
 <caption>Rho parameter by model and quantity (SSB and F)</caption>
@@ -1228,320 +1123,320 @@ F & Combined & 0.5685616 & 1.1213130\\
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> -0.2221760 </td>
-   <td style="text-align:right;"> -0.2029340 </td>
+   <td style="text-align:right;"> -0.2970246 </td>
+   <td style="text-align:right;"> -0.2944080 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> -0.1592795 </td>
-   <td style="text-align:right;"> -0.3508103 </td>
+   <td style="text-align:right;"> -0.2707308 </td>
+   <td style="text-align:right;"> -0.5103302 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> -0.1020015 </td>
-   <td style="text-align:right;"> -0.1995048 </td>
+   <td style="text-align:right;"> -0.1872940 </td>
+   <td style="text-align:right;"> -0.3297243 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> -0.1008203 </td>
-   <td style="text-align:right;"> -0.1079496 </td>
+   <td style="text-align:right;"> -0.1779392 </td>
+   <td style="text-align:right;"> -0.1957271 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> Combined </td>
-   <td style="text-align:right;"> -0.1460693 </td>
-   <td style="text-align:right;"> -0.2152997 </td>
+   <td style="text-align:right;"> -0.2332471 </td>
+   <td style="text-align:right;"> -0.3325474 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> 0.6088250 </td>
-   <td style="text-align:right;"> 1.7133649 </td>
+   <td style="text-align:right;"> 1.1909249 </td>
+   <td style="text-align:right;"> 2.5686552 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> 0.4184129 </td>
-   <td style="text-align:right;"> 1.0573244 </td>
+   <td style="text-align:right;"> 0.7828193 </td>
+   <td style="text-align:right;"> 1.5773644 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> 0.5151146 </td>
-   <td style="text-align:right;"> 0.6784906 </td>
+   <td style="text-align:right;"> 0.8435982 </td>
+   <td style="text-align:right;"> 1.0765231 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> 0.2009759 </td>
-   <td style="text-align:right;"> 0.7418092 </td>
+   <td style="text-align:right;"> 0.3245750 </td>
+   <td style="text-align:right;"> 1.1174145 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.1 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> Combined </td>
-   <td style="text-align:right;"> 0.4358321 </td>
-   <td style="text-align:right;"> 1.0477473 </td>
+   <td style="text-align:right;"> 0.7854794 </td>
+   <td style="text-align:right;"> 1.5849893 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> -0.0399511 </td>
-   <td style="text-align:right;"> -0.0738296 </td>
+   <td style="text-align:right;"> -0.0827150 </td>
+   <td style="text-align:right;"> -0.1016893 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> 0.0503928 </td>
-   <td style="text-align:right;"> -0.0303679 </td>
+   <td style="text-align:right;"> -0.4893559 </td>
+   <td style="text-align:right;"> -0.5608395 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> -0.0103780 </td>
-   <td style="text-align:right;"> -0.0071376 </td>
+   <td style="text-align:right;"> -0.7272409 </td>
+   <td style="text-align:right;"> -0.7935804 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> 0.1531692 </td>
-   <td style="text-align:right;"> 0.0241755 </td>
+   <td style="text-align:right;"> -0.4875969 </td>
+   <td style="text-align:right;"> -0.8027882 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> Combined </td>
-   <td style="text-align:right;"> 0.0383082 </td>
-   <td style="text-align:right;"> -0.0217899 </td>
+   <td style="text-align:right;"> -0.4467272 </td>
+   <td style="text-align:right;"> -0.5647244 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> 0.3867815 </td>
-   <td style="text-align:right;"> 1.3192677 </td>
+   <td style="text-align:right;"> 1.0251379 </td>
+   <td style="text-align:right;"> 3.4863606 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> 0.0328011 </td>
-   <td style="text-align:right;"> 0.5865243 </td>
+   <td style="text-align:right;"> 1.0700408 </td>
+   <td style="text-align:right;"> 3.1240360 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> 0.0269262 </td>
-   <td style="text-align:right;"> 0.1437923 </td>
+   <td style="text-align:right;"> 3.5165245 </td>
+   <td style="text-align:right;"> 3.4961678 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> -0.0676379 </td>
-   <td style="text-align:right;"> 0.0448928 </td>
+   <td style="text-align:right;"> 0.8270261 </td>
+   <td style="text-align:right;"> 5.1191803 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.2 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> Combined </td>
-   <td style="text-align:right;"> 0.0947177 </td>
-   <td style="text-align:right;"> 0.5236193 </td>
+   <td style="text-align:right;"> 1.6096823 </td>
+   <td style="text-align:right;"> 3.8064362 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> -0.2221760 </td>
-   <td style="text-align:right;"> -0.2029340 </td>
+   <td style="text-align:right;"> -0.2631174 </td>
+   <td style="text-align:right;"> -0.3176714 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> -0.1592795 </td>
-   <td style="text-align:right;"> -0.3508103 </td>
+   <td style="text-align:right;"> -0.3709787 </td>
+   <td style="text-align:right;"> -0.4678843 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> -0.1020015 </td>
-   <td style="text-align:right;"> -0.1995048 </td>
+   <td style="text-align:right;"> -0.3342903 </td>
+   <td style="text-align:right;"> -0.5396513 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> -0.1008203 </td>
-   <td style="text-align:right;"> -0.1079496 </td>
+   <td style="text-align:right;"> -0.3209827 </td>
+   <td style="text-align:right;"> -0.3946523 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> Combined </td>
-   <td style="text-align:right;"> -0.1460693 </td>
-   <td style="text-align:right;"> -0.2152997 </td>
+   <td style="text-align:right;"> -0.3223423 </td>
+   <td style="text-align:right;"> -0.4299648 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> 0.6088250 </td>
-   <td style="text-align:right;"> 1.7133649 </td>
+   <td style="text-align:right;"> 1.1085776 </td>
+   <td style="text-align:right;"> 2.9726497 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> 0.4184129 </td>
-   <td style="text-align:right;"> 1.0573244 </td>
+   <td style="text-align:right;"> 0.8449169 </td>
+   <td style="text-align:right;"> 2.3280948 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> 0.5151146 </td>
-   <td style="text-align:right;"> 0.6784906 </td>
+   <td style="text-align:right;"> 1.3134959 </td>
+   <td style="text-align:right;"> 2.0784872 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> 0.2009759 </td>
-   <td style="text-align:right;"> 0.7418092 </td>
+   <td style="text-align:right;"> 0.7604930 </td>
+   <td style="text-align:right;"> 2.1222896 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.3 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> Combined </td>
-   <td style="text-align:right;"> 0.4358321 </td>
-   <td style="text-align:right;"> 1.0477473 </td>
+   <td style="text-align:right;"> 1.0068708 </td>
+   <td style="text-align:right;"> 2.3753803 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> -0.1979996 </td>
-   <td style="text-align:right;"> -0.2312302 </td>
+   <td style="text-align:right;"> -0.1266622 </td>
+   <td style="text-align:right;"> -0.2006111 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> -0.3231815 </td>
-   <td style="text-align:right;"> -0.3628268 </td>
+   <td style="text-align:right;"> -0.4523622 </td>
+   <td style="text-align:right;"> -0.6020788 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> -0.3733517 </td>
-   <td style="text-align:right;"> -0.4005422 </td>
+   <td style="text-align:right;"> -0.6106873 </td>
+   <td style="text-align:right;"> -0.8405322 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> -0.3076141 </td>
-   <td style="text-align:right;"> -0.3528780 </td>
+   <td style="text-align:right;"> -0.4535118 </td>
+   <td style="text-align:right;"> -0.7243463 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> SSB </td>
    <td style="text-align:left;"> Combined </td>
-   <td style="text-align:right;"> -0.3005367 </td>
-   <td style="text-align:right;"> -0.3368693 </td>
+   <td style="text-align:right;"> -0.4108059 </td>
+   <td style="text-align:right;"> -0.5918921 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2019 </td>
-   <td style="text-align:right;"> 0.5374308 </td>
-   <td style="text-align:right;"> 1.6132591 </td>
+   <td style="text-align:right;"> 0.8803373 </td>
+   <td style="text-align:right;"> 3.3155514 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2018 </td>
-   <td style="text-align:right;"> 0.5862939 </td>
-   <td style="text-align:right;"> 1.2685401 </td>
+   <td style="text-align:right;"> 0.8286323 </td>
+   <td style="text-align:right;"> 3.1905901 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2017 </td>
-   <td style="text-align:right;"> 0.6675260 </td>
-   <td style="text-align:right;"> 0.9032683 </td>
+   <td style="text-align:right;"> 3.6632985 </td>
+   <td style="text-align:right;"> 6.7126908 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> 2016 </td>
-   <td style="text-align:right;"> 0.4829955 </td>
-   <td style="text-align:right;"> 0.7001844 </td>
+   <td style="text-align:right;"> 0.4471872 </td>
+   <td style="text-align:right;"> 14.4300252 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> s1.4 </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> F </td>
    <td style="text-align:left;"> Combined </td>
-   <td style="text-align:right;"> 0.5685616 </td>
-   <td style="text-align:right;"> 1.1213130 </td>
+   <td style="text-align:right;"> 1.4548638 </td>
+   <td style="text-align:right;"> 6.9122144 </td>
   </tr>
 </tbody>
 </table>
@@ -1550,7 +1445,7 @@ F & Combined & 0.5685616 & 1.1213130\\
 
 
 
-<img src="Figs/unnamed-chunk-39-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-47-1.jpeg" style="display: block; margin: auto;" />
 
 ### Likelihood Profile 
 
@@ -3146,7 +3041,7 @@ piner Plot
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-50}Comparision s1.1, s1.2, s1.3, s1.4}
+\caption{\label{tab:unnamed-chunk-58}Comparision s1.1, s1.2, s1.3, s1.4}
 \centering
 \resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
 \begin{tabular}[t]{lrrrr}
@@ -3208,7 +3103,7 @@ Comparison between select models `Ref Model: No Env-Predator` and `S1.1 w/ Env a
 
 ### Comparsion in sd long term time series
 
-<img src="Figs/unnamed-chunk-53-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-61-1.jpeg" style="display: block; margin: auto;" />
 
 ### Autocorrelation in Recruit 
 
@@ -3222,7 +3117,7 @@ A model incorporating environmental data (S1.1 w/ Env data).
 A model incorporating both environmental and predator data (S1.1 w/ Env and Predator data).
 Each model's residuals were extracted, and the autocorrelation function (ACF) was computed for a time lag range of up to 15 years. The dashed blue lines in the plots represent the 95% confidence intervals, indicating the threshold beyond which correlation values are statistically significant. If autocorrelation values remain within this range, it suggests that the recruitment estimates behave as a random process with no significant dependence on past values. Conversely, autocorrelation values exceeding these bounds indicate recruitment persistence or cyclic patterns.
 
-<img src="Figs/unnamed-chunk-54-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-62-1.jpeg" style="display: block; margin: auto;" />
 
 The ACF plots indicate that the reference model (without environmental or predator data) exhibits weak but noticeable positive autocorrelation at certain lags, suggesting some degree of recruitment dependence over time. However, this autocorrelation does not appear strong or systematic.
 
@@ -3236,15 +3131,15 @@ Overall, these results indicate that recruitment variability is at least partial
 
 ### Recruit deviation
 
-<img src="Figs/unnamed-chunk-55-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-63-1.jpeg" style="display: block; margin: auto;" />
 
 
 
-<img src="Figs/unnamed-chunk-56-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-64-1.jpeg" style="display: block; margin: auto;" />
 
 ### Platoons analisis
 
-<img src="Figs/unnamed-chunk-57-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-65-1.jpeg" style="display: block; margin: auto;" />
 ### AKL
 
 In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process
