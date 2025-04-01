@@ -33,6 +33,8 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
+                      fig.height = 6,
+                      fig.width = 7,
                       fig.align = 'center',
                       fig.pos = "H",
                       dev = 'jpeg',
@@ -92,7 +94,7 @@ Figs <- here("Figs")# S
 ```
 
 
-## Overview
+# OVERVIEW
 
 This study aims to evaluate the impact of ecosystem components—such as environmental variables and predator-prey interactions—on the productivity and key population dynamics of *Euphausia superba* in Subarea 48.1. By incorporating these factors into the assessment, we analyze how krill population variables respond to ecological variability, providing insights into their resilience and potential management implications.  
 
@@ -108,17 +110,17 @@ Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invert
 The following table summarizes the key parameters to conditioning the reference model, including biological, growth, and population dynamics factors.
 
 ```{r}
-start1 <- SS_readstarter(file = file.path(dir1.1,
+start1 <- SS_readstarter(file = file.path(dir1.4,
                                           "starter.ss"),
                               verbose = FALSE)
-dat1 <- SS_readdat(file = file.path(dir1.2, start1$datfile),
+dat1 <- SS_readdat(file = file.path(dir1.4, start1$datfile),
                         verbose = FALSE)
-ctl1 <-  r4ss::SS_readctl(file = file.path(dir1.1,
+ctl1 <-  r4ss::SS_readctl(file = file.path(dir1.4,
                                     start1$ctlfil),
                         verbose = FALSE,
                         use_datlist = TRUE, 
                    datlist = dat1)
-fore1 <- r4ss::SS_readforecast(file = file.path(dir1.1, 
+fore1 <- r4ss::SS_readforecast(file = file.path(dir1.4, 
                                                 "forecast.ss"),
                               verbose = FALSE)
 # can also read in wtatage.ss for an empirical wt at age model using
@@ -174,44 +176,71 @@ parInit %>%
                       "Catchability" = 2,
                       "Selectivity" = 4))
 
+
+
 ```
 Source of data inpit
 
 ```{r fig.width=9, fig.height=4}
 dat1_std <- dat1$CPUE %>%
-  group_by(index) %>%
-  mutate(index_std = obs / mean(obs, na.rm = TRUE)) %>%
-  ungroup() %>% 
-  mutate(index = recode(index,
-                        `1` = "FISHERYBS",
-                        `2` = "FISHERYEI",
-                        `3` = "FISHERYGS",
-                        `4` = "FISHERYJOIN",
-                        `5` = "FISHERYSSIW",
-                        `6` = "SURVEYBS",
-                        `7` = "SURVEYEI",
-                        `8` = "SURVEYGS",
-                        `9` = "SURVEYJOIN",
-                        `10` = "SURVEYSSIW",
-                        `11` = "PREDATOR"))
-ggplot(dat1_std, aes(x = year, y = index_std, group=index))+
+  mutate(
+    # Standardize 'obs' between 0 and 1
+    index_std = (obs - min(obs)) / (max(obs) - min(obs)),
+    
+    # Recode 'index' values
+    index = recode(index,
+                   `1` = "FISHERYBS",
+                   `2` = "FISHERYEI",
+                   `3` = "FISHERYGS",
+                   `4` = "FISHERYJOIN",
+                   `5` = "FISHERYSSIW",
+                   `6` = "SURVEYBS",
+                   `7` = "SURVEYEI",
+                   `8` = "SURVEYGS",
+                   `9` = "SURVEYJOIN",
+                   `10` = "SURVEYSSIW",
+                   `11` = "PREDATOR"),
+    
+    # Convert 'index' to a factor with specific levels
+    index = factor(index, levels = c("FISHERYBS", 
+                                     "FISHERYEI", 
+                                     "FISHERYGS",
+                                     "FISHERYJOIN", 
+                                     "FISHERYSSIW", 
+                                     "SURVEYBS", 
+                                     "SURVEYEI", 
+                                     "SURVEYGS", 
+                                     "SURVEYJOIN", 
+                                     "SURVEYSSIW", 
+                                     "PREDATOR")),
+    
+    # Assign categories based on 'index'
+    category = case_when(
+      index %in% c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FISHERYSSIW") ~ "Fishery",
+      index %in% c("SURVEYBS", "SURVEYEI", "SURVEYGS", "SURVEYJOIN", "SURVEYSSIW") ~ "Survey",
+      index == "PREDATOR" ~ "Predator",
+      TRUE ~ NA_character_  # In case there are any unexpected values
+    )
+  )
+
+
+# Gráfico con 3 filas, dejando 'PREDATOR' en la última fila
+ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = category)) +
   geom_point() +
-  geom_smooth(method="lm",
-              se=F)+
-  facet_wrap(.~index,
-             scales = "free_y",
-             ncol=6)+
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~index, scales = "free_y", ncol = 5) +  # Ajusta ncol para obtener 3 filas
+  scale_color_manual(values = c("Fishery" = '#1b9e77', 
+                                "Survey" = '#d95f02',
+                                "Predator" = '#7570b3')) + 
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, 
-                                   hjust = 1))+
-  labs(title = "",
-       x = "",
-       y = "Standar index",
-       color = "index")
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "", x = "", y = "Standard index", color = "Category")
+
+
 ```
 
 
-```{r fig.width=10, fig.height=4}
+```{r fig.width=10, fig.height=4, warning=FALSE}
 dat_long <- dat1$lencomp %>% 
   pivot_longer(cols = starts_with("l"),  
                names_to = "Talla",  
@@ -245,27 +274,38 @@ mean_talla <- dat_long %>%
   group_by(FltSvy) %>%
   summarise(mean_Talla = mean(Talla, na.rm = TRUE))
 
-# Expandir datos según la frecuencia
+
 dat_expanded <- dat_long %>%
   uncount(weights = Frecuencia)
 
-# Crear el gráfico con líneas verticales en cada facet
-ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), 
-                         fill = stat(x))) +
+ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
   geom_density_ridges_gradient(scale = 1.8,
                                rel_min_height = 0.001,
                                col = "black",
-                               fill = "grey") +
+                               alpha=0.4) +
   facet_wrap(~FltSvy, ncol = 10) +
   geom_vline(data = mean_talla, aes(xintercept = mean_Talla), 
              color = "red", 
              size = 0.7,
-             alpha=0.5) +
+             alpha = 0.5) +
+  scale_fill_manual(values = c("FISHERYBS" = '#1b9e77',  
+                               "FISHERYEI" = '#1b9e77',  
+                               "FISHERYGS" = '#1b9e77',
+                               "FISHERYJOIN" = '#1b9e77',  
+                               "FISHERYSSIW" = '#1b9e77',  
+                               "SURVEYBS" = '#d95f02',  
+                               "SURVEYEI" = '#d95f02',  
+                               "SURVEYGS" = '#d95f02',  
+                               "SURVEYJOIN" = '#d95f02',  
+                               "SURVEYSSIW" = '#d95f02',  
+                               "PREDATOR" = '#7570b3')) +  
   labs(title = "",
        x = "cm",
        y = "",
-       fill = "Densidad") +
-  theme_few()
+       fill = "Category") +
+  theme_few()+
+  theme(legend.position = "none")
+
 ```
 
 ## Scenarios
@@ -277,17 +317,18 @@ about main consideration in assessment of krill population.
 |:------------:|:---------------------------------------------------------|
 |    s1.1  | Spatial data without environmental and predator components                           |
 |    s1.2  | "s1.1" with predator components                                                      |
-|    s1.3  | "s1.1" with environmental variable                                              |
-|    s1.4  | "s1.1" w/ both, predator fleet and environmental variable                        |
+|    s1.3  | "s1.1" with environmental variable                                                  |
+|    s1.4  | "s1.1" w/ both, predator fleet and environmental variable                           |
 
 
 
-## Run Models
+### Run Models
 
 ```{r eval=FALSE, message=F, include=FALSE, echo=TRUE}
 directorios <- c("s1.1",
                  "s1.2",
-                 "s1.3")  
+                 "s1.3",
+                 "s1.4")  
 
 for (dir in directorios) {
   r4ss::run(
@@ -306,8 +347,8 @@ for (dir in directorios) {
 r4ss::run(
   dir = dir1.1,
   exe = "ss_osx",
-  skipfinished = FALSE, # TRUE will skip running if Report.sso present
-  show_in_console = TRUE # change to true to watch the output go past
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
 )
 
 
@@ -315,8 +356,8 @@ r4ss::run(
 r4ss::run(
   dir = dir1.2,
   exe = "ss_osx",
-  skipfinished = FALSE, # TRUE will skip running if Report.sso present
-  show_in_console = TRUE # change to true to watch the output go past
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
 )
 
 
@@ -324,8 +365,8 @@ r4ss::run(
 r4ss::run(
   dir = dir1.3,
   exe = "ss_osx",
-  skipfinished = FALSE, # TRUE will skip running if Report.sso present
-  show_in_console = TRUE # change to true to watch the output go past
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
 )
 
 
@@ -333,8 +374,8 @@ r4ss::run(
 r4ss::run(
   dir = dir1.4,
   exe = "ss_osx",
-  skipfinished = FALSE, # TRUE will skip running if Report.sso present
-  show_in_console = TRUE # change to true to watch the output go past
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
 )
 ```
 
@@ -361,18 +402,22 @@ base.model1.4 <- SS_output(dir=dir1.4,
 ```
 
 
-Data used en both (spatial and No spatial models)
+Data used en both (spatial and No spatial models) `s1.1`
 
 ```{r }
 SSplotData(base.model1.1, 
            subplots = 1,
            pheight = 15)
+```
 
+and `s1.4`
 
+```{r }
 SSplotData(base.model1.4, 
            subplots = 1,
            pheight = 15)
 ```
+
 # RESULTS
 
 ```{r eval=FALSE, message=F, include=FALSE}
@@ -465,7 +510,7 @@ SS_plots(base.model1.4,
 
 
 
-### Main Variables poulation in `s1.1` scenario
+Main Variables poulation in `s1.1` scenario
 
 ```{r}
 SSplotTimeseries(base.model1.1,
@@ -476,7 +521,7 @@ SSplotTimeseries(base.model1.1,
                  subplot = 7)
 ```
 
-### Main Variables poulation in `s1.2` scenario
+Main Variables poulation in `s1.2` scenario
 
 ```{r}
 SSplotTimeseries(base.model1.2,
@@ -487,7 +532,19 @@ SSplotTimeseries(base.model1.2,
                  subplot = 7)
 ```
 
-### Main Variables poulation in `s1.3` scenario
+Main Variables poulation in `s1.3` scenario
+
+```{r}
+SSplotTimeseries(base.model1.3,
+                 subplot = 1)
+SSplotTimeseries(base.model1.3,
+                 subplot = 9)
+SSplotTimeseries(base.model1.3,
+                 subplot = 7)
+```
+
+
+Main Variables poulation in `s1.4` scenario
 
 ```{r}
 SSplotTimeseries(base.model1.4,
@@ -497,18 +554,15 @@ SSplotTimeseries(base.model1.4,
 SSplotTimeseries(base.model1.4,
                  subplot = 7)
 ```
-
 Selectivity
 
-```{r fig.height=6}
+```{r}
 SSplotSelex(base.model1.1,
             subplots = 1)
-
 SSplotSelex(base.model1.2,
             subplots = 1)
 SSplotSelex(base.model1.3,
             subplots = 1)
-
 SSplotSelex(base.model1.4,
             subplots = 1)
 ```
@@ -517,55 +571,53 @@ SSplotSelex(base.model1.4,
 
 ```{r}
 SSplotIndices(base.model1.1,
-            subplots = 1:32)
+            subplots = 9)
+SSplotIndices(base.model1.2,
+            subplots = 9)
+SSplotIndices(base.model1.3,
+            subplots = 9)
+SSplotIndices(base.model1.4,
+            subplots = 9)
 ```
 
 ```{r}
+SSplotComps(base.model1.1,
+            subplots = 21)
 SSplotComps(base.model1.2,
-            subplots = 1)
-
+            subplots = 21)
+SSplotComps(base.model1.3,
+            subplots = 21)
+SSplotComps(base.model1.4,
+            subplots = 21)
 ```
 
 
 
 Total biomass
 
-```{r eval=FALSE}
-total01 <- as.data.frame(base.model1.1$timeseries[1:31,c(2,5)]) %>%
-  mutate(Serie = "No Spatial")
-total1 <- as.data.frame(base.model1.2$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "Spatial implicit")
-total2 <- as.data.frame(base.model2$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "Spatial w/ without S-R relation")
-total3 <- as.data.frame(base.model3$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "Spatial w/ S-R relation weak (0.9 steepness)")
-total4 <- as.data.frame(base.model4$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "Spatial w/ S-R relation strong (0.6 steepness)")
-total5 <- as.data.frame(base.model5$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "Spatial w/ S-R relation mid-strong estimated ")
-total6 <- as.data.frame(base.model6$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "Spatial w/ Ricker S-R relation estimated")
-total7 <- as.data.frame(base.model7$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "Spatial w/ New set parameters Linf, k and M")
+```{r}
+total1 <- as.data.frame(base.model1.1$timeseries[,c(2,5)]) %>%
+  mutate(Serie = "Without Ecosystem Variables")
+total2 <- as.data.frame(base.model1.2$timeseries[,c(2,5)]) %>% 
+  mutate(Serie = "W/ Predator")
+total3 <- as.data.frame(base.model1.3$timeseries[,c(2,5)]) %>% 
+  mutate(Serie = "W/ Environment")
+total4 <- as.data.frame(base.model1.4$timeseries[,c(2,5)]) %>% 
+  mutate(Serie = "With Predator and Ecosystem")
 
 
-totalbio <- rbind(total01,
-              total1,
+totalbio <- rbind(total1,
               total2,
               total3,
-              total4,
-              total5,
-              total6,
-              total7)
+              total4)
 
 
 ggplot(totalbio, aes(x = Yr, y = Bio_all, color=Serie)) +
-  geom_point(size=0.7,
-             col="black") +
+  geom_point() +
   geom_smooth(method = "loess",
-              span=0.75, 
-              se=TRUE)+
-  labs(title = "Compare variables between scenarios",
+              span=0.5, 
+              se=F)+
+  labs(title = "",
        x = "",
        y = "Total biomass (mt)") +
   theme_few() +
@@ -575,49 +627,11 @@ ggplot(totalbio, aes(x = Yr, y = Bio_all, color=Serie)) +
                                    hjust = 1))
 ```
 
-
-
-
-```{r eval=FALSE}
-SSplotComps(base.model01,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-SSplotComps(base.model1,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-SSplotComps(base.model2,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-SSplotComps(base.model3,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-SSplotComps(base.model4,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-SSplotComps(base.model5,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-SSplotComps(base.model6,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-SSplotComps(base.model7,
-            subplots = 1,
-            maxrows = 5,
-            maxcols = 5)
-```
 Heatmap
 
 ```{r}
-df <- base.modeltest$lendbase
+df <- base.model1.4$lendbase
 
-# Filtra el dataframe
 df1 <- df %>% 
   dplyr::filter(Pearson<5) %>% 
   dplyr::select(c(1, 6, 19, 16)) %>% 
@@ -660,7 +674,7 @@ hexagon
 ```{r eval=FALSE}
 # Assuming your data is in a data frame called 'lendbase'
 # Filter and select relevant columns
-data <- base.model1$lendbase %>%
+data <- base.model1.4$lendbase %>%
   dplyr::filter(Pearson<5) %>% 
   dplyr::select(c(1, 6, 19, 16)) %>% 
   dplyr::mutate(Fleet = dplyr::case_when(
@@ -692,32 +706,34 @@ ggplot(data, aes(x = Yr, y = Bin)) +
        y = "Bin",
        fill = "Pearson Residual")  # Labels for plot and axes
 
-
-ggplot(data, aes(x = Yr, y = Bin)) +
-  geom_hex(bins = 50) +
-  scale_fill_gradient2(low = "blue", 
-                       mid = "white", 
-                       high = "red", midpoint = median(data$Bin)) +
-  theme_minimal() +
-  labs(title = "Hexagonal Heatmap of Pearson Residuals",
-       x = "Year", y = "Bin", fill = "Pearson Residual")
 ```
 
 ## Diagnosis Base Model
 
-Step to do a good practice in model diagnosis is;
+A rigorous model diagnosis is essential to ensure the reliability and robustness of stock assessment models. The key steps for a good practice in model diagnosis include:  
 
--     1.  Convergence. Final convergence criteria is 1.0e-04
+1. Convergence Check: The model must reach a final convergence criterion of 1.0e-04 to ensure numerical stability and reliable parameter estimation.  
 
--     2.  Residual (visual and metrics)
+2. Residual Analysis: Both visual inspection and statistical metrics are used to evaluate model residuals, helping to detect patterns of bias or misfit.  
 
--     3.  Retrospective analysis (Mhon Parameter)
+3. Retrospective Analysis: The Mohn’s rho parameter is used to assess the consistency of model estimates when sequentially removing recent years of data, identifying potential overestimation or underestimation trends.  
 
--    4.  Likelihood profile
+4. Likelihood Profile Analysis: This approach examines how the likelihood function behaves across a range of parameter values, providing insight into parameter uncertainty and model sensitivity.  
 
-all this framework try to follow recommendations of @Carvalho2021b
+This framework follows the recommendations outlined by @Carvalho2021b, aiming to enhance transparency and reproducibility in model evaluation.
 
-## Residual consistency 
+### Residual consistency 
+
+
+Residual analysis is a critical component of model diagnostics in stock assessments. It helps evaluate the fit of the model to observed data and detect potential biases or inconsistencies. This process is applied to both length composition data and abundance indices such as CPUE (Catch Per Unit Effort) and survey-derived estimates.  
+
+For length composition data, residuals represent the difference between observed and model-predicted length distributions. The standardized residuals are calculated as the difference between observed and expected proportions at each length bin. These residuals are plotted by year to identify systematic trends, biases, or inconsistencies in the data. Ideally, they should be randomly distributed around zero, indicating no systematic over- or underestimation.  
+
+For abundance indices such as CPUE and fishery-independent surveys, residuals are analyzed to assess model fit and potential sources of bias. Residuals are computed as the difference between observed index values and those predicted by the model, typically standardized by dividing by the standard error to facilitate comparison across years. These residuals are then plotted over time to evaluate trends. A shaded confidence region, like the green area in the provided plot, represents expected variability, with outliers highlighted in red or other distinct markers. Persistent positive or negative residuals may indicate systematic bias in the model or data collection process.  
+
+Statistical diagnostics are also performed to check for autocorrelation in residuals, which can indicate potential model misspecifications. When mean residual values are close to zero, the model fit is considered unbiased.  
+
+By integrating these residual analyses for both length and abundance indices, stock assessment models can be refined, improving their reliability and increasing confidence in the assessment results.
 
 ```{r}
 SSplotRunstest(base.model1.1,
@@ -730,146 +746,212 @@ SSplotRunstest(base.model1.2,
                add=T,
                plot = TRUE,
                plotdir = Figs)
+SSplotRunstest(base.model1.3,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+SSplotRunstest(base.model1.4,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
 ```
 
-
-```{r eval=FALSE}
-SSplotRunstest(base.model01,
-               subplots = "len",
-               add=T)
-SSplotRunstest(base.model1,
-               subplots = "len",
-               add=T)
-SSplotRunstest(base.model2,
-               subplots = "len",
-               add=T)
-SSplotRunstest(base.model3,
-               subplots = "len",
-               add=T)
-SSplotRunstest(base.model4,
-               subplots = "len",
-               add=T)
-SSplotRunstest(base.model5,
-               subplots = "len",
-               add=T)
-SSplotRunstest(base.model6,
-               subplots = "len",
-               add=T)
-SSplotRunstest(base.modeltest,
-               subplots = "len",
-               add=T)
-```
 
 ```{r}
 SSplotRunstest(base.model1.1,
                subplots = "cpue",
-               add=T)
+               add=T,
+               print = TRUE)
 SSplotRunstest(base.model1.2,
                subplots = "cpue",
                add=T)
-```
-
-```{r eval=FALSE}
-SSplotRunstest(base.model01,
+SSplotRunstest(base.model1.3,
                subplots = "cpue",
                add=T)
-SSplotRunstest(base.model1,
-               subplots = "cpue",
-               add=T)
-SSplotRunstest(base.model2,
-               subplots = "cpue",
-               add=T)
-SSplotRunstest(base.model3,
-               subplots = "cpue",
-               add=T)
-SSplotRunstest(base.model4,
-               subplots = "cpue",
-               add=T)
-SSplotRunstest(base.model5,
-               subplots = "cpue",
-               add=T)
-SSplotRunstest(base.model6,
-               subplots = "cpue",
-               add=T)
-SSplotRunstest(base.modeltest,
+SSplotRunstest(base.model1.4,
                subplots = "cpue",
                add=T)
 ```
 
+### Residual Analysis and RMSE 
 
-```{r eval=FALSE}
-SSplotJABBAres(base.model01,
-               subplots = "len",
-               add=T)
-SSplotJABBAres(base.model1,
-               subplots = "len",
-               add=T)
-SSplotJABBAres(base.model2,
-               subplots = "len",
-               add=T)
-SSplotJABBAres(base.model3,
-               subplots = "len",
-               add=T)
-SSplotJABBAres(base.model4,
-               subplots = "len",
-               add=T)
-SSplotJABBAres(base.model5,
-               subplots = "len",
-               add=T)
-SSplotJABBAres(base.model6,
+Residual analysis of mean length data is a fundamental diagnostic tool in stock assessments. It helps evaluate whether the model provides an unbiased fit to the observed data and detects potential biases over time. In this figure, mean length residuals are plotted across years, differentiated by data source, including fishery-dependent (FISHERY) and fishery-independent (SURVEY) datasets, as well as predator-related observations (PREDATOR). The residuals represent the deviation of observed mean length from model-predicted values, standardized to facilitate interpretation.  
+
+The black line represents a locally estimated scatterplot smoothing (Loess) curve, which provides a trend line to visualize systematic deviations over time. The presence of persistent positive or negative trends in the residuals may indicate biases in the growth model, selectivity assumptions, or misrepresentation of recruitment variability. The gray bars highlight periods where residual variability is particularly high, suggesting potential inconsistencies between observed and predicted size structures.  
+
+RMSE quantifies the overall deviation between observed and predicted values, providing an aggregate measure of model fit. Lower RMSE values indicate better agreement between observed and predicted data. In fisheries stock assessment [@HurtadoF2015], RMSE thresholds for acceptable model performance typically range between *10% and 30%*, depending on the data quality and complexity of the population dynamics being modeled. Values exceeding this range suggest potential biases, requiring further investigation into the model structure, parameter estimation, or data sources.   
+
+By analyzing residual patterns and RMSE values, the model can be refined to improve the accuracy of mean length predictions, ultimately enhancing the reliability of stock assessment outcomes and management recommendations.
+
+```{r}
+SSplotJABBAres(base.model1.1,
                subplots = "len",
                add=T)
 SSplotJABBAres(base.model1.2,
+               subplots = "len",
+               add=T)
+SSplotJABBAres(base.model1.3,
+               subplots = "len",
+               add=T)
+SSplotJABBAres(base.model1.4,
                subplots = "len",
                add=T)
 ```
 
 ```{r}
-SSplotJABBAres(base.model01,
-               subplots = "cpue",
-               add=T)
-SSplotJABBAres(base.model1,
-               subplots = "cpue",
-               add=T)
-SSplotJABBAres(base.model2,
-               subplots = "cpue",
-               add=T)
-SSplotJABBAres(base.model3,
-               subplots = "cpue",
-               add=T)
-SSplotJABBAres(base.model4,
-               subplots = "cpue",
-               add=T)
-SSplotJABBAres(base.model5,
-               subplots = "cpue",
-               add=T)
-SSplotJABBAres(base.model6,
+SSplotJABBAres(base.model1.1,
                subplots = "cpue",
                add=T)
 SSplotJABBAres(base.model1.2,
                subplots = "cpue",
                add=T)
+SSplotJABBAres(base.model1.3,
+               subplots = "cpue",
+               add=T)
+SSplotJABBAres(base.model1.4,
+               subplots = "cpue",
+               add=T)
 ```
-## Relationship Stock-Recruit
 
-```{r eval=FALSE}
-l <- base.modeltest$recruit$SpawnBio
-m <- base.modeltest$recruit$pred_recr
+
+
+### Comparision RMSE
+
+```{r}
+# Crear un data frame con los valores de RMSE
+dfrmse <- data.frame(
+  Model1.1 = as.numeric(base.model1.1$index_variance_tuning_check$RMSE),
+  Model1.2 = as.numeric(base.model1.2$index_variance_tuning_check$RMSE[1:10]),
+  Model1.3 = as.numeric(base.model1.3$index_variance_tuning_check$RMSE[1:10]),
+  Model1.4 = as.numeric(base.model1.4$index_variance_tuning_check$RMSE[1:10])
+  
+)
+summary(dfrmse)
+
+# Comparación con boxplot
+boxplot(dfrmse, main = "RMSE comparision", col = c('#ca0020','#f4a582','#bababa','#404040'))
+
+# Prueba de diferencias estadísticas (ANOVA)
+anova_result <- aov(as.numeric(unlist(dfrmse)) ~ rep(1:4, each=nrow(dfrmse)))
+summary(anova_result)
+
+
+
+t.test(dfrmse$Model1.1, dfrmse$Model1.2)  # Comparar Model1.1 vs Model1.2
+t.test(dfrmse$Model1.1, dfrmse$Model1.3)  # Comparar Model1.1 vs Model1.3
+t.test(dfrmse$Model1.2, dfrmse$Model1.3)
+t.test(dfrmse$Model1.3, dfrmse$Model1.4)
+# ANOVA para ver si hay diferencias globales
+anova_rmse <- aov(as.numeric(unlist(dfrmse)) ~ rep(1:4, each=nrow(dfrmse)))
+summary(anova_rmse)
+
+# Prueba post-hoc si ANOVA es significativa
+#TukeyHSD(anova_rmse)
+
+
+dfrmse_long <- reshape2::melt(dfrmse)
+
+ggplot(dfrmse_long, aes(x = variable, y = value, fill = variable)) +
+  geom_boxplot(width=0.3) +
+  geom_jitter(width = 0.01, alpha = 0.3) +
+  theme_minimal() +
+  scale_fill_manual(name= "Scenario",
+                    values = c("Model1.1" = "#ca0020", 
+                               "Model1.2" = "#f4a582", 
+                               "Model1.3" = "#bababa", 
+                               "Model1.4" = "#404040")) +
+  labs(title = "", x = "", y = "RMSE")
+
+
+```
+This boxplot compares a summary of the Root Mean Square Error (RMSE) across four different models (s1.1, s1.2, s1.3, and s1.4) used to evaluate recruitment estimates of Antarctic krill. RMSE serves as an indicator of model accuracy, with lower values representing better predictive performance.
+
+s1.1 exhibits the lowest median RMSE, suggesting it has the best overall fit among the four models. In contrast, Models 1.2, 1.3, and 1.4 show higher RMSE values, indicating comparatively lower predictive accuracy. The interquartile range (IQR) of these models is relatively similar, suggesting comparable variability in RMSE across models. Additionally, s1.1 has an outlier above 1.5 RMSE, which could indicate a case where the model's predictions deviated significantly from observed values.
+
+Overall, this analysis highlights that incorporating different environmental or predator-related variables in the models impacts their predictive ability. The differences in RMSE suggest that some models may overfit or underfit the recruitment patterns of krill, emphasizing the need to refine model selection based on ecological and statistical considerations.
+
+
+### Relationship Stock-Recruit
+
+\[
+R = \frac{aS}{1 + bS}
+\]
+
+Where:  
+- \( S \) is the spawning stock biomass.  
+- \( R \) is the predicted recruitment.  
+- \( a \) is the maximum recruitment capacity.  
+- \( b \) regulates density dependence (higher values of \( b \) result in a lower plateau).  
+
+The blue line will show the asymptotic curve that describes the relationship between spawning stock biomass and recruitment.
+
+
+```{r}
+# First dataset
+l <- base.model1.1$recruit$SpawnBio  
+m <- base.model1.1$recruit$pred_recr 
+yr <- base.model1.1$timeseries$Yr[1:35]     
+
+# Second dataset
+leco <- base.model1.4$recruit$SpawnBio  
+meco <- base.model1.4$recruit$pred_recr 
+yreco <- base.model1.4$timeseries$Yr[1:35]  
+
+# Beverton-Holt models
+bev_holt_model1 <- nls(m ~ (a * l) / (1 + b * l), 
+                        start = list(a = max(m), b = 1 / max(l)), 
+                        data = data.frame(l, m))
+
+bev_holt_model2 <- nls(meco ~ (a * leco) / (1 + b * leco), 
+                        start = list(a = max(meco), b = 1 / max(leco)), 
+                        data = data.frame(leco, meco))
+
+# Predictions
+l_pred1 <- seq(min(l), max(l), length.out = 100)
+m_pred1 <- predict(bev_holt_model1, newdata = data.frame(l = l_pred1))
+
+l_pred2 <- seq(min(leco), max(leco), length.out = 100)
+m_pred2 <- predict(bev_holt_model2, newdata = data.frame(leco = l_pred2))
+
+# Create data frames for plotting
+data1 <- data.frame(l = l, m = m, yr = yr, Group = "s1.1")
+data2 <- data.frame(l = leco, m = meco, yr = yreco, Group = "s1.4")
+
+# Plot
 ggplot() +
-  aes(l, m) +
-  geom_point() +
-  geom_smooth(method = "loess",
-              se = TRUE, 
-              color = "blue") +
+  geom_point(data = data1, aes(x = l, y = m, shape = Group),
+             size = 1.5) +
+  geom_text(data = data1, aes(x = l, y = m, label = yr), 
+            hjust = 0.5, vjust = -1.5, size = 3) +  
+  geom_line(data = data.frame(l = l_pred1, m = m_pred1), 
+            aes(x = l, y = m), linewidth = 1,
+            col="blue") +
+  geom_point(data = data2, aes(x = l, y = m, shape = Group), 
+             size = 1.5) +
+  geom_text(data = data2, aes(x = l, y = m, label = yr), 
+            hjust = 0.5, vjust = 1.5, size = 3) +
+  geom_line(data = data.frame(l = l_pred2, m = m_pred2), 
+            aes(x = l, y = m), linewidth = 1,
+            col="blue") +
+  scale_shape_manual(values = c("s1.1" = 5, 
+                                "s1.4" = 4)) +
   theme_few() +
-  ylim(0, max(base.modeltest$recruit$pred_recr))
+  ylim(0, max(m, meco)) +
+  labs(x = "SSB", y = "Recruit", 
+       title = "", shape = "Model") +
+  theme(legend.position = "bottom")
 
 ```
 
-## Retrospective analysis
+### Retrospective Analysis in Model Evaluation
 
-Los análisis retrospectivo, dan cuenta de diferencias de estimación
-(sub - sobreestimación) en los patrones entre modelos evaluados.
+Retrospective analyses provide insights into the differences in estimation patterns (underestimation or overestimation) among the models evaluated. These analyses assess the consistency and reliability of stock assessment models by systematically removing the most recent years of data and comparing the resulting estimates with the full dataset.  
+
+In this study, we conducted a retrospective analysis to examine the sensitivity of our recruitment and spawning stock biomass (SSB) estimates to the inclusion or exclusion of recent data. By applying this approach to multiple models, we identified potential biases and evaluated the stability of the recruitment estimates over time.  
+
+The retrospective patterns were assessed by calculating the relative error between the predictions of truncated datasets and the full dataset. These differences allowed us to detect trends in model performance, such as systematic overestimation or underestimation of key population parameters. Understanding these deviations is crucial for improving the robustness of the stock assessment models and ensuring more reliable projections for fisheries management.
 
 ```{r eval=FALSE}
 #one by one
@@ -885,6 +967,10 @@ retro(
 
 
 ```{r eval=FALSE}
+directorios <- c("s1.1",
+                 "s1.2",
+                 "s1.3",
+                 "s1.4")  
 for (dir in directorios) {
   retro(
     dir = dir,
@@ -898,67 +984,7 @@ for (dir in directorios) {
 }
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-#s01
-retroModels01 <- SSgetoutput(dirvec=file.path(dir01,
-                                            "Retrospective",
-                                            paste("retro",0:-5,
-                                                  sep="")))
-
-retroSummary01 <- SSsummarize(retroModels01)
-# s1
-retroModels1 <- SSgetoutput(dirvec=file.path(dir1,
-                                            "Retrospective",
-                                            paste("retro",0:-5,
-                                                  sep="")))
-
-retroSummary1 <- SSsummarize(retroModels1)
-#s2
-retroModels2 <- SSgetoutput(dirvec=file.path(dir2,
-                                            "Retrospective",
-                                            paste("retro",0:-5,
-                                                  sep="")))
-
-retroSummary2 <- SSsummarize(retroModels2)
-#s3
-retroModels3 <- SSgetoutput(dirvec=file.path(dir3,
-                                            "Retrospective",
-                                            paste("retro",0:-5,
-                                                  sep="")))
-
-retroSummary3 <- SSsummarize(retroModels3)
-#s4
-retroModels4 <- SSgetoutput(dirvec=file.path(dir4,
-                                            "Retrospective",
-                                            paste("retro",0:-5,
-                                                  sep="")))
-
-retroSummary4 <- SSsummarize(retroModels4)
-#s5
-retroModels5 <- SSgetoutput(dirvec=file.path(dir5,
-                                            "Retrospective",
-                                            paste("retro",0:-5,
-                                                  sep="")))
-
-retroSummary5 <- SSsummarize(retroModels5)
-#s6
-retroModels6 <- SSgetoutput(dirvec=file.path(dir6,
-                                            "Retrospective",
-                                            paste("retro",0:-5,
-                                                  sep="")))
-
-retroSummary6 <- SSsummarize(retroModels6)
-#s7
-retroModels7 <- SSgetoutput(dirvec=file.path(dir7,
-                                            "Retrospective",
-                                            paste("retro",0:-5,
-                                                  sep="")))
-
-retroSummary7 <- SSsummarize(retroModels7)
-```
-
-
-```{r eval=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 #stest
 retroModels1.1 <- SSgetoutput(dirvec=file.path(dir1.1,
                                             "Retrospective",
@@ -966,58 +992,52 @@ retroModels1.1 <- SSgetoutput(dirvec=file.path(dir1.1,
                                                   sep="")))
 
 retroSummary1.1 <- SSsummarize(retroModels1.1)
+#stest
+retroModels1.2 <- SSgetoutput(dirvec=file.path(dir1.2,
+                                            "Retrospective",
+                                            paste("retro",0:-4,
+                                                  sep="")))
+
+retroSummary1.2 <- SSsummarize(retroModels1.2)
+#stest
+retroModels1.3 <- SSgetoutput(dirvec=file.path(dir1.3,
+                                            "Retrospective",
+                                            paste("retro",0:-4,
+                                                  sep="")))
+
+retroSummary1.3 <- SSsummarize(retroModels1.3)
+#stest
+retroModels1.4 <- SSgetoutput(dirvec=file.path(dir1.4,
+                                            "Retrospective",
+                                            paste("retro",0:-4,
+                                                  sep="")))
+
+retroSummary1.4 <- SSsummarize(retroModels1.4)
 
 
 ```
 
-```{r echo=FALSE}
+```{r}
 #save(retroSummary, retroModels, file="retro5.Rdata")
-
-retro01 <- SSplotRetro(retroSummary01,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
-retro1 <- SSplotRetro(retroSummary1,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
-retro2 <- SSplotRetro(retroSummary2,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
-retro3 <- SSplotRetro(retroSummary3,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
-retro4 <- SSplotRetro(retroSummary4,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
-retro5 <- SSplotRetro(retroSummary5,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
-
-retro6 <- SSplotRetro(retroSummary6,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
-
-
-retro7 <- SSplotRetro(retroSummary7,
-            add=T,
-            forecast = F,
-            legend = T,
-            verbose=F)
-
 retro1.1 <- SSplotRetro(retroSummary1.1,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            subplots = c("SSB"))
+retro1.2 <- SSplotRetro(retroSummary1.2,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            subplots = c("SSB"))
+retro1.3 <- SSplotRetro(retroSummary1.3,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            subplots = c("SSB"))
+retro1.4 <- SSplotRetro(retroSummary1.4,
             add=T,
             forecast = F,
             legend = T,
@@ -1026,146 +1046,78 @@ retro1.1 <- SSplotRetro(retroSummary1.1,
 ```
 
 
-## Hindcast Cross-Validation and prediction skill
+### Hindcast Cross-Validation and Prediction Skill
 
-Implementing the Hindcast Cross-Validation (HCxval) diagnostic in Stock
-Synthesis requires the same model outputs generated by
-`r4ss:SS_doRetro()`. As a robust measure of prediction skill, we
-implemented the mean absolute scaled error (MASE). In brief, the MASE
-score scales the mean absolute. Regarding (A MASE score \> 1 indicates
-that the average model forecasts are worse than a random walk.
-Conversely, a MASE score of 0.5 indicates that the model forecasts twice
-as accurately as a naïve baseline prediction; thus, the model has
-prediction skill.
+The Hindcast Cross-Validation (HCxval) diagnostic in Stock Synthesis is implemented using the model outputs generated by the `r4ss::SS_doRetro()` function. This diagnostic evaluates the predictive performance of the model by comparing hindcast predictions with observed data.
+
+To assess prediction skill, we employ the Mean Absolute Scaled Error (MASE) as a robust metric. MASE is calculated by scaling the mean absolute error of the model predictions relative to the mean absolute error of a naïve baseline prediction. Specifically, the MASE score is computed as follows:
+
+- A MASE score greater than 1 indicates that the model’s average forecasts are less accurate than a random walk model.
+- A MASE score equal to 1 suggests that the model’s accuracy is similar to that of a random walk.
+- A MASE score less than 1 indicates that the model performs better than a random walk.
+- A MASE score of 0.5, for example, indicates that the model’s forecasts are twice as accurate as the naïve baseline prediction, suggesting the model has predictive skill.
+
+This approach provides a rigorous evaluation of model forecasting capabilities and helps identify improvements for model calibration.
+
 
 ```{r}
-hci = SSplotHCxval(retroSummarytest, 
+hci = SSplotHCxval(retroSummary1.1, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
-```
-
-
-```{r eval=FALSE}
-hci = SSplotHCxval(retroSummary01, 
+hci = SSplotHCxval(retroSummary1.2, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
-hci = SSplotHCxval(retroSummary1, 
+hci = SSplotHCxval(retroSummary1.3, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
-hci = SSplotHCxval(retroSummary2, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7)
-hci = SSplotHCxval(retroSummary3, 
+hci = SSplotHCxval(retroSummary1.4, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7) 
-hci = SSplotHCxval(retroSummary4, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7)
-hci = SSplotHCxval(retroSummary5, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7)
-hci = SSplotHCxval(retroSummary6, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7)
-hci = SSplotHCxval(retroSummary7, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7)
 ```
 
-## Kobe (status)
+### Kobe (status)
 
-
-```{r}
-mvln = SSdeltaMVLN(base.modeltest,
-                   Fref = "Btgt", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
-```
 
 ```{r eval=FALSE}
-mvln = SSdeltaMVLN(base.model01,
-                   Fref = "Btgt", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
-mvln = SSdeltaMVLN(base.model1,
-                   Fref = "Btgt", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
-mvln = SSdeltaMVLN(base.model2,
-                   Fref = "Btgt", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
-mvln = SSdeltaMVLN(base.model3,
-                   Fref = "Btgt", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
-mvln = SSdeltaMVLN(base.model4,
-                   Fref = "Btgt", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
-mvln = SSdeltaMVLN(base.model5,
-                   Fref = "Btgt", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
-mvln = SSdeltaMVLN(base.model6,
-                   Fref = "Btgt", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
 mvln = SSdeltaMVLN(base.model1.1,
-                   Fref = "Btgt", 
+                   Fref = "MSY", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
+mvln = SSdeltaMVLN(base.model1.2,
+                   Fref = "MSY", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
+mvln = SSdeltaMVLN(base.model1.3,
+                   Fref = "MSY", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
+mvln = SSdeltaMVLN(base.model1.4,
+                   Fref = "MSY", 
                    plot = TRUE,
                    addprj=TRUE,
                    virgin = TRUE,
                    mc=100)
 
 ```
-
 another
 
 ```{r eval=FALSE}
 
-nanios<-base.model1$Kobe$Yr
-SSBDep<-base.model1$Kobe$B.Bmsy
-y_BDPR<-base.model1$Kobe$F.Fmsy
+nanios<-base.model1.1$Kobe$Yr
+SSBDep<-base.model1.1$Kobe$B.Bmsy
+y_BDPR<-base.model1.1$Kobe$F.Fmsy
 
-
-# Integrated Model
-
-kobe1 <- ggplot(base.model1$Kobe)+
-  #geom_line(aes(kobebro$BBMSY, kobebro$FFMSY)) +
+kobe1 <- ggplot(base.model1.1$Kobe)+
   geom_rect(aes(xmin = 0, xmax = 0.5, ymin = 0, ymax = 5),
             fill = "#E43338", alpha = 0.5) +
   geom_rect(aes(xmin = 0.5, xmax = 0.75, ymin = 0, ymax = 5),
@@ -1176,8 +1128,9 @@ kobe1 <- ggplot(base.model1$Kobe)+
             fill = "#608D68", alpha = 0.5) +
   geom_rect(aes(xmin = 1.25, xmax = 9, ymin = 1, ymax = 5),
             fill = "#808080", alpha = 0.5) +
-  geom_path(aes(x=base.model1$Kobe$B.Bmsy,y=base.model1$Kobe$F.Fmsy,label=base.model1$Kobe$Yr))+
-  geom_point(aes(base.model1$Kobe$B.Bmsy, base.model1$Kobe$F.Fmsy),
+  geom_path(aes(x=base.model1.1$Kobe$B.Bmsy,y=base.model1.1$Kobe$F.Fmsy,
+                label=base.model1.1$Kobe$Yr))+
+  geom_point(aes(base.model1.1$Kobe$B.Bmsy, base.model1.1$Kobe$F.Fmsy),
              lwd=2) +
   geom_hline(yintercept = 1) +
   geom_vline(xintercept = c(0.5, 0.75, 1.75, 1, 1.25), linetype=2)+
@@ -1185,17 +1138,17 @@ kobe1 <- ggplot(base.model1$Kobe)+
   labs(x = expression("BD/BD"[RMS]), y = expression("F/F"[RMS]))+
   # geom_text(data = texto_coords, aes(x = x, y = y, label = etiqueta),
   #            vjust = -0.5)+
-  geom_text(aes(x=base.model1$Kobe$B.Bmsy,y=base.model1$Kobe$F.Fmsy,label=base.model1$Kobe$Yr),
+  geom_text(aes(x=base.model1.1$Kobe$B.Bmsy,y=base.model1.1$Kobe$F.Fmsy,label=base.model1.1$Kobe$Yr),
             nudge_y = 0.1,size = 3,
             check_overlap = TRUE)
 kobe1
 
 ```
 
-```{r echo=FALSE}
+```{r}
 # model01
-tablebias01 <- SShcbias(retroSummary01,quant="SSB",verbose=F)
-tablebias01a <- SShcbias(retroSummary01,quant="F",verbose=F)
+tablebias01 <- SShcbias(retroSummary1.1,quant="SSB",verbose=F)
+tablebias01a <- SShcbias(retroSummary1.1,quant="F",verbose=F)
 
 kbl(tablebias01, booktabs = T,format = "latex",
     caption = "Rho parameter in SSB model s01")  %>% 
@@ -1205,21 +1158,9 @@ kbl(tablebias01a, booktabs = T,format = "latex",
     caption = "Rho parameter in F model s01")  %>% 
     kable_styling(latex_options = "HOLD_position")
 
-# model1
-tablebias1 <- SShcbias(retroSummary1,quant="SSB",verbose=F)
-tablebias1a <- SShcbias(retroSummary1,quant="F",verbose=F)
-
-kbl(tablebias1, booktabs = T,format = "latex",
-    caption = "Rho parameter in SSB model s1")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-kbl(tablebias1a, booktabs = T,format = "latex",
-    caption = "Rho parameter in F model s1")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
 # model2
-tablebias2 <- SShcbias(retroSummary2,quant="SSB",verbose=F)
-tablebias2a <- SShcbias(retroSummary2,quant="F",verbose=F)
+tablebias2 <- SShcbias(retroSummary1.2,quant="SSB",verbose=F)
+tablebias2a <- SShcbias(retroSummary1.2,quant="F",verbose=F)
 
 kbl(tablebias2, booktabs = T,format = "latex",
     caption = "Rho parameter in SSB model s2")  %>% 
@@ -1229,10 +1170,9 @@ kbl(tablebias2a, booktabs = T,format = "latex",
     caption = "Rho parameter in F model s2")  %>% 
     kable_styling(latex_options = "HOLD_position")
 
-
 # model3
-tablebias3 <- SShcbias(retroSummary3,quant="SSB",verbose=F)
-tablebias3a <- SShcbias(retroSummary3,quant="F",verbose=F)
+tablebias3 <- SShcbias(retroSummary1.3,quant="SSB",verbose=F)
+tablebias3a <- SShcbias(retroSummary1.3,quant="F",verbose=F)
 
 kbl(tablebias3, booktabs = T,format = "latex",
     caption = "Rho parameter in SSB model s3")  %>% 
@@ -1244,8 +1184,8 @@ kbl(tablebias3a, booktabs = T,format = "latex",
 
 
 # model4
-tablebias4 <- SShcbias(retroSummary4,quant="SSB",verbose=F)
-tablebias4a <- SShcbias(retroSummary4,quant="F",verbose=F)
+tablebias4 <- SShcbias(retroSummary1.4,quant="SSB",verbose=F)
+tablebias4a <- SShcbias(retroSummary1.4,quant="F",verbose=F)
 
 kbl(tablebias4, booktabs = T,format = "latex",
     caption = "Rho parameter in SSB model s4")  %>% 
@@ -1256,87 +1196,78 @@ kbl(tablebias4a, booktabs = T,format = "latex",
     kable_styling(latex_options = "HOLD_position")
 
 
-# model5
-tablebias5 <- SShcbias(retroSummary5,quant="SSB",verbose=F)
-tablebias5a <- SShcbias(retroSummary5,quant="F",verbose=F)
+# Combine the results from all models into one table
+tablebias_combined <- bind_rows(
+  data.frame(Model = "s1.1", 
+             Quant = "SSB", 
+             Rho = SShcbias(retroSummary1.1, 
+                            quant = "SSB", verbose = F)),
+  data.frame(Model = "s1.1", 
+             Quant = "F", 
+             Rho = SShcbias(retroSummary1.1, 
+                            quant = "F", verbose = F)),
+  data.frame(Model = "s1.2", 
+             Quant = "SSB", 
+             Rho = SShcbias(retroSummary1.2, 
+                            quant = "SSB", verbose = F)),
+  data.frame(Model = "s1.2", 
+             Quant = "F", 
+             Rho = SShcbias(retroSummary1.2, 
+                            quant = "F", verbose = F)),
+  data.frame(Model = "s1.3", 
+             Quant = "SSB", 
+             Rho = SShcbias(retroSummary1.3, 
+                            quant = "SSB", verbose = F)),
+  data.frame(Model = "s1.3", 
+             Quant = "F", 
+             Rho = SShcbias(retroSummary1.3, 
+                            quant = "F", verbose = F)),
+  data.frame(Model = "s1.4", 
+             Quant = "SSB", 
+             Rho = SShcbias(retroSummary1.4, 
+                            quant = "SSB", verbose = F)),
+  data.frame(Model = "s1.4",
+             Quant = "F", 
+             Rho = SShcbias(retroSummary1.4, 
+                            quant = "F", verbose = F))
+)
 
-kbl(tablebias5, booktabs = T,format = "latex",
-    caption = "Rho parameter in SSB model s5")  %>% 
-    kable_styling(latex_options = "HOLD_position")
+kbl(tablebias_combined, booktabs = T, 
+    format = "html", 
+    caption = "Rho parameter by model and quantity (SSB and F)") %>% 
+  kable_styling(latex_options = "HOLD_position")
 
-kbl(tablebias5a, booktabs = T,format = "latex",
-    caption = "Rho parameter in F model s5")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-
-# model6
-tablebias6 <- SShcbias(retroSummary6,quant="SSB",verbose=F)
-tablebias6a <- SShcbias(retroSummary6,quant="F",verbose=F)
-
-kbl(tablebias6, booktabs = T,format = "latex",
-    caption = "Rho parameter in SSB model s6")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-kbl(tablebias6a, booktabs = T,format = "latex",
-    caption = "Rho parameter in F model s6")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-# model7
-tablebias7 <- SShcbias(retroSummary7,quant="SSB",verbose=F)
-tablebias7a <- SShcbias(retroSummary7,quant="F",verbose=F)
-
-kbl(tablebias7, booktabs = T,format = "latex",
-    caption = "Rho parameter in SSB model s7")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-kbl(tablebias7a, booktabs = T,format = "latex",
-    caption = "Rho parameter in F model s7")  %>% 
-    kable_styling(latex_options = "HOLD_position")
 
 ```
 
-## Likelihood tables
+### Likelihood tables
 
 ```{r}
-like01 <- base.model01$likelihoods_used
-like01$model <- rep("s01", nrow(like01))
-like01 <- rownames_to_column(like01, var = "Description")
-like1 <- base.model1$likelihoods_used
-like1$model <- rep("s1", nrow(like1))
-like1 <- rownames_to_column(like1, var = "Description")
-like2 <- base.model1$likelihoods_used
-like2$model <- rep("s2", nrow(like2))
-like2 <- rownames_to_column(like2, var = "Description")
-like3 <- base.model3$likelihoods_used
-like3$model <- rep("s3", nrow(like3))
-like3 <- rownames_to_column(like3, var = "Description")
-like4 <- base.model4$likelihoods_used
-like4$model <- rep("s4", nrow(like4))
-like4 <- rownames_to_column(like4, var = "Description")
-like5 <- base.model5$likelihoods_used
-like5$model <- rep("s5", nrow(like5))
-like5 <- rownames_to_column(like5, var = "Description")
-like6 <- base.model6$likelihoods_used
-like6$model <- rep("s6", nrow(like6))
-like6 <- rownames_to_column(like6, var = "Description")
-like7 <- base.model7$likelihoods_used
-like7$model <- rep("s7", nrow(like7))
-like7 <- rownames_to_column(like7, var = "Description")
 
-totalike <- rbind(like01,
-                  like1,
+like1 <- base.model1.1$likelihoods_used
+like1$model <- rep("s1.1", nrow(like1))
+like1 <- rownames_to_column(like1, var = "Description")
+like2 <- base.model1.2$likelihoods_used
+like2$model <- rep("s1.2", nrow(like2))
+like2 <- rownames_to_column(like2, var = "Description")
+like3 <- base.model1.3$likelihoods_used
+like3$model <- rep("s1.3", nrow(like3))
+like3 <- rownames_to_column(like3, var = "Description")
+like4 <- base.model1.4$likelihoods_used
+like4$model <- rep("s1.4", nrow(like4))
+like4 <- rownames_to_column(like4, var = "Description")
+
+totalike <- rbind(like1,
                    like2,
                    like3,
-                   like4,
-                   like5,
-                   like6,
-                   like7)
+                   like4)
 
 ```
 
 ```{r}
 ggplot(totalike)+
-  geom_bar( aes(y = reorder(Description, values), x =log(values)),
+  geom_bar( aes(y = reorder(Description, values), 
+                x =log(values)),
             stat = "identity", position = "dodge") +
   theme_few() +
   facet_wrap(.~model, 
@@ -1345,10 +1276,10 @@ ggplot(totalike)+
        x="Log Likelihood")+
   theme(axis.text.x = element_text(angle = 90, 
                                    hjust = 1))+
-  xlim(0,20)
+  xlim(0,30)
 ```
 
-## Likelihood Profile 
+### Likelihood Profile 
 
 ```{r eval=FALSE, echo = FALSE}
 # 1. Identificar el directorio donde se encuentra el modelo base ----
@@ -1426,9 +1357,8 @@ mainlike_components_labels  <- c('Total likelihood',
 
 ```
 
-Funciones para generar plots de perfil de verosimilitud ----
 
-### SSplotProfile() ----
+### `SSplotProfile()`
 
 ```{r eval=FALSE, echo = FALSE}
 png(file.path(plotdir,"R0_profile_plot.png"),
@@ -1456,9 +1386,9 @@ abline(v = Baseval, lty=2)
 dev.off()
 ```
 
-## Convergence criteria
+### Convergence Criteria
 
-0.0001 final convergence criteria (e.g. 1.0e-04) 
+The convergence criterion used for model calibration is set to a final threshold of **0.0001** (or equivalently **1.0e-04**). This criterion defines the minimum acceptable difference between successive model iterations. Convergence is considered achieved when the absolute change in the objective function value or key parameters falls below this threshold. A smaller convergence value ensures that the model achieves a high degree of accuracy and stability in its final estimates, indicating that further iterations are unlikely to result in significant changes to the parameter estimates.
 
 
 ```{r eval=FALSE, echo = FALSE}
@@ -1478,7 +1408,7 @@ SSplotComparisons(prof.R0.summary,
 
 piner Plot
 
-```{r echo = FALSE}
+```{r eval = FALSE}
 #### R0_profile_plot_Length_like ----
 png(file.path(plotdir,"R0_profile_plot_Length_like.png"),
     width=7,
@@ -1502,7 +1432,7 @@ dev.off()
 ```
 
 
-```{r echo = FALSE}
+```{r eval=FALSE}
 #### R0_profile_plot_Survey_like ----
 png(file.path(plotdir,"R0_profile_plot_Survey_like.png"),
     width=7,
@@ -1523,11 +1453,12 @@ axis(1,at=Baseval,label=Baselab)
 abline(v = Baseval, lty=2)
 dev.off()
 ```
+## Outputs
 
-## Outputs Model Base
+### Outputs Model `s1.1`
 
 ```{r}
-outps1 <- base.modeltest$timeseries[1:53, 2:8]
+outps1 <- base.model1.1$timeseries[1:37, 2:8]
 
 # addWorksheet(wb, "variable_s2")
 # writeData(wb, "variable_s2", outps1)
@@ -1541,7 +1472,35 @@ outps1 <- base.modeltest$timeseries[1:53, 2:8]
 outps1 %>%
   kbl(booktabs = TRUE,
       format = "html",
-    caption = "Main variables outputs from stock asssessment krill in WAP") %>%
+    caption = "Main variables outputs from stock asssessment krill in WAP `s1.1`") %>%
+  kable_paper("hover", 
+              full_width = TRUE)%>%
+  kable_styling(latex_options = c("striped",
+                                  "condensed"),
+                full_width = FALSE,
+                font_size=9,
+                html_font = "arial")#%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
+```
+### Outputs Model `s1.2`
+
+```{r}
+outps2 <- base.model1.2$timeseries[1:37, 2:8]
+
+# addWorksheet(wb, "variable_s2")
+# writeData(wb, "variable_s2", outps1)
+# 
+# # Guardar el workbook
+# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# 
+# 
+# out_s2 <- read_excel("DataKrill.xlsx", 
+#     sheet = "variable_s2")
+outps2 %>%
+  kbl(booktabs = TRUE,
+      format = "html",
+    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.2`") %>%
   kable_paper("hover", 
               full_width = TRUE)%>%
   kable_styling(latex_options = c("striped",
@@ -1553,52 +1512,84 @@ outps1 %>%
    #                     "Prediction" = 45))
 ```
 
-## Comparision outputs betwwen scenarios
 
-```{r echo=FALSE}
+
+### Outputs Model `s1.3`
+
+```{r}
+outps3 <- base.model1.3$timeseries[1:37, 2:8]
+
+# addWorksheet(wb, "variable_s2")
+# writeData(wb, "variable_s2", outps1)
+# 
+# # Guardar el workbook
+# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# 
+# 
+# out_s2 <- read_excel("DataKrill.xlsx", 
+#     sheet = "variable_s2")
+outps3 %>%
+  kbl(booktabs = TRUE,
+      format = "html",
+    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.3`") %>%
+  kable_paper("hover", 
+              full_width = TRUE)%>%
+  kable_styling(latex_options = c("striped",
+                                  "condensed"),
+                full_width = FALSE,
+                font_size=9,
+                html_font = "arial")#%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
+```
+
+### Outputs Model `s1.4`
+
+```{r}
+outps4 <- base.model1.3$timeseries[1:37, 2:8]
+
+# addWorksheet(wb, "variable_s2")
+# writeData(wb, "variable_s2", outps1)
+# 
+# # Guardar el workbook
+# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# 
+# 
+# out_s2 <- read_excel("DataKrill.xlsx", 
+#     sheet = "variable_s2")
+outps4 %>%
+  kbl(booktabs = TRUE,
+      format = "html",
+    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.4`") %>%
+  kable_paper("hover", 
+              full_width = TRUE)%>%
+  kable_styling(latex_options = c("striped",
+                                  "condensed"),
+                full_width = FALSE,
+                font_size=9,
+                html_font = "arial")#%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
+```
+
+
+## Comparison
+
+### Comparison outputs betwwen scenarios
+
+```{r}
 
 #read in all model runs
 #note if cover=T you need a hessian; if covar=F you do not need a hessian
 biglist <- SSgetoutput(keyvec = NULL,
-                       dirvec = c(dir01,
-                                  dir1,
-                                  dir2,
-                                  dir3,
-                                  dir4,
-                                  dir5,
-                                  dir6,
-                                  dir7),
+                       dirvec = c(dir1.1,
+                                  dir1.2,
+                                  dir1.3,
+                                  dir1.4),
                        getcovar = F)
 
 #create summary of model runs from list above
 summaryoutputall <- SSsummarize(biglist)
-```
-
-
-```{r echo=FALSE}
-compall <- SSplotComparisons(summaryoutputall,
-                  legendlabels = c("No Spatial",
-                                   "s1",
-                                   "s2",
-                 "s3",
-                 "s4",
-                 "s5",
-                 "s6",
-                 "s7"),
-                 labels = c("Year", 
-                            "Spawning biomass (t)",
-                            "Relative spawning biomass", 
-                            "Age-0 recruits (1,000s)",
-                            "Recruitment deviations", 
-                            "Index", "Log index", 
-                            "1 - SPR", 
-                            "Density",
-                            "Management target", 
-                            "Minimum stock size threshold",
-                            "Spawning output",
-                            "Harvest rate"),
-                 png=TRUE,plotdir=Figs)
-
 ```
 
 ```{r}
@@ -1619,26 +1610,22 @@ comtable <- SStableComparisons(summaryoutputall,
                              "Bratio_2020",
                              "SPRratio_2020"),
                    digits = NULL,
-                   modelnames = c("s01", "s1","s2",
-                 "s3",
-                 "s4",
-                 "s5",
-                 "s6",
-                 "s7"),
+                   modelnames = c("s1.1", "s1.2",
+                                  "s1.3",
+                                  "s1.4"),
                    csv = F,
                    csvdir =~"/DOCAS/SA_Krill",
                    csvfile = "parameter_comparison_table.csv",
                  verbose = TRUE,
                    mcmc = FALSE)
+
 kbl(comtable, booktabs = T,format = "latex",
-    caption = "Comparacion likelihood y parámetros s01, s1, s2, s3, s4, s5, s6 y s7")  %>% 
+    caption = "Comparision s1.1, s1.2, s1.3, s1.4")  %>% 
     kable_styling(latex_options = "scale_down")
 
 ```
 
-## Comparision between select models `No spatial`and `Spatial implicit` and `Spatial W/ new set parametres`
-
-```{r echo=FALSE}
+```{r eval=FALSE}
 #read in all model runs
 #note if cover=T you need a hessian; if covar=F you do not need a hessian
 biglist1_4 <- SSgetoutput(keyvec = NULL,
@@ -1674,25 +1661,24 @@ SSplotComparisons(summaryoutput1_4,
                  plotdir=Figs)
 ```
 
-comparision between select models `Old Paramters` and `New Parameters WG SAM 2024/23`
+Comparison between select models `Ref Model: No Env-Predator` and `S1.1 w/ Env and Predator data`
 
-```{r echo=FALSE}
+```{r eval=FALSE}
 #read in all model runs
 #note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist1_7 <- SSgetoutput(keyvec = NULL,
+biglist14 <- SSgetoutput(keyvec = NULL,
                        dirvec = c(
-                                  dir1,
-                                  dir7),
+                                  dir1.1,
+                                  dir1.4),
                        getcovar = F)
 
 #create summary of model runs from list above
-summaryoutput1_7 <- SSsummarize(biglist1_7)
+summaryoutput14 <- SSsummarize(biglist14)
 
-comp1_7 <- SSplotComparisons(summaryoutput1_7,
-                  legendlabels = c(
-                                   "Old Parameters",
-                 
-                 "Parameters WG SAM 2024/27"),
+comp14 <- SSplotComparisons(summaryoutput14,
+                  legendlabels = c("Ref Model: No Env-Predator",
+                 "S1.1 w/ Env and Predator data"),
+                  filenameprefix = "COM2",
                  labels = c("Year", 
                             "Spawning biomass (t)",
                             "Relative spawning biomass", 
@@ -1707,76 +1693,30 @@ comp1_7 <- SSplotComparisons(summaryoutput1_7,
                             "Harvest rate"),
                  png=TRUE,plotdir=Figs)
 ```
-### Comparision between select models `s1` and `s9`
 
-```{r echo=FALSE}
-#read in all model runs
-#note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist1_9 <- SSgetoutput(keyvec = NULL,
-                       dirvec = c(
-                                  dir1,
-                                  dir9),
-                       getcovar = F)
-
-#create summary of model runs from list above
-summaryoutput1_9 <- SSsummarize(biglist1_9)
-
-comp1_9 <- SSplotComparisons(summaryoutput1_9,
-                  legendlabels = c(
-                                   "Base",
-                 "selectivity Block 2006"),
-                 filenameprefix = "COM1_9",
-                 labels = c("Year", 
-                            "Spawning biomass (t)",
-                            "Relative spawning biomass", 
-                            "Age-0 recruits (1,000s)",
-                            "Recruitment deviations", 
-                            "Index", "Log index", 
-                            "1 - SPR", 
-                            "Density",
-                            "Management target", 
-                            "Minimum stock size threshold",
-                            "Spawning output",
-                            "Harvest rate"),
-                 png=TRUE,plotdir=Figs)
-```
-## Comparsion in sd long term time series
+### Comparsion in sd long term time series
 
 ```{r fig.height=6, fig.width=8}
 
-sblt01 <- base.model01$timeseries$Bio_all[1:50]
-sblt1 <-  base.model1$timeseries$Bio_all
-sblt2 <-  base.model2$timeseries$Bio_all
-sblt3 <-  base.model3$timeseries$Bio_all
-sblt4 <-  base.model4$timeseries$Bio_all
-sblt5 <-  base.model5$timeseries$Bio_all
-sblt6 <-  base.model6$timeseries$Bio_all
-sblt7 <-  base.model7$timeseries$Bio_all
+sblt1 <-  base.model1.1$timeseries$Bio_all
+sblt2 <-  base.model1.2$timeseries$Bio_all
+sblt3 <-  base.model1.3$timeseries$Bio_all
+sblt4 <-  base.model1.4$timeseries$Bio_all
 
-errt <- as.data.frame(cbind(sblt01,
-              sblt1,
+errt <- as.data.frame(cbind(sblt1,
               sblt2,
               sblt3,
-              sblt4,
-              sblt5,
-              sblt6,
-              sblt7))
+              sblt4))
 err_long <- errt %>%
   pivot_longer(cols = everything(),
                names_to = "variable",
                values_to = "value")  
-titles <- c("No Spatial",
-            "Spatial implicit", 
-            "Spatial w/ without S-R relation",
-            "Spatial w/ S-R relation weak (0.9 steepness)",
-            "Spatial w/ S-R relation strong (0.6 steepness)",
-            "Spatial w/ S-R relation mid-strong estimated",
-            "Spatial w/ Ricker S-R relation estimated", 
-            "Spatial w/ New set parameters Linf, k and M")
-
-
+titles <- c("Ref Model: No Env-Predator",
+                 "S1.1 w/ Predator data",
+                 "S1.1 w/ Env data",
+                 "S1.1 w/ Env and Predator data")
 ggplot(err_long, aes(x = variable, y = value)) +
-  geom_boxplot() +
+  geom_boxplot(width=0.5) +
   geom_jitter(width = 0.2, alpha = 0.3) +
   labs(title = "Long Term Predictions",
        x = "",
@@ -1787,86 +1727,76 @@ ggplot(err_long, aes(x = variable, y = value)) +
                                    hjust = 1))
 ```
 
-## Autocorrelation in Recruit and Biomas
+### Autocorrelation in Recruit 
 
-```{r fig.width=8, fig.height=7}
-recs01 <- base.model01$recruit$pred_recr
-recs1 <- base.model1$recruit$pred_recr
-recs2 <- base.model2$recruit$pred_recr
-recs3 <- base.model3$recruit$pred_recr
-recs4 <- base.model4$recruit$pred_recr
-recs5 <- base.model5$recruit$pred_recr
-recs6 <- base.model6$recruit$pred_recr
-recs7 <- base.model7$recruit$pred_recr
+To evaluate the temporal correlation structure of krill recruitment under different model configurations, we performed an Autocorrelation Function (ACF) analysis. The ACF measures the correlation between observations at different time lags, helping to assess whether recruitment estimates exhibit persistence or randomness across time.
 
-p01 <- ggAcf(base.model01$recruit$pred_recr) +
-  ggtitle("No Spatial") +
+The analysis was conducted on recruitment estimates derived from four model scenarios:
+
+A reference model without environmental or predator influences (Ref Model: No Env-Predator).
+A model incorporating predator data (S1.1 w/ Predator data).
+A model incorporating environmental data (S1.1 w/ Env data).
+A model incorporating both environmental and predator data (S1.1 w/ Env and Predator data).
+Each model's residuals were extracted, and the autocorrelation function (ACF) was computed for a time lag range of up to 15 years. The dashed blue lines in the plots represent the 95% confidence intervals, indicating the threshold beyond which correlation values are statistically significant. If autocorrelation values remain within this range, it suggests that the recruitment estimates behave as a random process with no significant dependence on past values. Conversely, autocorrelation values exceeding these bounds indicate recruitment persistence or cyclic patterns.
+
+```{r fig.width=5, fig.height=7}
+recs1 <- base.model1.1$recruit$pred_recr
+recs2 <- base.model1.2$recruit$pred_recr
+recs3 <- base.model1.3$recruit$pred_recr
+recs4 <- base.model1.4$recruit$pred_recr
+
+p1 <- ggAcf(base.model1.1$recruit$pred_recr) +
+  ggtitle("Ref Model: No Env-Predator") +
   theme_few()
-p1 <- ggAcf(base.model1$recruit$pred_recr) +
-  ggtitle("Spatial implicit") +
+p2 <- ggAcf(base.model1.2$recruit$pred_recr) +
+  ggtitle("S1.1 w/ Predator data") +
   theme_few()
-p2 <- ggAcf(base.model2$recruit$pred_recr) +
-  ggtitle("Spatial w/ without S-R relation") +
+p3 <- ggAcf(base.model1.3$recruit$pred_recr) +
+  ggtitle("S1.1 w/ Env data") +
   theme_few()
-p3 <- ggAcf(base.model3$recruit$pred_recr) +
-  ggtitle("Spatial w/ S-R relation weak (0.9 steepness)") +
-  theme_few()
-p4 <- ggAcf(base.model4$recruit$pred_recr) +
-  ggtitle("Spatial w/ S-R relation strong (0.6 steepness)") +
-  theme_few()
-p5 <- ggAcf(base.model5$recruit$pred_recr) +
-  ggtitle("Spatial w/ S-R relation mid-strong estimated") +
-  theme_few()
-p6 <- ggAcf(base.model6$recruit$pred_recr) +
-  ggtitle("Spatial w/ Ricker S-R relation estimated") +
-  theme_few()
-p7 <- ggAcf(base.model7$recruit$pred_recr) +
-  ggtitle("Spatial w/ New set parameters Linf, k and M") +
+p4 <- ggAcf(base.model1.4$recruit$pred_recr) +
+  ggtitle("S1.1 w/ Env and Predator data") +
   theme_few()
 
-
-
-
-ggarrange(p01,p1,
+ggarrange(p1,
           p2,
           p3,
-          p4,
-          p5,
-          p6,
-          p7, ncol=3, nrow = 3,
+          p4, ncol=1, nrow = 4,
           common.legend = T)
 
 ```
 
-## Recruit deviation
+The ACF plots indicate that the reference model (without environmental or predator data) exhibits weak but noticeable positive autocorrelation at certain lags, suggesting some degree of recruitment dependence over time. However, this autocorrelation does not appear strong or systematic.
 
-```{r}
-dev01 <- base.model01$recruit[1:43,c(1,7)] %>% 
-  mutate(Serie = "S01")
-dev1 <- base.model1$recruit[1:43,c(1,7)]%>% 
-  mutate(Serie = "S1")
-dev2 <- base.model2$recruit[1:43,c(1,7)] %>% 
-  mutate(Serie = "S2")
-dev3 <- base.model3$recruit[1:43,c(1,7)] %>% 
-  mutate(Serie = "S3")
-dev4 <- base.model4$recruit[1:43,c(1,7)] %>% 
-  mutate(Serie = "S4")
-dev5 <- base.model5$recruit[1:43,c(1,7)] %>% 
-  mutate(Serie = "S5")
-dev6 <- base.model6$recruit[1:43,c(1,7)] %>% 
-  mutate(Serie = "S6")
-dev7 <- base.model7$recruit[1:43,c(1,7)] %>% 
-  mutate(Serie = "S7")
+The model incorporating only predator data shows a slight reduction in autocorrelation magnitude, suggesting that predator-driven recruitment variability may have captured part of the temporal structure in the data.
 
-data_list <- list(dev01, dev1, dev2, dev3, dev4, dev5, dev6, dev7)
-titles <- c("No Spatial",
-            "Spatial implicit", 
-            "Spatial w/ without S-R relation",
-            "Spatial w/ S-R relation weak (0.9 steepness)",
-            "Spatial w/ S-R relation strong (0.6 steepness)",
-            "Spatial w/ S-R relation mid-strong estimated",
-            "Spatial w/ Ricker S-R relation estimated", 
-            "Spatial w/ New set parameters Linf, k and M")
+The model with only environmental data exhibits a further reduction in autocorrelation, implying that environmental variability explains a larger portion of recruitment trends than predator effects alone.
+
+Finally, the model that includes both environmental and predator data presents the lowest autocorrelation values, with nearly all bars remaining within the confidence bounds. This suggests that incorporating both factors provides the most effective explanation of recruitment fluctuations, reducing unexplained temporal structure.
+
+Overall, these results indicate that recruitment variability is at least partially driven by environmental and predator influences, and models integrating these factors provide more robust and independent recruitment estimates, minimizing systematic dependencies over time.
+
+### Recruit deviation
+
+```{r fig.width=5, fig.height=7}
+dev1 <- base.model1.1$recruit[8:35,c(1,7)]%>% 
+  mutate(Serie = "s1.1")
+dev2 <- base.model1.2$recruit[8:35,c(1,7)] %>% 
+  mutate(Serie = "s1.2")
+dev3 <- base.model1.3$recruit[8:35,c(1,7)] %>% 
+  mutate(Serie = "s1.3")
+dev4 <- base.model1.4$recruit[8:35,c(1,7)] %>% 
+  mutate(Serie = "s1.4")
+
+
+data_list <- list(dev1, 
+                  dev2,
+                  dev3,
+                  dev4)
+titles <- c("Ref Model: No Env-Predator",
+                 "S1.1 w/ Predator data",
+                 "S1.1 w/ Env data",
+                 "S1.1 w/ Env and Predator data")
 # Lista para almacenar los gráficos
 plots <- list()
 
@@ -1882,96 +1812,57 @@ for (i in 1:length(data_list)) {
     ggtitle(titles[i]) +
     theme(axis.text.x = element_text(angle = 90,
                                    hjust = 1))+
+    ylim(-2,2)+
     theme_few()
   plots[[i]] <- p
 }
 
 # Organizar los gráficos con ggarrange
-combined_plot <- ggarrange(plotlist = plots, ncol = 3, nrow = 3)
+combined_plot <- ggarrange(plotlist = plots, ncol = 1, nrow = 4)
 
 combined_plot
 ```
 
-## Comparision RMSE
 
-```{r}
-# Crear un data frame con los valores de RMSE
-df <- data.frame(
-  Model1.1 = as.numeric(base.model1.1$index_variance_tuning_check$RMSE),
-  Model1.2 = as.numeric(base.model1.2$index_variance_tuning_check$RMSE[1:10]),
-  Model1.3 = as.numeric(base.model1.3$index_variance_tuning_check$RMSE[1:10])
-)
-
-# Comparación de estadísticas descriptivas
-summary(df)
-
-# Comparación con boxplot
-boxplot(df, main = "Comparación de RMSE entre modelos", col = c("red", "blue", "green"))
-
-# Prueba de diferencias estadísticas (ANOVA)
-anova_result <- aov(as.numeric(unlist(df)) ~ rep(1:3, each=nrow(df)))
-summary(anova_result)
-
-
-
-t.test(df$Model1.1, df$Model1.2)  # Comparar Model1.1 vs Model1.2
-t.test(df$Model1.1, df$Model1.3)  # Comparar Model1.1 vs Model1.3
-t.test(df$Model1.2, df$Model1.3)  # Comparar Model1.2 vs Model1.3
-
-# ANOVA para ver si hay diferencias globales
-anova_rmse <- aov(as.numeric(unlist(df)) ~ rep(1:3, each=nrow(df)))
-summary(anova_rmse)
-
-# Prueba post-hoc si ANOVA es significativa
-TukeyHSD(anova_rmse)
-
-
-df_long <- reshape2::melt(df)
-ggplot(df_long, aes(x = variable, y = value, fill = variable)) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(title = "Comparación de RMSE entre modelos", x = "Modelo", y = "RMSE")
-
-```
 
 ```{r}
 
-# Unir los modelos en un solo dataframe y asegurarse de que los nombres de filas se mantienen
 df1 <- base.model1.1$likelihoods_used %>%
   select(values) %>%
-  mutate(Componente = rownames(base.model1.1$likelihoods_used), Modelo = "M1.1")
+  mutate(Componente = rownames(base.model1.1$likelihoods_used), Modelo = "s1.1")
 
 df2 <- base.model1.2$likelihoods_used %>%
   select(values) %>%
-  mutate(Componente = rownames(base.model1.2$likelihoods_used), Modelo = "M1.2")
+  mutate(Componente = rownames(base.model1.2$likelihoods_used), Modelo = "s1.2")
 
 df3 <- base.model1.3$likelihoods_used %>%
   select(values) %>%
-  mutate(Componente = rownames(base.model1.3$likelihoods_used), Modelo = "M1.3")
+  mutate(Componente = rownames(base.model1.3$likelihoods_used), Modelo = "s1.3")
 
-# Combinar todos los modelos
-df <- bind_rows(df1, df2, df3)
+df4 <- base.model1.4$likelihoods_used %>%
+  select(values) %>%
+  mutate(Componente = rownames(base.model1.4$likelihoods_used), Modelo = "s1.4")
 
+df <- bind_rows(df1, 
+                df2,
+                df3,
+                df4)
 
-
-# Crear gráfico de barras con valores transformados
 ggplot(df, aes(x = Componente, y = values, fill = Modelo)) +
-  geom_col(position = position_dodge(), width = 0.7) +  # Barras separadas por modelo
-  theme_bw() +
-  coord_flip() +  # Para que sea horizontal
-  scale_fill_manual(values = c("S1.1" = "grey",
-                               "S1.2" = "red", 
-                               "S1.3" = "black")) +  # Colores personalizados
+  geom_col(position = position_dodge(), width = 0.7) +  
+  theme_few() +
+  coord_flip() +  
+  scale_fill_manual(name= "Scenario",
+                    values = c("s1.1" = '#ca0020',
+                               "s1.2" = '#f4a582', 
+                               "s1.3" = '#bababa',
+                               "s1.4" = '#404040')) + 
   labs(x = "",
        y = "Log-Normal Likelihood", 
        title = "") 
-
-
-
-
 ```
 
-## Platoons analisis
+### Platoons analisis
 
 ```{r}
 # Definir los valores del eje x
@@ -2003,12 +1894,12 @@ ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
   xlim(0,7)
 
 ```
-## AKL
+### AKL
 
 In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process
 
 ```{r AKL, out.width='60%',  fig.cap="Representation of ALK Matrix to krill in 48.1"}
-alk_matrix <- base.model1.2$ALK[,,1] # Ajusta las dimensiones según tu matriz
+alk_matrix <- base.model1.1$ALK[,,1] # Ajusta las dimensiones según tu matriz
 
 # Convertir la matriz en un data.frame
 alk_df <- as.data.frame(as.table(alk_matrix))
