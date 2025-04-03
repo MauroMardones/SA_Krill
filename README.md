@@ -6,8 +6,7 @@ This repository contains the Stock Synthesis 3 (SS3) assessment model for *Eupha
 
 ```
 📂 SA_Krill  
-│── 📂 stest/          # Scripts to run the SS3 model  
-│── 📂 Data/           # Icon data to reproduce exercise for stock assessment  
+│── 📂 stest/          # Scripts to run the SS3 model to reproduce
 │── 📂 Figs/           # Output figures from the model  
 │── 📂 Results/        # Processed results and reports  
 │── 📄 README.md       # Project overview    

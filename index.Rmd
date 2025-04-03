@@ -176,18 +176,13 @@ parInit %>%
                       "Catchability" = 2,
                       "Selectivity" = 4))
 
-
-
 ```
 Source of data inpit
 
 ```{r fig.width=9, fig.height=4}
 dat1_std <- dat1$CPUE %>%
   mutate(
-    # Standardize 'obs' between 0 and 1
     index_std = (obs - min(obs)) / (max(obs) - min(obs)),
-    
-    # Recode 'index' values
     index = recode(index,
                    `1` = "FISHERYBS",
                    `2` = "FISHERYEI",
@@ -200,8 +195,6 @@ dat1_std <- dat1$CPUE %>%
                    `9` = "SURVEYJOIN",
                    `10` = "SURVEYSSIW",
                    `11` = "PREDATOR"),
-    
-    # Convert 'index' to a factor with specific levels
     index = factor(index, levels = c("FISHERYBS", 
                                      "FISHERYEI", 
                                      "FISHERYGS",
@@ -213,19 +206,15 @@ dat1_std <- dat1$CPUE %>%
                                      "SURVEYJOIN", 
                                      "SURVEYSSIW", 
                                      "PREDATOR")),
-    
-    # Assign categories based on 'index'
     category = case_when(
       index %in% c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FISHERYSSIW") ~ "Fishery",
       index %in% c("SURVEYBS", "SURVEYEI", "SURVEYGS", "SURVEYJOIN", "SURVEYSSIW") ~ "Survey",
       index == "PREDATOR" ~ "Predator",
-      TRUE ~ NA_character_  # In case there are any unexpected values
+      TRUE ~ NA_character_  
     )
   )
 
-
-# Gráfico con 3 filas, dejando 'PREDATOR' en la última fila
-ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = category)) +
+p1 <- ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = category)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   facet_wrap(~index, scales = "free_y", ncol = 5) +  # Ajusta ncol para obtener 3 filas
@@ -235,8 +224,7 @@ ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = category)) 
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   labs(title = "", x = "", y = "Standard index", color = "Category")
-
-
+p1
 ```
 
 
@@ -278,7 +266,7 @@ mean_talla <- dat_long %>%
 dat_expanded <- dat_long %>%
   uncount(weights = Frecuencia)
 
-ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
+p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
   geom_density_ridges_gradient(scale = 1.8,
                                rel_min_height = 0.001,
                                col = "black",
@@ -303,10 +291,12 @@ ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
        x = "cm",
        y = "",
        fill = "Category") +
-  theme_few()+
+  theme_bw()+
   theme(legend.position = "none")
-
+p2
 ```
+
+
 
 ## Scenarios
 
@@ -402,17 +392,14 @@ base.model1.4 <- SS_output(dir=dir1.4,
 ```
 
 
-Data used en both (spatial and No spatial models) `s1.1`
+Data used en both (spatial and No spatial models) `s1.1` and `s1.4` to compare
 
 ```{r }
+par(mfrow=c(1,2), mar=c(5,4,2,1))
 SSplotData(base.model1.1, 
            subplots = 1,
            pheight = 15)
-```
 
-and `s1.4`
-
-```{r }
 SSplotData(base.model1.4, 
            subplots = 1,
            pheight = 15)
@@ -512,8 +499,7 @@ SS_plots(base.model1.4,
 
 Main Variables poulation in `s1.1` scenario
 
-```{r}
-
+```{r fig.height=3, fig.width=7}
 par(mfrow=c(1,3), mar=c(5,4,1,1)) 
 SSplotTimeseries(base.model1.1,
                  subplot = 1)
@@ -525,7 +511,7 @@ SSplotTimeseries(base.model1.1,
 
 Main Variables poulation in `s1.2` scenario
 
-```{r}
+```{r fig.height=3, fig.width=7}
 par(mfrow=c(1,3), mar=c(5,4,1,1))
 SSplotTimeseries(base.model1.2,
                  subplot = 1)
@@ -537,7 +523,7 @@ SSplotTimeseries(base.model1.2,
 
 Main Variables poulation in `s1.3` scenario
 
-```{r}
+```{r fig.height=3, fig.width=7}
 par(mfrow=c(1,3), mar=c(5,4,1,1))
 SSplotTimeseries(base.model1.3,
                  subplot = 1)
@@ -550,7 +536,7 @@ SSplotTimeseries(base.model1.3,
 
 Main Variables poulation in `s1.4` scenario
 
-```{r}
+```{r fig.height=3, fig.width=7}
 par(mfrow=c(1,3), mar=c(5,4,1,1))
 SSplotTimeseries(base.model1.4,
                  subplot = 1)
@@ -576,8 +562,28 @@ SSplotSelex(base.model1.4,
             subplots = 1)
 mtext("s1.4", side=3, line=0.5, cex=1.2)
 ```
+```{r}
+SSplotBiology(base.model1.1,
+            subplots = 24)
+```
 
+Natural Mortality
 
+```{r}
+par(mfrow=c(2,2), mar=c(5,4,1,1))
+SSplotBiology(base.model1.1,
+            subplots = 21)
+mtext("s1.1", side=3, line=0.5, cex=1.2)
+SSplotBiology(base.model1.2,
+            subplots = 21)
+mtext("s1.2", side=3, line=0.5, cex=1.2)
+SSplotBiology(base.model1.3,
+            subplots = 21)
+mtext("s1.3", side=3, line=0.5, cex=1.2)
+SSplotBiology(base.model1.4,
+            subplots = 21)
+mtext("s1.4", side=3, line=0.5, cex=1.2)
+```
 
 ```{r}
 par(mfrow=c(2,2), mar=c(5,4,2,1)) 
@@ -1299,6 +1305,41 @@ tablebias_combined <- bind_rows(
                             quant = "F", verbose = F))
 )
 ```
+Viz
+
+```{r}
+tablebias_combined <- tablebias_combined %>%
+  mutate(Rho.peel = factor(Rho.peel, levels = unique(Rho.peel)))
+
+ggplot(tablebias_combined, aes(x = Rho.peel, y = Rho.Rho, group = Model, fill = Model)) +
+  geom_point(size = 3, shape = 21, color = "black") +  
+  geom_hline(yintercept = 0, color = "grey") +
+  facet_wrap(~Quant, scales = "free_y") + 
+  scale_fill_manual(name = "Scenario",
+                    values = c("s1.1" = "#ca0020", 
+                               "s1.2" = "#f4a582", 
+                               "s1.3" = "#bababa", 
+                               "s1.4" = "#404040")) +
+  scale_color_manual(name = "Scenario",
+                     values = c("s1.1" = "#ca0020", 
+                                "s1.2" = "#f4a582", 
+                                "s1.3" = "#bababa", 
+                                "s1.4" = "#404040")) +
+  theme_minimal() +
+  labs(title = "",
+       x = "",
+       y = "Rho Value") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "bottom")
+
+
+```
+ 
+The plot presents the retrospective bias (*Rho*) in Spawning Stock Biomass (SSB) and Fishing Mortality (F) across different peel years (2019–2016) and for the combined period under four model scenarios (s1.1 to s1.4). In the SSB panel, all models exhibit negative *Rho* values across the years, indicating a downward bias. The magnitude of the bias varies among models, with s1.3 and s1.4 showing the most pronounced deviations. In the F panel, *Rho* values are consistently positive, suggesting an upward bias. The combined *Rho* values for each metric confirm these trends, showing persistent differences among model scenarios.  
+
+(Discussion)
+
+The observed retrospective bias in SSB and F aligns with findings from previous studies on krill population dynamics, where recruitment variability and model structure influence stock assessment estimates (Hill et al., 2016; Watters et al., 2020). The negative bias in SSB suggests that models may overestimate past biomass, potentially due to unaccounted environmental variability or underestimation of natural mortality (Meyer et al., 2021). The positive bias in F indicates a tendency to underestimate past fishing mortality, which could be linked to the inclusion of predator-based indices such as penguin foraging data (Trathan et al., 2018). These results highlight the importance of incorporating ecosystem interactions into stock assessments to improve predictive accuracy and support sustainable management of Antarctic krill.
 
 
 ```{r}
@@ -1456,6 +1497,8 @@ abline(v = Baseval, lty=2)
 dev.off()
 ```
 
+
+
 ### Convergence Criteria
 
 The convergence criterion used for model calibration is set to a final threshold of **0.0001** (or equivalently **1.0e-04**). This criterion defines the minimum acceptable difference between successive model iterations. Convergence is considered achieved when the absolute change in the objective function value or key parameters falls below this threshold. A smaller convergence value ensures that the model achieves a high degree of accuracy and stability in its final estimates, indicating that further iterations are unlikely to result in significant changes to the parameter estimates.
@@ -1523,6 +1566,7 @@ axis(1,at=Baseval,label=Baselab)
 abline(v = Baseval, lty=2)
 dev.off()
 ```
+
 ## Outputs
 
 ### Outputs Model `s1.1`
@@ -1643,6 +1687,48 @@ outps4 %>%
 ```
 
 
+
+```{r}
+# Unir los data frames en uno solo
+outpsall <- rbind(outps1,  
+                  outps2,
+                  outps3,
+                outps4)
+```
+
+```{r}
+# Crear una columna de modelo en cada data frame
+outps1$Model <- "Ref Model: No Env-Predator"
+outps2$Model <- "s1.2 w/ Predator data"
+outps3$Model <- "s1.3 w/ Env data"
+outps4$Model <- "s1.4 w/ Env and Predator data"
+
+# Unir los data frames en uno solo
+outpsall <- rbind(outps1,  outps4)
+
+
+outpsall_long <- outpsall %>%
+  pivot_longer(cols = c(Bio_smry, SpawnBio, Recruit_0), 
+               names_to = "Variable", values_to = "Value")
+
+# Gráfico de barras agrupadas por variable y modelo
+ggplot(outpsall_long, aes(x = factor(Yr), y = Value, fill = Model)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~Variable, 
+             ncol=1,
+             scales = "free_y") + 
+  scale_fill_manual(name= "Scenario",
+                    values = c("Ref Model: No Env-Predator" = "#ca0020",  
+                              
+                               "s1.4 w/ Env and Predator data" = "#404040")) +
+  labs(title = "",
+       x = "", y = "") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "bottom")
+```
+
+
 ## Comparison
 
 ### Comparison outputs betwwen scenarios
@@ -1657,42 +1743,44 @@ biglist <- SSgetoutput(keyvec = NULL,
                                   dir1.3,
                                   dir1.4),
                        getcovar = F)
-
-#create summary of model runs from list above
 summaryoutputall <- SSsummarize(biglist)
 ```
 
 ```{r}
-comtable <- SStableComparisons(summaryoutputall,
-                   likenames = c("TOTAL", 
-                                 "Survey", 
+legend.labels <- c('s1.1','s1.2','s1.3', 's1.4')
+
+#read in all model runs
+#note if cover=T you need a hessian; if covar=F you do not need a hessian
+biglist <- SSgetoutput(keyvec = NULL, dirvec = c(dir1.1,
+                                                 dir1.2,
+                                                 dir1.3,
+                                                 dir1.4),	getcovar = F)
+
+#create summary of model runs from list above
+summaryoutput <- SSsummarize(biglist)
+
+tablelike <- SStableComparisons(summaryoutput,
+                   likenames = c("TOTAL",
+                                 "Survey",
                                  "Length_comp",
-                                 "Age_comp", 
+                                 "Age_comp",
                                  "priors",
                                  "Size_at_age"), 
                    names = c("Recr_Virgin",
-                             "R0", 
-                             "steep",
-                             "NatM",
-                             "L_at_Amax", 
-                             "VonBert_K", 
+                             "R0",
                              "SSB_Virg", 
                              "Bratio_2020",
                              "SPRratio_2020"),
                    digits = NULL,
-                   modelnames = c("s1.1", "s1.2",
-                                  "s1.3",
-                                  "s1.4"),
-                   csv = F,
-                   csvdir =~"/DOCAS/SA_Krill",
-                   csvfile = "parameter_comparison_table.csv",
-                 verbose = TRUE,
+                   modelnames = legend.labels,
+                   csv=TRUE,
+                   csvdir = "/Users/mauriciomardones/DOCAS/SA_Krill",
+                   csvfile = "parameter_comparison_table.csv", verbose = TRUE,
                    mcmc = FALSE)
-
-kbl(comtable, booktabs = T,format = "latex",
-    caption = "Comparision s1.1, s1.2, s1.3, s1.4")  %>% 
+kbl(tablelike, booktabs = T,
+    format = "html",
+    caption = "")  %>% 
     kable_styling(latex_options = "scale_down")
-
 ```
 
 ```{r eval=FALSE}
@@ -1764,38 +1852,114 @@ comp14 <- SSplotComparisons(summaryoutput14,
                  png=TRUE,plotdir=Figs)
 ```
 
-### Comparsion in sd long term time series
+### Comparsion in sd long term time series forecasting
 
-```{r fig.height=6, fig.width=8}
+```{r fig.height=5, fig.width=8}
 
-sblt1 <-  base.model1.1$timeseries$Bio_all
-sblt2 <-  base.model1.2$timeseries$Bio_all
-sblt3 <-  base.model1.3$timeseries$Bio_all
-sblt4 <-  base.model1.4$timeseries$Bio_all
+errt <- data.frame(
+  Bio_all_1 = base.model1.1$timeseries$Bio_all,
+  Bio_all_2 = base.model1.2$timeseries$Bio_all,
+  Bio_all_3 = base.model1.3$timeseries$Bio_all,
+  Bio_all_4 = base.model1.4$timeseries$Bio_all,
+  
+  Bio_smry_1 = base.model1.1$timeseries$Bio_smry,
+  Bio_smry_2 = base.model1.2$timeseries$Bio_smry,
+  Bio_smry_3 = base.model1.3$timeseries$Bio_smry,
+  Bio_smry_4 = base.model1.4$timeseries$Bio_smry,
+  
+  SpawnBio_1 = base.model1.1$timeseries$SpawnBio,
+  SpawnBio_2 = base.model1.2$timeseries$SpawnBio,
+  SpawnBio_3 = base.model1.3$timeseries$SpawnBio,
+  SpawnBio_4 = base.model1.4$timeseries$SpawnBio,
+  
+  Recruit_0_1 = base.model1.1$timeseries$Recruit_0,
+  Recruit_0_2 = base.model1.2$timeseries$Recruit_0,
+  Recruit_0_3 = base.model1.3$timeseries$Recruit_0,
+  Recruit_0_4 = base.model1.4$timeseries$Recruit_0
+)
 
-errt <- as.data.frame(cbind(sblt1,
-              sblt2,
-              sblt3,
-              sblt4))
+
 err_long <- errt %>%
-  pivot_longer(cols = everything(),
-               names_to = "variable",
-               values_to = "value")  
-titles <- c("Ref Model: No Env-Predator",
-                 "S1.1 w/ Predator data",
-                 "S1.1 w/ Env data",
-                 "S1.1 w/ Env and Predator data")
-ggplot(err_long, aes(x = variable, y = value)) +
-  geom_boxplot(width=0.5) +
-  geom_jitter(width = 0.2, alpha = 0.3) +
-  labs(title = "Long Term Predictions",
+  pivot_longer(cols = everything(), 
+               names_to = "Variable_Model",
+               values_to = "Value")
+
+err_long <- err_long %>%
+  extract(Variable_Model, into = c("Variable", "Model"), 
+          regex = "(.+?)_(\\d+)$")
+
+err_long <- err_long %>%
+  mutate(Model = case_when(
+    Model == "1" ~ "Ref Model: No Env-Predator",
+    Model == "2" ~ "S1.1 w/ Predator data",
+    Model == "3" ~ "S1.1 w/ Env data",
+    Model == "4" ~ "S1.1 w/ Env and Predator data",
+    TRUE ~ Model
+  ))
+
+ggplot(err_long, aes(x = Model, y = Value, fill = Model)) +
+  geom_boxplot(width = 0.5, outlier.shape = NA,
+               outliers = F) +
+  #geom_jitter(width = 0.2, alpha = 0.1) +
+  facet_wrap(~Variable, ncol=4, 
+             scales = "free_y") +
+  scale_fill_manual(name = "Scenario",
+                    values = c("#ca0020", "#f4a582", "#bababa", "#404040")) +
+  labs(title = "",
        x = "",
-       y = "Spawning Biomass (t)") +
+       y = "") +
   theme_few() +
-  scale_x_discrete(labels= titles)+
-  theme(axis.text.x = element_text(angle = 90,
-                                   hjust = 1))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "none")
 ```
+
+Statistical diferences
+
+```{r}
+# Extraer los datos
+spawn_bio_1 <- base.model1.1$timeseries$SpawnBio
+spawn_bio_4 <- base.model1.4$timeseries$SpawnBio
+
+# Prueba de normalidad (Shapiro-Wilk)
+shapiro.test(spawn_bio_1)
+shapiro.test(spawn_bio_4)
+
+# Prueba de igualdad de varianzas (Levene)
+library(car)
+leveneTest(c(spawn_bio_1, spawn_bio_4), 
+           group = rep(c("Model 1.1", "Model 1.4"), each = length(spawn_bio_1)))
+
+# Prueba t de Student (si los datos son normales)
+t.test(spawn_bio_1, spawn_bio_4, var.equal = TRUE)
+
+# Prueba de Wilcoxon (si los datos no son normales)
+wilcox.test(spawn_bio_1, spawn_bio_4)
+
+```
+
+
+**Two-Sample t-Test**  
+
+- **t-value:** 4.2682  
+- **Degrees of Freedom (df):** 72  
+- **p-value:** 5.915e-05 (very small)  
+- **95% Confidence Interval for the Mean Difference:** [1,387,011; 3,818,074]  
+- **Sample Means:**  
+  - Model 1.1: **4,600,304**  
+  - Model 1.4: **1,997,762**  
+
+Since the **p-value (5.915e-05) is much smaller than 0.05**, we reject the null hypothesis. This means there is **a statistically significant difference** between the spawning biomass predicted by Model 1.1 and Model 1.4. The confidence interval suggests that Model 1.1 tends to estimate a higher spawning biomass than Model 1.4, with an estimated difference between **1.39 and 3.82 million tons**.  
+
+**Wilcoxon Rank Sum Test (Mann-Whitney U Test)**  
+
+- **W-statistic:** 1256  
+- **p-value:** 6.698e-10 (extremely small)  
+- **Warning:** "Cannot compute exact p-value with ties" (indicates that some values are repeated)  
+
+The **Wilcoxon test also rejects the null hypothesis** with an extremely small **p-value (6.698e-10)**. This confirms that the distribution of spawning biomass values is significantly different between the two models. Since the Wilcoxon test does not assume normality, it supports the conclusion from the **t-test**, reinforcing that 
+
+Both tests strongly indicate that **Model 1.1 and Model 1.4 produce significantly different estimates of spawning biomass**. Specifically, **Model 1.1 predicts higher values**. This suggests that the factors or assumptions included in Model 1.4 result in **lower spawning biomass estimates**, which could have important implications for stock assessment and fisheries management.
+
 
 ### Autocorrelation in Recruit 
 
@@ -1896,19 +2060,15 @@ combined_plot
 
 
 ```{r}
-
 df1 <- base.model1.1$likelihoods_used %>%
   select(values) %>%
   mutate(Componente = rownames(base.model1.1$likelihoods_used), Modelo = "s1.1")
-
 df2 <- base.model1.2$likelihoods_used %>%
   select(values) %>%
   mutate(Componente = rownames(base.model1.2$likelihoods_used), Modelo = "s1.2")
-
 df3 <- base.model1.3$likelihoods_used %>%
   select(values) %>%
   mutate(Componente = rownames(base.model1.3$likelihoods_used), Modelo = "s1.3")
-
 df4 <- base.model1.4$likelihoods_used %>%
   select(values) %>%
   mutate(Componente = rownames(base.model1.4$likelihoods_used), Modelo = "s1.4")
@@ -1917,8 +2077,8 @@ df <- bind_rows(df1,
                 df2,
                 df3,
                 df4)
-
-ggplot(df, aes(x = Componente, y = values, fill = Modelo)) +
+ggplot(df %>% 
+         filter(values > 1), aes(x = Componente, y = values, fill = Modelo)) +
   geom_col(position = position_dodge(), width = 0.7) +  
   theme_few() +
   coord_flip() +  
@@ -1931,6 +2091,17 @@ ggplot(df, aes(x = Componente, y = values, fill = Modelo)) +
        y = "Log-Normal Likelihood", 
        title = "") 
 ```
+This bar plot presents the log-normal likelihood contributions of different model components in an Antarctic krill stock assessment under four scenarios (s1.1, s1.2, s1.3, and s1.4).  
+
+
+**TOTAL Likelihood:** The overall likelihood is highest for scenario s1.4 (black), followed by s1.2 (light orange). This suggests that s1.4 provides the best overall model fit, while s1.1 (dark red) has the lowest likelihood, indicating a poorer fit.  
+**Survey Component:** The survey likelihood follows a similar pattern, with s1.4 and s1.2 showing better agreement with the data compared to s1.1.  
+**Recruitment, Parameter Priors, and Parameter Deviations:** These components contribute minimally to the total likelihood, indicating that they do not heavily influence model fit differences.  
+**Length Composition:** There is some variation in this component, with s1.2 showing a larger contribution than s1.1 and s1.3.  
+
+### **Overall Conclusion:**  
+Scenario s1.4 seems to fit the data best, followed closely by s1.2. Scenario s1.1 has the poorest likelihood, meaning it is the least supported by the data. If s1.4 includes both environmental and predator effects, this suggests that incorporating ecosystem variables significantly improves the stock assessment model for Antarctic krill.
+
 
 ### Platoons analisis
 
