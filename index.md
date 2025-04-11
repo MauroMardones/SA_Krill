@@ -2,7 +2,7 @@
 title: "Supplementary Information 1"
 subtitle: "Assessing ecosystem effects on the stock productivity of Antarctic Krill (*Euphausia superba*): An Integrated modeling perspective"
 author: "Mardones, M; Jarvis Mason, E.T.; Pinones, A.;  Santa Cruz, F.; Cárdenas, C.A"
-date:  "01 April, 2025"
+date:  "10 April, 2025"
 bibliography: SA_krill.bib
 #csl: apa.csl
 csl: icesjournal.csl
@@ -370,12 +370,14 @@ The following table summarizes the key parameters to conditioning the reference 
   </tr>
 </tbody>
 </table>
-Source of data inpit
+Source of data input
 
 <img src="Figs/unnamed-chunk-6-1.jpeg" style="display: block; margin: auto;" />
 
 
 <img src="Figs/unnamed-chunk-7-1.jpeg" style="display: block; margin: auto;" />
+
+
 
 ## Scenarios
 
@@ -402,57 +404,54 @@ about main consideration in assessment of krill population.
 
 
 
-Data used en both (spatial and No spatial models) `s1.1`
+Data used en both (spatial and No spatial models) `s1.1` and `s1.4` to compare
 
 <img src="Figs/unnamed-chunk-11-1.jpeg" style="display: block; margin: auto;" />
-
-and `s1.4`
-
-<img src="Figs/unnamed-chunk-12-1.jpeg" style="display: block; margin: auto;" />
 
 # RESULTS
 
 
 
 
-
 Main Variables poulation in `s1.1` scenario
 
-<img src="Figs/unnamed-chunk-14-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-13-1.jpeg" style="display: block; margin: auto;" />
 
 Main Variables poulation in `s1.2` scenario
 
-<img src="Figs/unnamed-chunk-15-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-14-1.jpeg" style="display: block; margin: auto;" />
 
 Main Variables poulation in `s1.3` scenario
 
-<img src="Figs/unnamed-chunk-16-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-15-1.jpeg" style="display: block; margin: auto;" />
 
 
 Main Variables poulation in `s1.4` scenario
 
-<img src="Figs/unnamed-chunk-17-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-16-1.jpeg" style="display: block; margin: auto;" />
 Selectivity
 
+<img src="Figs/unnamed-chunk-17-1.jpeg" style="display: block; margin: auto;" />
 <img src="Figs/unnamed-chunk-18-1.jpeg" style="display: block; margin: auto;" />
 
-
-
-<img src="Figs/unnamed-chunk-19-1.jpeg" style="display: block; margin: auto;" />
-
-<img src="Figs/unnamed-chunk-20-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-20-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-20-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-20-4.jpeg" style="display: block; margin: auto;" />
+Natural Mortality
 
 
 
+<img src="Figs/unnamed-chunk-20-1.jpeg" style="display: block; margin: auto;" />
+
+<img src="Figs/unnamed-chunk-21-1.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-21-2.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-21-3.jpeg" style="display: block; margin: auto;" /><img src="Figs/unnamed-chunk-21-4.jpeg" style="display: block; margin: auto;" />
 Total biomass
 
-<img src="Figs/unnamed-chunk-21-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-22-1.jpeg" style="display: block; margin: auto;" />
 
 Heatmap
 
-<img src="Figs/unnamed-chunk-22-1.jpeg" style="display: block; margin: auto;" />
-hexagon
+<img src="Figs/unnamed-chunk-23-1.jpeg" style="display: block; margin: auto;" />
 
+This figure shows the Pearson residuals of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity. The residuals are visualized by year and length bin, allowing an assessment of model fit over time and across the size structure of the population. In the "Without Ecosystem Variables" scenario (top left), substantial lack of fit is evident across multiple years and length classes, particularly in the late 1990s and early 2000s. Positive Pearson residuals indicate that the model tends to underestimate frequencies of certain length bins, especially among smaller and mid-sized individuals, suggesting poor representation of recruitment and growth dynamics in the absence of environmental and predator effects. The "With Predator" scenario (top right) shows some improvement in model fit, with slightly more balanced residuals. However, there are still consistent deviations in the mid-size ranges across multiple years, indicating that predation alone does not fully explain observed variability in length composition. In the "With Environment" scenario (bottom left), there is a noticeable reduction in residual magnitude across several years and size classes, implying that incorporating environmental covariates helps align the model more closely with observed size distributions. This is particularly apparent in the early 2000s, where the residuals are closer to zero across most bins. Finally, the "With Predator and Ecosystem" scenario (bottom right) shows the most consistent reduction in Pearson residuals across time and size structure. The distribution of residuals is more homogeneous and centered around zero, indicating that the combined inclusion of predator and environmental drivers leads to the best model fit among the four scenarios.
+
+Overall, the results support the conclusion that ecosystem-informed models better capture the temporal and size-structured dynamics of krill, with the **joint inclusion of predator and environmental variables** yielding the most robust representation of observed length compositions.
 
 
 
@@ -490,7 +489,7 @@ By integrating these residual analyses for both length and abundance indices, st
 ## Plotting Residual Runs Tests
 ```
 
-<img src="Figs/unnamed-chunk-24-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-25-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -510,15 +509,11 @@ By integrating these residual analyses for both length and abundance indices, st
 ## 9  SURVEYJOIN  0.541   Passed -0.4156365 0.4156365  len
 ```
 
-
-
 ```
 ## 
 ##  Running Runs Test Diagnosics for Mean length 
 ## Plotting Residual Runs Tests
 ```
-
-<img src="Figs/unnamed-chunk-25-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -539,7 +534,7 @@ By integrating these residual analyses for both length and abundance indices, st
 ## 10    PREDATOR  0.607   Passed -0.18346375 0.18346375  len
 ```
 
-
+<img src="Figs/unnamed-chunk-25-2.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -547,7 +542,7 @@ By integrating these residual analyses for both length and abundance indices, st
 ## Plotting Residual Runs Tests
 ```
 
-<img src="Figs/unnamed-chunk-26-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-25-3.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -555,27 +550,23 @@ By integrating these residual analyses for both length and abundance indices, st
 ```
 
 ```
-##         Index runs.p     test   sigma3.lo  sigma3.hi type
-## 1   FISHERYBS  0.744   Passed -0.08525923 0.08525923  len
-## 2   FISHERYEI  0.013   Failed -0.27984372 0.27984372  len
-## 3   FISHERYGS  0.179   Passed -0.20160902 0.20160902  len
-## 4 FISHERYJOIN     NA Excluded          NA         NA  len
-## 5 FISHERYSSIW  0.230   Passed -0.12113187 0.12113187  len
-## 6    SURVEYBS  0.631   Passed -0.22746036 0.22746036  len
-## 7    SURVEYEI  0.786   Passed -0.18187931 0.18187931  len
-## 8    SURVEYGS  0.136   Passed -0.29411566 0.29411566  len
-## 9  SURVEYJOIN  0.500   Passed -0.41808588 0.41808588  len
+##         Index runs.p     test  sigma3.lo sigma3.hi type
+## 1   FISHERYBS  0.744   Passed -0.0853166 0.0853166  len
+## 2   FISHERYEI  0.013   Failed -0.2797884 0.2797884  len
+## 3   FISHERYGS  0.179   Passed -0.2016250 0.2016250  len
+## 4 FISHERYJOIN     NA Excluded         NA        NA  len
+## 5 FISHERYSSIW  0.230   Passed -0.1211104 0.1211104  len
+## 6    SURVEYBS  0.631   Passed -0.2273600 0.2273600  len
+## 7    SURVEYEI  0.786   Passed -0.1820963 0.1820963  len
+## 8    SURVEYGS  0.136   Passed -0.2945415 0.2945415  len
+## 9  SURVEYJOIN  0.500   Passed -0.4188837 0.4188837  len
 ```
-
-
 
 ```
 ## 
 ##  Running Runs Test Diagnosics for Mean length 
 ## Plotting Residual Runs Tests
 ```
-
-<img src="Figs/unnamed-chunk-27-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -584,19 +575,131 @@ By integrating these residual analyses for both length and abundance indices, st
 
 ```
 ##          Index runs.p     test   sigma3.lo  sigma3.hi type
-## 1    FISHERYBS  0.500   Passed -0.04709602 0.04709602  len
-## 2    FISHERYEI  0.013   Failed -0.27986404 0.27986404  len
-## 3    FISHERYGS  0.013   Failed -0.26812009 0.26812009  len
+## 1    FISHERYBS  0.500   Passed -0.04736845 0.04736845  len
+## 2    FISHERYEI  0.013   Failed -0.27981814 0.27981814  len
+## 3    FISHERYGS  0.013   Failed -0.26753759 0.26753759  len
 ## 4  FISHERYJOIN     NA Excluded          NA         NA  len
-## 5  FISHERYSSIW  0.064   Passed -0.11843515 0.11843515  len
-## 6     SURVEYBS  0.001   Failed -0.29845897 0.29845897  len
-## 7     SURVEYEI  0.627   Passed -0.22182714 0.22182714  len
-## 8     SURVEYGS  0.198   Passed -0.36195876 0.36195876  len
-## 9   SURVEYJOIN  0.500   Passed -0.44265910 0.44265910  len
-## 10    PREDATOR  0.607   Passed -0.26298700 0.26298700  len
+## 5  FISHERYSSIW  0.064   Passed -0.11817640 0.11817640  len
+## 6     SURVEYBS  0.001   Failed -0.29914741 0.29914741  len
+## 7     SURVEYEI  0.627   Passed -0.22176277 0.22176277  len
+## 8     SURVEYGS  0.198   Passed -0.36228949 0.36228949  len
+## 9   SURVEYJOIN  0.500   Passed -0.44222599 0.44222599  len
+## 10    PREDATOR  0.607   Passed -0.26332169 0.26332169  len
 ```
 
+<img src="Figs/unnamed-chunk-25-4.jpeg" style="display: block; margin: auto;" />
 
+
+
+```
+## 
+##  Running Runs Test Diagnosics for Index 
+## Plotting Residual Runs Tests
+```
+
+```
+## 
+## Runs Test stats by Index:
+```
+
+```
+##          Index runs.p     test  sigma3.lo sigma3.hi type
+## 1    FISHERYBS  0.001   Failed -0.8964068 0.8964068 cpue
+## 2    FISHERYEI  0.100   Passed -1.1328816 1.1328816 cpue
+## 3    FISHERYGS  0.797   Passed -1.9827363 1.9827363 cpue
+## 4  FISHERYJOIN  0.140   Passed -1.1347812 1.1347812 cpue
+## 5  FISHERYSSIW  0.001   Failed -0.7101892 0.7101892 cpue
+## 6     SURVEYBS  0.333   Passed -2.9583720 2.9583720 cpue
+## 7     SURVEYEI  0.771   Passed -2.6776080 2.6776080 cpue
+## 8     SURVEYGS  0.448   Passed -3.2527164 3.2527164 cpue
+## 9   SURVEYJOIN  0.001   Failed -3.1976327 3.1976327 cpue
+## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
+```
+
+<img src="Figs/unnamed-chunk-26-1.jpeg" style="display: block; margin: auto;" />
+
+```
+## 
+##  Running Runs Test Diagnosics for Index 
+## Plotting Residual Runs Tests
+```
+
+<img src="Figs/unnamed-chunk-26-2.jpeg" style="display: block; margin: auto;" />
+
+```
+## 
+## Runs Test stats by Index:
+```
+
+```
+##          Index runs.p     test  sigma3.lo sigma3.hi type
+## 1    FISHERYBS  0.143   Passed -1.1809409 1.1809409 cpue
+## 2    FISHERYEI  0.100   Passed -1.4337655 1.4337655 cpue
+## 3    FISHERYGS  0.797   Passed -2.5816226 2.5816226 cpue
+## 4  FISHERYJOIN  0.582   Passed -1.2562104 1.2562104 cpue
+## 5  FISHERYSSIW  0.285   Passed -0.8795652 0.8795652 cpue
+## 6     SURVEYBS  0.001   Failed -2.3451953 2.3451953 cpue
+## 7     SURVEYEI  0.684   Passed -2.5556960 2.5556960 cpue
+## 8     SURVEYGS  0.753   Passed -3.4160804 3.4160804 cpue
+## 9   SURVEYJOIN  0.268   Passed -3.2923986 3.2923986 cpue
+## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
+## 11    PREDATOR  0.001   Failed -0.5495260 0.5495260 cpue
+```
+
+```
+## 
+##  Running Runs Test Diagnosics for Index 
+## Plotting Residual Runs Tests
+```
+
+```
+## 
+## Runs Test stats by Index:
+```
+
+```
+##          Index runs.p     test  sigma3.lo sigma3.hi type
+## 1    FISHERYBS  0.089   Passed -0.9904944 0.9904944 cpue
+## 2    FISHERYEI  0.095   Passed -1.3238558 1.3238558 cpue
+## 3    FISHERYGS  0.530   Passed -2.0047873 2.0047873 cpue
+## 4  FISHERYJOIN  0.140   Passed -1.0957547 1.0957547 cpue
+## 5  FISHERYSSIW  0.000   Failed -0.7353154 0.7353154 cpue
+## 6     SURVEYBS  0.184   Passed -2.4900423 2.4900423 cpue
+## 7     SURVEYEI  0.684   Passed -2.6110623 2.6110623 cpue
+## 8     SURVEYGS  0.448   Passed -3.2351728 3.2351728 cpue
+## 9   SURVEYJOIN  0.718   Passed -3.1774337 3.1774337 cpue
+## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
+```
+
+<img src="Figs/unnamed-chunk-26-3.jpeg" style="display: block; margin: auto;" />
+
+```
+## 
+##  Running Runs Test Diagnosics for Index 
+## Plotting Residual Runs Tests
+```
+
+<img src="Figs/unnamed-chunk-26-4.jpeg" style="display: block; margin: auto;" />
+
+```
+## 
+## Runs Test stats by Index:
+```
+
+```
+##          Index runs.p     test  sigma3.lo sigma3.hi type
+## 1    FISHERYBS  0.219   Passed -1.1537055 1.1537055 cpue
+## 2    FISHERYEI  0.095   Passed -1.3503280 1.3503280 cpue
+## 3    FISHERYGS  0.240   Passed -2.3807098 2.3807098 cpue
+## 4  FISHERYJOIN  0.500   Passed -1.3449663 1.3449663 cpue
+## 5  FISHERYSSIW  0.028   Failed -0.8088713 0.8088713 cpue
+## 6     SURVEYBS  0.001   Failed -2.3417309 2.3417309 cpue
+## 7     SURVEYEI  0.684   Passed -2.6617553 2.6617553 cpue
+## 8     SURVEYGS  0.753   Passed -3.3151881 3.3151881 cpue
+## 9   SURVEYJOIN  0.268   Passed -3.4148453 3.4148453 cpue
+## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
+## 11    PREDATOR  0.001   Failed -0.5495260 0.5495260 cpue
+```
 
 
 ### Residual Analysis and RMSE 
@@ -684,7 +787,7 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Plotting JABBA residual plot
 ```
 
-<img src="Figs/unnamed-chunk-29-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-27-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -694,13 +797,13 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ```
 ##        indices RMSE.perc nobs
 ## 1    FISHERYBS       1.6   16
-## 2    FISHERYEI      12.4   14
-## 3    FISHERYGS      18.3   12
-## 4  FISHERYJOIN       8.1    3
+## 2    FISHERYEI      12.3   14
+## 3    FISHERYGS      18.2   12
+## 4  FISHERYJOIN       8.0    3
 ## 5  FISHERYSSIW       3.9   17
 ## 6     SURVEYBS      30.4   20
 ## 7     SURVEYEI      15.3   21
-## 8     SURVEYGS      18.3   19
+## 8     SURVEYGS      18.4   19
 ## 9   SURVEYJOIN      12.6   12
 ## 10    PREDATOR      16.4   29
 ## 11    Combined      16.8  163
@@ -784,7 +887,7 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Plotting JABBA residual plot
 ```
 
-<img src="Figs/unnamed-chunk-30-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-28-1.jpeg" style="display: block; margin: auto;" />
 
 ```
 ## 
@@ -793,18 +896,18 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 
 ```
 ##        indices RMSE.perc nobs
-## 1    FISHERYBS      62.5   20
-## 2    FISHERYEI      48.2   22
-## 3    FISHERYGS      81.0   16
-## 4  FISHERYJOIN      42.1    8
-## 5  FISHERYSSIW      32.8   23
+## 1    FISHERYBS      62.4   20
+## 2    FISHERYEI      48.1   22
+## 3    FISHERYGS      80.8   16
+## 4  FISHERYJOIN      49.2    8
+## 5  FISHERYSSIW      32.9   23
 ## 6     SURVEYBS     127.5   20
-## 7     SURVEYEI      91.5   18
-## 8     SURVEYGS     112.8   21
-## 9   SURVEYJOIN     129.3    8
-## 10  SURVEYSSIW     132.7    2
+## 7     SURVEYEI      91.6   18
+## 8     SURVEYGS     112.9   21
+## 9   SURVEYJOIN     129.2    8
+## 10  SURVEYSSIW     133.1    2
 ## 11    PREDATOR       NaN    0
-## 12    Combined      86.6  158
+## 12    Combined      86.8  158
 ```
 
 
@@ -813,28 +916,20 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 
 
 ```
-##     Model1.1         Model1.2         Model1.3         Model1.4     
-##  Min.   :0.5268   Min.   :0.3375   Min.   :0.4619   Min.   :0.3279  
-##  1st Qu.:0.5480   1st Qu.:0.5314   1st Qu.:0.5347   1st Qu.:0.5176  
-##  Median :0.7302   Median :0.8531   Median :0.8229   Median :0.8625  
-##  Mean   :0.8826   Mean   :0.8969   Mean   :0.9325   Mean   :0.8845  
-##  3rd Qu.:0.9867   3rd Qu.:1.2493   3rd Qu.:1.2814   3rd Qu.:1.2519  
-##  Max.   :1.8820   Max.   :1.5809   Max.   :1.6408   Max.   :1.5163
-```
-
-<img src="Figs/unnamed-chunk-31-1.jpeg" style="display: block; margin: auto;" />
-
-```
-##                               Df Sum Sq Mean Sq F value Pr(>F)
-## rep(1:4, each = nrow(dfrmse))  1  0.001 0.00085   0.005  0.945
-## Residuals                     38  6.638 0.17469
+##       s1.1             s1.2             s1.3             s1.4       
+##  Min.   :0.5268   Min.   :0.3375   Min.   :0.4619   Min.   :0.3287  
+##  1st Qu.:0.5480   1st Qu.:0.5314   1st Qu.:0.5347   1st Qu.:0.5249  
+##  Median :0.7302   Median :0.8531   Median :0.8230   Median :0.8622  
+##  Mean   :0.8826   Mean   :0.8969   Mean   :0.9325   Mean   :0.8918  
+##  3rd Qu.:0.9867   3rd Qu.:1.2493   3rd Qu.:1.2814   3rd Qu.:1.2513  
+##  Max.   :1.8820   Max.   :1.5809   Max.   :1.6411   Max.   :1.5166
 ```
 
 ```
 ## 
 ## 	Welch Two Sample t-test
 ## 
-## data:  dfrmse$Model1.1 and dfrmse$Model1.2
+## data:  dfrmse$s1.1 and dfrmse$s1.2
 ## t = -0.07429, df = 17.971, p-value = 0.9416
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
@@ -848,51 +943,46 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## 
 ## 	Welch Two Sample t-test
 ## 
-## data:  dfrmse$Model1.1 and dfrmse$Model1.3
-## t = -0.25543, df = 17.998, p-value = 0.8013
+## data:  dfrmse$s1.1 and dfrmse$s1.3
+## t = -0.2558, df = 17.998, p-value = 0.801
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -0.4604222  0.3606026
+##  -0.4605428  0.3605668
 ## sample estimates:
 ## mean of x mean of y 
-## 0.8825568 0.9324666
+## 0.8825568 0.9325448
 ```
 
 ```
 ## 
 ## 	Welch Two Sample t-test
 ## 
-## data:  dfrmse$Model1.2 and dfrmse$Model1.3
-## t = -0.18582, df = 17.985, p-value = 0.8547
+## data:  dfrmse$s1.2 and dfrmse$s1.3
+## t = -0.18621, df = 17.985, p-value = 0.8544
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -0.4380513  0.3668639
+##  -0.4381732  0.3668294
 ## sample estimates:
 ## mean of x mean of y 
-## 0.8968729 0.9324666
+## 0.8968729 0.9325448
 ```
 
 ```
 ## 
 ## 	Welch Two Sample t-test
 ## 
-## data:  dfrmse$Model1.3 and dfrmse$Model1.4
-## t = 0.25137, df = 17.978, p-value = 0.8044
+## data:  dfrmse$s1.3 and dfrmse$s1.4
+## t = 0.21512, df = 17.948, p-value = 0.8321
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -0.3531612  0.4491482
+##  -0.3569826  0.4384096
 ## sample estimates:
 ## mean of x mean of y 
-## 0.9324666 0.8844731
+## 0.9325448 0.8918313
 ```
 
-```
-##                               Df Sum Sq Mean Sq F value Pr(>F)
-## rep(1:4, each = nrow(dfrmse))  1  0.001 0.00085   0.005  0.945
-## Residuals                     38  6.638 0.17469
-```
+<img src="Figs/unnamed-chunk-29-1.jpeg" style="display: block; margin: auto;" />
 
-<img src="Figs/unnamed-chunk-31-2.jpeg" style="display: block; margin: auto;" />
 This boxplot compares a summary of the Root Mean Square Error (RMSE) across four different models (s1.1, s1.2, s1.3, and s1.4) used to evaluate recruitment estimates of Antarctic krill. RMSE serves as an indicator of model accuracy, with lower values representing better predictive performance.
 
 s1.1 exhibits the lowest median RMSE, suggesting it has the best overall fit among the four models. In contrast, Models 1.2, 1.3, and 1.4 show higher RMSE values, indicating comparatively lower predictive accuracy. The interquartile range (IQR) of these models is relatively similar, suggesting comparable variability in RMSE across models. Additionally, s1.1 has an outlier above 1.5 RMSE, which could indicate a case where the model's predictions deviated significantly from observed values.
@@ -915,7 +1005,54 @@ Where:
 The blue line will show the asymptotic curve that describes the relationship between spawning stock biomass and recruitment.
 
 
-<img src="Figs/unnamed-chunk-32-1.jpeg" style="display: block; margin: auto;" />
+
+
+
+### Productivity and Interannual Variability by Scenario
+
+Estimating the productivity of Antarctic krill is critical for understanding the species’ capacity to replenish its population in response to varying levels of spawning biomass. Productivity, defined as the ratio of recruitment to spawning stock biomass, provides a standardized measure of reproductive success and population resilience under different ecological and fishing pressures. Comparing productivity across scenarios—each representing different assumptions about environmental drivers, fishing mortality, or predator dynamics—enables a robust evaluation of how krill populations reflect this changes.
+
+For each scenario \( i \) and year \( t \), we computed the productivity as the ratio between recruitment and spawning stock biomass (SSB):
+
+$$
+\text{Productivity}_{i,t} = \frac{\text{Recruitment}_{i,t}}{\text{SSB}_{i,t}}
+$$
+
+We also calculated the **interannual percentage change** in recruitment and SSB as:
+
+$$
+\text{Change in Recruitment}_{i,t} = \left( \frac{\text{Recruitment}_{i,t} - \text{Recruitment}_{i,t-1}}{\text{Recruitment}_{i,t-1}} \right) \times 100
+$$
+
+$$
+\text{Change in SSB}_{i,t} = \left( \frac{\text{SSB}_{i,t} - \text{SSB}_{i,t-1}}{\text{SSB}_{i,t-1}} \right) \times 100
+$$
+
+These metrics allow us to analyze both the productivity and the temporal dynamics of the population under each scenario \( i \).
+
+
+
+
+
+These two panels provide insight into the stock-recruitment dynamics of Antarctic krill under four assessment scenarios, each incorporating different levels of ecosystem complexity.
+
+**Left panel – Predicted Recruitment vs Spawning Stock Biomass (SSB):**  
+This plot compares the predicted recruitment across years with corresponding spawning biomass values for the four model scenarios (s1.1 to s1.4). Scenario s1.1 (red) shows a relatively flat and optimistic Beverton-Holt relationship, with high recruitment predicted even at low levels of SSB. The other scenarios, particularly s1.3 (gray) and s1.4 (black), show much more constrained recruitment estimates and a more saturating relationship, where recruitment increases only slightly with increasing SSB. This suggests that incorporating environmental (s1.3) and predator (s1.4) effects leads to a more conservative and ecologically realistic recruitment dynamic. Year labels illustrate how certain years (e.g., 2004, 2016, 2022) deviate between scenarios, especially at low biomass levels.
+
+**Right panel – Recruitment per SSB vs Relative SSB (SSB / SSBo):**  
+This plot displays recruitment efficiency (Recruitment/SSB) as a function of relative spawning biomass (SSB / SSB₀). In all models, recruitment efficiency is highest at very low biomass levels and declines as SSB increases, consistent with compensatory dynamics. However, s1.3 and s1.4 (which include environmental effects) show significantly lower overall productivity across all SSB levels compared to s1.1 and s1.2. This indicates that the inclusion of ecosystem drivers reduces the per-capita productivity of the stock, especially under depleted conditions.
+
+**Interpretation:**  
+Together, these plots indicate that ecosystem-informed models (s1.3 and s1.4) produce more constrained and precautionary estimates of krill productivity. The more optimistic recruitment predicted by s1.1 (and to a lesser extent s1.2) may overestimate stock resilience, particularly in low SSB conditions. These findings emphasize the importance of accounting for environmental variability and predator dynamics in stock assessment models to avoid overoptimistic management advice and better reflect the biological limits of the krill population.
+
+<div class="figure" style="text-align: center">
+<img src="Figs/unnamed-chunk-32-1.jpeg" alt="Left panel: Stock–recruitment relationships for Antarctic krill under four assessment scenarios. Predicted recruitment as a function of spawning stock biomass (SSB), with fitted Beverton-Holt curves and annual labels for selected years. Right panel: Recruitment per unit of SSB plotted against relative SSB (SSB/SSBo), illustrating differences in per-capita productivity across models ( s1.1 (no ecosystem variables), s1.2 (with predator effects), s1.3 (with environmental variables), and s1.4 (with both predator and environmental effects))"  />
+<p class="caption">Left panel: Stock–recruitment relationships for Antarctic krill under four assessment scenarios. Predicted recruitment as a function of spawning stock biomass (SSB), with fitted Beverton-Holt curves and annual labels for selected years. Right panel: Recruitment per unit of SSB plotted against relative SSB (SSB/SSBo), illustrating differences in per-capita productivity across models ( s1.1 (no ecosystem variables), s1.2 (with predator effects), s1.3 (with environmental variables), and s1.4 (with both predator and environmental effects))</p>
+</div>
+
+### Compara Fishing Mortality.
+
+
 
 ### Retrospective Analysis in Model Evaluation
 
@@ -932,8 +1069,9 @@ The retrospective patterns were assessed by calculating the relative error betwe
 
 
 
-<img src="Figs/unnamed-chunk-36-1.jpeg" style="display: block; margin: auto;" />
 <img src="Figs/unnamed-chunk-37-1.jpeg" style="display: block; margin: auto;" />
+
+<img src="Figs/unnamed-chunk-38-1.jpeg" style="display: block; margin: auto;" />
 
 ### Hindcast Cross-Validation and Prediction Skill
 
@@ -949,9 +1087,6 @@ To assess prediction skill, we employ the Mean Absolute Scaled Error (MASE) as a
 This approach provides a rigorous evaluation of model forecasting capabilities and helps identify improvements for model calibration.
 
 
-<img src="Figs/unnamed-chunk-38-1.jpeg" style="display: block; margin: auto;" />
-
-
 <img src="Figs/unnamed-chunk-39-1.jpeg" style="display: block; margin: auto;" />
 
 
@@ -959,6 +1094,9 @@ This approach provides a rigorous evaluation of model forecasting capabilities a
 
 
 <img src="Figs/unnamed-chunk-41-1.jpeg" style="display: block; margin: auto;" />
+
+
+<img src="Figs/unnamed-chunk-42-1.jpeg" style="display: block; margin: auto;" />
 
 ### Kobe (status)
 
@@ -970,7 +1108,7 @@ another
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-44}Rho parameter in SSB model s01}
+\caption{\label{tab:unnamed-chunk-45}Rho parameter in SSB model s01}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -987,7 +1125,7 @@ SSB & Combined & -0.2332471 & -0.3325474\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-44}Rho parameter in F model s01}
+\caption{\label{tab:unnamed-chunk-45}Rho parameter in F model s01}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1004,7 +1142,7 @@ F & Combined & 0.7854794 & 1.584989\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-44}Rho parameter in SSB model s2}
+\caption{\label{tab:unnamed-chunk-45}Rho parameter in SSB model s2}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1021,7 +1159,7 @@ SSB & Combined & -0.4467272 & -0.5647244\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-44}Rho parameter in F model s2}
+\caption{\label{tab:unnamed-chunk-45}Rho parameter in F model s2}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1038,7 +1176,7 @@ F & Combined & 1.6096823 & 3.806436\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-44}Rho parameter in SSB model s3}
+\caption{\label{tab:unnamed-chunk-45}Rho parameter in SSB model s3}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1055,7 +1193,7 @@ SSB & Combined & -0.3223423 & -0.4299648\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-44}Rho parameter in F model s3}
+\caption{\label{tab:unnamed-chunk-45}Rho parameter in F model s3}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1072,7 +1210,7 @@ F & Combined & 1.0068708 & 2.375380\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-44}Rho parameter in SSB model s4}
+\caption{\label{tab:unnamed-chunk-45}Rho parameter in SSB model s4}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1089,7 +1227,7 @@ SSB & Combined & -0.4108059 & -0.5918921\\
 
 \begin{table}[H]
 \centering
-\caption{\label{tab:unnamed-chunk-44}Rho parameter in F model s4}
+\caption{\label{tab:unnamed-chunk-45}Rho parameter in F model s4}
 \centering
 \begin{tabular}[t]{llrr}
 \toprule
@@ -1103,6 +1241,15 @@ F & Combined & 1.4548638 & 6.912214\\
 \bottomrule
 \end{tabular}
 \end{table}
+Viz
+
+<img src="Figs/unnamed-chunk-46-1.jpeg" style="display: block; margin: auto;" />
+ 
+The plot presents the retrospective bias (*Rho*) in Spawning Stock Biomass (SSB) and Fishing Mortality (F) across different peel years (2019–2016) and for the combined period under four model scenarios (s1.1 to s1.4). In the SSB panel, all models exhibit negative *Rho* values across the years, indicating a downward bias. The magnitude of the bias varies among models, with s1.3 and s1.4 showing the most pronounced deviations. In the F panel, *Rho* values are consistently positive, suggesting an upward bias. The combined *Rho* values for each metric confirm these trends, showing persistent differences among model scenarios.  
+
+(Discussion)
+
+The observed retrospective bias in SSB and F aligns with findings from previous studies on krill population dynamics, where recruitment variability and model structure influence stock assessment estimates (Hill et al., 2016; Watters et al., 2020). The negative bias in SSB suggests that models may overestimate past biomass, potentially due to unaccounted environmental variability or underestimation of natural mortality (Meyer et al., 2021). The positive bias in F indicates a tendency to underestimate past fishing mortality, which could be linked to the inclusion of predator-based indices such as penguin foraging data (Trathan et al., 2018). These results highlight the importance of incorporating ecosystem interactions into stock assessments to improve predictive accuracy and support sustainable management of Antarctic krill.
 
 
 <table class="table" style="color: black; margin-left: auto; margin-right: auto;">
@@ -1445,7 +1592,7 @@ F & Combined & 1.4548638 & 6.912214\\
 
 
 
-<img src="Figs/unnamed-chunk-47-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-49-1.jpeg" style="display: block; margin: auto;" />
 
 ### Likelihood Profile 
 
@@ -1453,6 +1600,8 @@ F & Combined & 1.4548638 & 6.912214\\
 
 
 ### `SSplotProfile()`
+
+
 
 
 
@@ -1464,6 +1613,7 @@ The convergence criterion used for model calibration is set to a final threshold
 
 
 piner Plot
+
 
 
 
@@ -2274,250 +2424,250 @@ piner Plot
    <td style="text-align:right;"> 1989 </td>
    <td style="text-align:left;"> VIRG </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1354540 </td>
-   <td style="text-align:right;"> 1349660 </td>
-   <td style="text-align:right;"> 2210920 </td>
-   <td style="text-align:right;"> 66952200 </td>
+   <td style="text-align:right;"> 1353400 </td>
+   <td style="text-align:right;"> 1348530 </td>
+   <td style="text-align:right;"> 2209070 </td>
+   <td style="text-align:right;"> 66896000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1306 </td>
    <td style="text-align:right;"> 1990 </td>
    <td style="text-align:left;"> INIT </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 925937 </td>
-   <td style="text-align:right;"> 921186 </td>
-   <td style="text-align:right;"> 1367470 </td>
-   <td style="text-align:right;"> 65178600 </td>
+   <td style="text-align:right;"> 924676 </td>
+   <td style="text-align:right;"> 919929 </td>
+   <td style="text-align:right;"> 1365380 </td>
+   <td style="text-align:right;"> 65120800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1307 </td>
    <td style="text-align:right;"> 1991 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 925937 </td>
-   <td style="text-align:right;"> 921186 </td>
-   <td style="text-align:right;"> 1367470 </td>
-   <td style="text-align:right;"> 65178600 </td>
+   <td style="text-align:right;"> 924676 </td>
+   <td style="text-align:right;"> 919929 </td>
+   <td style="text-align:right;"> 1365380 </td>
+   <td style="text-align:right;"> 65120800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1308 </td>
    <td style="text-align:right;"> 1992 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1012370 </td>
-   <td style="text-align:right;"> 1007590 </td>
-   <td style="text-align:right;"> 1539740 </td>
-   <td style="text-align:right;"> 65688900 </td>
+   <td style="text-align:right;"> 1011120 </td>
+   <td style="text-align:right;"> 1006340 </td>
+   <td style="text-align:right;"> 1537670 </td>
+   <td style="text-align:right;"> 65631800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1309 </td>
    <td style="text-align:right;"> 1993 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1082790 </td>
-   <td style="text-align:right;"> 1077970 </td>
-   <td style="text-align:right;"> 1679460 </td>
-   <td style="text-align:right;"> 66030400 </td>
+   <td style="text-align:right;"> 1081550 </td>
+   <td style="text-align:right;"> 1076740 </td>
+   <td style="text-align:right;"> 1677420 </td>
+   <td style="text-align:right;"> 65973500 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1310 </td>
    <td style="text-align:right;"> 1994 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1139590 </td>
-   <td style="text-align:right;"> 1134760 </td>
-   <td style="text-align:right;"> 1789740 </td>
-   <td style="text-align:right;"> 66264200 </td>
+   <td style="text-align:right;"> 1138370 </td>
+   <td style="text-align:right;"> 1133540 </td>
+   <td style="text-align:right;"> 1787730 </td>
+   <td style="text-align:right;"> 66207600 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1311 </td>
    <td style="text-align:right;"> 1995 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1184920 </td>
-   <td style="text-align:right;"> 1180070 </td>
-   <td style="text-align:right;"> 1878070 </td>
-   <td style="text-align:right;"> 66432800 </td>
+   <td style="text-align:right;"> 1183710 </td>
+   <td style="text-align:right;"> 1178870 </td>
+   <td style="text-align:right;"> 1876090 </td>
+   <td style="text-align:right;"> 66376300 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1312 </td>
    <td style="text-align:right;"> 1996 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1220820 </td>
-   <td style="text-align:right;"> 1215970 </td>
-   <td style="text-align:right;"> 1948280 </td>
-   <td style="text-align:right;"> 66556400 </td>
+   <td style="text-align:right;"> 1219630 </td>
+   <td style="text-align:right;"> 1214790 </td>
+   <td style="text-align:right;"> 1946320 </td>
+   <td style="text-align:right;"> 66500000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1313 </td>
    <td style="text-align:right;"> 1997 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1249200 </td>
-   <td style="text-align:right;"> 1244350 </td>
-   <td style="text-align:right;"> 2003870 </td>
-   <td style="text-align:right;"> 66648400 </td>
+   <td style="text-align:right;"> 1248020 </td>
+   <td style="text-align:right;"> 1243170 </td>
+   <td style="text-align:right;"> 2001930 </td>
+   <td style="text-align:right;"> 66592100 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1314 </td>
    <td style="text-align:right;"> 1998 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1266420 </td>
-   <td style="text-align:right;"> 1266130 </td>
-   <td style="text-align:right;"> 2046680 </td>
-   <td style="text-align:right;"> 3933970 </td>
+   <td style="text-align:right;"> 1265270 </td>
+   <td style="text-align:right;"> 1264970 </td>
+   <td style="text-align:right;"> 2044760 </td>
+   <td style="text-align:right;"> 4181950 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1315 </td>
    <td style="text-align:right;"> 1999 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1216010 </td>
-   <td style="text-align:right;"> 1215500 </td>
-   <td style="text-align:right;"> 2071380 </td>
-   <td style="text-align:right;"> 7024060 </td>
+   <td style="text-align:right;"> 1215210 </td>
+   <td style="text-align:right;"> 1214650 </td>
+   <td style="text-align:right;"> 2069470 </td>
+   <td style="text-align:right;"> 7762690 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1316 </td>
    <td style="text-align:right;"> 2000 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1072540 </td>
-   <td style="text-align:right;"> 1067770 </td>
-   <td style="text-align:right;"> 2089420 </td>
-   <td style="text-align:right;"> 65411200 </td>
+   <td style="text-align:right;"> 1072930 </td>
+   <td style="text-align:right;"> 1068190 </td>
+   <td style="text-align:right;"> 2087520 </td>
+   <td style="text-align:right;"> 64986400 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1317 </td>
    <td style="text-align:right;"> 2001 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 972011 </td>
-   <td style="text-align:right;"> 956267 </td>
-   <td style="text-align:right;"> 1743630 </td>
-   <td style="text-align:right;"> 215989000 </td>
+   <td style="text-align:right;"> 973382 </td>
+   <td style="text-align:right;"> 957638 </td>
+   <td style="text-align:right;"> 1743440 </td>
+   <td style="text-align:right;"> 215996000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1318 </td>
    <td style="text-align:right;"> 2002 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1109210 </td>
-   <td style="text-align:right;"> 1100090 </td>
-   <td style="text-align:right;"> 1431580 </td>
-   <td style="text-align:right;"> 125160000 </td>
+   <td style="text-align:right;"> 1110280 </td>
+   <td style="text-align:right;"> 1101160 </td>
+   <td style="text-align:right;"> 1435720 </td>
+   <td style="text-align:right;"> 125135000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1319 </td>
    <td style="text-align:right;"> 2003 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1429620 </td>
-   <td style="text-align:right;"> 1429580 </td>
-   <td style="text-align:right;"> 1495100 </td>
-   <td style="text-align:right;"> 561097 </td>
+   <td style="text-align:right;"> 1430490 </td>
+   <td style="text-align:right;"> 1430440 </td>
+   <td style="text-align:right;"> 1496900 </td>
+   <td style="text-align:right;"> 633499 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1320 </td>
    <td style="text-align:right;"> 2004 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1554480 </td>
-   <td style="text-align:right;"> 1552980 </td>
-   <td style="text-align:right;"> 2429710 </td>
-   <td style="text-align:right;"> 20540100 </td>
+   <td style="text-align:right;"> 1555180 </td>
+   <td style="text-align:right;"> 1553690 </td>
+   <td style="text-align:right;"> 2431110 </td>
+   <td style="text-align:right;"> 20543200 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1321 </td>
    <td style="text-align:right;"> 2005 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1457100 </td>
-   <td style="text-align:right;"> 1454260 </td>
-   <td style="text-align:right;"> 2840910 </td>
-   <td style="text-align:right;"> 39008600 </td>
+   <td style="text-align:right;"> 1457770 </td>
+   <td style="text-align:right;"> 1454920 </td>
+   <td style="text-align:right;"> 2841870 </td>
+   <td style="text-align:right;"> 39014900 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1322 </td>
    <td style="text-align:right;"> 2006 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1336990 </td>
-   <td style="text-align:right;"> 1324330 </td>
-   <td style="text-align:right;"> 2463950 </td>
-   <td style="text-align:right;"> 173714000 </td>
+   <td style="text-align:right;"> 1337590 </td>
+   <td style="text-align:right;"> 1324930 </td>
+   <td style="text-align:right;"> 2465110 </td>
+   <td style="text-align:right;"> 173694000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1323 </td>
    <td style="text-align:right;"> 2007 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1281790 </td>
-   <td style="text-align:right;"> 1274680 </td>
-   <td style="text-align:right;"> 2002810 </td>
-   <td style="text-align:right;"> 97556700 </td>
+   <td style="text-align:right;"> 1282230 </td>
+   <td style="text-align:right;"> 1275120 </td>
+   <td style="text-align:right;"> 2003690 </td>
+   <td style="text-align:right;"> 97545800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1324 </td>
    <td style="text-align:right;"> 2008 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1457730 </td>
-   <td style="text-align:right;"> 1456870 </td>
-   <td style="text-align:right;"> 1826580 </td>
-   <td style="text-align:right;"> 11786600 </td>
+   <td style="text-align:right;"> 1458050 </td>
+   <td style="text-align:right;"> 1457180 </td>
+   <td style="text-align:right;"> 1827320 </td>
+   <td style="text-align:right;"> 11817800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1325 </td>
    <td style="text-align:right;"> 2009 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1495420 </td>
-   <td style="text-align:right;"> 1492040 </td>
-   <td style="text-align:right;"> 2433300 </td>
-   <td style="text-align:right;"> 46468300 </td>
+   <td style="text-align:right;"> 1495670 </td>
+   <td style="text-align:right;"> 1492280 </td>
+   <td style="text-align:right;"> 2433790 </td>
+   <td style="text-align:right;"> 46474800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1326 </td>
    <td style="text-align:right;"> 2010 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1380600 </td>
-   <td style="text-align:right;"> 1374330 </td>
-   <td style="text-align:right;"> 2577450 </td>
-   <td style="text-align:right;"> 86071200 </td>
+   <td style="text-align:right;"> 1380840 </td>
+   <td style="text-align:right;"> 1374560 </td>
+   <td style="text-align:right;"> 2577760 </td>
+   <td style="text-align:right;"> 86096400 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1327 </td>
    <td style="text-align:right;"> 2011 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1216340 </td>
-   <td style="text-align:right;"> 1201580 </td>
-   <td style="text-align:right;"> 2007830 </td>
-   <td style="text-align:right;"> 202457000 </td>
+   <td style="text-align:right;"> 1216580 </td>
+   <td style="text-align:right;"> 1201820 </td>
+   <td style="text-align:right;"> 2008220 </td>
+   <td style="text-align:right;"> 202555000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1328 </td>
    <td style="text-align:right;"> 2012 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1370300 </td>
-   <td style="text-align:right;"> 1353670 </td>
-   <td style="text-align:right;"> 1857780 </td>
-   <td style="text-align:right;"> 228170000 </td>
+   <td style="text-align:right;"> 1370620 </td>
+   <td style="text-align:right;"> 1354010 </td>
+   <td style="text-align:right;"> 1858140 </td>
+   <td style="text-align:right;"> 227851000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1329 </td>
    <td style="text-align:right;"> 2013 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1695430 </td>
-   <td style="text-align:right;"> 1695250 </td>
-   <td style="text-align:right;"> 1914900 </td>
-   <td style="text-align:right;"> 2452510 </td>
+   <td style="text-align:right;"> 1695600 </td>
+   <td style="text-align:right;"> 1695400 </td>
+   <td style="text-align:right;"> 1915330 </td>
+   <td style="text-align:right;"> 2806810 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1330 </td>
@@ -2525,119 +2675,119 @@ piner Plot
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 1790520 </td>
-   <td style="text-align:right;"> 1786460 </td>
-   <td style="text-align:right;"> 2457000 </td>
-   <td style="text-align:right;"> 55652700 </td>
+   <td style="text-align:right;"> 1786470 </td>
+   <td style="text-align:right;"> 2457810 </td>
+   <td style="text-align:right;"> 55596900 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1331 </td>
    <td style="text-align:right;"> 2015 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1629480 </td>
-   <td style="text-align:right;"> 1613420 </td>
-   <td style="text-align:right;"> 3067990 </td>
-   <td style="text-align:right;"> 220458000 </td>
+   <td style="text-align:right;"> 1629840 </td>
+   <td style="text-align:right;"> 1613780 </td>
+   <td style="text-align:right;"> 3067190 </td>
+   <td style="text-align:right;"> 220350000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1332 </td>
    <td style="text-align:right;"> 2016 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1591680 </td>
-   <td style="text-align:right;"> 1567250 </td>
-   <td style="text-align:right;"> 2434430 </td>
-   <td style="text-align:right;"> 335175000 </td>
+   <td style="text-align:right;"> 1591930 </td>
+   <td style="text-align:right;"> 1567500 </td>
+   <td style="text-align:right;"> 2435350 </td>
+   <td style="text-align:right;"> 335134000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1333 </td>
    <td style="text-align:right;"> 2017 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1924560 </td>
-   <td style="text-align:right;"> 1917300 </td>
-   <td style="text-align:right;"> 2100330 </td>
-   <td style="text-align:right;"> 99619900 </td>
+   <td style="text-align:right;"> 1924590 </td>
+   <td style="text-align:right;"> 1917310 </td>
+   <td style="text-align:right;"> 2100960 </td>
+   <td style="text-align:right;"> 99782500 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1334 </td>
    <td style="text-align:right;"> 2018 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 2324930 </td>
-   <td style="text-align:right;"> 2262040 </td>
-   <td style="text-align:right;"> 2686920 </td>
-   <td style="text-align:right;"> 862770000 </td>
+   <td style="text-align:right;"> 2324970 </td>
+   <td style="text-align:right;"> 2262080 </td>
+   <td style="text-align:right;"> 2686890 </td>
+   <td style="text-align:right;"> 862721000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1335 </td>
    <td style="text-align:right;"> 2019 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 3241680 </td>
-   <td style="text-align:right;"> 3138230 </td>
-   <td style="text-align:right;"> 3990880 </td>
-   <td style="text-align:right;"> 1419210000 </td>
+   <td style="text-align:right;"> 3242040 </td>
+   <td style="text-align:right;"> 3138410 </td>
+   <td style="text-align:right;"> 3990540 </td>
+   <td style="text-align:right;"> 1421630000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1336 </td>
    <td style="text-align:right;"> 2020 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 5615900 </td>
-   <td style="text-align:right;"> 5614770 </td>
-   <td style="text-align:right;"> 4015250 </td>
-   <td style="text-align:right;"> 15552100 </td>
+   <td style="text-align:right;"> 5618600 </td>
+   <td style="text-align:right;"> 5617370 </td>
+   <td style="text-align:right;"> 4015810 </td>
+   <td style="text-align:right;"> 16881500 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1337 </td>
    <td style="text-align:right;"> 2021 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 7713090 </td>
-   <td style="text-align:right;"> 7708050 </td>
-   <td style="text-align:right;"> 8063680 </td>
-   <td style="text-align:right;"> 69167000 </td>
+   <td style="text-align:right;"> 7720710 </td>
+   <td style="text-align:right;"> 7715680 </td>
+   <td style="text-align:right;"> 8064010 </td>
+   <td style="text-align:right;"> 69109800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1338 </td>
    <td style="text-align:right;"> 2022 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 7512020 </td>
-   <td style="text-align:right;"> 7506950 </td>
-   <td style="text-align:right;"> 14559700 </td>
-   <td style="text-align:right;"> 69554800 </td>
+   <td style="text-align:right;"> 7521960 </td>
+   <td style="text-align:right;"> 7516890 </td>
+   <td style="text-align:right;"> 14572800 </td>
+   <td style="text-align:right;"> 69497300 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1339 </td>
    <td style="text-align:right;"> 2023 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 6671280 </td>
-   <td style="text-align:right;"> 6666210 </td>
-   <td style="text-align:right;"> 12838900 </td>
-   <td style="text-align:right;"> 69490000 </td>
+   <td style="text-align:right;"> 6680720 </td>
+   <td style="text-align:right;"> 6675660 </td>
+   <td style="text-align:right;"> 12858000 </td>
+   <td style="text-align:right;"> 69433000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1340 </td>
    <td style="text-align:right;"> 2024 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 5619480 </td>
-   <td style="text-align:right;"> 5614420 </td>
-   <td style="text-align:right;"> 10736700 </td>
-   <td style="text-align:right;"> 69382900 </td>
+   <td style="text-align:right;"> 5627440 </td>
+   <td style="text-align:right;"> 5622390 </td>
+   <td style="text-align:right;"> 10753000 </td>
+   <td style="text-align:right;"> 69326200 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1341 </td>
    <td style="text-align:right;"> 2025 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 4656920 </td>
-   <td style="text-align:right;"> 4651870 </td>
-   <td style="text-align:right;"> 8812160 </td>
-   <td style="text-align:right;"> 69240500 </td>
+   <td style="text-align:right;"> 4663130 </td>
+   <td style="text-align:right;"> 4658090 </td>
+   <td style="text-align:right;"> 8824990 </td>
+   <td style="text-align:right;"> 69184200 </td>
   </tr>
 </tbody>
 </table>
@@ -2664,250 +2814,250 @@ piner Plot
    <td style="text-align:right;"> 1989 </td>
    <td style="text-align:left;"> VIRG </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1354540 </td>
-   <td style="text-align:right;"> 1349660 </td>
-   <td style="text-align:right;"> 2210920 </td>
-   <td style="text-align:right;"> 66952200 </td>
+   <td style="text-align:right;"> 1353400 </td>
+   <td style="text-align:right;"> 1348530 </td>
+   <td style="text-align:right;"> 2209070 </td>
+   <td style="text-align:right;"> 66896000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1306 </td>
    <td style="text-align:right;"> 1990 </td>
    <td style="text-align:left;"> INIT </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 925937 </td>
-   <td style="text-align:right;"> 921186 </td>
-   <td style="text-align:right;"> 1367470 </td>
-   <td style="text-align:right;"> 65178600 </td>
+   <td style="text-align:right;"> 924676 </td>
+   <td style="text-align:right;"> 919929 </td>
+   <td style="text-align:right;"> 1365380 </td>
+   <td style="text-align:right;"> 65120800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1307 </td>
    <td style="text-align:right;"> 1991 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 925937 </td>
-   <td style="text-align:right;"> 921186 </td>
-   <td style="text-align:right;"> 1367470 </td>
-   <td style="text-align:right;"> 65178600 </td>
+   <td style="text-align:right;"> 924676 </td>
+   <td style="text-align:right;"> 919929 </td>
+   <td style="text-align:right;"> 1365380 </td>
+   <td style="text-align:right;"> 65120800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1308 </td>
    <td style="text-align:right;"> 1992 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1012370 </td>
-   <td style="text-align:right;"> 1007590 </td>
-   <td style="text-align:right;"> 1539740 </td>
-   <td style="text-align:right;"> 65688900 </td>
+   <td style="text-align:right;"> 1011120 </td>
+   <td style="text-align:right;"> 1006340 </td>
+   <td style="text-align:right;"> 1537670 </td>
+   <td style="text-align:right;"> 65631800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1309 </td>
    <td style="text-align:right;"> 1993 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1082790 </td>
-   <td style="text-align:right;"> 1077970 </td>
-   <td style="text-align:right;"> 1679460 </td>
-   <td style="text-align:right;"> 66030400 </td>
+   <td style="text-align:right;"> 1081550 </td>
+   <td style="text-align:right;"> 1076740 </td>
+   <td style="text-align:right;"> 1677420 </td>
+   <td style="text-align:right;"> 65973500 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1310 </td>
    <td style="text-align:right;"> 1994 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1139590 </td>
-   <td style="text-align:right;"> 1134760 </td>
-   <td style="text-align:right;"> 1789740 </td>
-   <td style="text-align:right;"> 66264200 </td>
+   <td style="text-align:right;"> 1138370 </td>
+   <td style="text-align:right;"> 1133540 </td>
+   <td style="text-align:right;"> 1787730 </td>
+   <td style="text-align:right;"> 66207600 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1311 </td>
    <td style="text-align:right;"> 1995 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1184920 </td>
-   <td style="text-align:right;"> 1180070 </td>
-   <td style="text-align:right;"> 1878070 </td>
-   <td style="text-align:right;"> 66432800 </td>
+   <td style="text-align:right;"> 1183710 </td>
+   <td style="text-align:right;"> 1178870 </td>
+   <td style="text-align:right;"> 1876090 </td>
+   <td style="text-align:right;"> 66376300 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1312 </td>
    <td style="text-align:right;"> 1996 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1220820 </td>
-   <td style="text-align:right;"> 1215970 </td>
-   <td style="text-align:right;"> 1948280 </td>
-   <td style="text-align:right;"> 66556400 </td>
+   <td style="text-align:right;"> 1219630 </td>
+   <td style="text-align:right;"> 1214790 </td>
+   <td style="text-align:right;"> 1946320 </td>
+   <td style="text-align:right;"> 66500000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1313 </td>
    <td style="text-align:right;"> 1997 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1249200 </td>
-   <td style="text-align:right;"> 1244350 </td>
-   <td style="text-align:right;"> 2003870 </td>
-   <td style="text-align:right;"> 66648400 </td>
+   <td style="text-align:right;"> 1248020 </td>
+   <td style="text-align:right;"> 1243170 </td>
+   <td style="text-align:right;"> 2001930 </td>
+   <td style="text-align:right;"> 66592100 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1314 </td>
    <td style="text-align:right;"> 1998 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1266420 </td>
-   <td style="text-align:right;"> 1266130 </td>
-   <td style="text-align:right;"> 2046680 </td>
-   <td style="text-align:right;"> 3933970 </td>
+   <td style="text-align:right;"> 1265270 </td>
+   <td style="text-align:right;"> 1264970 </td>
+   <td style="text-align:right;"> 2044760 </td>
+   <td style="text-align:right;"> 4181950 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1315 </td>
    <td style="text-align:right;"> 1999 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1216010 </td>
-   <td style="text-align:right;"> 1215500 </td>
-   <td style="text-align:right;"> 2071380 </td>
-   <td style="text-align:right;"> 7024060 </td>
+   <td style="text-align:right;"> 1215210 </td>
+   <td style="text-align:right;"> 1214650 </td>
+   <td style="text-align:right;"> 2069470 </td>
+   <td style="text-align:right;"> 7762690 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1316 </td>
    <td style="text-align:right;"> 2000 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1072540 </td>
-   <td style="text-align:right;"> 1067770 </td>
-   <td style="text-align:right;"> 2089420 </td>
-   <td style="text-align:right;"> 65411200 </td>
+   <td style="text-align:right;"> 1072930 </td>
+   <td style="text-align:right;"> 1068190 </td>
+   <td style="text-align:right;"> 2087520 </td>
+   <td style="text-align:right;"> 64986400 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1317 </td>
    <td style="text-align:right;"> 2001 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 972011 </td>
-   <td style="text-align:right;"> 956267 </td>
-   <td style="text-align:right;"> 1743630 </td>
-   <td style="text-align:right;"> 215989000 </td>
+   <td style="text-align:right;"> 973382 </td>
+   <td style="text-align:right;"> 957638 </td>
+   <td style="text-align:right;"> 1743440 </td>
+   <td style="text-align:right;"> 215996000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1318 </td>
    <td style="text-align:right;"> 2002 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1109210 </td>
-   <td style="text-align:right;"> 1100090 </td>
-   <td style="text-align:right;"> 1431580 </td>
-   <td style="text-align:right;"> 125160000 </td>
+   <td style="text-align:right;"> 1110280 </td>
+   <td style="text-align:right;"> 1101160 </td>
+   <td style="text-align:right;"> 1435720 </td>
+   <td style="text-align:right;"> 125135000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1319 </td>
    <td style="text-align:right;"> 2003 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1429620 </td>
-   <td style="text-align:right;"> 1429580 </td>
-   <td style="text-align:right;"> 1495100 </td>
-   <td style="text-align:right;"> 561097 </td>
+   <td style="text-align:right;"> 1430490 </td>
+   <td style="text-align:right;"> 1430440 </td>
+   <td style="text-align:right;"> 1496900 </td>
+   <td style="text-align:right;"> 633499 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1320 </td>
    <td style="text-align:right;"> 2004 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1554480 </td>
-   <td style="text-align:right;"> 1552980 </td>
-   <td style="text-align:right;"> 2429710 </td>
-   <td style="text-align:right;"> 20540100 </td>
+   <td style="text-align:right;"> 1555180 </td>
+   <td style="text-align:right;"> 1553690 </td>
+   <td style="text-align:right;"> 2431110 </td>
+   <td style="text-align:right;"> 20543200 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1321 </td>
    <td style="text-align:right;"> 2005 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1457100 </td>
-   <td style="text-align:right;"> 1454260 </td>
-   <td style="text-align:right;"> 2840910 </td>
-   <td style="text-align:right;"> 39008600 </td>
+   <td style="text-align:right;"> 1457770 </td>
+   <td style="text-align:right;"> 1454920 </td>
+   <td style="text-align:right;"> 2841870 </td>
+   <td style="text-align:right;"> 39014900 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1322 </td>
    <td style="text-align:right;"> 2006 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1336990 </td>
-   <td style="text-align:right;"> 1324330 </td>
-   <td style="text-align:right;"> 2463950 </td>
-   <td style="text-align:right;"> 173714000 </td>
+   <td style="text-align:right;"> 1337590 </td>
+   <td style="text-align:right;"> 1324930 </td>
+   <td style="text-align:right;"> 2465110 </td>
+   <td style="text-align:right;"> 173694000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1323 </td>
    <td style="text-align:right;"> 2007 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1281790 </td>
-   <td style="text-align:right;"> 1274680 </td>
-   <td style="text-align:right;"> 2002810 </td>
-   <td style="text-align:right;"> 97556700 </td>
+   <td style="text-align:right;"> 1282230 </td>
+   <td style="text-align:right;"> 1275120 </td>
+   <td style="text-align:right;"> 2003690 </td>
+   <td style="text-align:right;"> 97545800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1324 </td>
    <td style="text-align:right;"> 2008 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1457730 </td>
-   <td style="text-align:right;"> 1456870 </td>
-   <td style="text-align:right;"> 1826580 </td>
-   <td style="text-align:right;"> 11786600 </td>
+   <td style="text-align:right;"> 1458050 </td>
+   <td style="text-align:right;"> 1457180 </td>
+   <td style="text-align:right;"> 1827320 </td>
+   <td style="text-align:right;"> 11817800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1325 </td>
    <td style="text-align:right;"> 2009 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1495420 </td>
-   <td style="text-align:right;"> 1492040 </td>
-   <td style="text-align:right;"> 2433300 </td>
-   <td style="text-align:right;"> 46468300 </td>
+   <td style="text-align:right;"> 1495670 </td>
+   <td style="text-align:right;"> 1492280 </td>
+   <td style="text-align:right;"> 2433790 </td>
+   <td style="text-align:right;"> 46474800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1326 </td>
    <td style="text-align:right;"> 2010 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1380600 </td>
-   <td style="text-align:right;"> 1374330 </td>
-   <td style="text-align:right;"> 2577450 </td>
-   <td style="text-align:right;"> 86071200 </td>
+   <td style="text-align:right;"> 1380840 </td>
+   <td style="text-align:right;"> 1374560 </td>
+   <td style="text-align:right;"> 2577760 </td>
+   <td style="text-align:right;"> 86096400 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1327 </td>
    <td style="text-align:right;"> 2011 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1216340 </td>
-   <td style="text-align:right;"> 1201580 </td>
-   <td style="text-align:right;"> 2007830 </td>
-   <td style="text-align:right;"> 202457000 </td>
+   <td style="text-align:right;"> 1216580 </td>
+   <td style="text-align:right;"> 1201820 </td>
+   <td style="text-align:right;"> 2008220 </td>
+   <td style="text-align:right;"> 202555000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1328 </td>
    <td style="text-align:right;"> 2012 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1370300 </td>
-   <td style="text-align:right;"> 1353670 </td>
-   <td style="text-align:right;"> 1857780 </td>
-   <td style="text-align:right;"> 228170000 </td>
+   <td style="text-align:right;"> 1370620 </td>
+   <td style="text-align:right;"> 1354010 </td>
+   <td style="text-align:right;"> 1858140 </td>
+   <td style="text-align:right;"> 227851000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1329 </td>
    <td style="text-align:right;"> 2013 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1695430 </td>
-   <td style="text-align:right;"> 1695250 </td>
-   <td style="text-align:right;"> 1914900 </td>
-   <td style="text-align:right;"> 2452510 </td>
+   <td style="text-align:right;"> 1695600 </td>
+   <td style="text-align:right;"> 1695400 </td>
+   <td style="text-align:right;"> 1915330 </td>
+   <td style="text-align:right;"> 2806810 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1330 </td>
@@ -2915,122 +3065,128 @@ piner Plot
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 1790520 </td>
-   <td style="text-align:right;"> 1786460 </td>
-   <td style="text-align:right;"> 2457000 </td>
-   <td style="text-align:right;"> 55652700 </td>
+   <td style="text-align:right;"> 1786470 </td>
+   <td style="text-align:right;"> 2457810 </td>
+   <td style="text-align:right;"> 55596900 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1331 </td>
    <td style="text-align:right;"> 2015 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1629480 </td>
-   <td style="text-align:right;"> 1613420 </td>
-   <td style="text-align:right;"> 3067990 </td>
-   <td style="text-align:right;"> 220458000 </td>
+   <td style="text-align:right;"> 1629840 </td>
+   <td style="text-align:right;"> 1613780 </td>
+   <td style="text-align:right;"> 3067190 </td>
+   <td style="text-align:right;"> 220350000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1332 </td>
    <td style="text-align:right;"> 2016 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1591680 </td>
-   <td style="text-align:right;"> 1567250 </td>
-   <td style="text-align:right;"> 2434430 </td>
-   <td style="text-align:right;"> 335175000 </td>
+   <td style="text-align:right;"> 1591930 </td>
+   <td style="text-align:right;"> 1567500 </td>
+   <td style="text-align:right;"> 2435350 </td>
+   <td style="text-align:right;"> 335134000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1333 </td>
    <td style="text-align:right;"> 2017 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1924560 </td>
-   <td style="text-align:right;"> 1917300 </td>
-   <td style="text-align:right;"> 2100330 </td>
-   <td style="text-align:right;"> 99619900 </td>
+   <td style="text-align:right;"> 1924590 </td>
+   <td style="text-align:right;"> 1917310 </td>
+   <td style="text-align:right;"> 2100960 </td>
+   <td style="text-align:right;"> 99782500 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1334 </td>
    <td style="text-align:right;"> 2018 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 2324930 </td>
-   <td style="text-align:right;"> 2262040 </td>
-   <td style="text-align:right;"> 2686920 </td>
-   <td style="text-align:right;"> 862770000 </td>
+   <td style="text-align:right;"> 2324970 </td>
+   <td style="text-align:right;"> 2262080 </td>
+   <td style="text-align:right;"> 2686890 </td>
+   <td style="text-align:right;"> 862721000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1335 </td>
    <td style="text-align:right;"> 2019 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 3241680 </td>
-   <td style="text-align:right;"> 3138230 </td>
-   <td style="text-align:right;"> 3990880 </td>
-   <td style="text-align:right;"> 1419210000 </td>
+   <td style="text-align:right;"> 3242040 </td>
+   <td style="text-align:right;"> 3138410 </td>
+   <td style="text-align:right;"> 3990540 </td>
+   <td style="text-align:right;"> 1421630000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1336 </td>
    <td style="text-align:right;"> 2020 </td>
    <td style="text-align:left;"> TIME </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 5615900 </td>
-   <td style="text-align:right;"> 5614770 </td>
-   <td style="text-align:right;"> 4015250 </td>
-   <td style="text-align:right;"> 15552100 </td>
+   <td style="text-align:right;"> 5618600 </td>
+   <td style="text-align:right;"> 5617370 </td>
+   <td style="text-align:right;"> 4015810 </td>
+   <td style="text-align:right;"> 16881500 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1337 </td>
    <td style="text-align:right;"> 2021 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 7713090 </td>
-   <td style="text-align:right;"> 7708050 </td>
-   <td style="text-align:right;"> 8063680 </td>
-   <td style="text-align:right;"> 69167000 </td>
+   <td style="text-align:right;"> 7720710 </td>
+   <td style="text-align:right;"> 7715680 </td>
+   <td style="text-align:right;"> 8064010 </td>
+   <td style="text-align:right;"> 69109800 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1338 </td>
    <td style="text-align:right;"> 2022 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 7512020 </td>
-   <td style="text-align:right;"> 7506950 </td>
-   <td style="text-align:right;"> 14559700 </td>
-   <td style="text-align:right;"> 69554800 </td>
+   <td style="text-align:right;"> 7521960 </td>
+   <td style="text-align:right;"> 7516890 </td>
+   <td style="text-align:right;"> 14572800 </td>
+   <td style="text-align:right;"> 69497300 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1339 </td>
    <td style="text-align:right;"> 2023 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 6671280 </td>
-   <td style="text-align:right;"> 6666210 </td>
-   <td style="text-align:right;"> 12838900 </td>
-   <td style="text-align:right;"> 69490000 </td>
+   <td style="text-align:right;"> 6680720 </td>
+   <td style="text-align:right;"> 6675660 </td>
+   <td style="text-align:right;"> 12858000 </td>
+   <td style="text-align:right;"> 69433000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1340 </td>
    <td style="text-align:right;"> 2024 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 5619480 </td>
-   <td style="text-align:right;"> 5614420 </td>
-   <td style="text-align:right;"> 10736700 </td>
-   <td style="text-align:right;"> 69382900 </td>
+   <td style="text-align:right;"> 5627440 </td>
+   <td style="text-align:right;"> 5622390 </td>
+   <td style="text-align:right;"> 10753000 </td>
+   <td style="text-align:right;"> 69326200 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1341 </td>
    <td style="text-align:right;"> 2025 </td>
    <td style="text-align:left;"> FORE </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 4656920 </td>
-   <td style="text-align:right;"> 4651870 </td>
-   <td style="text-align:right;"> 8812160 </td>
-   <td style="text-align:right;"> 69240500 </td>
+   <td style="text-align:right;"> 4663130 </td>
+   <td style="text-align:right;"> 4658090 </td>
+   <td style="text-align:right;"> 8824990 </td>
+   <td style="text-align:right;"> 69184200 </td>
   </tr>
 </tbody>
 </table>
+
+
+
+
+
+<img src="Figs/unnamed-chunk-60-1.jpeg" style="display: block; margin: auto;" />
 
 
 ## Comparison
@@ -3039,61 +3195,244 @@ piner Plot
 
 
 
-\begin{table}
-\centering
-\caption{\label{tab:unnamed-chunk-58}Comparision s1.1, s1.2, s1.3, s1.4}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\begin{tabular}[t]{lrrrr}
-\toprule
-Label & s1.1 & s1.2 & s1.3 & s1.4\\
-\midrule
-TOTAL\_like & 1.29104e+03 & 2.59639e+04 & 1.59304e+03 & 2.51910e+04\\
-Survey\_like & 4.12880e+02 & 2.33441e+04 & 6.45708e+02 & 2.33124e+04\\
-Length\_comp\_like & 8.46103e+02 & 2.59308e+03 & 9.33128e+02 & 1.86049e+03\\
-Parm\_priors\_like & 4.80866e-01 & 9.38168e+00 & 5.01968e+00 & 9.26159e+00\\
-Recr\_Virgin\_billions & 1.07962e+02 & 4.15800e+02 & 6.69522e+01 & 3.70176e+02\\
-\addlinespace
-SR\_LN(R0) & 1.84973e+01 & 1.98457e+01 & 1.80195e+01 & 1.97295e+01\\
-SR\_LN(R0)\_dev\_se & NA & NA & 5.00000e-01 & 5.00000e-01\\
-SR\_LN(R0)\_dev\_autocorr & NA & NA & 0.00000e+00 & 0.00000e+00\\
-SR\_LN(R0)\_DEVmult\_2000 & NA & NA & 4.34695e-02 & -1.04940e-01\\
-SR\_LN(R0)\_DEVmult\_2001 & NA & NA & 1.89547e-01 & 1.21437e-01\\
-\addlinespace
-SR\_LN(R0)\_DEVmult\_2002 & NA & NA & 1.25269e-01 & 1.24922e-01\\
-SR\_LN(R0)\_DEVmult\_2003 & NA & NA & -5.46661e-01 & -5.70889e-01\\
-SR\_LN(R0)\_DEVmult\_2004 & NA & NA & -8.97766e-02 & -9.99512e-02\\
-SR\_LN(R0)\_DEVmult\_2005 & NA & NA & -1.67758e-02 & -5.39612e-02\\
-SR\_LN(R0)\_DEVmult\_2006 & NA & NA & 1.54264e-01 & 1.17783e-01\\
-\addlinespace
-SR\_LN(R0)\_DEVmult\_2007 & NA & NA & 8.98382e-02 & 4.17424e-02\\
-SR\_LN(R0)\_DEVmult\_2008 & NA & NA & -1.54424e-01 & -1.77853e-01\\
-SR\_LN(R0)\_DEVmult\_2009 & NA & NA & 3.66770e-03 & -6.51849e-02\\
-SR\_LN(R0)\_DEVmult\_2010 & NA & NA & 7.30214e-02 & -4.09490e-02\\
-SR\_LN(R0)\_DEVmult\_2011 & NA & NA & 1.77147e-01 & 1.98271e-02\\
-\addlinespace
-SR\_LN(R0)\_DEVmult\_2012 & NA & NA & 1.94671e-01 & 9.71856e-02\\
-SR\_LN(R0)\_DEVmult\_2013 & NA & NA & -3.48419e-01 & -5.35570e-03\\
-SR\_LN(R0)\_DEVmult\_2014 & NA & NA & 2.40483e-02 & 6.96487e-02\\
-SR\_LN(R0)\_DEVmult\_2015 & NA & NA & 1.78475e-01 & 3.34469e-02\\
-SR\_LN(R0)\_DEVmult\_2016 & NA & NA & 2.32444e-01 & 6.14681e-02\\
-\addlinespace
-SR\_LN(R0)\_DEVmult\_2017 & NA & NA & 7.81743e-02 & -4.48100e-03\\
-SR\_LN(R0)\_DEVmult\_2018 & NA & NA & 3.39813e-01 & 1.99747e-01\\
-SR\_LN(R0)\_DEVmult\_2019 & NA & NA & 3.77102e-01 & 1.82378e-01\\
-SR\_LN(R0)\_DEVmult\_2020 & NA & NA & -1.68514e-01 & -3.38553e-01\\
-SR\_BH\_steep & 8.50000e-01 & 8.50000e-01 & 8.50000e-01 & 8.50000e-01\\
-\addlinespace
-NatM\_uniform\_Fem\_GP\_1 & 2.70000e-01 & 2.70000e-01 & 2.70000e-01 & 2.70000e-01\\
-L\_at\_Amax\_Fem\_GP\_1 & 5.00000e+00 & 5.00000e+00 & 5.00000e+00 & 5.00000e+00\\
-VonBert\_K\_Fem\_GP\_1 & 4.70000e-01 & 4.70000e-01 & 4.70000e-01 & 4.70000e-01\\
-SSB\_Virgin & 3.56518e+06 & 2.21345e+06 & 2.21092e+06 & 2.03602e+06\\
-Bratio\_2020 & 1.87968e+00 & 5.01969e-01 & 1.81610e+00 & 8.34203e-01\\
-\addlinespace
-SPRratio\_2020 & 1.44309e-01 & 1.20734e-01 & 1.76125e-01 & 1.04390e-01\\
-\bottomrule
-\end{tabular}}
-\end{table}
+<table class="table" style="color: black; margin-left: auto; margin-right: auto;">
+<caption></caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Label </th>
+   <th style="text-align:right;"> s1.1 </th>
+   <th style="text-align:right;"> s1.2 </th>
+   <th style="text-align:right;"> s1.3 </th>
+   <th style="text-align:right;"> s1.4 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> TOTAL_like </td>
+   <td style="text-align:right;"> 1.29104e+03 </td>
+   <td style="text-align:right;"> 2.59639e+04 </td>
+   <td style="text-align:right;"> 1.59145e+03 </td>
+   <td style="text-align:right;"> 2.51888e+04 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Survey_like </td>
+   <td style="text-align:right;"> 4.12880e+02 </td>
+   <td style="text-align:right;"> 2.33441e+04 </td>
+   <td style="text-align:right;"> 6.45637e+02 </td>
+   <td style="text-align:right;"> 2.33133e+04 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Length_comp_like </td>
+   <td style="text-align:right;"> 8.46103e+02 </td>
+   <td style="text-align:right;"> 2.59308e+03 </td>
+   <td style="text-align:right;"> 9.33491e+02 </td>
+   <td style="text-align:right;"> 1.86093e+03 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Parm_priors_like </td>
+   <td style="text-align:right;"> 4.80866e-01 </td>
+   <td style="text-align:right;"> 9.38168e+00 </td>
+   <td style="text-align:right;"> 5.01577e+00 </td>
+   <td style="text-align:right;"> 9.01930e+00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Recr_Virgin_billions </td>
+   <td style="text-align:right;"> 1.07962e+02 </td>
+   <td style="text-align:right;"> 4.15800e+02 </td>
+   <td style="text-align:right;"> 6.68960e+01 </td>
+   <td style="text-align:right;"> 3.68857e+02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0) </td>
+   <td style="text-align:right;"> 1.84973e+01 </td>
+   <td style="text-align:right;"> 1.98457e+01 </td>
+   <td style="text-align:right;"> 1.80187e+01 </td>
+   <td style="text-align:right;"> 1.97259e+01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_dev_se </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 5.00000e-01 </td>
+   <td style="text-align:right;"> 5.00000e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_dev_autocorr </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0.00000e+00 </td>
+   <td style="text-align:right;"> 0.00000e+00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2000 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -1.74829e-02 </td>
+   <td style="text-align:right;"> -1.68254e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2001 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 1.23482e-01 </td>
+   <td style="text-align:right;"> 5.44492e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2002 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 6.13381e-02 </td>
+   <td style="text-align:right;"> 5.09236e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2003 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -6.04473e-01 </td>
+   <td style="text-align:right;"> -6.32315e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2004 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -1.51523e-01 </td>
+   <td style="text-align:right;"> -1.63070e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2005 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -7.69239e-02 </td>
+   <td style="text-align:right;"> -1.15789e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2006 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 9.32591e-02 </td>
+   <td style="text-align:right;"> 5.41627e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2007 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 2.91762e-02 </td>
+   <td style="text-align:right;"> -2.24455e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2008 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -2.17589e-01 </td>
+   <td style="text-align:right;"> -2.43368e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2009 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -5.64378e-02 </td>
+   <td style="text-align:right;"> -1.27149e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2010 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 1.35076e-02 </td>
+   <td style="text-align:right;"> -1.01928e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2011 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 1.13518e-01 </td>
+   <td style="text-align:right;"> -4.20608e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2012 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 1.28751e-01 </td>
+   <td style="text-align:right;"> 3.08377e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2013 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -3.99511e-01 </td>
+   <td style="text-align:right;"> -6.79144e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2014 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -3.59554e-02 </td>
+   <td style="text-align:right;"> 4.57710e-03 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2015 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 1.18054e-01 </td>
+   <td style="text-align:right;"> -2.84196e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2016 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 1.69903e-01 </td>
+   <td style="text-align:right;"> 2.29520e-03 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2017 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 3.14354e-02 </td>
+   <td style="text-align:right;"> -5.50251e-02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2018 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 2.89649e-01 </td>
+   <td style="text-align:right;"> 1.53088e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2019 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 3.41389e-01 </td>
+   <td style="text-align:right;"> 1.49552e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SR_LN(R0)_DEVmult_2020 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> -1.82343e-01 </td>
+   <td style="text-align:right;"> -3.55401e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SSB_Virgin </td>
+   <td style="text-align:right;"> 3.56518e+06 </td>
+   <td style="text-align:right;"> 2.21345e+06 </td>
+   <td style="text-align:right;"> 2.20907e+06 </td>
+   <td style="text-align:right;"> 2.02888e+06 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bratio_2020 </td>
+   <td style="text-align:right;"> 1.87968e+00 </td>
+   <td style="text-align:right;"> 5.01969e-01 </td>
+   <td style="text-align:right;"> 1.81788e+00 </td>
+   <td style="text-align:right;"> 8.38206e-01 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SPRratio_2020 </td>
+   <td style="text-align:right;"> 1.44309e-01 </td>
+   <td style="text-align:right;"> 1.20734e-01 </td>
+   <td style="text-align:right;"> 1.76004e-01 </td>
+   <td style="text-align:right;"> 1.04103e-01 </td>
+  </tr>
+</tbody>
+</table>
 
 
 
@@ -3101,9 +3440,84 @@ Comparison between select models `Ref Model: No Env-Predator` and `S1.1 w/ Env a
 
 
 
-### Comparsion in sd long term time series
+### Comparsion in sd long term time series forecasting
 
-<img src="Figs/unnamed-chunk-61-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-65-1.jpeg" style="display: block; margin: auto;" />
+
+Statistical diferences
+
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  spawn_bio_1
+## W = 0.65734, p-value = 4.827e-08
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  spawn_bio_4
+## W = 0.71222, p-value = 3.39e-07
+```
+
+```
+## Levene's Test for Homogeneity of Variance (center = median)
+##       Df F value  Pr(>F)  
+## group  1  4.9249 0.02962 *
+##       72                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  spawn_bio_1 and spawn_bio_4
+## t = 4.2682, df = 72, p-value = 5.915e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  1387011 3818074
+## sample estimates:
+## mean of x mean of y 
+##   4600304   1997762
+```
+
+```
+## 
+## 	Wilcoxon rank sum test with continuity correction
+## 
+## data:  spawn_bio_1 and spawn_bio_4
+## W = 1256, p-value = 6.698e-10
+## alternative hypothesis: true location shift is not equal to 0
+```
+
+
+**Two-Sample t-Test**  
+
+- **t-value:** 4.2682  
+- **Degrees of Freedom (df):** 72  
+- **p-value:** 5.915e-05 (very small)  
+- **95% Confidence Interval for the Mean Difference:** [1,387,011; 3,818,074]  
+- **Sample Means:**  
+  - Model 1.1: **4,600,304**  
+  - Model 1.4: **1,997,762**  
+
+Since the **p-value (5.915e-05) is much smaller than 0.05**, we reject the null hypothesis. This means there is **a statistically significant difference** between the spawning biomass predicted by Model 1.1 and Model 1.4. The confidence interval suggests that Model 1.1 tends to estimate a higher spawning biomass than Model 1.4, with an estimated difference between **1.39 and 3.82 million tons**.  
+
+**Wilcoxon Rank Sum Test (Mann-Whitney U Test)**  
+
+- **W-statistic:** 1256  
+- **p-value:** 6.698e-10 (extremely small)  
+- **Warning:** "Cannot compute exact p-value with ties" (indicates that some values are repeated)  
+
+The **Wilcoxon test also rejects the null hypothesis** with an extremely small **p-value (6.698e-10)**. This confirms that the distribution of spawning biomass values is significantly different between the two models. Since the Wilcoxon test does not assume normality, it supports the conclusion from the **t-test**, reinforcing that 
+
+Both tests strongly indicate that **Model 1.1 and Model 1.4 produce significantly different estimates of spawning biomass**. Specifically, **Model 1.1 predicts higher values**. This suggests that the factors or assumptions included in Model 1.4 result in **lower spawning biomass estimates**, which could have important implications for stock assessment and fisheries management.
+
 
 ### Autocorrelation in Recruit 
 
@@ -3117,7 +3531,7 @@ A model incorporating environmental data (S1.1 w/ Env data).
 A model incorporating both environmental and predator data (S1.1 w/ Env and Predator data).
 Each model's residuals were extracted, and the autocorrelation function (ACF) was computed for a time lag range of up to 15 years. The dashed blue lines in the plots represent the 95% confidence intervals, indicating the threshold beyond which correlation values are statistically significant. If autocorrelation values remain within this range, it suggests that the recruitment estimates behave as a random process with no significant dependence on past values. Conversely, autocorrelation values exceeding these bounds indicate recruitment persistence or cyclic patterns.
 
-<img src="Figs/unnamed-chunk-62-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-67-1.jpeg" style="display: block; margin: auto;" />
 
 The ACF plots indicate that the reference model (without environmental or predator data) exhibits weak but noticeable positive autocorrelation at certain lags, suggesting some degree of recruitment dependence over time. However, this autocorrelation does not appear strong or systematic.
 
@@ -3131,15 +3545,28 @@ Overall, these results indicate that recruitment variability is at least partial
 
 ### Recruit deviation
 
-<img src="Figs/unnamed-chunk-63-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-68-1.jpeg" style="display: block; margin: auto;" />
 
 
 
-<img src="Figs/unnamed-chunk-64-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-69-1.jpeg" style="display: block; margin: auto;" />
+This bar plot presents the log-normal likelihood contributions of different model components in an Antarctic krill stock assessment under four scenarios (s1.1, s1.2, s1.3, and s1.4).  
+
+
+**TOTAL Likelihood:** The overall likelihood is highest for scenario s1.4 (black), followed by s1.2 (light orange). This suggests that s1.4 provides the best overall model fit, while s1.1 (dark red) has the lowest likelihood, indicating a poorer fit.  
+
+**Survey Component:** The survey likelihood follows a similar pattern, with s1.4 and s1.2 showing better agreement with the data compared to s1.1.  
+
+**Recruitment, Parameter Priors, and Parameter Deviations:** These components contribute minimally to the total likelihood, indicating that they do not heavily influence model fit differences.  
+
+**Length Composition:** There is some variation in this component, with s1.2 showing a larger contribution than s1.1 and s1.3.  
+
+Scenario s1.4 seems to fit the data best, followed closely by s1.2. Scenario s1.1 has the poorest likelihood, meaning it is the least supported by the data. If s1.4 includes both environmental and predator effects, this suggests that incorporating ecosystem variables significantly improves the stock assessment model for Antarctic krill.
+
 
 ### Platoons analisis
 
-<img src="Figs/unnamed-chunk-65-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-70-1.jpeg" style="display: block; margin: auto;" />
 ### AKL
 
 In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process
