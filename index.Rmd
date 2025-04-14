@@ -9,7 +9,7 @@ csl: icesjournal.csl
 link-citations: yes
 linkcolor: blue
 output:
-  html_document:
+  bookdown::html_document2:
     keep_md: true
     toc: true
     toc_deep: 3
@@ -22,6 +22,7 @@ output:
     html-math-method: katex
     self-contained: true
     code-tools: true
+    number_sections: false
 editor_options: 
   markdown: 
     wrap: 72
@@ -103,7 +104,7 @@ Here, the **reference model** represents a baseline assessment of *Euphausia sup
 
 The study area corresponds to Subarea 48.1 in the WAP, where most krill fishing activity occurs and where CCAMLR has been working to implement a new management strategy at a reduced spatial scale (Figure \@ref(fig:mapa)). To refine the spatial resolution of krill population dynamics and analysis, we adopted the five strata proposed by CCAMLR: Bransfield Strait, Elephant Island, Gerlache Strait, Joinville Island, and the Southwest [@Dornam2021; REF] (Fig 1 S1). While these strata were originally designed for management purposes without considering specific biological or population characteristics, their subdivision enables us to analyze the data at a finer scale. This level of detail facilitates the identification of heterogeneity across various data sources, whether these originate from the fishery or from environmental survey data, providing a more nuanced understanding of krill population dynamics. This spatial segregation of information is incorporated into the stock assessment model, making it a spatially explicit model that accounts for regional variability in population dynamics and external factors.
 
-```{r mapa, out.width='50%', fig.show='hold',fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)"}
+```{r mapa, out.width='50%', fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)"}
 knitr::include_graphics('Figs/481.png')
 ```
 
@@ -423,7 +424,7 @@ base.model1.4 <- SS_output(dir=dir1.4,
 
 Data used en both (spatial and No spatial models) `s1.1` and `s1.4` to compare
 
-```{r fig.height=8, fig.width=6}
+```{r fig.height=10, fig.width=6}
 par(mfrow=c(2,1), mar=c(5,4,2,1))
 SSplotData(base.model1.1, 
            subplots = 1,
@@ -2419,6 +2420,9 @@ ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
   theme(legend.position = "none")
 ```
 
+### Code Repository
+
+The repository with code to replicate this analysis can be found in this [GitHub author link](https://github.com/MauroMardones/SA_Krill)
 
 \newpage
 

@@ -380,6 +380,9 @@ knitr::include_graphics('Figs/unnamed-chunk-65-1.jpeg')
 
 Figure \@ref(fig:compara) shows the time series of estimated spawning output for Antarctic krill under most significant models in this analisys, s1.1 and s1.4. The reference model (red), which excludes ecosystem components, consistently estimates higher spawning output values over time, with a steep increase observed after 2015. In contrast, the models that incorporate ecosystem components—predator data (green), environmental data (yellow), or both (red)—estimate consistently lower spawning output throughout the time series. The red line, representing the model with both predator and environmental data, remains the most conservative, suggesting that ecosystem-informed models lead to more precautionary estimates of reproductive potential. The rigth panel displays the posterior density distributions of unfished spawning biomass (SSB~o~) for the same scenarios. The reference model estimates the highest SSBo values (mode ~ 3.2), while the ecosystem-informed models estimate considerably lower SSBo, with the most constrained distribution occurring under the full ecosystem model (red). The shift in the distributions indicates that including ecosystem drivers reduces estimates of unfished reproductive capacity, which has implications for reference point calculations and harvest strategies.
 
+
+We comparethe time series of differente population variables for Antarctic krill under most significant models in this analysis; a reference model without environmental or predator data and an alternative model that incorporates both environmental and predator information. Total biomass estimates remain relatively stable across both scenarios until around 2010. From that point onward, both models show a marked increase in biomass, although the reference model predicts higher values than the ecosystem-informed model, particularly during the final assessment years (2018–2020). Recruitment at age 0 exhibits strong variability over time. This is coincidence with [REF]. While both models show similar patterns, the reference model tends to estimate higher recruitment peaks, especially in recent years. Finally, spawning biomass (SpawnBio) follows trends similar to total biomass. Both models show a gradual increase after 2010, but the reference model again yields higher values in recent years. 
+
 ```{r compara,eval=TRUE, out.width="60%", fig.cap=""}
 knitr::include_graphics('Figs/alloutput_s1_4.png')
 
@@ -460,6 +463,8 @@ Models that omit ecosystem components tend to produce higher and more uncertain 
 ### Productivity
 
 The inclusion of environmental variables (s1.3 and s1.4) substantially lowers estimates of per-capita productivity, especially at low stock levels. These ecosystem-informed scenarios reflect more realistic ecological constraints and reduce the risk of overestimating krill productivity under unfavorable conditions. This highlights the importance of accounting for environmental drivers in stock assessment models to avoid overly optimistic projections of stock resilience. [REF]
+
+Population variables: Overall, the inclusion of ecosystem and predator data (s1.4) results in more conservative estimates of biomass, recruitment, and spawning stock, suggesting that ecosystem-informed models may provide a more precautionary and ecologically realistic basis for krill stock assessment and management.
 
 ### Ecosystem Variables: Ecological Relevance
 
