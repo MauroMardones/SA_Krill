@@ -2,7 +2,7 @@
 title: "Supplementary Information 1"
 subtitle: "Assessing ecosystem effects on the stock productivity of Antarctic Krill (*Euphausia superba*): An Integrated modeling perspective"
 author: "Mardones, M; Jarvis Mason, E.T.; Pinones, A.;  Santa Cruz, F.; Cárdenas, C.A"
-date:  "10 April, 2025"
+date:  "14 April, 2025"
 bibliography: SA_krill.bib
 #csl: apa.csl
 csl: icesjournal.csl
@@ -62,10 +62,29 @@ This study aims to evaluate the impact of ecosystem components—such as environ
 
 Here, the **reference model** represents a baseline assessment of *Euphausia superba* population dynamics in Subarea 48.1, excluding environmental and ecological variables. This model assumes that krill productivity and population parameters are driven  by intrinsic biological processes, such as growth, mortality, and recruitment and fishery impacts without accounting for external influences like environmental variability or predation pressure. By serving as a *control scenario*, this model provides a benchmark against which the impact of ecosystem components in productivity can be evaluated, allowing for a direct comparison of how environmental and ecological factors influence krill stock dynamics.  
 
+The study area corresponds to Subarea 48.1 in the WAP, where most krill fishing activity occurs and where CCAMLR has been working to implement a new management strategy at a reduced spatial scale (Figure \@ref(fig:mapa)). To refine the spatial resolution of krill population dynamics and analysis, we adopted the five strata proposed by CCAMLR: Bransfield Strait, Elephant Island, Gerlache Strait, Joinville Island, and the Southwest [@Dornam2021; REF] (Fig 1 S1). While these strata were originally designed for management purposes without considering specific biological or population characteristics, their subdivision enables us to analyze the data at a finer scale. This level of detail facilitates the identification of heterogeneity across various data sources, whether these originate from the fishery or from environmental survey data, providing a more nuanced understanding of krill population dynamics. This spatial segregation of information is incorporated into the stock assessment model, making it a spatially explicit model that accounts for regional variability in population dynamics and external factors.
 
-## Statistical Model (SS3)
+<div class="figure" style="text-align: center">
+<img src="Figs/481.png" alt="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)" width="50%" />
+<p class="caption">Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)</p>
+</div>
+
+In this approach, spatial structure is incorporated implicitly by treating different areas as separate fleets [@Nielsen2021; @Waterhouse2014]. This constitutes a spatially implicit modeling framework, where differences among strata are recognized both from the perspective of krill population dynamics and from the influence of environmental variability within Subarea 48.1 (Figure \@ref(fig:concem)). 
+
+<div class="figure" style="text-align: center">
+<img src="Figs/conceptual.jpeg" alt="Conceptual model used to model dynamics population in Antarctic krill in WAP" width="40%" />
+<p class="caption">Conceptual model used to model dynamics population in Antarctic krill in WAP</p>
+</div>
+
+## Statistical Model (`SS3`)
 
 Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. In this exercise, SS3 is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. By leveraging a spatially implicit, ecosystem-informed approach, this assessment provides a robust framework for evaluating krill stock dynamics under changing environmental conditions. These insights are crucial for informing sustainable management strategies in the Antarctic Peninsula region, where krill plays a foundational role in the marine food web.  
+
+
+<div class="figure" style="text-align: center">
+<img src="Figs/pathmod.png" alt="Framework path to stock assessment model in krill in WAP (Yellow boxes is not implemeted yet)." width="766" />
+<p class="caption">Framework path to stock assessment model in krill in WAP (Yellow boxes is not implemeted yet).</p>
+</div>
 
 ## Parameters
 
@@ -370,12 +389,27 @@ The following table summarizes the key parameters to conditioning the reference 
   </tr>
 </tbody>
 </table>
-Source of data input
+Source of data input.
 
-<img src="Figs/unnamed-chunk-6-1.jpeg" style="display: block; margin: auto;" />
+Ibdex abundance in Figure \@ref(fig:index)
 
 
-<img src="Figs/unnamed-chunk-7-1.jpeg" style="display: block; margin: auto;" />
+
+
+<div class="figure" style="text-align: center">
+<img src="Figs/index-1.jpeg" alt="Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea."  />
+<p class="caption">Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea.</p>
+</div>
+
+
+
+
+Length compositions in Figure \@ref(fig:length)
+
+<div class="figure" style="text-align: center">
+<img src="Figs/length-1.jpeg" alt="Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm)."  />
+<p class="caption">Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm).</p>
+</div>
 
 
 
@@ -3440,9 +3474,14 @@ Comparison between select models `Ref Model: No Env-Predator` and `S1.1 w/ Env a
 
 
 
-### Comparsion in sd long term time series forecasting
+Antoher comparision in `R0` (Natural log of virgin recruitment level)
+
 
 <img src="Figs/unnamed-chunk-65-1.jpeg" style="display: block; margin: auto;" />
+
+### Comparsion in sd long term time series forecasting
+
+<img src="Figs/unnamed-chunk-66-1.jpeg" style="display: block; margin: auto;" />
 
 Statistical diferences
 
@@ -3531,7 +3570,7 @@ A model incorporating environmental data (S1.1 w/ Env data).
 A model incorporating both environmental and predator data (S1.1 w/ Env and Predator data).
 Each model's residuals were extracted, and the autocorrelation function (ACF) was computed for a time lag range of up to 15 years. The dashed blue lines in the plots represent the 95% confidence intervals, indicating the threshold beyond which correlation values are statistically significant. If autocorrelation values remain within this range, it suggests that the recruitment estimates behave as a random process with no significant dependence on past values. Conversely, autocorrelation values exceeding these bounds indicate recruitment persistence or cyclic patterns.
 
-<img src="Figs/unnamed-chunk-67-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-68-1.jpeg" style="display: block; margin: auto;" />
 
 The ACF plots indicate that the reference model (without environmental or predator data) exhibits weak but noticeable positive autocorrelation at certain lags, suggesting some degree of recruitment dependence over time. However, this autocorrelation does not appear strong or systematic.
 
@@ -3545,11 +3584,11 @@ Overall, these results indicate that recruitment variability is at least partial
 
 ### Recruit deviation
 
-<img src="Figs/unnamed-chunk-68-1.jpeg" style="display: block; margin: auto;" />
-
-
-
 <img src="Figs/unnamed-chunk-69-1.jpeg" style="display: block; margin: auto;" />
+
+
+
+<img src="Figs/unnamed-chunk-70-1.jpeg" style="display: block; margin: auto;" />
 This bar plot presents the log-normal likelihood contributions of different model components in an Antarctic krill stock assessment under four scenarios (s1.1, s1.2, s1.3, and s1.4).  
 
 
@@ -3566,7 +3605,8 @@ Scenario s1.4 seems to fit the data best, followed closely by s1.2. Scenario s1.
 
 ### Platoons analisis
 
-<img src="Figs/unnamed-chunk-70-1.jpeg" style="display: block; margin: auto;" />
+<img src="Figs/unnamed-chunk-71-1.jpeg" style="display: block; margin: auto;" />
+
 ### AKL
 
 In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process

@@ -378,17 +378,17 @@ Model outputs under different ecosystem scenarios revealed substantial variation
 knitr::include_graphics('Figs/unnamed-chunk-65-1.jpeg')
 ```
 
-Figure \@ref(fig:compara) shows the time series of estimated spawning output for Antarctic krill under four modeling scenarios from 1990 to 2020. The reference model (blue), which excludes ecosystem components, consistently estimates higher spawning output values over time, with a steep increase observed after 2015. In contrast, the models that incorporate ecosystem components—predator data (green), environmental data (yellow), or both (red)—estimate consistently lower spawning output throughout the time series. The red line, representing the model with both predator and environmental data, remains the most conservative, suggesting that ecosystem-informed models lead to more precautionary estimates of reproductive potential. The rigth panel displays the posterior density distributions of unfished spawning biomass (SSB~o~) for the same scenarios. The reference model estimates the highest SSBo values (mode ~ 3.2), while the ecosystem-informed models estimate considerably lower SSBo, with the most constrained distribution occurring under the full ecosystem model (red). The shift in the distributions indicates that including ecosystem drivers reduces estimates of unfished reproductive capacity, which has implications for reference point calculations and harvest strategies.
+Figure \@ref(fig:compara) shows the time series of estimated spawning output for Antarctic krill under most significant models in this analisys, s1.1 and s1.4. The reference model (red), which excludes ecosystem components, consistently estimates higher spawning output values over time, with a steep increase observed after 2015. In contrast, the models that incorporate ecosystem components—predator data (green), environmental data (yellow), or both (red)—estimate consistently lower spawning output throughout the time series. The red line, representing the model with both predator and environmental data, remains the most conservative, suggesting that ecosystem-informed models lead to more precautionary estimates of reproductive potential. The rigth panel displays the posterior density distributions of unfished spawning biomass (SSB~o~) for the same scenarios. The reference model estimates the highest SSBo values (mode ~ 3.2), while the ecosystem-informed models estimate considerably lower SSBo, with the most constrained distribution occurring under the full ecosystem model (red). The shift in the distributions indicates that including ecosystem drivers reduces estimates of unfished reproductive capacity, which has implications for reference point calculations and harvest strategies.
 
-```{r compara,eval=TRUE, out.width="60%", fig.cap="Estimated R0 parameter for Antarctic krill under four assessment scenarios. Models including predator and environmental data"}
-knitr::include_graphics('Figs/COM1compare2_spawnbio_uncertainty.png')
+```{r compara,eval=TRUE, out.width="60%", fig.cap=""}
+knitr::include_graphics('Figs/alloutput_s1_4.png')
 
 ```
 
 The different configurations to estimated posterior distribution of Natural log of virgin recruitment level (R0) suggesting that the choice of covariates has a substantial impact on the estimation of unfished recruitment (Figure \@ref(fig:compara2)). The model with both environmental and predator data yields the highest R0 values, while the model with only environmental data results in the lowest estimates. This highlights the sensitivity of the recruitment parameter to assumptions about ecological drivers in the stock-recruitment relationship.
 
-```{r compara2, eval=TRUE, out.width="60%", fig.cap="Estimated spawning output for Antarctic krill under four assessment scenarios"}
-knitr::include_graphics('Figs/COM1compare16_densities_SR_LN(R0).png')
+```{r compara2, eval=TRUE, out.width="60%", fig.cap="Estimated R0 parameter for Antarctic krill under four assessment scenarios. Models including predator and environmental data"}
+knitr::include_graphics('Figs/R0plot.png')
 
 ```
 

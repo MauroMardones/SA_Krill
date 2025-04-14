@@ -103,18 +103,17 @@ Here, the **reference model** represents a baseline assessment of *Euphausia sup
 
 The study area corresponds to Subarea 48.1 in the WAP, where most krill fishing activity occurs and where CCAMLR has been working to implement a new management strategy at a reduced spatial scale (Figure \@ref(fig:mapa)). To refine the spatial resolution of krill population dynamics and analysis, we adopted the five strata proposed by CCAMLR: Bransfield Strait, Elephant Island, Gerlache Strait, Joinville Island, and the Southwest [@Dornam2021; REF] (Fig 1 S1). While these strata were originally designed for management purposes without considering specific biological or population characteristics, their subdivision enables us to analyze the data at a finer scale. This level of detail facilitates the identification of heterogeneity across various data sources, whether these originate from the fishery or from environmental survey data, providing a more nuanced understanding of krill population dynamics. This spatial segregation of information is incorporated into the stock assessment model, making it a spatially explicit model that accounts for regional variability in population dynamics and external factors.
 
-```{r mapa, out.width='40%', fig.show='hold',fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)"}
+```{r mapa, out.width='50%', fig.show='hold',fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)"}
 knitr::include_graphics('Figs/481.png')
 ```
 
-In this approach we include spatial structure how an implicit approach where different areas are treated as separate fleets. Differences among strata have been identified from various perspectives of krill population dynamics, as well as from the influence of environmental variability within Subarea 48.1 (Figure \@ref(fig:concem)).
-
+In this approach, spatial structure is incorporated implicitly by treating different areas as separate fleets [@Nielsen2021; @Waterhouse2014]. This constitutes a spatially implicit modeling framework, where differences among strata are recognized both from the perspective of krill population dynamics and from the influence of environmental variability within Subarea 48.1 (Figure \@ref(fig:concem)). 
 
 ```{r concem, out.width='40%', fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
 knitr::include_graphics('Figs/conceptual.jpeg')
 ```
 
-## Statistical Model (SS3)
+## Statistical Model (`SS3`)
 
 Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. In this exercise, SS3 is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. By leveraging a spatially implicit, ecosystem-informed approach, this assessment provides a robust framework for evaluating krill stock dynamics under changing environmental conditions. These insights are crucial for informing sustainable management strategies in the Antarctic Peninsula region, where krill plays a foundational role in the marine food web.  
 
@@ -195,9 +194,11 @@ parInit %>%
                       "Selectivity" = 4))
 
 ```
-Source of data input
+Source of data input.
 
-```{r fig.width=9, fig.height=4}
+Ibdex abundance in Figure \@ref(fig:index)
+
+```{r}
 dat1_std <- dat1$CPUE %>%
   mutate(
     index_std = (obs - min(obs)) / (max(obs) - min(obs)),
@@ -231,6 +232,10 @@ dat1_std <- dat1$CPUE %>%
       TRUE ~ NA_character_  
     )
   )
+```
+
+
+```{r index, fig.width=9, fig.height=4, fig.cap="Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea."}
 
 p1 <- ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = category)) +
   geom_point() +
@@ -248,7 +253,7 @@ p1
 ```
 
 
-```{r fig.width=10, fig.height=4, warning=FALSE}
+```{r warning=FALSE}
 dat_long <- dat1$lencomp %>% 
   pivot_longer(cols = starts_with("l"),  
                names_to = "Talla",  
@@ -285,7 +290,11 @@ mean_talla <- dat_long %>%
 
 dat_expanded <- dat_long %>%
   uncount(weights = Frecuencia)
+```
 
+Length compositions in Figure \@ref(fig:length)
+
+```{r length, fig.width=10, fig.height=4, warning=FALSE, fig.cap="Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm)."}
 p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
   geom_density_ridges_gradient(scale = 1.8,
                                rel_min_height = 0.001,
@@ -1890,10 +1899,10 @@ outpsall <- rbind(outps1,
 
 ```{r}
 # Crear una columna de modelo en cada data frame
-outps1$Model <- "Ref Model: No Env-Predator"
+outps1$Model <- "s1.1 (Ref Model: No Env-Predator)"
 outps2$Model <- "s1.2 w/ Predator data"
 outps3$Model <- "s1.3 w/ Env data"
-outps4$Model <- "s1.4 w/ Env and Predator data"
+outps4$Model <- "s1.4 (Env and Predator data)"
 
 # Unir los data frames en uno solo
 outpsall <- rbind(outps1,  outps4)
@@ -1901,23 +1910,26 @@ outpsall <- rbind(outps1,  outps4)
 
 outpsall_long <- outpsall %>%
   pivot_longer(cols = c(Bio_smry, SpawnBio, Recruit_0), 
-               names_to = "Variable", values_to = "Value")
+               names_to = "Variable", values_to = "Value") %>% 
+  filter(Yr >= 1989, Yr <= 2020)
+
 
 # Gráfico de barras agrupadas por variable y modelo
-ggplot(outpsall_long, aes(x = factor(Yr), y = Value, fill = Model)) +
+alloutput <- ggplot(outpsall_long, aes(x = factor(Yr), y = Value, fill = Model)) +
   geom_bar(stat = "identity", position = "dodge") +
   facet_wrap(~Variable, 
              ncol=1,
              scales = "free_y") + 
   scale_fill_manual(name= "Scenario",
-                    values = c("Ref Model: No Env-Predator" = "#ca0020",  
+                    values = c("s1.1 (Ref Model: No Env-Predator)" = "#ca0020",  
                               
-                               "s1.4 w/ Env and Predator data" = "#404040")) +
+                               "s1.4 (Env and Predator data)" = "#404040")) +
   labs(title = "",
        x = "", y = "") +
-  theme_bw() +
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "bottom")
+alloutput
 ```
 
 
@@ -1990,10 +2002,10 @@ biglist1_4 <- SSgetoutput(keyvec = NULL,
 summaryoutput1_4 <- SSsummarize(biglist1_4)
 
 SSplotComparisons(summaryoutput1_4,
-                  legendlabels = c("Ref Model: No Env-Predator",
-                 "S1.1 w/ Predator data",
-                 "S1.1 w/ Env data",
-                 "S1.1 w/ Env and Predator data"),
+                  legendlabels = c("s1.1 (Ref Model)",
+                 "s1.2",
+                 "s1.3",
+                 "s1.4"),
                  filenameprefix = "COM1",
                  labels = c("Year", 
                             "Spawning biomass (t)",
@@ -2042,6 +2054,52 @@ comp14 <- SSplotComparisons(summaryoutput14,
                             "Spawning output",
                             "Harvest rate"),
                  png=TRUE,plotdir=Figs)
+```
+
+Antoher comparision in `R0` (Natural log of virgin recruitment level)
+
+
+```{r}
+r0_vals <- data.frame(
+  model = c("s1.1", "s1.2", "s1.3", "s1.4"),
+  value = c(base.model1.1$jitter_info[1,1],
+            base.model1.2$jitter_info[2,1],
+            base.model1.3$jitter_info[1,1],
+            base.model1.4$jitter_info[2,1]),
+  cv = c(base.model1.1$jitter_info[1,6],
+         base.model1.2$jitter_info[2,6],
+         base.model1.3$jitter_info[1,6],
+         base.model1.4$jitter_info[2,6])
+)
+
+x_vals <- seq(10, 30, length.out = 1000)
+
+dens_data <- r0_vals %>%
+  rowwise() %>%
+  mutate(sd =  cv,  
+         density = list(data.frame(
+           x = x_vals,
+           y = dnorm(x_vals, mean = value, sd = sd),
+           model = model
+         ))) %>%
+  select(density) %>%
+  unnest(cols = c(density))
+
+colores <- c("s1.1" = "#ca0020", 
+             "s1.2" = "#f4a582", 
+             "s1.3" = "#bababa", 
+             "s1.4" = "#404040")
+
+r0plot <- ggplot(dens_data, aes(x = x, y = y, color = model, fill = model)) +
+  geom_area(alpha = 0.5, position = "identity") +
+  geom_line(size = 1) +
+  scale_color_manual(values = colores) +
+  scale_fill_manual(values = colores) +
+  labs(title = "",
+       x = "Natural log of virgin recruitment level (R0)", y = "Density") +
+  theme_bw() +
+  xlim(16, 22)
+r0plot
 ```
 
 ### Comparsion in sd long term time series forecasting
