@@ -700,12 +700,11 @@ ggplot(totalbio, aes(x = Yr, y = Bio_all, color=Serie)) +
 
 ```
 
-Heatmap
+Pearson residual
 
 ```{r}
-
-create_heatmap <- function(df) {
-  df1 <- df %>%
+create_heatmap_df <- function(df, model_name) {
+  df %>%
     dplyr::filter(Pearson < 5) %>%
     dplyr::select(c(1, 6, 19, 16)) %>%
     dplyr::mutate(Fleet = dplyr::case_when(
@@ -721,80 +720,43 @@ create_heatmap <- function(df) {
       Fleet == 10 ~ "SURVEYSSIW",
       Fleet == 11 ~ "PREDATOR",
       TRUE ~ NA_character_
-    ))
-  
-  ggplot(df1, aes(x = Yr, y = Bin, fill = Pearson)) +
-    geom_tile() +
-    scale_fill_gradient2(low = "black", 
-                         mid = "white", 
-                         high = "red", 
-                         midpoint = 0) +
-    facet_wrap(Fleet~., ncol=6) + 
-    labs(title = "", 
-         x = "", 
-         y = "Length (cm)", 
-         fill = "Pearson") + 
-    theme_few() + 
-    theme(axis.text.x = element_text(angle = 90, 
-                                     hjust = 1, 
-                                     size = 7),
-          legend.position = "bottom")
+    )) %>%
+    dplyr::mutate(Model = model_name)
 }
 
-# Crear heatmaps para los diferentes dataframes
-heatmap1 <- create_heatmap(base.model1.1$lendbase)
-heatmap2 <- create_heatmap(base.model1.2$lendbase)
-heatmap3 <- create_heatmap(base.model1.3$lendbase)
-heatmap4 <- create_heatmap(base.model1.4$lendbase)
+# Unir los datasets en uno solo
+df_all <- bind_rows(
+  create_heatmap_df(base.model1.1$lendbase, "Model 1.1"),
+  create_heatmap_df(base.model1.2$lendbase, "Model 1.2"),
+  create_heatmap_df(base.model1.3$lendbase, "Model 1.3"),
+  create_heatmap_df(base.model1.4$lendbase, "Model 1.4")
+)
 
-# Combina los plots en un solo gráfico con 8 columnas y 1 fila, compartiendo la leyenda
-ggarrange(heatmap1, heatmap2, heatmap3, heatmap4, 
-          ncol = 2, 
-          nrow = 2, 
-          common.legend = TRUE, 
-          legend = "bottom")
+# Plot combinado: facet_grid por Modelo y Fleet
+heatmapres <- ggplot(df_all, aes(x = Yr, y = Bin, fill = Pearson)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "red", 
+                       mid = "white", 
+                       high = "blue",
+                       midpoint = 0) +
+  facet_grid(Fleet ~ Model) +
+  theme_few() +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 5),         
+    axis.text.y = element_text(size = 5),                               
+    strip.text = element_text(size = 8),                                 
+    legend.position = "none"
+  ) +
+  labs(x = "", y = "Length (cm)", fill = "Pearson")
+
+heatmapres
 ```
+
 
 This figure shows the Pearson residuals of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity. The residuals are visualized by year and length bin, allowing an assessment of model fit over time and across the size structure of the population. In the "Without Ecosystem Variables" scenario (top left), substantial lack of fit is evident across multiple years and length classes, particularly in the late 1990s and early 2000s. Positive Pearson residuals indicate that the model tends to underestimate frequencies of certain length bins, especially among smaller and mid-sized individuals, suggesting poor representation of recruitment and growth dynamics in the absence of environmental and predator effects. The "With Predator" scenario (top right) shows some improvement in model fit, with slightly more balanced residuals. However, there are still consistent deviations in the mid-size ranges across multiple years, indicating that predation alone does not fully explain observed variability in length composition. In the "With Environment" scenario (bottom left), there is a noticeable reduction in residual magnitude across several years and size classes, implying that incorporating environmental covariates helps align the model more closely with observed size distributions. This is particularly apparent in the early 2000s, where the residuals are closer to zero across most bins. Finally, the "With Predator and Ecosystem" scenario (bottom right) shows the most consistent reduction in Pearson residuals across time and size structure. The distribution of residuals is more homogeneous and centered around zero, indicating that the combined inclusion of predator and environmental drivers leads to the best model fit among the four scenarios.
 
 Overall, the results support the conclusion that ecosystem-informed models better capture the temporal and size-structured dynamics of krill, with the **joint inclusion of predator and environmental variables** yielding the most robust representation of observed length compositions.
 
-```{r eval=FALSE}
-# Assuming your data is in a data frame called 'lendbase'
-# Filter and select relevant columns
-data <- base.model1.4$lendbase %>%
-  dplyr::filter(Pearson<5) %>% 
-  dplyr::select(c(1, 6, 19, 16)) %>% 
-  dplyr::mutate(Fleet = dplyr::case_when(
-    Fleet == 1 ~ "FISHERYBS",
-    Fleet == 2 ~ "FISHERYEI",
-    Fleet == 3 ~ "FISHERYGS",
-    Fleet == 4 ~ "FISHERYJOIN",
-    Fleet == 5 ~ "FISHERYSSIW",
-    Fleet == 6 ~ "SURVEYBS",
-    Fleet == 7 ~ "SURVEYEI",
-    Fleet == 8 ~ "SURVEYGS",
-    Fleet == 9 ~ "SURVEYJOIN",
-    Fleet == 10 ~ "SURVEYSSIW",
-    Fleet == 11 ~ "PREDATOR",
-    TRUE ~ NA_character_  # Para manejar cualquier valor que no coincida
-  )) %>% 
-  dplyr::select(Yr, Bin, Pearson) 
-
-# Create the hexagonal heatmap
-ggplot(data, aes(x = Yr, y = Bin)) +
-  geom_hex(bins=50) +  # Hexagonal bins
-  scale_fill_gradient2(low = "blue", 
-                       mid = "white", 
-                       high = "red", 
-                       midpoint = 0) +  # Color scale
-  theme_minimal() +  # Minimal theme for cleaner look
-  labs(title = "Hexagonal Heatmap of Pearson Residuals",
-       x = "Year",
-       y = "Bin",
-       fill = "Pearson Residual")  # Labels for plot and axes
-
-```
 
 ## Diagnosis Base Model
 
@@ -809,6 +771,10 @@ A rigorous model diagnosis is essential to ensure the reliability and robustness
 4. Likelihood Profile Analysis: This approach examines how the likelihood function behaves across a range of parameter values, providing insight into parameter uncertainty and model sensitivity.  
 
 This framework follows the recommendations outlined by @Carvalho2021b, aiming to enhance transparency and reproducibility in model evaluation.
+
+### Convergence Criteria
+
+The convergence criterion used for model calibration is set to a final threshold of **0.0001** (or equivalently **1.0e-04**). This criterion defines the minimum acceptable difference between successive model iterations. Convergence is considered achieved when the absolute change in the objective function value or key parameters falls below this threshold. A smaller convergence value ensures that the model achieves a high degree of accuracy and stability in its final estimates, indicating that further iterations are unlikely to result in significant changes to the parameter estimates.
 
 ### Residual consistency 
 
@@ -891,32 +857,32 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 
 ```{r}
 par(mfrow=c(2,2), mar=c(5,4,2,1))
-SSplotJABBAres(base.model1.1,
+rmse1l <- SSplotJABBAres(base.model1.1,
                subplots = "len",
                add=T)
-SSplotJABBAres(base.model1.2,
+rmse2l <- SSplotJABBAres(base.model1.2,
                subplots = "len",
                add=T)
-SSplotJABBAres(base.model1.3,
+rmse3l <- SSplotJABBAres(base.model1.3,
                subplots = "len",
                add=T)
-SSplotJABBAres(base.model1.4,
+rmse4l <- SSplotJABBAres(base.model1.4,
                subplots = "len",
                add=T)
 ```
 
 ```{r}
 par(mfrow=c(2,2), mar=c(5,4,2,1))
-SSplotJABBAres(base.model1.1,
+rmse1c <- SSplotJABBAres(base.model1.1,
                subplots = "cpue",
                add=T)
-SSplotJABBAres(base.model1.2,
+rmse2c <- SSplotJABBAres(base.model1.2,
                subplots = "cpue",
                add=T)
-SSplotJABBAres(base.model1.3,
+rmse3c <- SSplotJABBAres(base.model1.3,
                subplots = "cpue",
                add=T)
-SSplotJABBAres(base.model1.4,
+rmse4c <- SSplotJABBAres(base.model1.4,
                subplots = "cpue",
                add=T)
 ```
@@ -1362,7 +1328,7 @@ This approach provides a rigorous evaluation of model forecasting capabilities a
 
 ```{r}
 par(mfrow=c(2,4), mar=c(5,4,2,1))
-hci = SSplotHCxval(retroSummary1.1, 
+hci1 = SSplotHCxval(retroSummary1.1, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
@@ -1371,7 +1337,7 @@ hci = SSplotHCxval(retroSummary1.1,
 
 ```{r}
 par(mfrow=c(3,3), mar=c(5,4,2,1))
-hci = SSplotHCxval(retroSummary1.2, 
+hci2 = SSplotHCxval(retroSummary1.2, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
@@ -1380,7 +1346,7 @@ hci = SSplotHCxval(retroSummary1.2,
 
 ```{r}
 par(mfrow=c(2,4), mar=c(5,4,2,1))
-hci = SSplotHCxval(retroSummary1.3, 
+hci3 = SSplotHCxval(retroSummary1.3, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
@@ -1389,7 +1355,7 @@ hci = SSplotHCxval(retroSummary1.3,
 
 ```{r}
 par(mfrow=c(3,3), mar=c(5,4,2,1))
-hci = SSplotHCxval(retroSummary1.4, 
+hci4 = SSplotHCxval(retroSummary1.4, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7) 
@@ -1709,7 +1675,7 @@ mainlike_components_labels  <- c('Total likelihood',
 ```
 
 
-### `SSplotProfile()`
+### Likelihood Profile
 
 ```{r eval=FALSE, echo = FALSE}
 png(file.path(plotdir,"R0_profile_plot.png"),
@@ -1739,9 +1705,7 @@ dev.off()
 
 
 
-### Convergence Criteria
 
-The convergence criterion used for model calibration is set to a final threshold of **0.0001** (or equivalently **1.0e-04**). This criterion defines the minimum acceptable difference between successive model iterations. Convergence is considered achieved when the absolute change in the objective function value or key parameters falls below this threshold. A smaller convergence value ensures that the model achieves a high degree of accuracy and stability in its final estimates, indicating that further iterations are unlikely to result in significant changes to the parameter estimates.
 
 
 ```{r eval=FALSE, echo = FALSE}
@@ -1809,45 +1773,104 @@ dev.off()
 
 ### Table Diagnosis
 
+
+
 ```{r}
-# Construcción de tabla resumen
-diagnostics <- data.frame(
-  Model = c("s1.1", "s1.2", "s1.3", "s1.4"),
-  Gradient = c(
-    base.model1.1$maximum_gradient_component,
-    base.model1.2$maximum_gradient_component,
-    base.model1.3$maximum_gradient_component,
-    base.model1.4$maximum_gradient_component
-  ),
-  Likelihood = c(
-    base.model1.1$likelihoods_used[1,1],
-    base.model1.2$likelihoods_used[1,1],
-    base.model1.3$likelihoods_used[1,1],
-    base.model1.4$likelihoods_used[1,1]
-  ),
-  Parameters = c(
-    dim(base.model1.1$parameters)[1],
-    dim(base.model1.2$parameters)[1],
-    dim(base.model1.3$parameters)[1],
-    dim(base.model1.4$parameters)[1]
-  ),
-  RMSE = c(
-    mean(as.numeric(base.model1.1$index_variance_tuning_check$RMSE)),
-    mean(as.numeric(base.model1.2$index_variance_tuning_check$RMSE[1:10])),
-    mean(as.numeric(base.model1.3$index_variance_tuning_check$RMSE[1:10])),
-    mean(as.numeric(base.model1.4$index_variance_tuning_check$RMSE[1:10]))
-  )
+# Modelo s1.1
+diag1.1 <- data.frame(
+  Scenario = "s1.1",
+  Convergency = base.model1.1$maximum_gradient_component,
+  AIC = as.numeric(2 * dim(base.model1.1$estimated_non_dev_parameters)[1] + 2 * base.model1.1$likelihoods_used[1, 1]),
+  Total_like = base.model1.1$likelihoods_used$values[rownames(base.model1.1$likelihoods_used) == "TOTAL"],
+  N_Params = as.numeric(2 * dim(base.model1.1$estimated_non_dev_parameters)[1]),
+  Survey_like = base.model1.1$likelihoods_used$values[rownames(base.model1.1$likelihoods_used) == "Survey"],
+  Length_comp_like = base.model1.1$likelihoods_used$values[rownames(base.model1.1$likelihoods_used) == "Length_comp"],
+  RMSE_index = rmse1c$RMSE.perc[rmse1c$indices == "Combined"],
+  RMSE_length = rmse1l$RMSE.perc[rmse1l$indices == "Combined"],
+  MASE = mean(hci1$MAE.base, na.rm = TRUE),
+  Retro_Rho_ssb = tablebias01[5, 3],
+  Forecast_Rho_ssb = tablebias01[5, 4],
+  Forecast_Rho_f = tablebias01a[5, 3],
+  Rho_f = tablebias01a[5, 4]
 )
-#write_csv(diagnostics, "model_diagnosis.csv")
-flextable(diagnostics) %>%
-  set_caption("Diagnostic summary of model scenarios") %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  fontsize(size = 10, part = "all") %>%
-  set_table_properties(width = .85, layout = "autofit")
 
+# Modelo s1.2
+diag1.2 <- data.frame(
+  Scenario = "s1.2",
+  Convergency = base.model1.2$maximum_gradient_component,
+  AIC = as.numeric(2 * dim(base.model1.2$estimated_non_dev_parameters)[1] + 2 * base.model1.2$likelihoods_used[1, 1]),
+  Total_like = base.model1.2$likelihoods_used$values[rownames(base.model1.2$likelihoods_used) == "TOTAL"],
+  N_Params = as.numeric(2 * dim(base.model1.2$estimated_non_dev_parameters)[1]),
+  Survey_like = base.model1.2$likelihoods_used$values[rownames(base.model1.2$likelihoods_used) == "Survey"],
+  Length_comp_like = base.model1.2$likelihoods_used$values[rownames(base.model1.2$likelihoods_used) == "Length_comp"],
+  RMSE_index = rmse2c$RMSE.perc[rmse2c$indices == "Combined"],
+  RMSE_length = rmse2l$RMSE.perc[rmse2l$indices == "Combined"],
+  MASE = mean(hci2$MAE.base, na.rm = TRUE),
+  Retro_Rho_ssb = tablebias2[5, 3],
+  Forecast_Rho_ssb = tablebias2[5, 4],
+  Forecast_Rho_f = tablebias2a[5, 3],
+  Rho_f = tablebias2a[5, 4]
+)
+
+# Modelo s1.3
+diag1.3 <- data.frame(
+  Scenario = "s1.3",
+  Convergency = base.model1.3$maximum_gradient_component,
+  AIC = as.numeric(2 * dim(base.model1.3$estimated_non_dev_parameters)[1] + 2 * base.model1.3$likelihoods_used[1, 1]),
+  Total_like = base.model1.3$likelihoods_used$values[rownames(base.model1.3$likelihoods_used) == "TOTAL"],
+  N_Params = as.numeric(2 * dim(base.model1.3$estimated_non_dev_parameters)[1]),
+  Survey_like = base.model1.3$likelihoods_used$values[rownames(base.model1.3$likelihoods_used) == "Survey"],
+  Length_comp_like = base.model1.3$likelihoods_used$values[rownames(base.model1.3$likelihoods_used) == "Length_comp"],
+  RMSE_index = rmse3c$RMSE.perc[rmse3c$indices == "Combined"],
+  RMSE_length = rmse3l$RMSE.perc[rmse3l$indices == "Combined"],
+  MASE = mean(hci3$MAE.base, na.rm = TRUE),
+  Retro_Rho_ssb = tablebias3[5, 3],
+  Forecast_Rho_ssb = tablebias3[5, 4],
+  Forecast_Rho_f = tablebias3a[5, 3],
+  Rho_f = tablebias3a[5, 4]
+)
+
+# Modelo s1.4
+diag1.4 <- data.frame(
+  Scenario = "s1.4",
+  Convergency = base.model1.4$maximum_gradient_component,
+  AIC = as.numeric(2 * dim(base.model1.4$estimated_non_dev_parameters)[1] + 
+                     2 * base.model1.4$likelihoods_used[1, 1]),
+  Total_like = base.model1.4$likelihoods_used$values[rownames(base.model1.4$likelihoods_used) == "TOTAL"],
+  N_Params = as.numeric(2 * dim(base.model1.4$estimated_non_dev_parameters)[1]),
+  Survey_like = base.model1.4$likelihoods_used$values[rownames(base.model1.4$likelihoods_used) == "Survey"],
+  Length_comp_like = base.model1.4$likelihoods_used$values[rownames(base.model1.4$likelihoods_used) == "Length_comp"],
+  RMSE_index = rmse4c$RMSE.perc[rmse4c$indices == "Combined"],
+  RMSE_length = rmse4l$RMSE.perc[rmse4l$indices == "Combined"],
+  MASE = mean(hci4$MAE.base, na.rm = TRUE),
+  Retro_Rho_ssb = tablebias4[5, 3],
+  Forecast_Rho_ssb = tablebias4[5, 4],
+  Forecast_Rho_f = tablebias4a[5, 3],
+  Rho_f = tablebias4a[5, 4]
+)
+
+
+diag_all <- rbind(diag1.1,
+                  diag1.2, 
+                  diag1.3, 
+                  diag1.4)
+
+
+diag_tidy <- diag_all |>
+  pivot_longer(cols = -Scenario, names_to = "Description", values_to = "Value") |>
+  pivot_wider(names_from = Scenario, values_from = Value)
+
+diag_tidy[, 2:5] <- lapply(diag_tidy[, 2:5], function(x) as.numeric(format(round(x, 3), nsmall = 3)))
+
+
+#write_csv(diag_tidy, "model_diagnosis.csv")
+flextable(diag_tidy) |>
+  colformat_num(digits = 3) |>  
+  autofit() |>
+  theme_booktabs() |>
+  align(align = "center", part = "all") |>
+  bold(part = "header")
 ```
-
 
 ## Outputs
 

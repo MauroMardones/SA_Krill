@@ -58,7 +58,7 @@ library(r4ss)
 
 \newpage
 
-# ABSTRACT
+# Abstract 
 
 Understanding the population dynamics of Antarctic krill (*Euphausia superba*) is critical for achieving sustainable and ecosystem management objectives in the Western Antarctic Peninsula (WAP). In this study, we implement an integrated Catch-at-Length model that not only allows the incorporation of diverse data sources related to krill population dynamics, but also enables the evaluation of ecosystem influences—specifically environmental variability and predation pressure—on recruitment, biomass, and stock status. We explored multiple scenarios that accounted for ecosystem influences on krill population dynamics, yielding results that align with the expected behavior of a stock assessment framework tailored to this type of species. Performance analyses reveal systematic differences across scenarios, highlighting increased bias in fishing mortality (F) and spawning stock biomass (SSB) in models that exclude ecosystem variables. Conversely, the inclusion of environmental and predator data results in lower estimates of recruitment, total biomass, and spawning biomass, offering a more precautionary—and arguably more realistic—representation of krill population dynamics. Despite ongoing challenges in incorporating ecosystem variables into integrated model like this, we argue that these factors should be embedded directly into the state equations that govern population dynamics, rather than addressed through post hoc analyses. Overlooking these drivers may result in less accurate conclusions and limit the effectiveness of management recommendations. Integrated modeling approaches that draw on extensive biological, fishery, and environmental datasets provide a valuable foundation for developing management strategies aligned with CCAMLR’s conservation and sustainable use objectives.
 
@@ -67,7 +67,7 @@ Understanding the population dynamics of Antarctic krill (*Euphausia superba*) i
 
 \newpage
 
-# INTRODUCTION
+# Introduction
 
 Antarctic krill (*Euphausia superba*) is a keystone species in the Antarctic ecosystem and one of the largest populations on the planet in terms of biomass (REF). Currently, its population is predominantly concentrated in the Western Antarctic Peninsula (WAP), a critical feeding ground for predators and the primary area for krill harvesting over the past four decades (REF). At the same time, the WAP is one of the most vulnerable regions to climate change (CC) and has already undergone rapid environmental shifts [@Turner2005; @Lima2013; @McBride2021; @Morley2020; @Atkinson2019a]. These overlapping pressures have intensified scientific interest in understanding krill population dynamics from both an ecological and fisheries perspective. Given its ecological significance and commercial value, effective management of krill stocks is essential to maintaining the balance of the Antarctic ecosystem while supporting sustainable fisheries.
 
@@ -86,7 +86,7 @@ By integrating ecosystem drivers into the stock assessment process, this study a
 \newpage
 
 
-# METHODOLOGY
+# Methodology
 
 ## Study Area
 
@@ -378,7 +378,7 @@ ft_stat
 ```
 
 
-# RESULTS
+# Results
 
 ### Environmental data 
 
@@ -431,10 +431,14 @@ The krill population dynamics model was evaluated under four increasingly comple
 
 Regarding model fit, Pearson residuals of predicted length distributions for krill were evaluated across four modeling scenarios, each incorporating different levels of ecosystem complexity. Pearson residuals are used to assess the goodness-of-fit by standardizing the differences between observed and predicted values, allowing for the detection of systematic patterns or biases in model predictions across size classes and sampling sources.
 
-The residuals are visualized by year and length bin, allowing an assessment of model fit over time and across the size structure of the population (Figure \@ref(fig:pearson)). In the "Without Ecosystem Variables" scenario (top left), substantial lack of fit is evident across multiple years and length classes, particularly in the late 1990s and early 2000s. Positive Pearson residuals indicate that the model tends to underestimate frequencies of certain length bins, especially among smaller and mid-sized individuals, suggesting poor representation of recruitment and growth dynamics in the absence of environmental and predator effects. The "With Predator" scenario (top right) shows some improvement in model fit, with slightly more balanced residuals. However, there are still consistent deviations in the mid-size ranges across multiple years, indicating that predation alone does not fully explain observed variability in length composition. In the "With Environment" scenario (bottom left), there is a noticeable reduction in residual magnitude across several years and size classes, implying that incorporating environmental covariates helps align the model more closely with observed size distributions. This is particularly apparent in the early 2000s, where the residuals are closer to zero across most bins. Finally, the "With Predator and Ecosystem" scenario (bottom right) shows the most consistent reduction in Pearson residuals across time and size structure. The distribution of residuals is more homogeneous and centered around zero, indicating that the combined inclusion of predator and environmental drivers leads to the best model fit among the four scenarios.
+
+The residuals are visualized by year and length bin, allowing an assessment of model fit over time and across the size structure of the population (Figure \@ref(fig:pearson)). In scenario s1.1 (Without Ecosystem Variables), substantial lack of fit is evident across multiple years and length classes, particularly in the late 1990s and early 2000s. Positive Pearson residuals indicate that the model tends to underestimate frequencies of certain length bins, especially among smaller and mid-sized individuals, suggesting poor representation of recruitment and growth dynamics in the absence of environmental and predator effects. s1.2 (With Predator) shows some improvement in model fit, with slightly more balanced residuals. However, there are still consistent deviations in the mid-size ranges across multiple years, indicating that predation alone does not fully explain observed variability in length composition. In s1.3 (With Environment), there is a noticeable reduction in residual magnitude across several years and size classes, implying that incorporating environmental covariates helps align the model more closely with observed size distributions. This is particularly apparent in the early 2000s, where the residuals are closer to zero across most bins. Finally, s1.4 (With Predator and Ecosystem) shows the most consistent reduction in Pearson residuals across time and size structure. The residual patterns also indicate potentially concerning model misfits, particularly among adult individuals in several survey fleets operating in the Bransfield Strait, as well as among the largest size classes in the predator fleet, which likely represents penguin consumption data. The residuals exhibit consistent over- or under-estimation in specific length bins over multiple years, suggesting that the current model structure may not fully capture key processes affecting the abundance or selectivity of adult individuals. In the case of surveys in Bransfield, this could reflect spatial mismatches between predicted and observed size distributions or biases in survey selectivity for larger size classes. This spatial heterogeneity aligns with previous findings identifying this area as a core juvenile krill habitat [@Mardones2025; @Veytia2021, Vetia et al., 2019, REF, REF]. Similarly, the residuals associated with the predator fleet suggest that the model may inadequately represent size-selective predation or the temporal dynamics of predator consumption. These patterns warrant further investigation into the assumptions underlying length selectivity and mortality, particularly for the adult component of the population, as well as potential ecosystem-driven variability not currently integrated in the model.
 
 
-```{r pearson, eval=TRUE, fig.cap= "Pearson residuals of predicted versus observed length-frequency distributions of Antarctic krill across four modeling scenarios (s1.1 to s1.4), each incorporating increasing levels of ecosystem complexity. Residuals are shown by fleet, survey, and predator source, allowing visual assessment of model fit across time and sampling components"}
+Overall, the distribution of residuals is more homogeneous and centered around zero, indicating that the combined inclusion of predator and environmental drivers leads to the best model fit among the four scenarios.
+
+
+```{r pearson, eval=TRUE, fig.cap= "Pearson residuals of predicted versus observed length-frequency distributions of Antarctic krill across four modeling scenarios (s1.1 to s1.4), each incorporating increasing levels of ecosystem complexity. Residuals are shown by fleet, survey, and predator source, allowing visual assessment of model fit across time and sampling components (Red = positive, Black = negative"}
 knitr::include_graphics('Figs/Pearson.png')
 ```
 
@@ -528,21 +532,22 @@ A *t-test*, assuming normality and homoscedasticity, revealed a statistically si
 
 ### Model scenarios diagnostics summary
 
-The comparative evaluation of the four model scenarios (s1.1–s1.4) revealed key differences in model performance and complexity (Table \@ref(tab:diagnostics)). Scenario s1.1, the simplest model with no ecosystem covariates, exhibited the lowest maximum gradient component (2.4e−05), suggesting a well-converged solution. It also used the fewest estimated parameters (94) and achieved a relatively low RMSE (0.88), indicating a good fit to the data despite its simplicity. However, its negative log-likelihood (NLL = 1,291.04) was higher compared to more complex models. Model s1.2, which includes only environmental covariates, showed a substantial increase in the likelihood fit (NLL = 25,963.90), although it also required a larger number of parameters (152). Similarly, s1.3, which includes only predator effects, maintained a moderate parameter count (140) but performed slightly worse in terms of RMSE (0.93), indicating potential overfitting or reduced explanatory power relative to model complexity. The full model, s1.4, incorporating both environmental and predator effects, achieved a strong likelihood value (NLL = 25,188.80), albeit with the highest number of parameters (175). Its RMSE (0.89) was similar to the other scenarios, suggesting that the inclusion of additional covariates may have improved likelihood without substantial overfitting. The gradient component (5.18e−05) remained within acceptable bounds, supporting convergence. These results suggest a trade-off between model complexity and fit, where models incorporating ecological covariates (s1.2 and s1.4) improved the likelihood function but required more parameters, while the simpler model (s1.1) retained strong convergence properties with fewer degrees of freedom.
+The comparative evaluation of the four model scenarios (s1.1–s1.4) revealed key differences in model performance and complexity (Table \@ref(tab:diagnostics)).  All four scenarios achieved convergence, as indicated by a maximum gradient component of zero, ensuring that optimization reached a stable solution. Notably, the number of estimated parameters varied across models, with the full ecosystem model (s1.4) estimating the same number of parameters as the predator-only model (s1.2), while the environment-only model (s1.3) and the base model (s1.1) used fewer parameters. The Akaike Information Criterion (AIC) reveals stark contrasts in model performance. The environment-inclusive models (s1.3 and s1.1) have substantially lower AIC values (3,234.9 and 2,668.1, respectively) compared to the predator-inclusive models (s1.2 and s1.4), which exceed 50,000. These results suggest that environmental covariates contribute more effectively to explaining krill population dynamics than predator effects alone. The total likelihood (−logL) further supports this, showing much better fit in models s1.1 and s1.3, while predator-inclusive models (s1.2 and s1.4) show considerably poorer likelihood values. This pattern is reflected in the survey and length composition likelihood components, where again the environment-only model (s1.3) shows superior performance compared to predator scenarios. Root Mean Square Error (RMSE) for both index and length composition highlights better predictive accuracy in models without predators. Model s1.1 and s1.3 achieve lower RMSE values for both indices and length composition, indicating better alignment with observed data. In contrast, RMSE values are higher in predator-inclusive models (s1.2 and s1.4), suggesting poorer fit. Similarly, the Mean Absolute Scaled Error (MASE) remains lower in s1.1 and s1.3 (0.427), compared to s1.2 and s1.4 (0.517), again highlighting improved predictive performance in models that exclude predator effects. Retrospective biases (rho values) provide insight into model consistency over time. Retrospective bias in spawning stock biomass (Retro_Rho_ssb) and forecast biomass (Forecast_Rho_ssb) is substantially reduced in models without predators, particularly s1.1 (−0.233 and −0.333). Models including predators (s1.2 and s1.4) show larger negative rho values, indicating stronger retrospective bias and less stability in biomass estimation. Fishing mortality bias (Rho_f) and its forecast also present serious concerns in predator-inclusive scenarios. Model s1.4, for instance, shows a high retrospective bias in fishing mortality (Rho_f = 6.912), compared to 1.585 in the base model (s1.1). This indicates over-sensitivity in mortality estimates when predator effects are included without sufficient constraint or supporting data.
+
 
 ```{r diagnostics, eval=TRUE, warning=FALSE, message=FALSE}
 diagnostics <- read_csv("model_diagnosis.csv")
 #write_csv(diagnostics, "model_diagnosis.csv")
 flextable(diagnostics) %>%
-  set_caption("diffenrent statistical componentes to evaluate perfomances and diagnostic of model scenarios") %>%
+  colformat_num(digits = 3) |>  
+  set_caption("Statistical componentes to evaluate perfomances and diagnostic of model scenarios") %>%
   autofit() %>%
   theme_booktabs() %>%
   fontsize(size = 10, part = "all") %>%
   set_table_properties(width = .85, layout = "autofit")
 ```
 
-# DISCUSION
-
+# Discusion
 
 The use of integrated models for assessing krill populations in the Southern Ocean has posed significant challenges for CCAMLR, particularly in light of the inherent uncertainties and limitations associated with data-poor regions. One of the key challenges is the reliance on models like the General Yield Model (GRYM) [REF], which assumes stable environmental conditions—a premise that increasingly fails to hold true in the context of ongoing climate change [REF]. GRYM, while useful for certain data-poor applications, faces difficulties due to its heavy dependence on life history parameters, such as growth rates, harvest strategies, and natural mortality. Moreover, the assumption of stable environmental conditions in such models is problematic [REF], as climate variability significantly influences krill productivity and survival. As a result, predictions based on GRYM and similar models become less reliable, particularly in the face of changing environmental conditions or ecological considerations. This highlights the need for more dynamic, ecosystem-informed approaches to stock assessment that consider the evolving nature of environmental and ecological drivers, such as changes in sea ice extent, primary productivity, and predator-prey interactions.
 
@@ -598,25 +603,39 @@ Our analysis, which integrates ecosystem variables directly within the model, al
 This analysis represents a significant step forward in the incorporation of ecosystem-based considerations into krill stock assessments in the Southern Ocean. By adopting a more comprehensive, ecosystem-informed model, we contribute to the growing body of research supporting the integration of ecosystem variables in stock assessment frameworks [REF]. This approach is consistent with the new and evolving management strategies of the Commission for the Conservation of Antarctic Marine Living Resources (CCAMLR), which increasingly emphasizes ecosystem-based management practices. As climate change and ecosystem variability continue to impact krill populations, this analysis provides a foundation for precautionary management strategies that are better aligned with the dynamic nature of marine ecosystems.
 
 
+Tabla summary
+
+The analysis suggests that incorporating environmental variables (s1.3 and s1.4) improves model fit and predictive accuracy, particularly when compared to predator-only models. The model that includes only environmental covariates (s1.3) strikes the best balance between fit quality, complexity, and retrospective performance, suggesting that environmental variability is a key driver of krill population dynamics in the Western Antarctic Peninsula.
+
+In contrast, the inclusion of predators alone (s1.2) leads to poorer model fit and higher retrospective bias, possibly due to data limitations or unaccounted complexity in predator-prey dynamics. While the full ecosystem model (s1.4) shows some improvements over the predator-only model, it still exhibits significant retrospective biases, highlighting the need for refined integration of ecosystem components and further data support, particularly regarding predator consumption rates and spatial foraging behavior.
+
+These findings support growing consensus that ecosystem-informed stock assessments, particularly those that integrate environmental covariates, provide more robust and ecologically realistic estimates for Antarctic krill and should inform precautionary management frameworks under CCAMLR.
+
+
+
 \newpage
 
-# CONCLUSION 
+# Conclusion
 
 The integration of ecosystem variables, such as penguin predation and environmental conditions, significantly enhances the accuracy of krill population dynamics models by capturing complex and time-varying ecological processes. This approach provides a more realistic reflection of fluctuations in krill biomass and recruitment. The results emphasize that environmental conditions, particularly primary productivity, directly affect krill recruitment dynamics, highlighting the importance of considering climate variability in the sustainability of krill fisheries, especially in light of global climate change. Furthermore, predation by species like penguins plays a crucial role in the natural mortality of krill, and including this factor in the models improves estimates of natural mortality, offering a more accurate assessment of krill population health, which is vital for sustainable management. Ecosystem-informed models, while providing more biologically accurate projections, tend to produce more conservative and less optimistic estimates compared to traditional models. This helps mitigate the risk of overestimations that could lead to unsustainable management decisions. However, these models also introduce challenges such as increased sensitivity and retrospective bias, particularly in fishing mortality estimates, underscoring the need for a balance between ecological realism and model stability to ensure reliable management decisions. Overall, these findings reinforce that ecosystem-based approaches provide a stronger scientific foundation for fishery management, but they must be carefully managed to avoid potential instability in model outputs.
 
 \newpage
 
-# ACKNOWLEDGMENTS
+# Acknowledgments 
 
 This research was supported by the following funding sources: the INACH "Marine Protected Areas" Program (Grant No. 2409052), the ANID/Millennium Science Initiative Program (Grant No. ICN2021_002), the CCAMLR Scholarship Scheme (2023-2024), and the Doctorate Scholarship from CENTRO-IDEAL at the Universidad Austral de Chile. The authors extend their gratitude to the Secretariat of the Commission for the Conservation of Antarctic Marine Living Resources (CCAMLR) for providing access to the krill fishery data, which was instrumental to this study.
 
-# SUPPLEMENTARY MATERIAL
+# Supplementary Material 
 
 -   Supplementary Material 1: analisis, formulas, and outputs of stock assessment of Antarctic krill in WAP can be found in this [link](https://mauromardones.github.io/SA_Krill/). 
 
 -   Supplementary Material 2: Correlation analysis between krill recruitment and environmental variables can be found in this [link](https://mauromardones.github.io/Krill_recruit_env/) 
 
 
+# Data Availability
+
+Data will be made available on request.
+
 \newpage
 
-# REFERENCES
+# References
