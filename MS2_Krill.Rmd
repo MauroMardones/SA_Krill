@@ -98,49 +98,62 @@ In this approach we include spatial structure how an implicit approach where dif
 
 ## Data Sources
 
-Multiple sources of data to inform the population dynamics model are included in this analysis. These data sources include data from the monitoring program of the krill fishery were used, as standar CPUE (kg/time hauls) and length compositions, which have been systematically collected on board fishing vessels by scientific observers as part of the CCAMLR Scheme of International Scientific Observation (SISO) program. This database has information about vessel, nationality, georeferenced, among others. Data collected from scientific AMLR research cruises and monitoring programs specifically designed to assess krill populations, including biomass index by strata, and biological characteristics of krill collected through net sampling. All this data was processed in @Dornam2021. Krill length compositions from AMLR survey (provided by Ecosystem Science Division, NOAA) was handled according to the evaluation template requirements (Suppl. Mat. 2).  
+Multiple sources of data were incorporated into the krill population dynamics model to improve inference and parameter estimation. These data include records from the krill fishery monitoring program, such as standardized CPUE (kg/time haul) and length compositions, which have been consistently collected on board fishing vessels by scientific observers through the CCAMLR Scheme of International Scientific Observation (SISO). This dataset contains detailed information including vessel identity, nationality, and georeferenced positions used in the exploratory analysis. In addition, scientific research cruises conducted under the AMLR program provided critical data such as krill biomass indices by strata and biological characteristics of krill obtained via net sampling. Krill length compositions from AMLR surveys (provided by the Ecosystem Science Division of NOAA) were formatted according to model evaluation template requirements (see Supplementary Material 2). Environmental and predator-related data were also incorporated, such as satellite-derived chlorophyll-a concentrations from the Copernicus Marine Service and predator abundance and diet composition, particularly from penguin colonies reported in the [MAPPPD database](https://www.penguinmap.com/mapppd/sources/). A summary of all data sources, including temporal coverage and spatial scale, is provided in Table \@ref(tab:data-sources).
 
-```{r eval=TRUE}
+```{r data-sources, eval=TRUE}
 data <- data.frame(
-  Source = c("Krill Fishery Monitoring Program",
-                 "Krill Fishery Monitoring Program, collected by scientific observers under CCAMLR SISO program (vessel, nationality, georeferenced)",
-                 "Krill Fishery Monitoring Program",
-                 "AMLR Research Cruises Program", 
-                  "Satellite data",
-                 "Predator Abundance",
-                 "AMLR Research Cruises Program"),
-  Description = c("Catches",
-                  "CPUE (standarized by vessel, area and deep)", 
-                  "Krill Length compositions (grouped by 0.2 cm)",
-                  "Biomass index from scientific AMLR cruises",
-                  "Satellite-based chlorophyll-a concentration (monthly, interpolated) from the EU Copernicus Marine Service (doi.org/10.48670/moi-00021; doi.org/10.48670/moi-00148).",
-                  "Data on penguin colonies, sourced from 'MAPPPD'",
-                  "Predator Length composition krill diet"),
-    TimeSeries = c("1997-2020",
-                 "1997-2020",
-                 "2000-2020",
-                 "1991-2011 (based on the research cruise periods).",
-                 "Monthly data from 1997 to present (based on satellite data availability).",
-                 "Data from 2000s-present.",
-                 "1977-2020 (from 2000 used in this analysis)"),
-   Scale = c("by Strata",
-                           "by Strata",
-                           "by Strata",
-                           "by Strata",
-                           "48.1",
-                           "by colony",
-                           "by colony"))
-ft <- flextable(data) %>%  
-  set_caption("Comparison of Model Parameters") %>%  
-  autofit() %>%  
-  theme_vanilla() %>%  
-  fontsize(size = 9, 
-           part = "all") %>%  
-  font(fontname = "Arial", 
-       part = "all") %>%  
+  Source = c(
+    "Krill Fishery Monitoring Program (CCAMLR SISO)",
+    "Krill Fishery Monitoring Program (CCAMLR SISO)",
+    "Krill Fishery Monitoring Program (CCAMLR SISO)",
+    "AMLR Scientific Research Cruises",
+    "Satellite Remote Sensing",
+    "Predator Monitoring (MAPPPD)",
+    "Predator Diet Composition (AMLR)"
+  ),
+  Description = c(
+    "Total reported catches",
+    "Standardized CPUE (by vessel, area, and depth)",
+    "Length-frequency distributions (0.2 cm bins)",
+    "Biomass indices by strata from net sampling",
+    "Monthly chlorophyll-a concentration from EU Copernicus Marine Service (interpolated; doi:10.48670/moi-00021, doi:10.48670/moi-00148)",
+    "Abundance and colony-specific trends of penguin populations",
+    "Length-frequency of krill in predator diets (e.g., penguins)"
+  ),
+  TimeSeries = c(
+    "1997–2020",
+    "1997–2020",
+    "2000–2020",
+    "1991–2011 (based on cruise periods)",
+    "1997–present",
+    "2000s–present",
+    "1977–2020 (subset from 2000 used in this analysis)"
+  ),
+  SpatialScale = c(
+    "By strata",
+    "By strata",
+    "By strata",
+    "By strata",
+    "Subarea 48.1",
+    "By colony",
+    "By colony"
+  )
+)
+
+
+ft_data <- flextable(data) %>%
+  set_caption("Table: Data sources used in the krill population dynamics modeling") %>%
+  autofit() %>%
+  theme_vanilla() %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Arial", part = "all") %>%
   set_table_properties(layout = "autofit", width = .85)
-ft
+
+ft_data
+
 ```
+
+
 Life history parameters, like growth, weight-length relation, natural mortality and maturity was used as priors to model initial condition in krill dynamics population was taken from @Smith2023a, @Maschette2020 and @Kinzey2011 and can be found in Table \@ref(tab:parainit1). Source data and temporal scale used in this stock assessment is showed in Fig 4, S1.
 
 ```{r parainit1, eval=TRUE}
@@ -219,7 +232,37 @@ Growth was modeled following a von Bertalanffy growth function with size-at-age 
 
 ## Environmental variable modelling
 
-To identify the most influential environmental drivers of krill recruitment to be considered in stock evaluation processes, we examined the relationship between a recruitment index and three key environmental variables previously recognized as critical in shaping krill population dynamics: Sea Surface Temperature (SST), Sea Ice Concentration (SIC), and Chlorophyll-a concentration (Chla) [@Flores2012; @Morley2020; @Saba2014; @Veytia2021; @Walsh2020]. SST data were obtained from ERA5 monthly means (1991–present), SIC data from Nimbus-7 (1978–present), and Chla data from the Bio-Geo-Chemical L4 satellite product, downloaded from the E.U. Copernicus Marine Service (doi.org/10.48670/moi-00021; doi.org/10.48670/moi-00148). All environmental data were processed at their native spatial resolution using the R packages *sf* and *ncdf4* [@Pebezma2018; @Pierce2021], incorporating spatial manipulation, rasterization, and coordinate transformations. We model the relation the environmental influence on krill recruitment with a serie of linear models, progressively incorporating the environmental variables to identify the one with the greatest explanatory power. The initial model considered only the effect of strata (spat), while subsequent models sequentially included Chla, SST, Sea Ice Index and interaction terms. This modeling framework allowed us to determine the relative contribution of each factor and their interactions on the recruitment process. All models and their results can be found in the Supplementary Material 2.
+To identify the most influential environmental drivers of krill recruitment to be considered in stock evaluation processes, we examined the relationship between a recruitment index and three key environmental variables previously recognized as critical in shaping krill population dynamics: Sea Surface Temperature (SST), Sea Ice Concentration (SIC), and Chlorophyll-a concentration (Chla) [@Flores2012; @Morley2020; @Saba2014; @Veytia2021; @Walsh2020]. Table \@ref(tab:env) summarizes the key characteristics of the environmental datasets used in the analysis, including sea ice, sea surface temperature (SST), and chlorophyll a. These variables were obtained from different satellite platforms and reanalysis products, namely Nimbus-7, ERA5, and Copernicus. The table details spatial and temporal resolution, as well as the temporal coverage of each dataset.
+
+```{r env, eval=TRUE}
+env_features <- data.frame(
+  Feature = c("Sea Ice", "SST", "Chlorophyll a"),
+  Platform = c("Nimbus-7", "ERA5", "E.U. Copernicus Marine Service"),
+  Spatial_Resolution = c("25 × 25 km", "0.25º × 0.25º", "0.25º × 0.25º"),
+  Temporal_Resolution = c("Daily", "Monthly", "Daily-Monthly"),
+  Time_Range = c("1978 - Present", "1991 - Present", "2000 - Present"),
+  stringsAsFactors = FALSE
+)
+
+ft_env <- flextable(env_features) |>
+  set_header_labels(
+    Feature = "Feature",
+    Platform = "Platform",
+    Spatial_Resolution = "Spatial Resolution",
+    Temporal_Resolution = "Temporal Resolution",
+    Time_Range = "Time Range"
+  ) |>
+  set_caption("Summary of environmental variables used in correlation analysis") |>
+  add_footer_lines("doi.org/10.48670/moi-00021; doi.org/10.48670/moi-00148") |>
+  color(part = "header", color = "black") |>
+  theme_booktabs() |>
+  fontsize(size = 10) |>
+  set_table_properties(layout = "autofit", width = .85)
+ft_env
+```
+
+
+All environmental data were processed at their native spatial resolution using the R packages *sf* and *ncdf4* [@Pebezma2018; @Pierce2021], incorporating spatial manipulation, rasterization, and coordinate transformations. We model the relation the environmental influence on krill recruitment with a serie of linear models, progressively incorporating the environmental variables to identify the one with the greatest explanatory power. The initial model considered only the effect of strata (spat), while subsequent models sequentially included Chla, SST, Sea Ice Index and interaction terms. This modeling framework allowed us to determine the relative contribution of each factor and their interactions on the recruitment process. All models and their results can be found in the Supplementary Material 2.
 
 
 
@@ -233,31 +276,106 @@ $R$ represents the variability of deviations, adding to the variance caused by e
 
 ## Predator modelling 
 
-As @methot2020stock establish in SS3 manual, natural mortality attributable to predation (M2) can be incorporated through different types of observational data, each informing distinct aspects of predator-prey dynamics. First, total mortality due to predation can be input as a "discard" component in the data structure. Since M2 represents a proportion of total mortality (Z), the quantity of individuals removed by predators can be estimated using the relative contribution of M2 to Z, i.e., `M2 / Z`. This allows the model to estimate the biomass consumed by predators, analogous to how catch is calculated for fishing fleets. Second, predator abundance can be input as an index of effort, treating M2 as a fishing mortality analog. This approach uses the same structure as a fishery-independent survey, where predator biomass serves as an index of predation pressure over time. In this framework, the predation rate is proportional to predator abundance scaled by a catchability coefficient \( Q \), following the equation:
+
+Following the SS3 framework described by @methot2020stock, natural mortality due to predation (*M2*) can be integrated into stock assessment models through multiple data types. In our krill assessment, we implement this by incorporating both predator biomass and diet composition from the three main penguin species in the Antarctic Peninsula: Adélie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*), and Gentoo (*Pygoscelis papua*). Predator abundance is treated as an index of predation "effort," allowing time-varying estimation of predation mortality rates. This follows the equation:
 
 $$
-M2_t = Q * I_t
+M2_t = Q \cdot I_t
 $$
-where \( M2_t \) is the predation mortality in year \( t \), \( I_t \) is the predator abundance index in year \( t \), and \( Q \) is an estimated or fixed catchability parameter linking the predator index to predation pressure. Finally, information on the size or age composition of predated individuals, such as those derived from gut content analyses, can be used to inform the selectivity pattern of M2. These data are input analogously to length- or age-composition observations from fisheries, and allow the model to estimate the predation selectivity curve, capturing how predation probability varies with prey size or age.
 
-Regarding krill predators, we will incorporate both biomass and dietary data from the three main penguin colonies —Adélie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*), and Gentoo (*Pygoscelis papua*) —into the stock assessment model through two complementary pathways.. First, the abundance of these predator colonies will be treated as an index of predation "effort" exerted on the krill population, allowing estimation of time-varying predation mortality rates. Second, empirical length-frequency distributions of krill derived from the diet composition of each penguin species will be used to parameterize the size-selective nature of M2, enabling the estimation of predator-specific selectivity functions. This dual approach facilitates a temporally and size-structured characterization of M2, consistent with ecosystem-based stock assessment principles and improving the ecological realism of krill population dynamics modeling. The total natural mortality (M) will thus explicitly include the predation component, expressed as \( M = M_1 + \sum M_2 \) [@methot2020stock], where \( M_1 \) represents background (non-predation) natural mortality, and \( \sum M_2 \) accounts for mortality attributed to each predator type. Consequently, total mortality is represented as \( Z = M_1 + M_2 + F \), incorporating both natural and fishing sources of mortality.
+where \( M2_t \) is the predation mortality in year *t*, \( I_t \) is the predator abundance index, and \( Q \) is a catchability coefficient. Additionally, length-frequency data of krill obtained from penguin diet samples are used to characterize the size-selectivity of predation. These data inform predator-specific selectivity functions for *M2*, enabling the model to represent how predation varies with krill size. This dual approach—using predator abundance and diet composition—supports a temporally and size-structured representation of predation mortality, aligning with ecosystem-based assessment principles. Total natural mortality (*M*) is thus partitioned as \(M = M_1 + \sum M_2 \), where \( M_1 \) is background mortality and \( \sum M_2 \) accounts for predator-specific contributions. Total mortality is expressed as \( Z = M_1 + M_2 + F \) combining natural and fishing-induced mortality.
 
 \newpage
 
 ## Scenarios
 
-To account for the uncertainty associated with ecosystem influence in krill dynamic popupation, we evaluated a set of model configurations that incorporate variations in predator "fleet" and environmental effects, and the relationship between spawning biomass and recruitment. Spatial heterogeneity implicity is considering in all scenarios. The methodology involves assessing the statistical performance of the model under these configurations. Specifically, `s1.1` serves as the reference model, incorporating only fishery and survey data while accounting for spatial heterogeneity. The subsequent scenarios build upon this configuration to evaluate the effects of additional ecological components. `s1.2` extends `s1.1` by incorporating predator influences, allowing the model to assess the impact of predation on krill population dynamics. `s1.3` modifies `s1.1` by introducing an environmental variable, capturing potential environmental drivers affecting krill recruitment and biomass. Finally, `s1.4` integrates both predator and environmental influences into the `s1.1` framework, providing a more comprehensive assessment of ecosystem interactions and their role in krill population dynamics (Table 1).
+To account for the uncertainty associated with ecosystem influence in krill dynamic popupation, we evaluated a set of model configurations that incorporate variations in predator "fleet" and environmental effects, and the relationship between spawning biomass and recruitment. Spatial heterogeneity implicity is considering in all scenarios. The methodology involves assessing the statistical performance of the model under these configurations. Specifically, `s1.1` serves as the reference model, incorporating only fishery and survey data while accounting for spatial heterogeneity. The subsequent scenarios build upon this configuration to evaluate the effects of additional ecological components. `s1.2` extends `s1.1` by incorporating predator influences, allowing the model to assess the impact of predation on krill population dynamics. `s1.3` modifies `s1.1` by introducing an environmental variable, capturing potential environmental drivers affecting krill recruitment and biomass. Finally, `s1.4` integrates both predator and environmental influences into the `s1.1` framework, providing a more comprehensive assessment of ecosystem interactions and their role in krill population dynamics (Table \@ref(tab:scenario)).
 
-| Scenario | Description                                                |
-|:--------:|:-----------------------------------------------------------|
-|   s1.1   | Spatial data without environmental and predator components |
-|   s1.2   | "s1.1" with predator components                            |
-|   s1.3   | "s1.1" with environmental variable                         |
-|   s1.4   | "s1.1" w/ both, predator fleet and environmental variable  |
+```{r scenario, eval=TRUE}
+scenario_table <- data.frame(
+  Scenario = c("s1.1", "s1.2", "s1.3", "s1.4"),
+  Description = c(
+    "Spatial data without environmental and predator components",
+    "\"s1.1\" with predator components",
+    "\"s1.1\" with environmental variable",
+    "\"s1.1\" with both predator fleet and environmental variable"
+  ),
+  stringsAsFactors = FALSE
+)
+ft_scenarios <- flextable(scenario_table) |>
+  set_header_labels(
+    Scenario = "Scenario",
+    Description = "Description"
+  ) |>
+  set_caption("Scenarios used for modelling dynamics in krill") |>
+  theme_booktabs() |>
+   fontsize(size = 10) |>
+  set_table_properties(layout = "autofit", width = .85) %>% 
+  color(part = "header", color = "black") 
+ft_scenarios
+```
 
-: Scenarios to modelling dynamics in krill
 
-Regarding the performance and comparison between scenarios, @Carvalho2017 and @Carvalho2021b propose a structured approach for diagnosing stock assessment models to ensure their reliability and robustness. This diagnostic process was applied to the krill stock assessment and involved some key steps. First, convergence analysis was conducted to evaluate whether the estimation algorithm reached a stable solution. This included reviewing parameter trace plots, gradients, and the Hessian matrix to ensure that all parameters were well-estimated. Next, model fit to data was assessed by comparing observed and predicted values across key data sources, including catch, survey indices, and length composition. Residual plots were examined to detect potential patterns indicative of model misspecification. A retrospective analysis was performed by sequentially removing recent years of data (peeling) and re-estimating the model, allowing for the calculation of retrospective bias (*Rho*) for key metrics such as Spawning Stock Biomass (SSB) and Fishing Mortality (F). The model's forecasting capability was evaluated through one-step-ahead predictions and their comparison to observed values in recent years, helping identify potential bias or overfitting in recruitment or abundance estimates. Sensitivity analyses were conducted by varying ecosystem variables to assess their influence on model outputs. Likelihood profiling was also carried out to quantify parameter uncertainty and identify the influence of priors. Finally, prediction skill was assessed using hindcasting techniques to evaluate the model’s ability to reproduce historical stock dynamics.Four estimation models were developed depending on how the ecosystem components was integrated where it was included as an additional covariate within the stock-recruitment (S-R) relationship. To evaluate statistical differences in model performance, we analyzed the Root Mean Squared Error (RMSE) values across four scenario configurations (`s1.1`, `s1.2`, `s1.3`, and `s1.4`). The RMSE values were extracted from the variance tuning checks of each scenario and compiled into a data frame for statistical analysis. To test for overall differences among scenarios, a one-way ANOVA [@REF] was conducted, treating RMSE values as the dependent variable and scenario configurations as the categorical factor. If the ANOVA indicated significant differences, a post-hoc Tukey test would be performed to determine which scenario comparisons were driving the differences. By systematically applying these diagnostic steps, stock assessment models can be rigorously evaluated, ensuring they provide robust and unbiased estimates.
+Regarding the performance and comparison between scenarios, @Carvalho2017;  @Carvalho2021b; @Merino2022a and @Kell2021 propose good practice to made a structured approach for diagnosing stock assessment models to ensure their reliability and robustness. This diagnostic process was applied to the krill stock assessment and involved several key steps propoesed by previus research. First, convergence analysis was conducted to evaluate whether the estimation algorithm reached a stable solution. This included reviewing parameter trace plots, gradients, and the Hessian matrix to ensure that all parameters were well-estimated.  Next, model fit to data was assessed by comparing observed and predicted values across key data sources, including catch, survey indices, and length composition. The p-values for the residual runs tests were computed for each of the four joint length compositions that are common in all models. The p-values were then combined into a single test statistic using Fisher's method @@Merino2022a:
+
+$$ 
+\chi^2_{2k} = -2 \sum \log(p_i)
+$$
+
+where \( p_i \) is the p-value for Length \( i \) and \( k \) are the degrees of freedom of the four p-values from the joint Length indices. Likelihood profiling was also carried out to quantify parameter uncertainty and identify the influence of priors. Finally, prediction skill was assessed using hindcasting techniques to evaluate the model’s ability to reproduce historical stock dynamics. Retrospective analysis and hindcast cross-validation were performed by sequentially removing five years of data. regarding @HurtadoF2015, Mohn parametrer was calculated as the mean relative error, defined as:
+
+$$ 
+\rho_M = \frac{1}{h} \sum_{y=1}^{h} \left( \frac{X_{T - y} - \hat{X}_{T - y}}{\hat{X}_{T - y}} \right)
+$$
+
+where \( X \) represents the quantities (such as spawning stock biomass (SSB) or fishing mortality (F)) for which ρM was calculated, and \( \hat{X} \) is the corresponding estimate from the reference model fitted to the full dataset. Year \( y \) was nominally considered as season one, \( T \) refers to the terminal assessment data year, and \( h \) denotes the number of retrospective peels, removing recent years of data ("peeling") and re-estimating the model, allowing for the calculation of retrospective bias (*Rho*) for key metrics such as Spawning Stock Biomass (SSB) and Fishing Mortality (F). To evaluate statistical differences in model performance, we analyzed Root Mean Squared Error (RMSE) values across four scenario configurations (`s1.1`, `s1.2`, `s1.3`, and `s1.4`). The RMSE values were extracted from the variance tuning diagnostics of each scenario and compiled into a data frame for statistical analysis. To test for overall differences among scenarios, a one-way ANOVA [@REF] was conducted, treating RMSE values as the dependent variable and scenario configurations as the categorical factor. AIC
+
+
+Table \@ref(tab:metrics) summarizes the diagnostic metrics used to evaluate model performance, including goodness-of-fit, prediction accuracy, information criteria, retrospective bias, and estimation stability. 
+
+```{r metrics, eval=TRUE}
+df_model_metrics <- data.frame(
+  Metric = c(
+    "Pearson Residuals",
+    "Root Mean Square Error (RMSE)",
+    "Mean Absolute Scaled Error (MASE)",
+    "Akaike Information Criterion (AIC)",
+    "Rho Parameter (B and SSB)",
+    "R0 Deviation"
+  ),
+  Description = c(
+    "Standardized residuals calculated as the difference between observed and expected values, divided by the standard deviation of the expected values. Useful for assessing model fit across data points.",
+    "Measures the average magnitude of the residuals (prediction errors), giving higher weight to large errors. Lower values indicate better predictive accuracy.",
+    "A scale-independent measure of prediction accuracy. It compares forecast errors to the errors from a naive baseline model. Values <1 indicate better-than-baseline performance.",
+    "A relative measure of model quality that balances model fit and complexity. Lower AIC values indicate better models, penalizing overfitting.",
+    "The autoregressive correlation coefficient from retrospective analysis, used to assess systematic bias in biomass (B) and spawning stock biomass (SSB) estimates across years.",
+    "Measures the variability or uncertainty in the estimated unfished recruitment (R₀). High deviations may indicate poor estimation stability or model overparameterization."
+  ),
+  Reference = c(
+    NA,
+    "@Carvalho2021b",
+    "@Hyndman2006",
+    "@Akaike1974",
+    "@Mohn1999",
+    "@Methot2013"
+  ),
+  stringsAsFactors = FALSE
+)
+
+ft_stat <- flextable(df_model_metrics) |> 
+  set_header_labels(
+    Metric = "Metric",
+    Description = "Description",
+    Reference = "Reference"
+  ) |> 
+  set_caption("Summary of model diagnostic metrics used for krill stock assessment") |> 
+  autofit() |> 
+  fontsize(size = 10) |> 
+  theme_booktabs() |> 
+  color(part = "header", color = "black")|>
+  set_table_properties(layout = "autofit", width = .85)
+ft_stat
+```
 
 
 # RESULTS
@@ -330,13 +448,10 @@ knitr::include_graphics('Figs/unnamed-chunk-46-1.jpeg')
 
 ### Likelihood components
 
-Log-likelihood profiles were examined for each model scenario (s1.1 to s1.4) to assess how different components contributed to the overall model fit (Figure \@ref(fig:liketotal). Across all scenarios, the TOTAL log-likelihood is primarily influenced by the Survey, Length composition, and Recruitment components, with minor contributions from parameter priors. The reference model (s1.1) displays the highest overall likelihood value, particularly due to a stronger fit to the Length composition and Survey data. However, this comes with an elevated penalty in the parm priors categories, suggesting potential overfitting or parameter instability. In contrast, the ecosystem-informed scenarios—s1.2 (with predator data), s1.3 (with environmental data), and s1.4 (with both)—show slightly lower total likelihoods. These models present more balanced likelihood contributions across data components and generally lower penalties for parameter priors and deviations, indicating a more stable parameterization despite reduced absolute fit. Notably, the Recruitment likelihood contribution decreases in the ecosystem scenarios compared to the reference, which aligns with previous results showing constrained recruitment variability when ecological drivers are included. These variations may reflect differences in model assumptions or input data between scenarios, which could affect how well each model fits particular data sources.
+Log-likelihood profiles were examined for each model scenario (s1.1 to s1.4) to assess how different components contributed to the overall model fit. Across all scenarios, the TOTAL log-likelihood is primarily influenced by the Survey, Length composition, and Recruitment components, with minor contributions from parameter priors. The reference model (s1.1) displays the highest overall likelihood value, particularly due to a stronger fit to the Length composition and Survey data. However, this comes with an elevated penalty in the parm priors categories, suggesting potential overfitting or parameter instability. In contrast, the ecosystem-informed scenarios—s1.2 (with predator data), s1.3 (with environmental data), and s1.4 (with both)—show slightly lower total likelihoods. These models present more balanced likelihood contributions across data components and generally lower penalties for parameter priors and deviations, indicating a more stable parameterization despite reduced absolute fit. Notably, the Recruitment likelihood contribution decreases in the ecosystem scenarios compared to the reference, which aligns with previous results showing constrained recruitment variability when ecological drivers are included. These variations may reflect differences in model assumptions or input data between scenarios, which could affect how well each model fits particular data sources. Table \@ref(tab:tablike) shows the log-likelihood component values for each scenario. 
 
-```{r liketotal, eval=TRUE, fig.cap="Log-likelihood contributions for four model components across four krill population model scenarios. Bars show the contribution of each likelihood component to the total model fit"}
-knitr::include_graphics('Figs/likesel.png')
-```
 
-Table \@ref(tab:tablike) shows the log-likelihood component values for each scenario. It summarizes the contributions of different data sources—such as survey indices, length composition, recruitment, and parameter priors—to the total likelihood in each model configuration (s1.1 to s1.4). This comparison helps assess how each scenario fits the data and highlights potential differences in the influence of specific components across models.
+
 
 ```{r tablike, eval=TRUE}
 parameter_comparison_table <- read_csv("parameter_comparison_table.csv") %>% 
@@ -363,32 +478,24 @@ Another step to measure the model performance in krill stock assessment was eval
 
 
 ```{r rmseplot, eval=TRUE, fig.cap="Root Mean Square Error (RMSE) distributions for four krill population model scenarios"}
-knitr::include_graphics('Figs/unnamed-chunk-29-1.jpeg')
+knitr::include_graphics('Figs/diags2.png')
 ```
 
-FINAL TABLE Suggested by MJ
+(FINAL TABLE Suggested by MJ)
+
 
 
 ## Comparision outputs between scenarios
 
 Model outputs under different ecosystem scenarios revealed substantial variation in krill population indicators, including total biomass (Bio_all), summary biomass (Bio_smry), recruitment (Recruit_0), and spawning biomass (SpawnBio) (Figure \@ref(fig:popvar)). The reference model (s1.1), which excluded environmental and predator components, consistently produced higher median estimates and wider uncertainty intervals across all population indicators. Inclusion of predator components (s1.2) or environmental variables (s1.3) led to reductions in central tendency and variability for all metrics, with s1.3 (environment-only) showing the most constrained estimates, particularly for recruitment and spawning biomass. Scenario s1.4, which incorporated both environmental and predator components, resulted in intermediate biomass and recruitment estimates, with moderate variance compared to the other scenarios. Recruitment (Recruit_0) was especially sensitive to the inclusion of ecosystem components. The highest median recruitment was observed under s1.2 (predator-only), while the lowest was seen in s1.3 (environment-only), highlighting the contrasting influences of these ecological factors.
 
+We compare the time series of different population variables for Antarctic krill under most significant models in this analysis; a reference model without environmental or predator data and an alternative model that incorporates both environmental and predator information. Total biomass estimates remain relatively stable across both scenarios until around 2010. From that point onward, both models show a marked increase in biomass, although the reference model predicts higher values than the ecosystem-informed model, particularly during the final assessment years (2018–2020). Recruitment at age 0 exhibits strong variability over time. This is coincidence with [REF]. While both models show similar patterns, the reference model tends to estimate higher recruitment peaks, especially in recent years. Finally, spawning biomass (SpawnBio) follows trends similar to total biomass. Both models show a gradual increase after 2010, but the reference model again yields higher values in recent years. 
 
-```{r popvar, eval=TRUE, fig.cap="Comparisons of krill population variables under scenarios of increasing ecosystem complexity. Metrics include total biomass (Bio_all), summary biomass (Bio_smry), recruitment (Recruit_0), and spawning biomass (SpawnBio)."}
-knitr::include_graphics('Figs/unnamed-chunk-65-1.jpeg')
-```
-
-Figure \@ref(fig:compara) shows the time series of estimated spawning output for Antarctic krill under most significant models in this analisys, s1.1 and s1.4. The reference model (red), which excludes ecosystem components, consistently estimates higher spawning output values over time, with a steep increase observed after 2015. In contrast, the models that incorporate ecosystem components—predator data (green), environmental data (yellow), or both (red)—estimate consistently lower spawning output throughout the time series. The red line, representing the model with both predator and environmental data, remains the most conservative, suggesting that ecosystem-informed models lead to more precautionary estimates of reproductive potential. The rigth panel displays the posterior density distributions of unfished spawning biomass (SSB~o~) for the same scenarios. The reference model estimates the highest SSBo values (mode ~ 3.2), while the ecosystem-informed models estimate considerably lower SSBo, with the most constrained distribution occurring under the full ecosystem model (red). The shift in the distributions indicates that including ecosystem drivers reduces estimates of unfished reproductive capacity, which has implications for reference point calculations and harvest strategies.
-
-
-We comparethe time series of differente population variables for Antarctic krill under most significant models in this analysis; a reference model without environmental or predator data and an alternative model that incorporates both environmental and predator information. Total biomass estimates remain relatively stable across both scenarios until around 2010. From that point onward, both models show a marked increase in biomass, although the reference model predicts higher values than the ecosystem-informed model, particularly during the final assessment years (2018–2020). Recruitment at age 0 exhibits strong variability over time. This is coincidence with [REF]. While both models show similar patterns, the reference model tends to estimate higher recruitment peaks, especially in recent years. Finally, spawning biomass (SpawnBio) follows trends similar to total biomass. Both models show a gradual increase after 2010, but the reference model again yields higher values in recent years. 
-
-```{r compara,eval=TRUE, out.width="60%", fig.cap=""}
+```{r compara,eval=TRUE, out.width="60%", fig.cap="Comparisons of krill population variables under scenarios of increasing ecosystem complexity. Metrics include total biomass (Bio_all), summary biomass (Bio_smry), recruitment (Recruit_0), and spawning biomass (SpawnBio)"}
 knitr::include_graphics('Figs/alloutput_s1_4.png')
-
 ```
 
-The different configurations to estimated posterior distribution of Natural log of virgin recruitment level (R0) suggesting that the choice of covariates has a substantial impact on the estimation of unfished recruitment (Figure \@ref(fig:compara2)). The model with both environmental and predator data yields the highest R0 values, while the model with only environmental data results in the lowest estimates. This highlights the sensitivity of the recruitment parameter to assumptions about ecological drivers in the stock-recruitment relationship.
+Biologically, ln(R0) represents the expected log-scale recruitment in the absence of fishing, providing a proxy for the reproductive potential or productivity of the population under pristine conditions. Figure \@ref(fig:compara2) displays posterior density distributions for the natural logarithm of virgin recruitment level (ln(R0)) across four model configurations. The narrow and well-separated peaks across models suggest that each model configuration yields distinctly different estimates of recruitment potential, likely reflecting differences in underlying assumptions such as natural mortality, selectivity, or the inclusion of predation effects. From a biological perspective, the higher ln(R0) values in `s1.3` and `s1.4` suggest that, under those model assumptions, the krill population could sustain higher levels of recruitment in unfished conditions, potentially reflecting stronger compensatory dynamics or reduced natural mortality (e.g., lower predation pressure). Conversely, the lower ln(R0) values in `s1.1` and `s1.2` imply a population with lower reproductive output, which might make it more vulnerable to overfishing or environmental variability. This highlights the sensitivity of the recruitment parameter to assumptions about ecological drivers in the stock-recruitment relationship.
 
 ```{r compara2, eval=TRUE, out.width="60%", fig.cap="Estimated R0 parameter for Antarctic krill under four assessment scenarios. Models including predator and environmental data"}
 knitr::include_graphics('Figs/R0plot.png')
@@ -396,7 +503,6 @@ knitr::include_graphics('Figs/R0plot.png')
 ```
 
 The stock–recruitment relationship was examined under two model scenarios: s1.1, a reference model excluding ecosystem components, and s1.4, which incorporates both environmental and predator data  (Figure \@ref(fig:proplot)). The plot illustrates the relationship between spawning stock biomass (SSB) and recruitment across years, overlaid with a fitted Beverton-Holt function derived from the model with ecosystem covariates. Scenario s1.1 (diamonds) displays a wider spread in recruitment estimates across the full range of SSB values, with several years (e.g., 2017, 2014) producing exceptionally high recruitment despite moderate to low SSB. In contrast, scenario s1.4 (crosses), which integrates ecosystem variables, generally shows lower recruitment estimates, with reduced variance and more clustered residuals at low SSB values. The fitted Beverton-Holt curve (in blue) from s1.4 captures the expected saturating recruitment response to increasing SSB. Notably, the inclusion of ecosystem variables appears to reduce extreme recruitment events and leads to a more stable, density-dependent recruitment pattern aligned with theoretical expectations. 
-
 Estimating the productivity of Antarctic krill is critical for understanding the species capacity to replenish its population in response to varying levels of spawning biomass. Here, we defined the Productivity as the ratio of recruitment to spawning stock biomass, provides a standardized measure of reproductive success and population resilience under different ecological and fishing pressures. For each scenario \( i \) and year \( t \), we computed the productivity as the ratio between recruitment and spawning stock biomass (SSB):
 
 $$
@@ -420,7 +526,20 @@ knitr::include_graphics('Figs/ACF2.png')
 
 A *t-test*, assuming normality and homoscedasticity, revealed a statistically significant difference in spawning biomass estimates between models `s1.1` and `s1.4` (*t = 4.2682, df = 72, p < 0.001*), with a 95% confidence interval for the mean difference ranging from *1,387,011 to 3,818,074*. Mean spawning biomass estimates were *4,600,304 t* for `s1.1` and *1,997,762 t* for `s1.4`. A non-parametric *Wilcoxon rank sum test* further confirmed this difference (*W = 1256, p < 0.001*), reinforcing the robustness of the result despite minor warnings due to ties in the dataset. These findings demonstrate that incorporating predator and environmental covariates into the population model (scenario `s1.4`) leads to significantly lower estimates of spawning biomass. This highlights the critical role of ecosystem components in influencing recruitment and population structure, and their importance in comprehensive stock assessment frameworks for krill.
 
+### Model scenarios diagnostics summary
 
+The comparative evaluation of the four model scenarios (s1.1–s1.4) revealed key differences in model performance and complexity (Table \@ref(tab:diagnostics)). Scenario s1.1, the simplest model with no ecosystem covariates, exhibited the lowest maximum gradient component (2.4e−05), suggesting a well-converged solution. It also used the fewest estimated parameters (94) and achieved a relatively low RMSE (0.88), indicating a good fit to the data despite its simplicity. However, its negative log-likelihood (NLL = 1,291.04) was higher compared to more complex models. Model s1.2, which includes only environmental covariates, showed a substantial increase in the likelihood fit (NLL = 25,963.90), although it also required a larger number of parameters (152). Similarly, s1.3, which includes only predator effects, maintained a moderate parameter count (140) but performed slightly worse in terms of RMSE (0.93), indicating potential overfitting or reduced explanatory power relative to model complexity. The full model, s1.4, incorporating both environmental and predator effects, achieved a strong likelihood value (NLL = 25,188.80), albeit with the highest number of parameters (175). Its RMSE (0.89) was similar to the other scenarios, suggesting that the inclusion of additional covariates may have improved likelihood without substantial overfitting. The gradient component (5.18e−05) remained within acceptable bounds, supporting convergence. These results suggest a trade-off between model complexity and fit, where models incorporating ecological covariates (s1.2 and s1.4) improved the likelihood function but required more parameters, while the simpler model (s1.1) retained strong convergence properties with fewer degrees of freedom.
+
+```{r diagnostics, eval=TRUE, warning=FALSE, message=FALSE}
+diagnostics <- read_csv("model_diagnosis.csv")
+#write_csv(diagnostics, "model_diagnosis.csv")
+flextable(diagnostics) %>%
+  set_caption("diffenrent statistical componentes to evaluate perfomances and diagnostic of model scenarios") %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  fontsize(size = 10, part = "all") %>%
+  set_table_properties(width = .85, layout = "autofit")
+```
 
 # DISCUSION
 

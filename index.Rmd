@@ -428,11 +428,11 @@ Data used en both (spatial and No spatial models) `s1.1` and `s1.4` to compare
 par(mfrow=c(2,1), mar=c(5,4,2,1))
 SSplotData(base.model1.1, 
            subplots = 1,
-           pheight = 15)
+           ptsize = 0.5)
 
 SSplotData(base.model1.4, 
            subplots = 1,
-           pheight = 15)
+           ptsize = 0.5)
 ```
 
 # RESULTS
@@ -921,6 +921,37 @@ SSplotJABBAres(base.model1.4,
                add=T)
 ```
 
+another
+
+```{r}
+dfpearson_long <- data.frame(
+  Pearson = c(base.model1.1$lendbase$Pearson,
+              base.model1.2$lendbase$Pearson,
+              base.model1.3$lendbase$Pearson,
+              base.model1.4$lendbase$Pearson),
+  Scenario = factor(c(rep("s1.1", length(base.model1.1$lendbase$Pearson)),
+                      rep("s1.2", length(base.model1.2$lendbase$Pearson)),
+                      rep("s1.3", length(base.model1.3$lendbase$Pearson)),
+                      rep("s1.4", length(base.model1.4$lendbase$Pearson))))
+)
+
+
+pearson_plot <- ggplot(dfpearson_long, aes(x = Scenario, 
+                                            y = Pearson, 
+                                            fill = Scenario)) +
+  geom_boxplot(width = 0.2, alpha = 0.8,
+               outliers = FALSE) +
+  #geom_jitter(width = 0.01, alpha = 0.3) +
+  theme_minimal() +
+  scale_fill_manual(name = "Scenario",
+                    values = c("s1.1" = "#ca0020", 
+                               "s1.2" = "#f4a582", 
+                               "s1.3" = "#bababa", 
+                               "s1.4" = "#404040")) +
+  labs(title = "", x = "", y = "Residual") +
+  theme(legend.position = "none")
+
+```
 
 
 ### Comparision RMSE
@@ -946,8 +977,9 @@ rmse <-ggplot(dfrmse_long, aes(x = variable,
                         y = value, 
                         fill= variable)) +
   geom_boxplot(width=0.2,
-               alpha=0.8) +
-  geom_jitter(width = 0.01, alpha = 0.3) +
+               alpha=0.8,
+               outliers = FALSE) +
+  #geom_jitter(width = 0.01, alpha = 0.3) +
   theme_minimal() +
   scale_fill_manual(name= "Scenario",
                     values = c("s1.1" = "#ca0020", 
@@ -956,8 +988,14 @@ rmse <-ggplot(dfrmse_long, aes(x = variable,
                                "s1.4" = "#404040")) +
   labs(title = "", x = "", y = "RMSE")+
   theme(legend.position = "none")
-rmse
 ```
+
+```{r}
+ggarrange(rmse,
+          pearson_plot,
+          ncol=2)
+```
+
 
 This boxplot compares a summary of the Root Mean Square Error (RMSE) across four different models (s1.1, s1.2, s1.3, and s1.4) used to evaluate recruitment estimates of Antarctic krill. RMSE serves as an indicator of model accuracy, with lower values representing better predictive performance.
 
@@ -1769,6 +1807,48 @@ abline(v = Baseval, lty=2)
 dev.off()
 ```
 
+### Table Diagnosis
+
+```{r}
+# Construcción de tabla resumen
+diagnostics <- data.frame(
+  Model = c("s1.1", "s1.2", "s1.3", "s1.4"),
+  Gradient = c(
+    base.model1.1$maximum_gradient_component,
+    base.model1.2$maximum_gradient_component,
+    base.model1.3$maximum_gradient_component,
+    base.model1.4$maximum_gradient_component
+  ),
+  Likelihood = c(
+    base.model1.1$likelihoods_used[1,1],
+    base.model1.2$likelihoods_used[1,1],
+    base.model1.3$likelihoods_used[1,1],
+    base.model1.4$likelihoods_used[1,1]
+  ),
+  Parameters = c(
+    dim(base.model1.1$parameters)[1],
+    dim(base.model1.2$parameters)[1],
+    dim(base.model1.3$parameters)[1],
+    dim(base.model1.4$parameters)[1]
+  ),
+  RMSE = c(
+    mean(as.numeric(base.model1.1$index_variance_tuning_check$RMSE)),
+    mean(as.numeric(base.model1.2$index_variance_tuning_check$RMSE[1:10])),
+    mean(as.numeric(base.model1.3$index_variance_tuning_check$RMSE[1:10])),
+    mean(as.numeric(base.model1.4$index_variance_tuning_check$RMSE[1:10]))
+  )
+)
+#write_csv(diagnostics, "model_diagnosis.csv")
+flextable(diagnostics) %>%
+  set_caption("Diagnostic summary of model scenarios") %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  fontsize(size = 10, part = "all") %>%
+  set_table_properties(width = .85, layout = "autofit")
+
+```
+
+
 ## Outputs
 
 ### Outputs Model `s1.1`
@@ -1915,22 +1995,23 @@ outpsall_long <- outpsall %>%
   filter(Yr >= 1989, Yr <= 2020)
 
 
-# Gráfico de barras agrupadas por variable y modelo
-alloutput <- ggplot(outpsall_long, aes(x = factor(Yr), y = Value, fill = Model)) +
-  geom_bar(stat = "identity", position = "dodge") +
+# Gráfico de líneas por variable y modelo
+alloutput <- ggplot(outpsall_long, aes(x = Yr, y = Value, color = Model, group = Model)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
   facet_wrap(~Variable, 
-             ncol=1,
+             ncol = 1, 
              scales = "free_y") + 
-  scale_fill_manual(name= "Scenario",
-                    values = c("s1.1 (Ref Model: No Env-Predator)" = "#ca0020",  
-                              
-                               "s1.4 (Env and Predator data)" = "#404040")) +
-  labs(title = "",
-       x = "", y = "") +
-  theme_minimal() +
+  scale_color_manual(name = "",
+                     values = c("s1.1 (Ref Model: No Env-Predator)" = "#ca0020",
+                                "s1.4 (Env and Predator data)" = "#404040")) +
+  labs(title = "", x = "", y = "") +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
-        legend.position = "bottom")
+        legend.position = "none")
+
 alloutput
+
 ```
 
 
@@ -2354,6 +2435,35 @@ This bar plot presents the log-normal likelihood contributions of different mode
 **Length Composition:** There is some variation in this component, with s1.2 showing a larger contribution than s1.1 and s1.3.  
 
 Scenario s1.4 seems to fit the data best, followed closely by s1.2. Scenario s1.1 has the poorest likelihood, meaning it is the least supported by the data. If s1.4 includes both environmental and predator effects, this suggests that incorporating ecosystem variables significantly improves the stock assessment model for Antarctic krill.
+
+### Explotation Rate
+
+```{r}
+df1 <- base.model1.1$exploitation[, c(1, 4)] %>% mutate(model = "s1.1")
+df2 <- base.model1.2$exploitation[, c(1, 4)] %>% mutate(model = "s1.2")
+df3 <- base.model1.3$exploitation[, c(1, 4)] %>% mutate(model = "s1.3")
+df4 <- base.model1.4$exploitation[, c(1, 4)] %>% mutate(model = "s1.4")
+
+
+df_all <- bind_rows(df1, df2, df3, df4)
+colnames(df_all) <- c("year", "exploitation_rate", "model")
+
+colores <- c("s1.1" = "#ca0020", 
+             "s1.2" = "#f4a582", 
+             "s1.3" = "#bababa", 
+             "s1.4" = "#404040")
+ggplot(df_all, aes(x = year, y = exploitation_rate, color = model)) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(values = colores) +
+  labs(
+    title = "Exploitation Rate Over Time",
+    x = "Year",
+    y = "Exploitation Rate",
+    color = "Model"
+  ) +
+  theme_minimal()
+```
 
 
 ### Platoons analisis
