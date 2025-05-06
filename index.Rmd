@@ -75,6 +75,9 @@ library(readxl)
 library(tidyverse)
 library(ggridges)
 library(ggrepel)
+library(broom)
+library(lmtest)
+library(flextable)
 ```
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE}
@@ -121,6 +124,38 @@ Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invert
 
 ```{r path, fig.cap="Framework path to stock assessment model in krill in WAP (Yellow boxes is not implemeted yet)."}
 knitr::include_graphics('Figs/pathmod.png')
+```
+
+
+### Age Key Length (ALK)
+
+In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process
+
+```{r AKL, out.width='60%',  fig.cap="Representation of ALK Matrix to krill in 48.1"}
+alk_matrix <- base.model1.1$ALK[,,1] # Ajusta las dimensiones según tu matriz
+
+# Convertir la matriz en un data.frame
+alk_df <- as.data.frame(as.table(alk_matrix))
+
+# Renombrar columnas para mayor claridad
+colnames(alk_df) <- c("Length", "TrueAge", "Value")
+
+# Asegúrate de que las columnas Length y TrueAge sean numéricas
+alk_df$Length <- as.numeric(as.character(alk_df$Length))
+alk_df$TrueAge <- as.numeric(as.character(alk_df$TrueAge))
+
+# Asegúrate de que la columna Value sea numérica
+alk_df$Value <- as.numeric(alk_df$Value)
+
+# Crear el plot usando ggplot
+ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(x = "True Age",
+       y = "Length",
+       fill = "Value") +
+  theme_bw()+
+  theme(legend.position = "none")
 ```
 
 ## Parameters
@@ -418,7 +453,6 @@ base.model1.3 <- SS_output(dir=dir1.3,
 base.model1.4 <- SS_output(dir=dir1.4,
                         covar=T,
                         forecast=T)
-
 ```
 
 
@@ -1872,6 +1906,161 @@ flextable(diag_tidy) |>
   bold(part = "header")
 ```
 
+
+### Otra tab
+
+```{r eval=FALSE}
+cpue_resid <- bind_rows(
+  base.model1.1$cpue %>% mutate(model = "s1.1"),
+  base.model1.2$cpue %>% mutate(model = "s1.2"),
+  base.model1.3$cpue %>% mutate(model = "s1.3"),
+  base.model1.4$cpue %>% mutate(model = "s1.4")
+)
+
+
+indres <- ggplot(cpue_resid, aes(x = Exp, y = Obs, color = model)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  facet_wrap(~Fleet_name, scales = "free") +
+  theme_minimal() +
+  labs(title = "Observed vs Expected (Index)",
+       x = "Expected",
+       y = "Observed")
+
+
+len_resid <- bind_rows(
+  base.model1.1$lendbase %>% mutate(model = "s1.1"),
+  base.model1.2$lendbase %>% mutate(model = "s1.2"),
+  base.model1.3$lendbase %>% mutate(model = "s1.3"),
+  base.model1.4$lendbase %>% mutate(model = "s1.4")
+)
+
+lenres <- ggplot(len_resid, aes(x = Exp, y = Obs, color = model)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  facet_wrap(~Fleet, scales = "free") +
+  theme_minimal() +
+  labs(title = "Observed vs Expected (Index)",
+       x = "Expected",
+       y = "Observed")
+
+ggarrange(indres,
+          lenres,
+          ncol=1,
+          common.legend = T)
+```
+```{r eval=FALSE}
+
+cpue_df <- cpue_resid %>%
+  transmute(
+    Yr = Yr,
+    Obs = Obs,
+    Exp = Exp,
+    model = model,
+    Fleet_name = as.character(Fleet_name),  # Asegura que es character
+    type = "Index"
+  )
+
+len_df <- len_resid %>%
+  transmute(
+    Yr = Yr,
+    Obs = Obs,
+    Exp = Exp,
+    model = model,
+    Fleet_name = as.character(Fleet),  # Lo convertimos para que combine bien
+    type = "Length"
+  )
+
+resid_all <- resid_all %>%
+  mutate(Fleet_name = as.character(Fleet_name),
+         Fleet_name = case_when(
+           Fleet_name == "1"  ~ "FISHERYBS",
+           Fleet_name == "2"  ~ "FISHERYEI",
+           Fleet_name == "3"  ~ "FISHERYGS",
+           Fleet_name == "4"  ~ "FISHERYJOIN",
+           Fleet_name == "5"  ~ "FISHERYSSIW",
+           Fleet_name == "6"  ~ "SURVEYBS",
+           Fleet_name == "7"  ~ "SURVEYEI",
+           Fleet_name == "8"  ~ "SURVEYGS",
+           Fleet_name == "9"  ~ "SURVEYJOIN",
+           Fleet_name == "10" ~ "SURVEYSSIW",
+           Fleet_name == "11" ~ "PREDATOR",
+           TRUE ~ Fleet_name  # mantiene los nombres ya correctos
+         ))
+
+
+ggplot(resid_all, aes(x = Exp, y = Obs, color = model)) +
+  geom_point(alpha = 0.6) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray40") +
+  facet_grid(type ~ Fleet_name, scales = "free") +
+  theme_minimal(base_size = 13) +
+  labs(title = "Observed vs Expected residuals",
+       x = "Expected", y = "Observed")
+
+```
+```{r}
+ggplot(resid_all, aes(x = Obs - Exp, fill = model)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(Fleet_name~type, scales = "free") +
+  labs(title = "Distribución de residuales", x = "Residual (Obs - Exp)", y = "Densidad") +
+  theme_minimal()
+
+```
+### Statistics
+
+```{r eval=FALSE, resumen_residuales, message=FALSE, warning=FALSE}
+resid_all <- resid_all %>%
+  mutate(residual = Obs - Exp)
+
+# Estadísticas básicas
+resid_stats <- resid_all %>%
+  group_by(type, model) %>%
+  summarise(
+    N = n(),
+    Mean = mean(residual, na.rm = TRUE),
+    SD = sd(residual, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Shapiro-Wilk (normalidad)
+shapiro_p <- resid_all %>%
+  group_by(type, model) %>%
+  summarise(
+    shapiro_p = ifelse(n() > 3, shapiro.test(residual)$p.value, NA),
+    .groups = "drop"
+  )
+
+# Ljung-Box (autocorrelación temporal)
+ljung_p <- resid_all %>%
+  group_by(type, model) %>%
+  summarise(
+    ljung_p = ifelse(n() > 10, Box.test(residual, lag = 10, type = "Ljung-Box")$p.value, NA),
+    .groups = "drop"
+  )
+
+# Breusch-Pagan (heterocedasticidad)
+bp_p <- resid_all %>%
+  group_by(type, model) %>%
+  summarise(
+    bp_p = ifelse(n() > 3, bptest(lm(residual ~ Yr, data = cur_data()))$p.value, NA),
+    .groups = "drop"
+  )
+
+# Unión de todo
+tabla_resumen <- resid_stats %>%
+  left_join(shapiro_p, by = c("type", "model")) %>%
+  left_join(ljung_p, by = c("type", "model")) %>%
+  left_join(bp_p, by = c("type", "model")) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 3)))
+
+# Mostrar tabla
+flextable(tabla_resumen) %>%
+  set_caption("Tabla 1. Estadísticos y pruebas sobre residuales por tipo y modelo") %>%
+  autofit()
+
+```
+
+
 ## Outputs
 
 ### Outputs Model `s1.1`
@@ -2522,36 +2711,7 @@ ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
 
 ```
 
-### AKL
 
-In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process
-
-```{r AKL, out.width='60%',  fig.cap="Representation of ALK Matrix to krill in 48.1"}
-alk_matrix <- base.model1.1$ALK[,,1] # Ajusta las dimensiones según tu matriz
-
-# Convertir la matriz en un data.frame
-alk_df <- as.data.frame(as.table(alk_matrix))
-
-# Renombrar columnas para mayor claridad
-colnames(alk_df) <- c("Length", "TrueAge", "Value")
-
-# Asegúrate de que las columnas Length y TrueAge sean numéricas
-alk_df$Length <- as.numeric(as.character(alk_df$Length))
-alk_df$TrueAge <- as.numeric(as.character(alk_df$TrueAge))
-
-# Asegúrate de que la columna Value sea numérica
-alk_df$Value <- as.numeric(alk_df$Value)
-
-# Crear el plot usando ggplot
-ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
-  geom_tile() +
-  scale_fill_gradient(low = "white", high = "blue") +
-  labs(x = "True Age",
-       y = "Length",
-       fill = "Value") +
-  theme_bw()+
-  theme(legend.position = "none")
-```
 
 ### Code Repository
 
