@@ -98,14 +98,11 @@ The study area covers the Western Antarctic Peninsula (WAP), corresponding to FA
 
 ## Spatially Implicit Model
 
-To represent spatial heterogeneity in krill dynamics we implemented a spatially implicit modeling approach based on the *"areas-as-fleets"* concept [@Punt2019; @Nielsen2021; @Waterhouse2014]. The areas-as-fleets approach aims treats distinct geographical regions as independent fleets, under the assumption that fishing and survey operations can exert different effects across space. In this approach, each strata within the Western Antarctic Peninsula is treated as a distinct fleet and allows a spatial differentiation in key parameters such as selectivity, catchability (*q*) and abundance indices. This is especially relevant for krill, given the spatial variability in both population processes and fishing effort, given the abundant evidence of spatial heterogeneity [@Perry2019; @Perry2020; @Reiss2020; @SantaCruz2022; @Veytia2021]. By modeling each MU as a separate fleet, we allow the assessment to estimate region-specific parameters that reflect this variability. Survey indices and biological compositions (e.g., length-frequency data) are assigned to their corresponding MU based on sampling location based in @Dornam2021. Similarly, fishery-dependent data—such as catch and composition—are stratified by MU according to the reported fishing effort allowing for regional variation in both abundance and observational processes. Given the difference en the population structure [@Kinzey2011; @Reiss2020; @Cutter2022], the selectivity is modeled separately for each strata to account for potential variations in size composition due to spatial heterogeneity or environmental conditions. The model considers interannual fluctuations of growth dynamics, maturity and reproduction, with a spawning pulse per year occurring in January-February [@Perry2019; @McBride2021]. While strata are modeled as separate fleets, the population dynamics—such as recruitment and growth—remain unified, representing the krill stock as a single, interconnected population. This disaggregated structure enables the model to account for differences in small scale spatial dynamics and providing a flexible yet informative way to include spatial processes in stock assessments. Areas-as-fleet approach captures regional variability in dynamic and observation while avoiding the complexity of modeling explicit movement. This approach provides a more realistic representation of krill productivity within FAO Subarea 48.1.
+To represent spatial heterogeneity in krill dynamics we implemented a spatially implicit modeling approach based on the *"areas-as-fleets"* concept [@Punt2019; @Nielsen2021; @Waterhouse2014]. The areas-as-fleets approach aims treats distinct geographical regions as independent fleets, under the assumption that fishing and survey operations can exert different effects across space. In this approach, each strata within the Western Antarctic Peninsula is treated as a distinct fleet and allows a spatial differentiation in key parameters such as selectivity, catchability (*q*) and abundance indices. This is especially relevant for krill, given the spatial variability in both population processes and fishing effort, given the abundant evidence of spatial heterogeneity [@Perry2019; @Perry2020; @Reiss2020; @SantaCruz2022; @Veytia2021]. By modeling each MU as a separate fleet, we allow the assessment to estimate region-specific parameters that reflect this variability. Survey indices and biological compositions (e.g., length-frequency data) are assigned to their corresponding MU based on sampling location based in @Dornam2021. Similarly, fishery-dependent data—such as catch and composition—are stratified by MU according to the reported fishing effort allowing for regional variation in both abundance and observational processes. Given the difference en the population structure [@Kinzey2011; @Reiss2020; @Cutter2022], the selectivity is modeled separately for each strata to account for potential variations in size composition due to spatial heterogeneity or environmental conditions. This disaggregated structure allows the model to reflect small-scale spatial dynamics while maintaining analytical simplicity. The areas-as-fleets approach captures regional variability in both population dynamics and observational processes without the added complexity of explicitly modeling movement [@Punt2019]. The model accounts for interannual variability in growth dynamics, maturity, and reproduction, with a single annual spawning pulse occurring between January and February [@Perry2019; @McBride2021]. Although strata are treated as separate fleets, core population processes—such as recruitment and growth—are modeled collectively, representing the krill stock as a single, interconnected population providing a more realistic representation of krill dynamics population within FAO Subarea 48.1.
 
+## Krill Length-to-Age Model Description
 
-## Length-to-Age Model Implementation
-
-The stock assessment model to krill was configured using Stock Synthesis (SS3 hereafter) [@Methot2013] with the updated version 3.30.21. SS3 is a structured stock evaluation model, in the class of models called *"Integrated stock evaluation analysis model"* and has a set of sub-model that simulates growth, maturity, fecundity, recruitment, and mortality processes, and observation, with expected values for different types of data. The model is coded in Automatic Differentiation Model Builder (ADMB) [@Fournier2012; @Methot2013: @methot2020stock] with estimation parameters. The methodology employed by Stock Synthesis involves a comprehensive and integrated approach, utilizing various data sources described previously and modeling techniques to estimate the main population variables of krill in WAP, and unlike other integrated models, it has features that allow the integration of information related to the ecosystem, such as predators and environmental variables that have proven influence on the analyzed population. All analysis were executed in R-CRAN [@R-base]and the graphical interface of the SS3 through *r4ss* [@Taylor2019] and *ss3diags* packages [@Winker2023]. 
-
-Like many invertebrates, krill present challenges for age determination [@Punt2013]. Historically, aging techniques have not been available for this species, although recent advancements have been made [@Kilada2017]. As a result, stock assessments have relied on length-to-age models with age dynamics approximated through transition matrices, which estimate the probability of individuals belonging to specific age classes based on their length. Integrated models can effectively capture the age structure of such populations by transforming length observations into population-level dynamics. Given the scarcity—or absence—of direct age data in krill monitoring programs, length-based models offer a practical alternative to age-structured approaches. Length data are generally more abundant and cost-effective to collect [@Canales2021, @Chong2019], and, due to the correlation between length and age, they provide valuable information about population structure. To date, all integrated krill assessments have used length-to-age frameworks [@Kinzey2015a; @Kinzey2019a; @Wang2021]. Stock assessment models often rely on Age-Length Keys (ALKs) to infer the age structure of a population from observed length-frequency data [@ICCA2003]. An ALK is a probabilistic matrix that estimates the likelihood of individuals of a given length belonging to specific age classes [@Lee2024]. ALKs assume both aged and measured fish are random samples from the same population and should be applied within the same time period to avoid biases. This approach allows the transformation of catch-at-length data into age-structured information, which is essential for age-based modeling frameworks. The ALK matrix is typically defined as:
+Like many invertebrates, krill is a hard to age determination, and this presents challenge for modeling population dynamics, because most modern stock assessments that aim to estimate marine population variables rely on age-structured modeling approaches [@Punt2013]. Although recent advancements have been made [@Kilada2017], aging techniques have historically not been available for krill. Therefore, to develop a stock assessment model for this type of species use length data to approximate age dynamics through transition matrices, which estimate the probability of individuals belonging to specific age classes based on their length [@Laslett2004a; @Lee2019; @Lee2024; @Rudd2021; @Zhang2022]. Integrated models can effectively capture the age structure by transforming length observations into population-level dynamics [@Lee2024; @Punt2013]. On the other hand, length data, which are cost-effective and readily available [@Canales2021; @Chong2019], provide valuable insights into krill population structure due to their correlation with age [@Thanassekos2014]. For made this transformation, the models often use an Age-Length Keys (ALKs). An ALK is a probabilistic matrix that estimates the likelihood of individuals of a given length belonging to specific age classed and this method assume both aged and measured fish are random samples from the same population and should be applied within the same time period to avoid biases [@ICCA2003; @Punt2003; @Punt2013; @Lee2024]. The ALK matrix is typically defined as:
 
 $$
 P(A = a \mid L = l) = \frac{N_{a,l}}{\sum_{a} N_{a,l}}
@@ -116,70 +113,10 @@ $$
 N_a = \sum_{l} P(A = a \mid L = l) \cdot N_l
 $$
 
-where \( N_l \) is the number of fish observed at length \( l \), and \( N_a \) is the estimated number at age. In integrated stock assessment models, such as those using statistical catch-at-age (SCAA) or integrated length-based frameworks, the ALK provides a critical link between observable length data and underlying age-based population dynamics.
+where \( N_l \) is the number of fish observed at length \( l \), and \( N_a \) is the estimated number at age. Given the scarcity—or absence—of direct age data in krill monitoring programs, length-based models offer a practical alternative to age-structured approaches. To date, all model-based krill assessments have used length-to-age frameworks [@Kinzey2015a; @Kinzey2019a; @Wang2021; @Green2023]. The resulting ALK is shown in S1 Fig 7. 
 
-The proportions-at-age are then adjusted to find the best fit between the observed size frequency data and that predicted by the proportion-at-age and the ALK. The majority of ALKs are based on growth parameters according to the most suitable formula for the species. In the case of krill, these parameters are derived from the von Bertalanffy growth curve. In @Mardones2023, using `SS3` stock assessment catch-at-lenght model, we use a von Bertalanffy growth relationship with estimated parameters L~inf~, k, and CV. This length-at-age relationship, mediated by survey catchability and selectivity, was used to compare survey biomass with model estimates of vulnerable biomass. Weight-at-length was assumed known and calculated using @Maschette2020 parameters in krill resulting in a AKL exposed in S1 Fig 7.
+In the stock assessment catch-at-length model, growth is modeled using a von Bertalanffy growth function lenght-at-age parameterization with parameters L~inf~, k, and coefficient of variation (CV), as outlined in @Mardones2023. This growth relationship is integrated into the model alongside weight-at-length, which is assumed known and calculated using the parameters from @Maschette2020 for krill. The model assumed linear growth below a predefined settlement age of 1.5 years. The asymptotic length ($L_{\infty}$) was determined by the estimated length-at-age, indicating that the model used $L_{\infty}$ as an upper growth boundary. Exponential decay of growth beyond maximum age was disabled, ensuring that growth patterns followed the von Bertalanffy assumption without artificial constraints. Growth variability was not explicitly modeled, and the coefficient of variation (CV) was assumed to be a function of length-at-age. Maturity was modeled as an age-based logistic function, with the first age of maturity set at 2-3 years. Fecundity was estimated as a power function of body weight, where fecundity was computed as $Eggs = Wt \times (a + b \times Wt)$. The model did not account for hermaphroditism, assuming that all individuals maintained a fixed sex throughout their lifespan. The model used a direct parameterization without additional offsets between sexes. Regarding selectivity functions, it was modeled using a logistic formulation for the fishery fleet. The selectivity curve was defined by two key parameters: the size at 50% selectivity (inflection point) and the width of the selection range (95%). The fishery was characterized by multiple selectivity patterns, each defined by an inflection point and a selection range width. The estimated inflection points varied between 2.0 and 3.5 cm, while the selection range widths spanned between 2.0 and 4.0 cm depending of strata or "fleet". The survey selectivity was also modeled using a length-based logistic function. Inflection points ranged from 2.0 to 3.0 cm, with selection range widths consistently set at 1.0 cm. The phase assignment dictated whether parameters were freely estimated (positive phase values) or fixed (negative phase values). These differences in selectivity parameters are crucial for interpreting and modeling spatial heterogeneity among strata, as they reflect variability in size-dependent catchability across different regions and fleets (S1 Fig 6). The predator fleet followed a similar selectivity function, with a size-at-inflection point of 0.2 cm and a corresponding selection range width of 0.2 cm. assuming that the predator can capture a wider range of krill sizes. These parameters were estimated in later phases, allowing flexibility in their estimation. Across all selectivity functions, parameters with negative phase values were held fixed during the estimation process, ensuring model stability and preventing overparameterization in a initial step. The stock-recruitment (SR) relationship was modeled using a standard Beverton-Holt model curve like @Kinzey2019a, with the steepness parameter fixed at 0.85 in phase -4 to ensure consistency with previous studies. This reflects a weak stock-recruitment relationship, as krill recruitment largely depends on environmental conditions rather than spawning biomass [@Dong2025; @Kinzey2019a; @Perry2020]. The unfished recruitment ($R_0$) was estimated with a mean recruitment of 23 in log-scale, with a prior of 10. The parameter was freely estimated in phase 1. The standard deviation of recruitment deviations ($SR\_sigmaR$) was set at 1.2 and fixed in phase -4 to constrain model variability. The regime shift parameter ($SR\_regime$) was set at 0 and fixed, implying no consideration of long-term recruitment regime shifts. Recruitment deviations were estimated to account for interannual variability in recruitment dynamics. The model used the deviation vector approach ($do\_recdev = 1$), where recruitment was modeled as a function of spawning stock biomass plus a deviation term. The main recruitment deviation period spanned from 1998 to 2020, with forecast deviations applied in subsequent years. Early recruitment deviations prior to 1998 were included, with an early deviation phase of -4 to ensure these values remained fixed. Bias adjustment was implemented, with key adjustment years defined as 1995.7 as the last early year with no bias adjustment, 2000.0 as the first year of full bias adjustment, 2015.7 as the last year of full bias adjustment, and 2022.3 as the first recent year with no bias adjustment. To prevent overparameterization, recruitment deviations were constrained between -5 and 5. Cyclic patterns in recruitment were assumed each tree and five years [@Perry2019; @McBride2021; @Kinzey2019a; @Thanassekos2014], and advanced recruitment options were enabled for model flexibility. Life history parameters—such as growth, weight-length relationship, natural mortality, and maturity—were used as priors to model the initial conditions of krill population dynamics, based on data from @Smith2023a, @Maschette2020, and @Kinzey2011. These parameters, along with initial selectivity assumptions, are summarized in Table \@ref(tab:parainit1). 
 
-Growth was modeled following a von Bertalanffy growth function with lenght-at-age parameterization. The model assumed linear growth below a predefined settlement age of 1.5 years. The asymptotic length ($L_{\infty}$) was determined by the estimated length-at-age, indicating that the model used $L_{\infty}$ as an upper growth boundary. Exponential decay of growth beyond maximum age was disabled, ensuring that growth patterns followed the von Bertalanffy assumption without artificial constraints. Growth variability was not explicitly modeled, and the coefficient of variation (CV) was assumed to be a function of length-at-age. Maturity was modeled as an age-based logistic function, with the first age of maturity set at 3 years. Fecundity was estimated as a power function of body weight, where fecundity was computed as $Eggs = Wt \times (a + b \times Wt)$. The model did not account for hermaphroditism, assuming that all individuals maintained a fixed sex throughout their lifespan. The model used a direct parameterization without additional offsets between sexes. Under this assumption, male parameters with a value of 0 and a negative estimation phase were set equal to their corresponding female parameters. Regarding selectivity functions, it was modeled using a length-based logistic formulation for the fishery, survey, and predator fleets. The selectivity curve was defined by two key parameters: the size at 50% selectivity (inflection point) and the width of the selection range (95% width). The fishery was characterized by multiple selectivity patterns, each defined by an inflection point and a selection range width. The estimated inflection points varied between 2.0 and 3.5 cm, while the selection range widths spanned between 2.0 and 4.0 cm depending of strata. Parameter estimation phases were assigned, with negative values indicating fixed parameters. The survey selectivity was also modeled using a length-based logistic function. Inflection points ranged from 2.0 to 3.0 cm, with selection range widths consistently set at 1.0 cm. The phase assignment dictated whether parameters were freely estimated (positive phase values) or fixed (negative phase values). These differences in selectivity parameters are crucial for interpreting and modeling spatial heterogeneity among strata, as they reflect variability in size-dependent catchability across different regions and fleets (Fig 6, S1). The predator fleet followed a similar selectivity function, with a size-at-inflection point of 0.2 cm and a corresponding selection range width of 0.2 cm. assuming that the predator can capture a wider range of krill sizes. These parameters were estimated in later phases, allowing flexibility in their estimation. Across all selectivity functions, parameters with negative phase values were held fixed during the estimation process, ensuring model stability and preventing overparameterization in a initial step. The stock-recruitment (SR) relationship was modeled using a standard Beverton-Holt formulation, with the steepness parameter fixed at 0.85 in phase -4 to ensure consistency with previous studies. This reflects a weak stock-recruitment relationship, as krill recruitment largely depends on environmental conditions rather than spawning biomass [@REF]. The unfished recruitment ($R_0$) was estimated with a log-transformed mean recruitment value of 23, with a prior of 10. The parameter was freely estimated in phase 1.  The standard deviation of recruitment deviations ($SR\_sigmaR$) was set at 1.2 and fixed in phase -4 to constrain model variability. The regime shift parameter ($SR\_regime$) was set at 0 and fixed, implying no consideration of long-term recruitment regime shifts. Recruitment deviations were estimated to account for interannual variability in recruitment dynamics. The model used the deviation vector approach ($do\_recdev = 1$), where recruitment was modeled as a function of spawning stock biomass plus a deviation term. The main recruitment deviation period spanned from 1998 to 2020, with forecast deviations applied in subsequent years. Early recruitment deviations prior to 1998 were included, with an early deviation phase of -4 to ensure these values remained fixed. Bias adjustment was implemented, with key adjustment years defined as 1995.7 as the last early year with no bias adjustment, 2000.0 as the first year of full bias adjustment, 2015.7 as the last year of full bias adjustment, and 2022.3 as the first recent year with no bias adjustment. To prevent overparameterization, recruitment deviations were constrained between -5 and 5. Cyclic patterns in recruitment were assumed each tree and five years [@REF], and advanced recruitment options were enabled for model flexibility. All of these configurations can be reviewed in the repository section of S1.
-
-## Data Sources
-
-A set of multiple sources of data were incorporated into the krill population dynamics model to improve inference and parameter estimation. These data included register from the krill fishery monitoring program, such as standardized CPUE (kg/time haul) and length compositions, which have been systematically collected on board fishing vessels by scientific observers through the "Scheme of International Scientific Observation" (SISO) Program. Scientific research cruises conducted under the AMLR program provided critical data such as krill biomass indices by strata and biological characteristics of krill obtained via net sampling. Krill length compositions from AMLR surveys (provided by the Ecosystem Science Division of NOAA) were handled according to stock assessment model templates requirements (Suppl. Mat. 2). Environmental and predator-related data were also incorporated, such as satellite-derived chlorophyll-a concentrations from the Copernicus Marine Service and predator abundance and diet composition, particularly from penguin colonies reported in the [MAPPPD database](https://www.penguinmap.com/mapppd/sources/). A summary of all data sources, including temporal coverage and spatial scale, is provided in Table \@ref(tab:data-sources).
-
-```{r data-sources, eval=TRUE}
-data <- data.frame(
-  Source = c(
-    "Krill Fishery Monitoring Program (CCAMLR SISO)",
-    "Krill Fishery Monitoring Program (CCAMLR SISO)",
-    "Krill Fishery Monitoring Program (CCAMLR SISO)",
-    "AMLR Scientific Research Cruises",
-    "Satellite Remote Sensing",
-    "Predator Monitoring (MAPPPD)",
-    "Predator Diet Composition (AMLR)"
-  ),
-  Description = c(
-    "Total reported catches",
-    "Standardized CPUE (by vessel, area, and depth)",
-    "Length-frequency distributions (0.2 cm bins)",
-    "Biomass indices by strata from net sampling",
-    "Monthly chlorophyll-a concentration from EU Copernicus Marine Service (interpolated; doi:10.48670/moi-00021, doi:10.48670/moi-00148)",
-    "Abundance and colony-specific trends of penguin populations",
-    "Length-frequency of krill in predator diets (e.g., penguins)"
-  ),
-  TimeSeries = c(
-    "1997–2020",
-    "1997–2020",
-    "2000–2020",
-    "1991–2011 (based on cruise periods)",
-    "1997–present",
-    "2000s–present",
-    "1977–2020 (subset from 2000 used in this analysis)"
-  ),
-  SpatialScale = c(
-    "By strata",
-    "By strata",
-    "By strata",
-    "By strata",
-    "Subarea 48.1",
-    "By colony",
-    "By colony"
-  )
-)
-
-
-ft_data <- flextable(data) %>%
-  set_caption("Table: Data sources used in the krill population dynamics modeling") %>%
-  autofit() %>%
-  theme_vanilla() %>%
-  fontsize(size = 9, part = "all") %>%
-  font(fontname = "Arial", part = "all") %>%
-  set_table_properties(layout = "autofit", width = .85)
-
-ft_data
-
-```
-
-Life history parameters, like growth, weight-length relation, natural mortality and maturity were used as priors to model initial condition in krill dynamics population was taken from @Smith2023a, @Maschette2020 and @Kinzey2011 and can be found in Table \@ref(tab:parainit1). Source data and temporal scale used in this stock assessment are shown in Fig 4, S1.
 
 ```{r parainit1, eval=TRUE}
 dir1.1 <- here("s1.1")
@@ -238,9 +175,12 @@ ft
 ```
 
 
+The statistical model to krill was configured using Stock Synthesis v 3.30.21 (SS3 hereafter) [@Methot2013]. SS3 is a structured stock assessment model, in the class of models called *"Integrated stock assessment model"* and has a set of sub-model that simulates growth, maturity, fecundity, recruitment, and mortality processes, and observation, with expected values for different types of data. The model is coded in Automatic Differentiation Model Builder (ADMB) [@Fournier2012; @Methot2013: @methot2020stock] with estimation parameters. Model conditioning is available in the code repository section of Suppl. Mat 1. All analysis about modeling was executed in R-CRAN [@R-base] and diagnoses and visualization of the outputs was made was through *r4ss* [@Taylor2019] and *ss3diags* packages [@Winker2023]. 
+
+
 ## Environmental variable modelling
 
-To identify the most influential environmental drivers of krill recruitment to be considered in stock evaluation processes, we examined the relationship between a recruitment index and three key environmental variables previously recognized as critical in shaping krill population dynamics: Sea Surface Temperature (SST), Sea Ice Concentration (SIC), and Chlorophyll-a concentration (Chla) [@Flores2012; @Morley2020; @Saba2014; @Veytia2021; @Walsh2020]. Table \@ref(tab:env) summarizes the key characteristics of the environmental datasets used in the analysis, including sea ice, sea surface temperature (SST), and chlorophyll a. These variables were obtained from different satellite platforms and reanalysis products, namely Nimbus-7, ERA5, and Copernicus. The table details spatial and temporal resolution, as well as the temporal coverage of each dataset.
+To identify the most influential environmental drivers of krill recruitment to be considered in stock evaluation processes, we examined the relationship between a recruitment index and three key environmental variables described previously as critical in shaping krill population dynamics: Sea Surface Temperature (SST), Sea Ice Concentration (SIC), and Chlorophyll-a concentration (Chla) [@Flores2012; @Morley2020; @Saba2014; @Veytia2021; @Walsh2020]. Table \@ref(tab:env) summarizes the key characteristics of the environmental datasets used in the analysis, including sea ice, sea surface temperature (SST), and chlorophyll a. These variables were obtained from different satellite platforms and reanalysis products, namely Nimbus-7, ERA5, and Copernicus. The table details spatial and temporal resolution, as well as the temporal coverage of each dataset.
 
 ```{r env, eval=TRUE}
 env_features <- data.frame(
@@ -270,7 +210,7 @@ ft_env
 ```
 
 
-All environmental data were processed at their native spatial resolution using the R packages *sf* and *ncdf4* [@Pebezma2018; @Pierce2021], incorporating spatial manipulation, rasterization, and coordinate transformations. We model the relation the environmental influence on krill recruitment with a serie of linear models, progressively incorporating the environmental variables to identify the one with the greatest explanatory power. The initial model considered only the effect of strata (spat), while subsequent models sequentially included Chla, SST, Sea Ice Index and interaction terms. This modeling framework allowed us to determine the relative contribution of each factor and their interactions on the recruitment process. All models and their results can be found in the Supplementary Material 2.
+All environmental data were processed at their original spatial resolution using the R packages *sf* and *ncdf4* [@Pebezma2018; @Pierce2021], incorporating spatial manipulation, rasterization, and coordinate transformations. We modelled the relation the environmental influence on krill recruitment with a serie of linear models, progressively incorporating the environmental variables to identify the one with the greatest explanatory power. The initial model considered only the effect of strata (spatial), while subsequent models sequentially included Chla, SST, SIC and interaction terms. This modeling framework allowed us to determine the relative contribution of each factor and their interactions on the recruitment process. All models and their results can be found in the Supplementary Material 2.
 
 
 
@@ -285,19 +225,75 @@ $R$ represents the variability of deviations, adding to the variance caused by e
 ## Predator modelling 
 
 
-Following the SS3 framework described by @methot2020stock, natural mortality due to predation (*M2*) can be integrated into stock assessment models through multiple data types. In our krill assessment, we implement this by incorporating both predator biomass and diet composition from the three main penguin species in the Antarctic Peninsula: Adélie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*), and Gentoo (*Pygoscelis papua*). Predator abundance is treated as an index of predation "effort," allowing time-varying estimation of predation mortality rates. This follows the equation:
+Following @methot2020stock, natural mortality due to predation (*M2*) was incorporate through different types of observational data types, with each informing distinct aspects of predator-prey dynamics. In our krill assessment, we incorporated predator abundance from the three main penguin species in the Antarctic Peninsula: Adélie (*Pygoscelis adeliae*), Chinstrap (*Pygoscelis antarcticus*), and Gentoo (*Pygoscelis papua*)  from 399 colonies identified, located along the northern arc of the Antarctic Peninsula during the last two decades (2000–2020) obtained from the Mapping Application for Penguin Populations and Projected Dynamics ([MAPPPD](https://www.penguinmap.com/mapppd/sources/)). Predator abundance is processed as an index of predation "effort" allowing time-varying estimation of predation mortality rates in time. This follows the equation:
 
 $$
 M2_t = Q \cdot I_t
 $$
 
-where \( M2_t \) is the predation mortality in year *t*, \( I_t \) is the predator abundance index, and \( Q \) is a catchability coefficient. Additionally, length-frequency data of krill obtained from penguin diet samples are used to characterize the size-selectivity of predation. These data inform predator-specific selectivity functions for *M2*, enabling the model to represent how predation varies with krill size. This dual approach—using predator abundance and diet composition—supports a temporally and size-structured representation of predation mortality, aligning with ecosystem-based assessment principles. Total natural mortality (*M*) is thus partitioned as \(M = M_1 + \sum M_2 \), where \( M_1 \) is background mortality and \( \sum M_2 \) accounts for predator-specific contributions. Total mortality is expressed as \( Z = M_1 + M_2 + F \) combining natural and fishing-induced mortality.
+where \( M2_t \) is the predation mortality in year *t*, \( I_t \) is the predator abundance index, and \( Q \) is a catchability coefficient. Additionally, length-frequency data of krill obtained from penguin diet samples from AMLR Program are used to characterize the size-selectivity of predation. These data inform predator-specific selectivity functions for *M2*, enabling the model to represent how predation varies with krill size. Total natural mortality (*M*) is thus partitioned as \(M = M_1 + \sum M_2 \), where \( M_1 \) is background mortality and \( \sum M_2 \) accounts for predator-specific contributions. Total mortality is expressed as \( Z = M_1 + M_2 + F \) combining natural and fishing-induced mortality. This dual approach—using predator abundance and diet composition—supports a temporally and size-structured representation of predation mortality, aligning with ecosystem-based assessment principles.
+
+
+## Model Input Data: Fishery and Survey
+
+Along with data on predators and environmental conditions, a fundamental input to the model was derived from fishery-dependent data and scientific monitoring programs. Fishery-dependent data were obtained from the Krill Fishery Monitoring Program under the CCAMLR SISO framework, including total reported catches, standardized CPUE (adjusted by vessel, area, and depth), and krill length-frequency distributions data were standardized using a fixed bin structure of 28 length intervals, each representing the lower edge of 0.2 cm width bins from 1.2 to 6.6 cm. Length data were assigned to partition code 0 (combined discard and retained) and sex code 0 (combined sexes), with a fixed sample size of 75 individuals per haul. This ensured consistency across years and strata and fleets (fishery, survey and predator), facilitating reliable temporal and spatial comparisons of size structure, covering the period from 1997 to 2020. Fishery-independent data originated from U.S. AMLR Program acoustic surveys included standarized biomass indices conducted between 1991 and 2011. Krill length compositions from AMLR surveys (provided by the Ecosystem Science Division of NOAA) was manipulate in the same structure that fishery-dependent data and handled according to stock assessment model templates requirements (Suppl. Mat. 2). All these data, together with the previously described ecosystem variables (environmental and predator-related), along with their temporal coverage and spatial scale, are summarized in Table \@ref(tab:data-sources) and illustrated in in S1, Fig. 4.
+
+
+```{r data-sources, eval=TRUE}
+data <- data.frame(
+  Source = c(
+    "Krill Fishery Monitoring Program (CCAMLR SISO)",
+    "Krill Fishery Monitoring Program (CCAMLR SISO)",
+    "Krill Fishery Monitoring Program (CCAMLR SISO)",
+    "AMLR Scientific Research Program",
+    "Satellite Remote Sensing",
+    "Predator Monitoring (MAPPPD)",
+    "Predator Diet Composition (AMLR)"
+  ),
+  Description = c(
+    "Total reported catches",
+    "Standardized CPUE (by vessel, area, and depth)",
+    "Length-frequency distributions (0.2 cm bins)",
+    "Biomass indices by strata from net sampling",
+    "Monthly chlorophyll-a concentration from EU Copernicus Marine Service (interpolated; doi:10.48670/moi-00021, doi:10.48670/moi-00148)",
+    "Abundance and colony-specific trends of penguin populations",
+    "Length-frequency of krill in predator diets (e.g., penguins)"
+  ),
+  TimeSeries = c(
+    "1997–2020",
+    "1997–2020",
+    "2000–2020",
+    "1991–2011 (based on cruise periods)",
+    "1997–present",
+    "2000s–present",
+    "1977–2020 (subset from 2000 used in this analysis)"
+  ),
+  SpatialScale = c(
+    "By strata",
+    "By strata",
+    "By strata",
+    "By strata",
+    "Subarea 48.1",
+    "By colony",
+    "By colony"
+  )
+)
+
+ft_data <- flextable(data) %>%
+  set_caption("Table: Data sources used in the krill population dynamics modeling") %>%
+  autofit() %>%
+  theme_vanilla() %>%
+  fontsize(size = 9, part = "all") %>%
+  font(fontname = "Arial", part = "all") %>%
+  set_table_properties(layout = "autofit", width = .85)
+ft_data
+```
 
 \newpage
 
 ## Scenarios
 
-To account for the uncertainty associated with ecosystem influence in krill dynamic popupation, we evaluated a set of model configurations that incorporate variations in predator "fleet" and environmental effects, and the relationship between spawning biomass and recruitment. Spatial heterogeneity implicity is considering in all scenarios. The methodology involves assessing the statistical performance of the model under these configurations. Specifically, `s1.1` serves as the reference model, incorporating only fishery and survey data while accounting for spatial heterogeneity. The subsequent scenarios build upon this configuration to evaluate the effects of additional ecological components. `s1.2` extends `s1.1` by incorporating predator influences, allowing the model to assess the impact of predation on krill population dynamics. `s1.3` modifies `s1.1` by introducing an environmental variable, capturing potential environmental drivers affecting krill recruitment and biomass. Finally, `s1.4` integrates both predator and environmental influences into the `s1.1` framework, providing a more comprehensive assessment of ecosystem interactions and their role in krill population dynamics (Table \@ref(tab:scenario)).
+We evaluated a set of model configurations that incorporate variations in predator "fleet" and environmental effects, and the impacts in spawning biomass, recruitment among others. Spatial heterogeneity was considered in all scenarios. The methodology involves assessing the statistical performance of the model under these configurations. Specifically, `s1.1` serves as the reference model, incorporating only fishery and survey data while accounting for spatial heterogeneity (implicit spatial model). The subsequent scenarios build upon this configuration to evaluate the effects of additional ecological components. `s1.2` extends `s1.1` by incorporating predator influences, allowing the model to assess the impact of predation on krill population dynamics. `s1.3` modifies `s1.1` by introducing an environmental variable, capturing potential environmental drivers. Finally, `s1.4` integrates both predator and environmental influences into the `s1.1` framework, providing a more realistic assessment of ecosystem interactions and their role in krill population dynamics (Table \@ref(tab:scenario)).
 
 ```{r scenario, eval=TRUE}
 scenario_table <- data.frame(
@@ -324,25 +320,19 @@ ft_scenarios
 ```
 
 
-Regarding the performance and comparison between scenarios, @Carvalho2017;  @Carvalho2021b; @Merino2022a and @Kell2021 propose good practice to made a structured approach for diagnosing stock assessment models to ensure their reliability and robustness. This diagnostic process was applied to the krill stock assessment and involved several key steps propoesed by previus research. First, convergence analysis was conducted to evaluate whether the estimation algorithm reached a stable solution. This included reviewing parameter trace plots, gradients, and the Hessian matrix to ensure that all parameters were well-estimated.  Next, model fit to data was assessed by comparing observed and predicted values across key data sources, including catch, survey indices, and length composition. The p-values for the residual runs tests were computed for each of the four joint length compositions that are common in all models. The p-values were then combined into a single test statistic using Fisher's method @@Merino2022a:
+Regarding performance and scenario comparison, @Carvalho2017;  @Carvalho2021b; @Merino2022a and @Kell2021 propose a set of "good practices" for conducting a structured diagnosis to ensure the reliability and robustness of stock assessment analyses. This diagnostic process was applied to the krill stock assessment and involved several key steps proposed by previous research. First, convergence analysis was conducted to evaluate whether the estimation algorithm reached a stable solution. This included reviewing parameter trace plots, gradients, and the Hessian matrix to ensure that all parameters were well-estimated.  Next, model fit to data was assessed by comparing observed and predicted values across key data sources, including catch, survey indices, and length composition. The *p-values* for the residual runs tests were computed for each of the four joint length compositions that are common in all models. The *p-values* were then combined into a single test statistic using Fisher's method @@Merino2022a:
 
 $$ 
 \chi^2_{2k} = -2 \sum \log(p_i)
 $$
 
-where \( p_i \) is the p-value for Length \( i \) and \( k \) are the degrees of freedom of the four p-values from the joint Length indices. Likelihood profiling was also carried out to quantify parameter uncertainty and identify the influence of priors. Finally, prediction skill was assessed using hindcasting techniques to evaluate the model’s ability to reproduce historical stock dynamics. Retrospective analysis and hindcast cross-validation were performed by sequentially removing five years of data. regarding @HurtadoF2015, Mohn parametrer was calculated as the mean relative error, defined as:
+where \( p_i \) is the p-value for Length \( i \) and \( k \) are the degrees of freedom of the four *p-values* from the joint length compositions. Likelihood profiling was also carried out to quantify parameter uncertainty and identify the influence of priors. Regarding model fit, Pearson residuals of predicted length distributions for krill were evaluated across four modeling scenarios, each incorporating different levels of ecosystem complexity. Pearson residuals are used to assess the goodness-of-fit by standardizing the differences between observed and predicted values, allowing for the detection of systematic patterns or biases in model predictions across size classes and sampling sources. Retrospective analysis and hindcast cross-validation were performed by sequentially removing five years of data regarding @HurtadoF2015. As part of the restrospective analysis, the Mohn parametrer was calculated as the mean relative error, defined as:
 
 $$ 
 \rho_M = \frac{1}{h} \sum_{y=1}^{h} \left( \frac{X_{T - y} - \hat{X}_{T - y}}{\hat{X}_{T - y}} \right)
 $$
 
-where \( X \) represents the quantities (such as spawning stock biomass (SSB) or fishing mortality (F)) for which ρM was calculated, and \( \hat{X} \) is the corresponding estimate from the reference model fitted to the full dataset. Year \( y \) was nominally considered as season one, \( T \) refers to the terminal assessment data year, and \( h \) denotes the number of retrospective peels, removing recent years of data ("peeling") and re-estimating the model, allowing for the calculation of retrospective bias (*Rho*) for key metrics such as Spawning Stock Biomass (SSB) and Fishing Mortality (F). To evaluate statistical differences in model performance, we analyzed Root Mean Squared Error (RMSE) values across four scenario configurations (`s1.1`, `s1.2`, `s1.3`, and `s1.4`). The RMSE values were extracted from the variance tuning diagnostics of each scenario and compiled into a data frame for statistical analysis. To test for overall differences among scenarios, a one-way ANOVA [@REF] was conducted, treating RMSE values as the dependent variable and scenario configurations as the categorical factor. Another quantitative statistical method used to evaluate model performance was the Akaike Information Criterion (AIC)[REF], computed as:
-
-$$
-\text{AIC} = 2k + 2L
-$$
-
-where \( k \) is the number of estimated non-deviation parameters and \( L \) is the negative log-likelihood. This criterion balances model fit and complexity, facilitating comparisons across scenarios. Lower AIC values indicate more parsimonious models with better overall fit.
+where \( X \) represents the quantities (such as spawning stock biomass (SSB) or fishing mortality (F)) for which \rho_M was calculated, and \( \hat{X} \) is the corresponding estimate from the reference model fitted to the full dataset. Year \( y \) was nominally considered as season one, \( T \) refers to the terminal assessment data year, and \( h \) denotes the number of retrospective peels, removing recent years of data ("peeling") and re-estimating the model, allowing for the calculation of retrospective bias (*Rho*) for key metrics such as Spawning Stock Biomass (SSB) and Fishing Mortality (F). To evaluate statistical differences in model performance, we analyzed Root Mean Squared Error (RMSE) values across four scenario configurations (`s1.1`, `s1.2`, `s1.3`, and `s1.4`). The RMSE values were extracted from the variance tuning diagnostics of each scenario and compiled into a data frame for statistical analysis. To test for overall differences among scenarios, a one-way ANOVA [@Sthle1989] was conducted, treating RMSE values as the dependent variable and scenario configurations as the categorical factor. Another quantitative statistical method used to evaluate model performance was the Akaike Information Criterion (AIC) [@Bozdogan1987]. This criterion balances model fit and complexity, facilitating comparisons across scenarios. Lower AIC values indicate more parsimonious models with better overall fit.
 
 Table \@ref(tab:metrics) summarizes the diagnostic metrics used to evaluate model performance, including goodness-of-fit, prediction accuracy, information criteria, retrospective bias, and estimation stability. 
 
@@ -368,8 +358,8 @@ df_model_metrics <- data.frame(
     NA,
     "@Carvalho2021b",
     "@Hyndman2006",
-    "@Akaike1974",
-    "@Mohn1999",
+    "@Bozdogan1987",
+    "@HurtadoF2015",
     "@Methot2013"
   ),
   stringsAsFactors = FALSE
@@ -390,18 +380,17 @@ ft_stat <- flextable(df_model_metrics) |>
 ft_stat
 ```
 
-
 # Results
 
 ### Environmental data 
 
-Based on linear models performances and ecological relevance, Chla emerged as the most influential predictor, therefore, this variable was selected for incorporation into the stock assessment model as an environmental covariate (Table 2, S2). This is consistent with previous studies that have identified this variable as an important driver of variability in different biological components of the krill population and shaping krill habitat suitability and productivity [REF REF REF]. Figure \@ref(fig:mapachl) presents a time series of chlorophyll-a (Chl-a) concentration (mg/m-3) in the waters around the Antarctic Peninsula from 2000 to 2020. Each panel represents a different year, showing spatial variations in Chl-a levels, which indicate phytoplankton biomass. The highest concentrations are observed along the coastal regions, while offshore areas exhibit lower Chl-a levels. This visualization helps assess interannual variability in primary productivity, which is a key driver of the Antarctic krill population dynamics.
+Based on linear models performances and ecological relevance, Chla emerged as the most influential predictor, therefore, this variable was selected for incorporation into the stock assessment model as an environmental covariate (Table 2, S2).  Figure \@ref(fig:mapachl) presents a time series of Chl-a concentration (mg/m-3) in the waters around the Antarctic Peninsula from 2000 to 2020. Each panel represents a different year, showing spatial variations in Chl-a levels, which indicate phytoplankton biomass. The highest concentrations were observed along the coastal regions, while offshore areas exhibit lower Chl-a levels. 
 
-```{r mapachl, eval=TRUE, fig.cap="Time series (2000-2020) to Chlorophyll in 48.1 area"}
+```{r mapachl, eval=TRUE, fig.cap="Time series (2000-2020) to Chlorophyll in Subarea 48.1"}
 knitr::include_graphics('Figs/chla_grilled.png')
 ```
 
-In another hand, Figure \@ref(fig:chlindex) illustrates the interannual variability of a Chlorophyll Variability Index from the year 2000 to 2020. The figure shows notable fluctuations across years, highlighting periods of higher-than-average chlorophyll variability (e.g., 2003, 2016) as well as years with significantly lower values (e.g., 2011, 2020). These patterns suggest substantial year-to-year environmental changes, which may have implications for marine ecosystem productivity and associated trophic dynamics and krill population impacts [REF]. 
+The interannual variability of this environmental index from 2000 to 2020 is shown in Figure \@ref(fig:chlindex). The figure shown illustrates the interannual variability of a Chlorophyll Variability Index from the year 2000 to 2020. The figure shows fluctuations across years, highlighting periods of higher-than-average chlorophyll variability (e.g., 2003, 2016) as well as years with significantly lower values (e.g., 2011, 2020).
 
 ```{r chlindex, eval=TRUE, fig.height=2, fig.width=9, fig.cap="Interannual variability of the Chlorophyll Variability Index from 2000 to 2020. Positive anomalies (in red) and negative anomalies (in black) indicate below-average conditions"}
 datos <- data.frame(
@@ -432,7 +421,7 @@ ggplot(datos, aes(x = anio, y = indice_ambiental)) +
 
 ### Predator comoponent as driver of krill dynamics
 
-The three main penguin colonies Adélie, Chinstrap, and Gentoo are central place foragers with diet compositions that are strongly linked to krill abundance and demographic structure, particularly during the breeding season when foraging is spatially and temporally constrained [REF Lukcas!, REF Vicky]. Figure \@ref(fig:mapapre) presents a temporal and spatial overview of penguin variables from 2001 to 2020. The top panel in Figure \@ref(fig:mapapre) shows annual boxplots of krill length distributions derived from penguin diet samples, stratified by predator species. Although median krill lengths remain relatively consistent over time, there is notable interannual variability in the spread and distribution of sizes, which may reflect fluctuations in recruitment strength and availability of krill age classes. Foraging activity is concentrated in the Bransfield Strait and surrounding areas, aligning with regions of persistent krill aggregation. This spatial overlap reinforces the ecological relevance of penguin-based indicators in reflecting krill dynamics (middle panel in Figure \@ref(fig:mapapre)). For stock assessment purposes, we integrated all penguin colony abundances into a synoptic index of relative predator biomass, which represents a comprehensive measure of population trends over time (bottom panel in Figure \@ref(fig:mapapre). This index accounts for variations in colonies abundance providing a robust metric that reflects the overall status of the penguin population. The index appears to exhibit fluctuations over time, with a general decline from the early 1990s to the mid-2000s, followed by a period of relative stabilization and a strong decline toward the end of the time series. This decline has been extensively documented reported in the Antarctic Peninsula by studies such as @Waterhouse2014, @Dunn2019a and @Wethington2023, primarily associated with colonies of the Adélie penguin [@Strycker2020]. This abundance series captures broad decadal declines in predator presence, particularly after 2015, potentially reflecting changes in prey availability, environmental conditions, or predator demography.
+Figure \@ref(fig:mapapre) presents a temporal and spatial overview of penguin variables from 2001 to 2020. The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributions derived from penguin diet samples, displayed by predator species. Although median krill lengths remain relatively consistent over time, there is an interannual variability in the spread and distribution of sizes. Spatiotemporal distribution patterns of the three penguin species across the Antarctic Peninsula showed interannual variability from 2001 to 2020. Adélie penguins exhibited a relatively consistent presence across the northern sector of the Peninsula, with larger colony sizes concentrated toward the southwestern Bransfield Strait, particularly during the early 2000s. Chinstrap penguins were widespread and dominant in both spatial extent and colony size across most years, especially in the central and northeastern portions of the Peninsula. Gentoo penguins appeared in fewer and more localized sites but displayed a slight increase in spatial occurrence in the latter part of the time series (middle panel in Figure \@ref(fig:mapapre)). For stock assessment purposes, we integrated all penguin colony abundances into a synoptic index of relative predator biomass, which represents a comprehensive measure of population abundance trends over time (bottom panel in Figure \@ref(fig:mapapre). This index accounts for variations in colonies abundance providing a robust metric that reflects the overall status of the penguin population. The index appears to exhibit fluctuations over time, with a general decline from the early 1990s to the mid-2000s, followed by a period of relative stabilization and a strong decline toward the end of the time series. This decline has been extensively documented reported in the Antarctic Peninsula by studies such as @Waterhouse2014, @Dunn2019a and @Wethington2023, primarily associated with colonies of the Adélie penguin [@Strycker2020]. This abundance series captures broad decadal declines in predator presence, particularly after 2015, potentially reflecting changes in prey availability, environmental conditions, or predator demography.
 
 ```{r mapapre, eval=TRUE, fig.cap= "Ecosystem indicators derived from penguin predator data in the Western Antarctic Peninsula. Top panel: Annual krill length distributions from penguin diet samples by species: Adélie (red), chinstrap (orange), and gentoo (black). A red horizontal line marks the 3.6 cm as recruit size for reference purposes. Middle panel: Spatial foraging colonies and relative intensity by species across years. Circles indicate locations and intensity of sampling by species, with circle size suggesting sampling effort or frequency. Bottom panel: Synoptic index of relative predator biomass, used as an ecosystem input in the stock assessment model."}
 knitr::include_graphics('Figs/Predator_fleet2.png')
@@ -445,10 +434,7 @@ Would you like to incorporate other predator groups like seals or whales into th
 
 ## Assessment of model perfomance and complexity across ecological scenarios
 
-The krill population dynamics model was evaluated under four increasingly complex scenarios. Scenario s1.1 represented the baseline spatial implicit model, incorporating only survey and fishery data, and resulted in the estimation of 71 parameters. In scenario s1.2, predator-related components were added, including biomass and size-selective predation patterns from key penguin colonies, increasing the parameter count to 107. Scenario s1.3 introduced an environmental covariate as a recruitment driver into the baseline model, leading to the estimation of 96 parameters. Finally, scenario s1.4 integrated both predator and environmental components, culminating in the highest model complexity with 128 estimated parameters.  All model scenarios successfully converged within acceptable tolerance thresholds, with final gradients below 1.00e-04, and positive-definite Hessian matrices confirming robust parameter estimation and local identifiability. 
-
-Regarding model fit, Pearson residuals of predicted length distributions for krill were evaluated across four modeling scenarios, each incorporating different levels of ecosystem complexity. Pearson residuals are used to assess the goodness-of-fit by standardizing the differences between observed and predicted values, allowing for the detection of systematic patterns or biases in model predictions across size classes and sampling sources.
-
+Scenario s1.1 represented the baseline spatial implicit model, incorporating only survey and fishery data, and resulted in the estimation of 71 parameters. In scenario s1.2, predator-related components were added, including biomass and size-selective predation patterns from key penguin colonies, increasing the parameter count to 107. Scenario s1.3 introduced an environmental covariate as a recruitment driver into the baseline model, leading to the estimation of 96 parameters. Finally, scenario s1.4 integrated both predator and environmental components, culminating in the highest model complexity with 128 estimated parameters.  All model scenarios successfully converged within acceptable tolerance thresholds, with final gradients below 1.00e-04, and positive-definite Hessian matrices confirming robust parameter estimation and local identifiability. 
 
 The residuals are visualized by year and length bin, allowing an assessment of model fit over time and across the size structure of the population (Figure \@ref(fig:pearson)). In scenario s1.1 (Without Ecosystem Variables), substantial lack of fit is evident across multiple years and length classes, particularly in the late 1990s and early 2000s. Positive Pearson residuals indicate that the model tends to underestimate frequencies of certain length bins, especially among smaller and mid-sized individuals, suggesting poor representation of recruitment and growth dynamics in the absence of environmental and predator effects. s1.2 (With Predator) shows some improvement in model fit, with slightly more balanced residuals. However, there are still consistent deviations in the mid-size ranges across multiple years, indicating that predation alone does not fully explain observed variability in length composition. In s1.3 (With Environment), there is a noticeable reduction in residual magnitude across several years and size classes, implying that incorporating environmental covariates helps align the model more closely with observed size distributions. This is particularly apparent in the early 2000s, where the residuals are closer to zero across most bins. Finally, s1.4 (With Predator and Ecosystem) shows the most consistent reduction in Pearson residuals across time and size structure. The residual patterns also indicate potentially concerning model misfits, particularly among adult individuals in several survey fleets operating in the Bransfield Strait, as well as among the largest size classes in the predator fleet, which likely represents penguin consumption data. The residuals exhibit consistent over- or under-estimation in specific length bins over multiple years, suggesting that the current model structure may not fully capture key processes affecting the abundance or selectivity of adult individuals. In the case of surveys in Bransfield, this could reflect spatial mismatches between predicted and observed size distributions or biases in survey selectivity for larger size classes. This spatial heterogeneity aligns with previous findings identifying this area as a core juvenile krill habitat [@Mardones2025; @Veytia2021, Vetia et al., 2019, REF, REF]. Similarly, the residuals associated with the predator fleet suggest that the model may inadequately represent size-selective predation or the temporal dynamics of predator consumption. These patterns warrant further investigation into the assumptions underlying length selectivity and mortality, particularly for the adult component of the population, as well as potential ecosystem-driven variability not currently integrated in the model.
 
@@ -471,8 +457,6 @@ knitr::include_graphics('Figs/unnamed-chunk-46-1.jpeg')
 ### Likelihood components
 
 Log-likelihood profiles were examined for each model scenario (s1.1 to s1.4) to assess how different components contributed to the overall model fit. Across all scenarios, the TOTAL log-likelihood is primarily influenced by the Survey, Length composition, and Recruitment components, with minor contributions from parameter priors. The reference model (s1.1) displays the highest overall likelihood value, particularly due to a stronger fit to the Length composition and Survey data. However, this comes with an elevated penalty in the parm priors categories, suggesting potential overfitting or parameter instability. In contrast, the ecosystem-informed scenarios—s1.2 (with predator data), s1.3 (with environmental data), and s1.4 (with both)—show slightly lower total likelihoods. These models present more balanced likelihood contributions across data components and generally lower penalties for parameter priors and deviations, indicating a more stable parameterization despite reduced absolute fit. Notably, the Recruitment likelihood contribution decreases in the ecosystem scenarios compared to the reference, which aligns with previous results showing constrained recruitment variability when ecological drivers are included. These variations may reflect differences in model assumptions or input data between scenarios, which could affect how well each model fits particular data sources. Table \@ref(tab:tablike) shows the log-likelihood component values for each scenario. 
-
-
 
 
 ```{r tablike, eval=TRUE}
@@ -567,6 +551,40 @@ flextable(diagnostics) %>%
 
 # Discusion
 
+
+* **Big summary / importance statement for the science**
+
+  * Expón de manera destacada la importancia científica de tus hallazgos generales.
+
+* **Scientific findings as extension of previous work**
+
+  * Relaciona tus hallazgos con trabajos previos y explica cómo los extienden o complementan.
+
+* **Findings' scientific implications**
+
+  * Detalla las implicancias científicas específicas de los resultados obtenidos.
+
+* **How this engineering will facilitate future research**
+
+  * Explica cómo tu enfoque metodológico o técnico puede ayudar a futuras investigaciones.
+
+* **Forward-looking statements about the field as a whole**
+
+  * Incluye reflexiones sobre cómo evolucionará el campo en general a partir de tu trabajo.
+
+* **A summary / importance of the engineering aspect of the work**
+
+  * Resume la importancia de la parte técnica o de ingeniería de tu estudio.
+
+* **How it facilitates scientific research**
+
+  * Describe cómo tus métodos o resultados facilitan la investigación científica práctica.
+
+* **Limitations of the platform shown with questions that would be unanswered**
+
+  * Reconoce limitaciones del estudio y plantea preguntas que aún quedan por responder.
+
+
 By integrating ecosystem drivers into the stock assessment process, this study aims to demonstrate how incorporating environmental and ecological factors enhances the accuracy of Antarctic krill population estimates and improves the ability to predict future stock trends under changing climate and ecological conditions. This perspective seeks to strengthen the scientific foundation for sustainable management recommendations, ensuring that krill harvesting strategies align with CCAMLR’s ecosystem-based management approach. Ultimately, the insights gained from this integrated modeling effort contribute to CCAMLR’s ongoing strategy to balance the sustainability of the krill fishery with the conservation of the broader Antarctic marine ecosystem, supporting both the species that depend on krill as a primary food source and the long-term resilience of the Southern Ocean.
 
 Data consistency
@@ -590,6 +608,13 @@ Spatial heterogeneity is a fundamental aspect of krill ecology, driven by factor
 These progressive increments in parameter numbers reflect the added ecological realism and mechanistic detail captured in each scenario, emphasizing the role of top-down and bottom-up processes in krill dynamics.
 
 ### Predation and Natural Mortality
+
+
+> The three main penguin colonies Adélie, Chinstrap, and Gentoo are central place foragers with diet compositions that are strongly linked to krill abundance and demographic structure, particularly during the breeding season when foraging is spatially and temporally constrained [REF Lukcas!, REF Vicky]. 
+
+> variability length; , which may reflect fluctuations in recruitment strength and availability of krill age classes.
+
+> . This spatial overlap reinforces the ecological relevance of penguin-based indicators in reflecting krill dynamics 
 
 The study area encompasses the primary spawning, breeding, and wintering regions of Antarctic krill in the southwest Atlantic Ocean. Evidence indicates that penguin predation exerts strong top-down control on krill populations. Penguins, as krill specialists, have reproductive success tied closely to krill availability. [REF]
 
@@ -638,6 +663,12 @@ The inclusion of environmental variables (s1.3 and s1.4) substantially lowers es
 Population variables: Overall, the inclusion of ecosystem and predator data (s1.4) results in more conservative estimates of biomass, recruitment, and spawning stock, suggesting that ecosystem-informed models may provide a more precautionary and ecologically realistic basis for krill stock assessment and management.
 
 ### Ecosystem Variables: Ecological Relevance
+
+
+
+> regarding clorofila como driver; This is consistent with previous studies that have identified this variable as an important driver of variability in different biological components of the krill population and shaping krill habitat suitability and productivity [REF REF REF].
+
+>  About index; These patterns suggest substantial year-to-year environmental changes, which may have implications for marine ecosystem productivity and associated trophic dynamics and krill population impacts [REF]. 
 
 Variations in krill size composition in penguin diets have been shown to reflect underlying changes in krill population dynamics, including recruitment pulses and cohort strength [Jeff REFs]. Thus, penguin diet data serve as a proxy for detecting cyclical patterns in krill recruitment that may not be evident through direct surveys alone. [REF]
 
