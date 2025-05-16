@@ -773,7 +773,7 @@ heatmapres <- ggplot(df_all, aes(x = Yr, y = Bin, fill = Pearson)) +
                        mid = "white", 
                        high = "blue",
                        midpoint = 0) +
-  facet_grid(Fleet ~ Model) +
+  facet_grid(Model ~ Fleet) +
   theme_few() +
   theme(
     axis.text.x = element_text(angle = 90, hjust = 1, size = 5),         
@@ -784,6 +784,27 @@ heatmapres <- ggplot(df_all, aes(x = Yr, y = Bin, fill = Pearson)) +
   labs(x = "", y = "Length (cm)", fill = "Pearson")
 
 heatmapres
+
+
+
+circleplot_res <- ggplot(df_all, aes(x = Yr, y = Bin)) +
+  geom_point(aes(fill = Pearson, size = abs(Pearson)),
+             shape = 21, color = "grey30", stroke = 0.2, alpha = 0.25) +
+  scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = 0) +
+  scale_alpha("none") +
+  scale_size_continuous(range = c(0.5, 2.5)) +
+  facet_grid(Model ~ Fleet) +
+  theme_few() +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 5),         
+    axis.text.y = element_text(size = 5),                               
+    strip.text = element_text(size = 8),
+    legend.position = "bottom"
+  ) +
+  labs(x = "", y = "Length (cm)", fill = "Pearson") +
+  guides(size = "none", alpha = "none")  # Esto oculta las leyendas de size y alpha
+
+circleplot_res
 ```
 
 
@@ -1085,6 +1106,9 @@ srr_sce <- ggplot() +
   ylim(0, max(plot_data_all$m)) +
   labs(x = "Spawning Stock Biomass (SSB)", y = "Predicted Recruitment", shape = "Model", color = "Model") +
   theme(legend.position = "bottom")
+
+
+
 ```
 
 
@@ -2192,35 +2216,41 @@ outpsall <- rbind(outps1,
 
 ```{r}
 # Crear una columna de modelo en cada data frame
-outps1$Model <- "s1.1 (Ref Model: No Env-Predator)"
-outps2$Model <- "s1.2 w/ Predator data"
-outps3$Model <- "s1.3 w/ Env data"
-outps4$Model <- "s1.4 (Env and Predator data)"
+outps1$Model <- "s1.1"
+outps2$Model <- "s1.2"
+outps3$Model <- "s1.3"
+outps4$Model <- "s1.4"
 
 # Unir los data frames en uno solo
-outpsall <- rbind(outps1,  outps4)
+outpsall <- rbind(outps1,  
+                  outps2,
+                  outps3,
+                  outps4)
 
 
 outpsall_long <- outpsall %>%
-  pivot_longer(cols = c(Bio_smry, SpawnBio, Recruit_0), 
+  pivot_longer(cols = c(Bio_all, Bio_smry, SpawnBio, Recruit_0), 
                names_to = "Variable", values_to = "Value") %>% 
   filter(Yr >= 1989, Yr <= 2020)
 
 
+
 # Gráfico de líneas por variable y modelo
 alloutput <- ggplot(outpsall_long, aes(x = Yr, y = Value, color = Model, group = Model)) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 2) +
+  geom_point() +
+  #geom_smooth(method = "lm")+
   facet_wrap(~Variable, 
-             ncol = 1, 
+             ncol = 4, 
              scales = "free_y") + 
-  scale_color_manual(name = "",
-                     values = c("s1.1 (Ref Model: No Env-Predator)" = "#ca0020",
-                                "s1.4 (Env and Predator data)" = "#404040")) +
+  scale_color_manual(name = "Scenario",
+                     values = c("s1.1" = "#ca0020", 
+                                "s1.2" = "#f4a582", 
+                                "s1.3" = "#bababa", 
+                                "s1.4" = "#404040")) +
   labs(title = "", x = "", y = "") +
-  theme_bw() +
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
-        legend.position = "none")
+        legend.position = "bottom")
 
 alloutput
 
@@ -2385,14 +2415,25 @@ colores <- c("s1.1" = "#ca0020",
              "s1.4" = "#404040")
 
 r0plot <- ggplot(dens_data, aes(x = x, y = y, color = model, fill = model)) +
-  geom_area(alpha = 0.5, position = "identity") +
-  geom_line(size = 1) +
-  scale_color_manual(values = colores) +
-  scale_fill_manual(values = colores) +
-  labs(title = "",
-       x = "Natural log of virgin recruitment level (R0)", y = "Density") +
-  theme_bw() +
-  xlim(16, 22)
+  geom_area(alpha = 0.3, position = "identity", size = 0) +  # More transparent areas without borders
+  geom_line(size = 1.2) +  # Thicker lines for better visibility
+  scale_color_manual(values = colores, name = NULL) +  # Remove legend title for color
+  scale_fill_manual(values = colores, name = NULL) +   # Remove legend title for fill
+  labs(x = "ln(R0)", 
+       y = "Density") +
+  theme_bw(base_size = 14) +
+  theme(
+    legend.position = "bottom",  # Legend at bottom
+    legend.spacing.x = unit(0.5, 'cm'),  # Space between legend items
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_blank(),
+    axis.title = element_text(size = 12),
+    legend.text = element_text(size = 11)
+  ) +
+  xlim(16, 22) +
+  guides(color = guide_legend(nrow = 1),  # Single row legend
+         fill = guide_legend(nrow = 1))
+
 r0plot
 ```
 
@@ -2441,7 +2482,7 @@ err_long <- err_long %>%
     TRUE ~ Model
   ))
 
-ggplot(err_long, aes(x = Model, y = Value, fill = Model)) +
+comsum <- ggplot(err_long, aes(x = Model, y = Value, fill = Model)) +
   geom_boxplot(width = 0.5, outlier.shape = NA,
                outliers = F) +
   #geom_jitter(width = 0.2, alpha = 0.1) +
@@ -2455,6 +2496,10 @@ ggplot(err_long, aes(x = Model, y = Value, fill = Model)) +
   theme_few() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "none")
+ggarrange(
+          alloutput,
+          comsum,
+          ncol = 1)
 ```
 
 Statistical diferences
@@ -2524,23 +2569,19 @@ recs3 <- base.model1.3$recruit$pred_recr
 recs4 <- base.model1.4$recruit$pred_recr
 
 p1 <- ggAcf(base.model1.1$recruit$pred_recr) +
-  ggtitle("Ref Model: No Env-Predator") +
+  ggtitle("s1.1") +
   theme_few()
 p2 <- ggAcf(base.model1.2$recruit$pred_recr) +
-  ggtitle("S1.1 w/ Predator data") +
+  ggtitle("s1.2") +
   theme_few()
 p3 <- ggAcf(base.model1.3$recruit$pred_recr) +
-  ggtitle("S1.1 w/ Env data") +
+  ggtitle("s1.3") +
   theme_few()
 p4 <- ggAcf(base.model1.4$recruit$pred_recr) +
-  ggtitle("S1.1 w/ Env and Predator data") +
+  ggtitle("s1.4") +
   theme_few()
 
-ggarrange(p1,
-          p2,
-          p3,
-          p4, ncol=1, nrow = 4,
-          common.legend = T)
+ggarrange(p1, p2,p3,p4, ncol=4, nrow = 1, common.legend = T)
 
 ```
 
