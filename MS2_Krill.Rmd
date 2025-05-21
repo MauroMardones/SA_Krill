@@ -605,7 +605,9 @@ The inclusion of predator and environmental variables significantly alters model
 
 Likelihood composition reveals that models incorporating ecological data (s1.2–s1.4) yield slightly lower total likelihoods than the reference model (s1.1), reflecting trade-offs between model fit and biological realism. The reduced penalty terms and more evenly distributed likelihood contributions in the ecosystem scenarios suggest improved model stability and reduced overparameterization. These results reinforce the value of integrating ecosystem variables not only for enhancing ecological interpretation but also for promoting robust model structure and parameter behavior.
 
-> (pocos estudios incluyen ambas variables. problemas en interpretacion y cofounding correlation between parameters)
+> (pocos estudios incluyen ambas variables. problemas en interpretacion y cofounding correlation between parameters) 
+
+@Boldt2025
 
 ### Ecosystem Variables: krill population dynamics relevance
 
@@ -690,6 +692,10 @@ CC coments : **"perhaps it is worth haveing another read, and combine some bits 
 
 
 ### Model integrated limitations 
+
+(Discussion)
+
+The observed retrospective bias in SSB and F aligns with findings from previous studies on krill population dynamics, where recruitment variability and model structure influence stock assessment estimates (Hill et al., 2016; Watters et al., 2020). The negative bias in SSB suggests that models may overestimate past biomass, potentially due to unaccounted environmental variability or underestimation of natural mortality (Meyer et al., 2021). The positive bias in F indicates a tendency to underestimate past fishing mortality, which could be linked to the inclusion of predator-based indices such as penguin foraging data (Trathan et al., 2018). These results highlight the importance of incorporating ecosystem interactions into stock assessments to improve predictive accuracy and support sustainable management of Antarctic krill.
 
 The study on krill population dynamics presents several limitations that should be acknowledged for a comprehensive understanding of its findings. Here are the key limitations identified:
 

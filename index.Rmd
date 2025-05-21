@@ -1,11 +1,11 @@
 ---
 title: "Supplementary Information 1"
 subtitle: "Assessing ecosystem effects on the stock productivity of Antarctic Krill (*Euphausia superba*): An Integrated modeling perspective"
-author: "Mardones, M; Jarvis Mason, E.T.; Pinones, A.;  Santa Cruz, F.; Cárdenas, C.A"
+author: "Mardones, M; Jarvis Mason, E.T.; Piñones, A.; Krüger, L.,Santa-Cruz, F.; Watters, G., Cárdenas, C.A; Methot, R."
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
 bibliography: SA_krill.bib
-#csl: apa.csl
-csl: icesjournal.csl
+csl: apa.csl
+#csl: icesjournal.csl
 link-citations: yes
 linkcolor: blue
 output:
@@ -16,7 +16,7 @@ output:
     toc_float:
       collapsed: false
       smooth_scroll: false
-    theme: cosmo
+    theme: simplex
     fontsize: 0.9em
     linestretch: 1.7
     html-math-method: katex
@@ -28,14 +28,14 @@ editor_options:
     wrap: 72
 ---
 
+## MODELING SETTING
+
 ```{r setup1, echo=FALSE}
 #rm(list = ls())
 #set.seed(999)
 knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
-                      fig.height = 6,
-                      fig.width = 7,
                       fig.align = 'center',
                       fig.pos = "H",
                       dev = 'jpeg',
@@ -50,7 +50,13 @@ options(bitmapType = "cairo")
 ```
 
 
-```{r message=FALSE, eval=TRUE}
+
+
+### Libraries
+
+Libraries necessary to made this analysis;
+
+```{r message=FALSE, eval=TRUE, echo=TRUE}
 # install.packages("devtools")
 # devtools::install_github("r4ss/r4ss", ref="development")
 # install.packages("caTools")
@@ -61,7 +67,7 @@ library(here)
 #remotes::install_github("PIFSCstockassessments/ss3diags")
 library(ss3diags)
 library(kableExtra)
-library(doParallel) # facilita la ejecución paralela en R
+library(doParallel) 
 detectCores()
 registerDoParallel(8)
 library(ggpubr)
@@ -78,58 +84,119 @@ library(ggrepel)
 library(broom)
 library(lmtest)
 library(flextable)
+library(car)
 ```
+
+### Code Repository
+
+The repository with files templates by scenario to replicate this analysis can be found in this [GitHub author link](https://github.com/MauroMardones/SA_Krill/tree/main/scenarios)
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE}
-# dir01 <- here("s01") # agreggate data (no spatial diferences)
-# dir1<-here("s1") # Data strata flishery
-# dir2<-here("s2") # Same 9 with areas (SubStrata) as fleet. Dif size comoposition and dif CPUE and dif survey length and biomass data by strata
-# dir3<-here("s3") # without S-R
-# dir4<-here("s4") # 
-# dir5<-here("s5") # 
-# dir6<-here("s6") # 
-# dir7<-here("s7") # 2 set parametres EMM-2024/23 (Mardones)
-# dir8<-here("s8") # s1 platoons
-# dir9<-here("s9") # s1 w/ blocks
-dir1.1<-here("s1.1") # sin predador ni ambiental
-dir1.2 <- here("s1.2") # s1.1 C/ predador
-dir1.3 <- here("s1.3") # s1.1 solo env
-dir1.4 <- here("s1.4") # s1.2 predator and env
-Figs <- here("Figs")# S
+dir1.1<-here("s1.1") # no predador- environmental
+dir1.2 <- here("s1.2") # s1.1 w/ predador
+dir1.3 <- here("s1.3") # s1.1 w/ env
+dir1.4 <- here("s1.4") # s1.1 predator and env
+Figs <- here("Figs")
 ```
 
+
+```{r eval=FALSE, message=F, include=FALSE, echo=TRUE}
+### Run Models
+directorios <- c("s1.1",
+                 "s1.2",
+                 "s1.3",
+                 "s1.4")  
+
+for (dir in directorios) {
+  r4ss::run(
+    dir = dir,
+    exe = "ss_osx",
+    skipfinished = FALSE,
+    show_in_console = TRUE
+  )
+}
+```
+
+```{r eval=FALSE, message=F, include=FALSE}
+#OR with rby separate
+#shell(cmd="ss") # run SS to windows
+# or 
+r4ss::run(
+  dir = dir1.1,
+  exe = "ss_osx",
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
+)
+# s1.2
+r4ss::run(
+  dir = dir1.2,
+  exe = "ss_osx",
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
+)
+# s1.3
+r4ss::run(
+  dir = dir1.3,
+  exe = "ss_osx",
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
+)
+# s1.4
+r4ss::run(
+  dir = dir1.4,
+  exe = "ss_osx",
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
+)
+```
+
+```{r message=F, include=FALSE}
+#s1.1
+base.model1.1 <- SS_output(dir=dir1.1,
+                        covar=T,
+                        forecast=T)
+#s1.2
+base.model1.2 <- SS_output(dir=dir1.2,
+                        covar=T,
+                        forecast=T)
+#s1.3
+base.model1.3 <- SS_output(dir=dir1.3,
+                        covar=T,
+                        forecast=T)
+#s1.4
+base.model1.4 <- SS_output(dir=dir1.4,
+                        covar=T,
+                        forecast=T)
+```
 
 # OVERVIEW
 
-This study aims to evaluate the impact of ecosystem components—such as environmental variables and predator-prey interactions—on the productivity and key population dynamics of *Euphausia superba* in Subarea 48.1. By incorporating these factors into the assessment, we analyze how krill population variables respond to ecological variability, providing insights into their resilience and potential management implications.  
 
-Here, the **reference model** represents a baseline assessment of *Euphausia superba* population dynamics in Subarea 48.1, excluding environmental and ecological variables. This model assumes that krill productivity and population parameters are driven  by intrinsic biological processes, such as growth, mortality, and recruitment and fishery impacts without accounting for external influences like environmental variability or predation pressure. By serving as a *control scenario*, this model provides a benchmark against which the impact of ecosystem components in productivity can be evaluated, allowing for a direct comparison of how environmental and ecological factors influence krill stock dynamics.  
+This study aims to evaluate the impact of ecosystem components—such as environmental variables and predator-prey interactions—on the productivity and key population dynamics of *Euphausia superba* in Subarea 48.1. By incorporating these factors into the assessment, we analyze how krill population variables respond to ecological variability, providing insights into their resilience and potential management implications. This code forms part of the supplementary material for the scientific article titled **"Assessing environmental and predator impacts on Antarctic Krill (*Euphausia superba*) population dynamics from an integrated length-to-age assessment model perspective."**
 
-The study area corresponds to Subarea 48.1 in the WAP, where most krill fishing activity occurs and where CCAMLR has been working to implement a new management strategy at a reduced spatial scale (Figure \@ref(fig:mapa)). To refine the spatial resolution of krill population dynamics and analysis, we adopted the five strata proposed by CCAMLR: Bransfield Strait, Elephant Island, Gerlache Strait, Joinville Island, and the Southwest [@Dornam2021; REF] (Fig 1 S1). While these strata were originally designed for management purposes without considering specific biological or population characteristics, their subdivision enables us to analyze the data at a finer scale. This level of detail facilitates the identification of heterogeneity across various data sources, whether these originate from the fishery or from environmental survey data, providing a more nuanced understanding of krill population dynamics. This spatial segregation of information is incorporated into the stock assessment model, making it a spatially explicit model that accounts for regional variability in population dynamics and external factors.
+
+## Spatial dimension of stock assessment
+
+The study focuses on Subarea 48.1 in the Western Antarctic Peninsula, where most krill fishing occurs and CCAMLR is advancing spatially refined management. We use five CCAMLR-defined strata to increase spatial resolution, allowing detection of regional differences in krill dynamics (Figure \@ref(fig:mapa)). This structure, integrated into the stock assessment model, enhances its capacity to capture spatial variability in both biological and environmental data. In this approach, spatial structure is incorporated implicitly by treating different areas as separate fleets [@Nielsen2021; @Waterhouse2014]. This constitutes a spatially implicit modeling framework, where differences among strata are recognized both from the perspective of krill population dynamics and from the influence of environmental variability within Subarea 48.1.
+
 
 ```{r mapa, out.width='50%', fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)"}
 knitr::include_graphics('Figs/481.png')
 ```
 
-In this approach, spatial structure is incorporated implicitly by treating different areas as separate fleets [@Nielsen2021; @Waterhouse2014]. This constitutes a spatially implicit modeling framework, where differences among strata are recognized both from the perspective of krill population dynamics and from the influence of environmental variability within Subarea 48.1 (Figure \@ref(fig:concem)). 
+Figure \@ref(fig:conceptual) illustrates a conceptual model with the spatial distribution and movement of Antarctic krill in the Western Antarctic Peninsula (WAP). Adult krill are concentrated and move primarily in the northern areas, while juvenile krill dominate the southern regions. Arrows indicate directional flows, suggesting ontogenetic or environmentally-driven migration patterns. In terms of assumptions, although there are spatial differences in population structure, all these areas are considered part of a single, closed population unit upon which the stock assessment is conducted. By leveraging a spatially implicit, ecosystem-informed approach, this assessment provides a robust framework for evaluating krill stock dynamics under changing environmental conditions. These insights are crucial for informing sustainable management strategies in the Antarctic Peninsula region, where krill plays a foundational role in the marine food web.  
 
-```{r concem, out.width='40%', fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
+```{r conceptual, out.width='50%', fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
 knitr::include_graphics('Figs/conceptual.jpeg')
 ```
 
 ## Statistical Model (`SS3`)
 
-Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. In this exercise, SS3 is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. By leveraging a spatially implicit, ecosystem-informed approach, this assessment provides a robust framework for evaluating krill stock dynamics under changing environmental conditions. These insights are crucial for informing sustainable management strategies in the Antarctic Peninsula region, where krill plays a foundational role in the marine food web.  
+Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The spurce code can be find in [Github SS3 repository](https://github.com/nmfs-ost/ss3-source-code). In this exercise, `SS3` is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends in krill. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. Integrated models can effectively capture the age structure by transforming length observations into population-level dynamics [@Lee2024; @Punt2013]. 
 
+On the other hand, length data, which are cost-effective and readily available [@Canales2021; @Chong2019], provide valuable insights into krill population structure due to their correlation with age [@Thanassekos2014]. For made this transformation, the models often use an Age-Length Keys (ALKs). An ALK is a probabilistic matrix that estimates the likelihood of individuals of a given length belonging to specific age classed and this method assume both aged and measured fish are random samples from the same population and should be applied within the same time period to avoid biases [@ICCA2003; @Punt2003; @Punt2013; @Lee2024]. The ALK matrix is typically defined as:
 
-```{r path, fig.cap="Framework path to stock assessment model in krill in WAP (Yellow boxes is not implemeted yet)."}
-knitr::include_graphics('Figs/pathmod.png')
-```
-
-
-### Age Key Length (ALK)
-
-In a catch-at-length model like krill assessment the AKL matrix is modelled trought parametrization process
+In a catch-at-length model like krill assessment the AKL matrix (Figure \@ref(fig:AKL)) is modeled trough parametrization process and have this shape;
 
 ```{r AKL, out.width='60%',  fig.cap="Representation of ALK Matrix to krill in 48.1"}
 alk_matrix <- base.model1.1$ALK[,,1] # Ajusta las dimensiones según tu matriz
@@ -158,7 +225,9 @@ ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
   theme(legend.position = "none")
 ```
 
-## Parameters
+## Data
+
+### Parameters
 
 The following table summarizes the key parameters to conditioning the reference model, including biological, growth, and population dynamics factors.
 
@@ -214,13 +283,9 @@ parInit %>%
   mutate(across(where(is.numeric), ~ round(., 3)))  %>% 
   kbl(booktabs = TRUE,
       format = "html",
-      position = "ht!",
       caption = "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
-  kable_paper("hover", full_width = TRUE) %>%  # Expande el ancho
-  kable_styling(latex_options = c("striped", "condensed"),
-                full_width = TRUE,  # Expande la tabla al ancho completo
-                font_size = 12,
-                html_font = "Times New Roman") %>%  # Aplica la fuente Times New Roman
+      kable_styling(latex_options = "scale_down",  # Expande la tabla al ancho completo
+                font_size = 8) %>%  # Aplica la fuente Times New Roman
   pack_rows(index = c("Natural Mortality" = 1,
                       "Growth" = 5,
                       "relationship Length-Weigth" = 2,
@@ -230,15 +295,17 @@ parInit %>%
                       "Selectivity" = 4))
 
 ```
-Source of data input.
 
-Ibdex abundance in Figure \@ref(fig:index)
+
+### Index 
+
+Abundance index in Figure \@ref(fig:index)
 
 ```{r}
 dat1_std <- dat1$CPUE %>%
   mutate(
     index_std = (obs - min(obs)) / (max(obs) - min(obs)),
-    index = recode(index,
+    index = dplyr::recode(index,
                    `1` = "FISHERYBS",
                    `2` = "FISHERYEI",
                    `3` = "FISHERYGS",
@@ -271,7 +338,7 @@ dat1_std <- dat1$CPUE %>%
 ```
 
 
-```{r index, fig.width=9, fig.height=4, fig.cap="Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea."}
+```{r index, fig.width=9, fig.height=6, fig.cap="Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea."}
 
 p1 <- ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = category)) +
   geom_point() +
@@ -288,6 +355,7 @@ p1 <- ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = categ
 p1
 ```
 
+### Length comositions
 
 ```{r warning=FALSE}
 dat_long <- dat1$lencomp %>% 
@@ -295,7 +363,7 @@ dat_long <- dat1$lencomp %>%
                names_to = "Talla",  
                values_to = "Frecuencia") %>% 
   mutate(Talla = as.numeric(sub("l", "", Talla))) %>%  
-  mutate(FltSvy = recode(FltSvy,
+  mutate(FltSvy = dplyr::recode(FltSvy,
                          `1` = "FISHERYBS",
                          `2` = "FISHERYEI",
                          `3` = "FISHERYGS",
@@ -361,115 +429,61 @@ p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
 p2
 ```
 
+## Summary data sources to Modelling
+
+Finally, this information and all sources can be represented through the following flow diagram (Figure \@ref(fig:path)) of inputs, model, and outputs.
 
 
-## Scenarios
-
-In Table 1 we have ten scenarios to test different option in modeling
-about main consideration in assessment of krill population.
-
-| Scenario | Description                                                                          |
-|:------------:|:---------------------------------------------------------|
-|    s1.1  | Spatial data without environmental and predator components                           |
-|    s1.2  | "s1.1" with predator components                                                      |
-|    s1.3  | "s1.1" with environmental variable                                                  |
-|    s1.4  | "s1.1" w/ both, predator fleet and environmental variable                           |
-
-
-
-### Run Models
-
-```{r eval=FALSE, message=F, include=FALSE, echo=TRUE}
-directorios <- c("s1.1",
-                 "s1.2",
-                 "s1.3",
-                 "s1.4")  
-
-for (dir in directorios) {
-  r4ss::run(
-    dir = dir,
-    exe = "ss_osx",
-    skipfinished = FALSE,
-    show_in_console = TRUE
-  )
-}
+```{r path, fig.cap="Framework path to stock assessment model in krill in WAP (Yellow boxes is not implemeted yet)."}
+knitr::include_graphics('Figs/pathmod.png')
 ```
 
-```{r eval=FALSE, message=F, include=FALSE}
-#OR with rby separate
-#shell(cmd="ss") # run SS to windows
-# or 
-r4ss::run(
-  dir = dir1.1,
-  exe = "ss_osx",
-  skipfinished = FALSE, 
-  show_in_console = TRUE 
-)
+Figure \@ref(fig:dataserie) show time series of differente componentes of data sources to this krill stock assessment.
 
-
-# s1.2
-r4ss::run(
-  dir = dir1.2,
-  exe = "ss_osx",
-  skipfinished = FALSE, 
-  show_in_console = TRUE 
-)
-
-
-# s1.3
-r4ss::run(
-  dir = dir1.3,
-  exe = "ss_osx",
-  skipfinished = FALSE, 
-  show_in_console = TRUE 
-)
-
-
-# s1.4
-r4ss::run(
-  dir = dir1.4,
-  exe = "ss_osx",
-  skipfinished = FALSE, 
-  show_in_console = TRUE 
-)
-```
-
-
-
-```{r message=F, include=FALSE}
-#s1.1
-base.model1.1 <- SS_output(dir=dir1.1,
-                        covar=T,
-                        forecast=T)
-#s1.2
-base.model1.2 <- SS_output(dir=dir1.2,
-                        covar=T,
-                        forecast=T)
-#s1.3
-base.model1.3 <- SS_output(dir=dir1.3,
-                        covar=T,
-                        forecast=T)
-#s1.4
-base.model1.4 <- SS_output(dir=dir1.4,
-                        covar=T,
-                        forecast=T)
-```
-
-
-Data used en both (spatial and No spatial models) `s1.1` and `s1.4` to compare
-
-```{r fig.height=10, fig.width=6}
-par(mfrow=c(2,1), mar=c(5,4,2,1))
-SSplotData(base.model1.1, 
-           subplots = 1,
-           ptsize = 0.5)
-
+```{r dataserie, fig.width=9, fig.height=7}
 SSplotData(base.model1.4, 
            subplots = 1,
            ptsize = 0.5)
 ```
 
+## Scenarios
+
+Here, the **reference model** is `s1.1`, wich represents a baseline assessment of *Euphausia superba* population dynamics in Subarea 48.1, excluding environmental and ecological variables. This model assumes that krill productivity and population parameters are driven  by intrinsic biological processes, such as growth, mortality, and recruitment and fishery impacts without accounting for external influences like environmental variability or predation pressure. By serving as a *control scenario*, this model provides a benchmark against which the impact of ecosystem components in productivity can be evaluated, allowing for a direct comparison of how environmental and ecological factors influence krill stock dynamics.
+
+Table \@ref(tab:scenarios) show scenarios used for modelling dynamics in krill
+
+```{r scenario, eval=TRUE}
+# Tu código de flextable aquí
+scenario_table <- data.frame(
+  Scenario = c("s1.1", "s1.2", "s1.3", "s1.4"),
+  Description = c(
+    "Spatial data without environmental and predator components",
+    "\"s1.1\" with predator components",
+    "\"s1.1\" with environmental variable",
+    "\"s1.1\" with both predator fleet and environmental variable"
+  ),
+  stringsAsFactors = FALSE
+)
+
+scenario_table %>%
+  kbl(caption = "Scenarios used for modelling dynamics in krill",
+      align = "l",  # Left alignment (or use "c" for center)
+      booktabs = TRUE,
+      col.names = c("Scenario", "Description")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE,
+                position = "center",
+                font_size = 10,  # Equivalent to fontsize(size = 10)
+                latex_options = "HOLD_position") %>%
+  row_spec(0, bold = TRUE, color = "black") %>%  # Header formatting
+  column_spec(1, width = "2cm") %>%  # Adjust column widths
+  column_spec(2, width = "10cm")
+```
+
+
 # RESULTS
+
+## Population Variables by scenario
 
 ```{r eval=FALSE, message=F, include=FALSE}
 # Definir la ruta de la carpeta
@@ -560,9 +574,9 @@ SS_plots(base.model1.4,
 ```
 
 
-Main Variables poulation in `s1.1` scenario
+Main Variables poulation in `s1.1` scenario (Figure \@ref(fig:scen1))
 
-```{r fig.height=2, fig.width=7}
+```{r scen1, fig.height=2, fig.width=7, fig.cap="Main variables scenario s1.1"}
 par(mfrow=c(1,3), mar=c(5,4,1,1)) 
 SSplotTimeseries(base.model1.1,
                  subplot = 1,
@@ -575,9 +589,9 @@ SSplotTimeseries(base.model1.1,
                  xlab = "")
 ```
 
-Main Variables poulation in `s1.2` scenario
+Main Variables poulation in `s1.2` scenario (Figure \@ref(fig:scen2))
 
-```{r fig.height=2, fig.width=7}
+```{r scen2, fig.height=2, fig.width=7, fig.cap="Main variables scenario s1.2"}
 par(mfrow=c(1,3), mar=c(5,4,1,1))
 SSplotTimeseries(base.model1.2,
                  subplot = 1,
@@ -590,9 +604,9 @@ SSplotTimeseries(base.model1.2,
                  xlab = "")
 ```
 
-Main Variables poulation in `s1.3` scenario
+Main Variables poulation in `s1.3` scenario (Figure \@ref(fig:scen3))
 
-```{r fig.height=2, fig.width=7}
+```{r scen3, fig.height=2, fig.width=7, fig.cap="Main variables scenario s1.3"}
 par(mfrow=c(1,3), mar=c(5,4,1,1))
 SSplotTimeseries(base.model1.3,
                  subplot = 1,
@@ -606,9 +620,9 @@ SSplotTimeseries(base.model1.3,
 ```
 
 
-Main Variables poulation in `s1.4` scenario
+Main Variables poulation in `s1.4` scenario (Figure \@ref(fig:scen4))
 
-```{r fig.height=2, fig.width=7}
+```{r scen4, fig.height=2, fig.width=7 , fig.cap="Main variables scenario s1.4"}
 par(mfrow=c(1,3), mar=c(5,4,1,1))
 SSplotTimeseries(base.model1.4,
                  subplot = 1,
@@ -620,9 +634,10 @@ SSplotTimeseries(base.model1.4,
                  subplot = 7,
                  xlab = "")
 ```
-Selectivity
 
-```{r}
+Selectivity estimated by scenario in Figure \@ref(fig:selectivity).
+
+```{r selectivity, fig.height=8, fig.width=8, fig.cap="Selectivity by fleet in each scenario"}
 par(mfrow=c(2,2), mar=c(5,4,1,1))
 SSplotSelex(base.model1.1,
             subplots = 1,
@@ -641,403 +656,419 @@ SSplotSelex(base.model1.4,
             mainTitle = FALSE)
 mtext("s1.4", side=3, line=0.5, cex=1.2)
 ```
-```{r}
-par(mfrow=c(2,2), mar=c(5,4,1,1))
-SSplotBiology(base.model1.1,
-            subplots = 1)
-SSplotBiology(base.model1.2,
-            subplots = 1)
-SSplotBiology(base.model1.3,
-            subplots = 1)
-SSplotBiology(base.model1.4,
-            subplots = 1)
-```
 
-Natural Mortality
+This Figure \@ref(fig:index2) shows standardized time series of input indices used in four different model scenarios (s1.1 to s1.4) for the stock assessment of Antarctic krill in Subarea 48.1. Each panel presents fishery-dependent (FISHERY) and fishery-independent (SURVEY) indices across five management strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW), from the mid-1990s to 2020. Scenario s1.4 additionally includes a predator index, highlighting the incorporation of ecosystem variables. The figure illustrates spatial and temporal variability in data availability and trends among sources.
 
-```{r eval=FALSE}
-par(mfrow=c(4,2), mar=c(5,4,2,1))
-SSplotBiology(base.model1.1,
-              subplots = 21)
-SSplotBiology(base.model1.2,
-            subplots = 21)
-mtext("s1.2", side=3, line=0.5, cex=1.2)
-SSplotBiology(base.model1.3,
-            subplots = 21)
-mtext("s1.3", side=3, line=0.5, cex=1.2)
-SSplotBiology(base.model1.4,
-            subplots = 21)
-mtext("s1.4", side=3, line=0.5, cex=1.2)
-```
 
-```{r}
+```{r index2, fig.height=8, fig.width=8, fig.cap= "Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework"}
 par(mfrow=c(2,2), mar=c(5,4,2,1)) 
-
 SSplotIndices(base.model1.1, subplots = 9)
 mtext("s1.1", side=3, line=0.5, cex=1.2)
-
 SSplotIndices(base.model1.2, subplots = 9)
 mtext("s1.2", side=3, line=0.5, cex=1.2)
-
 SSplotIndices(base.model1.3, subplots = 9)
 mtext("s1.3", side=3, line=0.5, cex=1.2)
-
 SSplotIndices(base.model1.4, subplots = 9)
 mtext("s1.4", side=3, line=0.5, cex=1.2)
-
 ```
 
+### Outputs Variables `s1.1`
+
 ```{r}
-SSplotComps(base.model1.1,
-            subplots = 21)
-SSplotComps(base.model1.2,
-            subplots = 21)
-SSplotComps(base.model1.3,
-            subplots = 21)
-SSplotComps(base.model1.4,
-            subplots = 21)
+outps1 <- base.model1.1$timeseries[1:37, 2:8]
+
+# addWorksheet(wb, "variable_s2")
+# writeData(wb, "variable_s2", outps1)
+# 
+# # Guardar el workbook
+# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# 
+# 
+# out_s2 <- read_excel("DataKrill.xlsx", 
+#     sheet = "variable_s2")
+outps1 %>%
+  kbl(booktabs = TRUE,
+      format = "html",
+    caption = "Main variables outputs from stock asssessment krill in WAP `s1.1`") %>%
+ kable_styling(latex_options = c("scale_down",
+                                    "striped"),# Expande la tabla al ancho completo
+                font_size = 8)  #%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
 ```
-Total biomass
+
+### Outputs Variables `s1.2`
 
 ```{r}
-total1 <- as.data.frame(base.model1.1$timeseries[,c(2,5)]) %>%
-  mutate(Serie = "Without Ecosystem Variables")
-total2 <- as.data.frame(base.model1.2$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "W/ Predator")
-total3 <- as.data.frame(base.model1.3$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "W/ Environment")
-total4 <- as.data.frame(base.model1.4$timeseries[,c(2,5)]) %>% 
-  mutate(Serie = "With Predator and Ecosystem")
+outps2 <- base.model1.2$timeseries[1:37, 2:8]
+
+# addWorksheet(wb, "variable_s2")
+# writeData(wb, "variable_s2", outps1)
+# 
+# # Guardar el workbook
+# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# 
+# 
+# out_s2 <- read_excel("DataKrill.xlsx", 
+#     sheet = "variable_s2")
+outps2 %>%
+  kbl(booktabs = TRUE,
+      format = "html",
+    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.2`") %>%
+    kable_styling(latex_options = c("scale_down",
+                                    "striped"),# Expande la tabla al ancho completo
+                font_size = 8) #%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
+```
 
 
-totalbio <- rbind(total1,
-              total2,
-              total3,
-              total4)
 
-ggplot(totalbio, aes(x = Yr, y = Bio_all, color=Serie)) +
+### Outputs Variables `s1.3`
+
+```{r}
+outps3 <- base.model1.3$timeseries[1:37, 2:8]
+
+# addWorksheet(wb, "variable_s2")
+# writeData(wb, "variable_s2", outps1)
+# 
+# # Guardar el workbook
+# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# 
+# 
+# out_s2 <- read_excel("DataKrill.xlsx", 
+#     sheet = "variable_s2")
+outps3 %>%
+  kbl(booktabs = TRUE,
+      format = "html",
+    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.3`") %>%
+  kable_styling(latex_options = c("scale_down",
+                                    "striped"),# Expande la tabla al ancho completo
+                font_size = 8) #%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
+```
+
+### Outputs Variables `s1.4`
+
+```{r}
+outps4 <- base.model1.3$timeseries[1:37, 2:8]
+
+# addWorksheet(wb, "variable_s2")
+# writeData(wb, "variable_s2", outps1)
+# 
+# # Guardar el workbook
+# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
+# 
+# 
+# out_s2 <- read_excel("DataKrill.xlsx", 
+#     sheet = "variable_s2")
+outps4 %>%
+  kbl(booktabs = TRUE,
+      format = "html",
+    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.4`") %>%
+ kable_styling(latex_options = c("scale_down",
+                                    "striped"),# Expande la tabla al ancho completo
+                font_size = 8) #%>% 
+  #pack_rows(index = c("Estimation" = 1,
+   #                     "Prediction" = 45))
+```
+
+### Comparision between variables
+
+Main variables population by scenario (Figure \@ref(fig:popvar2))
+
+```{r popvar2, fig.height=4, fig.width=9, fig.cap="Time series of different populations variables"}
+# Unir los data frames en uno solo
+outpsall <- rbind(outps1,  
+                  outps2,
+                  outps3,
+                outps4)
+
+# Crear una columna de modelo en cada data frame
+outps1$Model <- "s1.1"
+outps2$Model <- "s1.2"
+outps3$Model <- "s1.3"
+outps4$Model <- "s1.4"
+
+# Unir los data frames en uno solo
+outpsall <- rbind(outps1,  
+                  outps2,
+                  outps3,
+                  outps4)
+
+
+outpsall_long <- outpsall %>%
+  pivot_longer(cols = c(Bio_all, Bio_smry, SpawnBio, Recruit_0), 
+               names_to = "Variable", values_to = "Value") %>% 
+  filter(Yr >= 1989, Yr <= 2020)
+
+
+
+# Gráfico de líneas por variable y modelo
+alloutput <- ggplot(outpsall_long, aes(x = Yr, y = Value, color = Model, group = Model)) +
   geom_point() +
-  geom_smooth(method = "loess",
-              span = 0.5,
-              se = FALSE) +
+  #geom_smooth(method = "lm")+
+  facet_wrap(~Variable, 
+             ncol = 4, 
+             scales = "free_y") + 
+  scale_color_manual(name = "Scenario",
+                     values = c("s1.1" = "#ca0020", 
+                                "s1.2" = "#f4a582", 
+                                "s1.3" = "#bababa", 
+                                "s1.4" = "#404040")) +
+  labs(title = "", x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "bottom")
+
+alloutput
+
+```
+
+```{r eval=FALSE}
+#read in all model runs
+#note if cover=T you need a hessian; if covar=F you do not need a hessian
+biglist1_4 <- SSgetoutput(keyvec = NULL,
+                       dirvec = c(
+                                  dir1.1,
+                                  dir1.2,
+                                  dir1.3,
+                                  dir1.4),
+                       getcovar = F)
+
+#create summary of model runs from list above
+summaryoutput1_4 <- SSsummarize(biglist1_4)
+
+SSplotComparisons(summaryoutput1_4,
+                  legendlabels = c("s1.1 (Ref Model)",
+                 "s1.2",
+                 "s1.3",
+                 "s1.4"),
+                 filenameprefix = "COM1",
+                 labels = c("Year", 
+                            "Spawning biomass (t)",
+                            "Relative spawning biomass", 
+                            "Age-0 recruits (1,000s)",
+                            "Recruitment deviations", 
+                            "Index", "Log index", 
+                            "1 - SPR", 
+                            "Density",
+                            "Management target", 
+                            "Minimum stock size threshold",
+                            "Spawning output",
+                            "Harvest rate"),
+                 png=TRUE,
+                 plotdir=Figs)
+```
+
+```{r eval=FALSE}
+#read in all model runs
+#note if cover=T you need a hessian; if covar=F you do not need a hessian
+biglist14 <- SSgetoutput(keyvec = NULL,
+                       dirvec = c(
+                                  dir1.1,
+                                  dir1.4),
+                       getcovar = F)
+
+#create summary of model runs from list above
+summaryoutput14 <- SSsummarize(biglist14)
+
+comp14 <- SSplotComparisons(summaryoutput14,
+                  legendlabels = c("Ref Model: No Env-Predator",
+                 "S1.1 w/ Env and Predator data"),
+                  filenameprefix = "COM2",
+                 labels = c("Year", 
+                            "Spawning biomass (t)",
+                            "Relative spawning biomass", 
+                            "Age-0 recruits (1,000s)",
+                            "Recruitment deviations", 
+                            "Index", "Log index", 
+                            "1 - SPR", 
+                            "Density",
+                            "Management target", 
+                            "Minimum stock size threshold",
+                            "Spawning output",
+                            "Harvest rate"),
+                 png=TRUE,plotdir=Figs)
+```
+
+Another comparison in `R0` (Natural log of virgin recruitment level)  (Figure \@ref(fig:r0))
+
+```{r r0, fig.height=5, fig.width=8, warning=FALSE, message=FALSE, fig.cap="R0 probability predicted by scenario"}
+r0_vals <- data.frame(
+  model = c("s1.1", "s1.2", "s1.3", "s1.4"),
+  value = c(base.model1.1$jitter_info[1,1],
+            base.model1.2$jitter_info[2,1],
+            base.model1.3$jitter_info[1,1],
+            base.model1.4$jitter_info[2,1]),
+  cv = c(base.model1.1$jitter_info[1,6],
+         base.model1.2$jitter_info[2,6],
+         base.model1.3$jitter_info[1,6],
+         base.model1.4$jitter_info[2,6])
+)
+
+x_vals <- seq(10, 30, length.out = 1000)
+
+dens_data <- r0_vals %>%
+  rowwise() %>%
+  mutate(sd =  cv,  
+         density = list(data.frame(
+           x = x_vals,
+           y = dnorm(x_vals, mean = value, sd = sd),
+           model = model
+         ))) %>%
+  select(density) %>%
+  unnest(cols = c(density))
+
+colores <- c("s1.1" = "#ca0020", 
+             "s1.2" = "#f4a582", 
+             "s1.3" = "#bababa", 
+             "s1.4" = "#404040")
+
+r0plot <- ggplot(dens_data, aes(x = x, y = y, color = model, fill = model)) +
+  geom_area(alpha = 0.3, position = "identity", size = 0) +  # More transparent areas without borders
+  geom_line(size = 1.2) +  # Thicker lines for better visibility
+  scale_color_manual(values = colores, name = NULL) +  # Remove legend title for color
+  scale_fill_manual(values = colores, name = NULL) +   # Remove legend title for fill
+  labs(x = "ln(R0)", 
+       y = "Density") +
+  theme_bw(base_size = 14) +
+  theme(
+    legend.position = "bottom",  # Legend at bottom
+    legend.spacing.x = unit(0.5, 'cm'),  # Space between legend items
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_blank(),
+    axis.title = element_text(size = 12),
+    legend.text = element_text(size = 11)
+  ) +
+  xlim(16, 22) +
+  guides(color = guide_legend(nrow = 1),  # Single row legend
+         fill = guide_legend(nrow = 1))
+
+r0plot
+```
+Comparsion in sd long term time series forecasting Figure \@ref(fig:cumsum)
+
+```{r cumsum, fig.height=5, fig.width=8, fig.cap="Comparsion in sd long term time series forecasting"}
+errt <- data.frame(
+  Bio_all_1 = base.model1.1$timeseries$Bio_all,
+  Bio_all_2 = base.model1.2$timeseries$Bio_all,
+  Bio_all_3 = base.model1.3$timeseries$Bio_all,
+  Bio_all_4 = base.model1.4$timeseries$Bio_all,
+  
+  Bio_smry_1 = base.model1.1$timeseries$Bio_smry,
+  Bio_smry_2 = base.model1.2$timeseries$Bio_smry,
+  Bio_smry_3 = base.model1.3$timeseries$Bio_smry,
+  Bio_smry_4 = base.model1.4$timeseries$Bio_smry,
+  
+  SpawnBio_1 = base.model1.1$timeseries$SpawnBio,
+  SpawnBio_2 = base.model1.2$timeseries$SpawnBio,
+  SpawnBio_3 = base.model1.3$timeseries$SpawnBio,
+  SpawnBio_4 = base.model1.4$timeseries$SpawnBio,
+  
+  Recruit_0_1 = base.model1.1$timeseries$Recruit_0,
+  Recruit_0_2 = base.model1.2$timeseries$Recruit_0,
+  Recruit_0_3 = base.model1.3$timeseries$Recruit_0,
+  Recruit_0_4 = base.model1.4$timeseries$Recruit_0
+)
+
+
+err_long <- errt %>%
+  pivot_longer(cols = everything(), 
+               names_to = "Variable_Model",
+               values_to = "Value")
+
+err_long <- err_long %>%
+  extract(Variable_Model, into = c("Variable", "Model"), 
+          regex = "(.+?)_(\\d+)$")
+
+err_long <- err_long %>%
+  mutate(Model = case_when(
+    Model == "1" ~ "Ref Model: No Env-Predator",
+    Model == "2" ~ "S1.1 w/ Predator data",
+    Model == "3" ~ "S1.1 w/ Env data",
+    Model == "4" ~ "S1.1 w/ Env and Predator data",
+    TRUE ~ Model
+  ))
+
+comsum <- ggplot(err_long, aes(x = Model, y = Value, fill = Model)) +
+  geom_boxplot(width = 0.5, outlier.shape = NA,
+               outliers = F) +
+  #geom_jitter(width = 0.2, alpha = 0.1) +
+  facet_wrap(~Variable, ncol=4, 
+             scales = "free_y") +
+  scale_fill_manual(name = "Scenario",
+                    values = c("#ca0020", "#f4a582", "#bababa", "#404040")) +
   labs(title = "",
        x = "",
-       y = "Total biomass (mt)") +
+       y = "") +
   theme_few() +
-  scale_color_manual(name = "",
-                     values = c("Without Ecosystem Variables" = "#ca0020",  
-                                "W/ Predator" = "#f4a582",  
-                                "W/ Environment" = "#bababa",  
-                                "With Predator and Ecosystem" = "#404040")) +
-  theme(axis.text.x = element_text(angle = 90, 
-                                   hjust = 1))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "none")
+comsum
+```
+
+## Autocorrelation in Recruit 
+
+To evaluate the temporal correlation structure of krill recruitment under different model configurations, we performed an Autocorrelation Function (ACF) analysis (Figure \@ref(fig:acf)). The ACF measures the correlation between observations at different time lags, helping to assess whether recruitment estimates exhibit persistence or randomness across time.
+
+The analysis was conducted on recruitment estimates derived from four model scenarios:
+
+A reference model without environmental or predator influences (Ref Model: No Env-Predator).
+A model incorporating predator data (S1.1 w/ Predator data).
+A model incorporating environmental data (S1.1 w/ Env data).
+A model incorporating both environmental and predator data (S1.1 w/ Env and Predator data).
+Each model's residuals were extracted, and the autocorrelation function (ACF) was computed for a time lag range of up to 15 years. The dashed blue lines in the plots represent the 95% confidence intervals, indicating the threshold beyond which correlation values are statistically significant. If autocorrelation values remain within this range, it suggests that the recruitment estimates behave as a random process with no significant dependence on past values. Conversely, autocorrelation values exceeding these bounds indicate recruitment persistence or cyclic patterns.
+
+```{r acf, fig.height=5, fig.width=8, fig.cap="Autocorrelation in Recruit by scenario"}
+recs1 <- base.model1.1$recruit$pred_recr
+recs2 <- base.model1.2$recruit$pred_recr
+recs3 <- base.model1.3$recruit$pred_recr
+recs4 <- base.model1.4$recruit$pred_recr
+
+p1 <- ggAcf(base.model1.1$recruit$pred_recr) +
+  ggtitle("s1.1") +
+  theme_few()
+p2 <- ggAcf(base.model1.2$recruit$pred_recr) +
+  ggtitle("s1.2") +
+  theme_few()
+p3 <- ggAcf(base.model1.3$recruit$pred_recr) +
+  ggtitle("s1.3") +
+  theme_few()
+p4 <- ggAcf(base.model1.4$recruit$pred_recr) +
+  ggtitle("s1.4") +
+  theme_few()
+
+ggarrange(p1, p2,p3,p4, ncol=4, nrow = 1, common.legend = T)
 
 ```
 
-Pearson residual
+The ACF plots indicate that the reference model (without environmental or predator data) exhibits weak but noticeable positive autocorrelation at certain lags, suggesting some degree of recruitment dependence over time. However, this autocorrelation does not appear strong or systematic.
 
-```{r}
-create_heatmap_df <- function(df, model_name) {
-  df %>%
-    dplyr::filter(Pearson < 5) %>%
-    dplyr::select(c(1, 6, 19, 16)) %>%
-    dplyr::mutate(Fleet = dplyr::case_when(
-      Fleet == 1 ~ "FISHERYBS",
-      Fleet == 2 ~ "FISHERYEI",
-      Fleet == 3 ~ "FISHERYGS",
-      Fleet == 4 ~ "FISHERYJOIN",
-      Fleet == 5 ~ "FISHERYSSIW",
-      Fleet == 6 ~ "SURVEYBS",
-      Fleet == 7 ~ "SURVEYEI",
-      Fleet == 8 ~ "SURVEYGS",
-      Fleet == 9 ~ "SURVEYJOIN",
-      Fleet == 10 ~ "SURVEYSSIW",
-      Fleet == 11 ~ "PREDATOR",
-      TRUE ~ NA_character_
-    )) %>%
-    dplyr::mutate(Model = model_name)
-}
+The model incorporating only predator data shows a slight reduction in autocorrelation magnitude, suggesting that predator-driven recruitment variability may have captured part of the temporal structure in the data.
 
-# Unir los datasets en uno solo
-df_all <- bind_rows(
-  create_heatmap_df(base.model1.1$lendbase, "Model 1.1"),
-  create_heatmap_df(base.model1.2$lendbase, "Model 1.2"),
-  create_heatmap_df(base.model1.3$lendbase, "Model 1.3"),
-  create_heatmap_df(base.model1.4$lendbase, "Model 1.4")
-)
+The model with only environmental data exhibits a further reduction in autocorrelation, implying that environmental variability explains a larger portion of recruitment trends than predator effects alone.
 
-# Plot combinado: facet_grid por Modelo y Fleet
-heatmapres <- ggplot(df_all, aes(x = Yr, y = Bin, fill = Pearson)) +
-  geom_tile() +
-  scale_fill_gradient2(low = "red", 
-                       mid = "white", 
-                       high = "blue",
-                       midpoint = 0) +
-  facet_grid(Model ~ Fleet) +
-  theme_few() +
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, size = 5),         
-    axis.text.y = element_text(size = 5),                               
-    strip.text = element_text(size = 8),                                 
-    legend.position = "none"
-  ) +
-  labs(x = "", y = "Length (cm)", fill = "Pearson")
+Finally, the model that includes both environmental and predator data presents the lowest autocorrelation values, with nearly all bars remaining within the confidence bounds. This suggests that incorporating both factors provides the most effective explanation of recruitment fluctuations, reducing unexplained temporal structure.
 
-heatmapres
+Overall, these results indicate that recruitment variability is at least partially driven by environmental and predator influences, and models integrating these factors provide more robust and independent recruitment estimates, minimizing systematic dependencies over time.
 
-
-
-circleplot_res <- ggplot(df_all, aes(x = Yr, y = Bin)) +
-  geom_point(aes(fill = Pearson, size = abs(Pearson)),
-             shape = 21, color = "grey30", stroke = 0.2, alpha = 0.25) +
-  scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = 0) +
-  scale_alpha("none") +
-  scale_size_continuous(range = c(0.5, 2.5)) +
-  facet_grid(Model ~ Fleet) +
-  theme_few() +
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, size = 5),         
-    axis.text.y = element_text(size = 5),                               
-    strip.text = element_text(size = 8),
-    legend.position = "bottom"
-  ) +
-  labs(x = "", y = "Length (cm)", fill = "Pearson") +
-  guides(size = "none", alpha = "none")  # Esto oculta las leyendas de size y alpha
-
-circleplot_res
-```
-
-
-This figure shows the Pearson residuals of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity. The residuals are visualized by year and length bin, allowing an assessment of model fit over time and across the size structure of the population. In the "Without Ecosystem Variables" scenario (top left), substantial lack of fit is evident across multiple years and length classes, particularly in the late 1990s and early 2000s. Positive Pearson residuals indicate that the model tends to underestimate frequencies of certain length bins, especially among smaller and mid-sized individuals, suggesting poor representation of recruitment and growth dynamics in the absence of environmental and predator effects. The "With Predator" scenario (top right) shows some improvement in model fit, with slightly more balanced residuals. However, there are still consistent deviations in the mid-size ranges across multiple years, indicating that predation alone does not fully explain observed variability in length composition. In the "With Environment" scenario (bottom left), there is a noticeable reduction in residual magnitude across several years and size classes, implying that incorporating environmental covariates helps align the model more closely with observed size distributions. This is particularly apparent in the early 2000s, where the residuals are closer to zero across most bins. Finally, the "With Predator and Ecosystem" scenario (bottom right) shows the most consistent reduction in Pearson residuals across time and size structure. The distribution of residuals is more homogeneous and centered around zero, indicating that the combined inclusion of predator and environmental drivers leads to the best model fit among the four scenarios.
-
-Overall, the results support the conclusion that ecosystem-informed models better capture the temporal and size-structured dynamics of krill, with the **joint inclusion of predator and environmental variables** yielding the most robust representation of observed length compositions.
-
-
-## Diagnosis Base Model
-
-A rigorous model diagnosis is essential to ensure the reliability and robustness of stock assessment models. The key steps for a good practice in model diagnosis include:  
-
-1. Convergence Check: The model must reach a final convergence criterion of 1.0e-04 to ensure numerical stability and reliable parameter estimation.  
-
-2. Residual Analysis: Both visual inspection and statistical metrics are used to evaluate model residuals, helping to detect patterns of bias or misfit.  
-
-3. Retrospective Analysis: The Mohn’s rho parameter is used to assess the consistency of model estimates when sequentially removing recent years of data, identifying potential overestimation or underestimation trends.  
-
-4. Likelihood Profile Analysis: This approach examines how the likelihood function behaves across a range of parameter values, providing insight into parameter uncertainty and model sensitivity.  
-
-This framework follows the recommendations outlined by @Carvalho2021b, aiming to enhance transparency and reproducibility in model evaluation.
-
-### Convergence Criteria
-
-The convergence criterion used for model calibration is set to a final threshold of **0.0001** (or equivalently **1.0e-04**). This criterion defines the minimum acceptable difference between successive model iterations. Convergence is considered achieved when the absolute change in the objective function value or key parameters falls below this threshold. A smaller convergence value ensures that the model achieves a high degree of accuracy and stability in its final estimates, indicating that further iterations are unlikely to result in significant changes to the parameter estimates.
-
-### Residual consistency 
-
-
-Residual analysis is a critical component of model diagnostics in stock assessments. It helps evaluate the fit of the model to observed data and detect potential biases or inconsistencies. This process is applied to both length composition data and abundance indices such as CPUE (Catch Per Unit Effort) and survey-derived estimates.  
-
-For length composition data, residuals represent the difference between observed and model-predicted length distributions. The standardized residuals are calculated as the difference between observed and expected proportions at each length bin. These residuals are plotted by year to identify systematic trends, biases, or inconsistencies in the data. Ideally, they should be randomly distributed around zero, indicating no systematic over- or underestimation.  
-
-For abundance indices such as CPUE and fishery-independent surveys, residuals are analyzed to assess model fit and potential sources of bias. Residuals are computed as the difference between observed index values and those predicted by the model, typically standardized by dividing by the standard error to facilitate comparison across years. These residuals are then plotted over time to evaluate trends. A shaded confidence region, like the green area in the provided plot, represents expected variability, with outliers highlighted in red or other distinct markers. Persistent positive or negative residuals may indicate systematic bias in the model or data collection process.  
-
-Statistical diagnostics are also performed to check for autocorrelation in residuals, which can indicate potential model misspecifications. When mean residual values are close to zero, the model fit is considered unbiased.  
-
-By integrating these residual analyses for both length and abundance indices, stock assessment models can be refined, improving their reliability and increasing confidence in the assessment results.
-
-```{r}
-par(mfrow=c(2,4), mar=c(5,4,2,1)) 
-SSplotRunstest(base.model1.1,
-               subplots = "len",
-               add=T,
-               plot = TRUE,
-               plotdir = Figs)
-par(mfrow=c(2,5), mar=c(5,4,2,1)) 
-SSplotRunstest(base.model1.2,
-               subplots = "len",
-               add=T,
-               plot = TRUE,
-               plotdir = Figs)
-par(mfrow=c(2,4), mar=c(5,4,2,1)) 
-SSplotRunstest(base.model1.3,
-               subplots = "len",
-               add=T,
-               plot = TRUE,
-               plotdir = Figs)
-par(mfrow=c(2,5), mar=c(5,4,2,1)) 
-SSplotRunstest(base.model1.4,
-               subplots = "len",
-               add=T,
-               plot = TRUE,
-               plotdir = Figs)
-```
-
-
-```{r}
-par(mfrow=c(2,5), mar=c(5,4,2,1))
-SSplotRunstest(base.model1.1,
-               subplots = "cpue",
-               add=T,
-               plot = TRUE,
-               plotdir = Figs)
-par(mfrow=c(2,5), mar=c(5,4,2,1))
-SSplotRunstest(base.model1.2,
-               subplots = "cpue",
-               add=T,
-               plot = TRUE,
-               plotdir = Figs)
-par(mfrow=c(2,5), mar=c(5,4,2,1))
-SSplotRunstest(base.model1.3,
-               subplots = "cpue",
-               add=T,
-               plot = TRUE,
-               plotdir = Figs)
-par(mfrow=c(2,5), mar=c(5,4,2,1))
-SSplotRunstest(base.model1.4,
-               subplots = "cpue",
-               add=T,
-               plot = TRUE,
-               plotdir = Figs)
-```
-
-
-### Residual Analysis and RMSE 
-
-Residual analysis of mean length data is a fundamental diagnostic tool in stock assessments. It helps evaluate whether the model provides an unbiased fit to the observed data and detects potential biases over time. In this figure, mean length residuals are plotted across years, differentiated by data source, including fishery-dependent (FISHERY) and fishery-independent (SURVEY) datasets, as well as predator-related observations (PREDATOR). The residuals represent the deviation of observed mean length from model-predicted values, standardized to facilitate interpretation.  
-
-The black line represents a locally estimated scatterplot smoothing (Loess) curve, which provides a trend line to visualize systematic deviations over time. The presence of persistent positive or negative trends in the residuals may indicate biases in the growth model, selectivity assumptions, or misrepresentation of recruitment variability. The gray bars highlight periods where residual variability is particularly high, suggesting potential inconsistencies between observed and predicted size structures.  
-
-RMSE quantifies the overall deviation between observed and predicted values, providing an aggregate measure of model fit. Lower RMSE values indicate better agreement between observed and predicted data. In fisheries stock assessment [@HurtadoF2015], RMSE thresholds for acceptable model performance typically range between *10% and 30%*, depending on the data quality and complexity of the population dynamics being modeled. Values exceeding this range suggest potential biases, requiring further investigation into the model structure, parameter estimation, or data sources.   
-
-By analyzing residual patterns and RMSE values, the model can be refined to improve the accuracy of mean length predictions, ultimately enhancing the reliability of stock assessment outcomes and management recommendations.
-
-```{r}
-par(mfrow=c(2,2), mar=c(5,4,2,1))
-rmse1l <- SSplotJABBAres(base.model1.1,
-               subplots = "len",
-               add=T)
-rmse2l <- SSplotJABBAres(base.model1.2,
-               subplots = "len",
-               add=T)
-rmse3l <- SSplotJABBAres(base.model1.3,
-               subplots = "len",
-               add=T)
-rmse4l <- SSplotJABBAres(base.model1.4,
-               subplots = "len",
-               add=T)
-```
-
-```{r}
-par(mfrow=c(2,2), mar=c(5,4,2,1))
-rmse1c <- SSplotJABBAres(base.model1.1,
-               subplots = "cpue",
-               add=T)
-rmse2c <- SSplotJABBAres(base.model1.2,
-               subplots = "cpue",
-               add=T)
-rmse3c <- SSplotJABBAres(base.model1.3,
-               subplots = "cpue",
-               add=T)
-rmse4c <- SSplotJABBAres(base.model1.4,
-               subplots = "cpue",
-               add=T)
-```
-
-another
-
-```{r}
-dfpearson_long <- data.frame(
-  Pearson = c(base.model1.1$lendbase$Pearson,
-              base.model1.2$lendbase$Pearson,
-              base.model1.3$lendbase$Pearson,
-              base.model1.4$lendbase$Pearson),
-  Scenario = factor(c(rep("s1.1", length(base.model1.1$lendbase$Pearson)),
-                      rep("s1.2", length(base.model1.2$lendbase$Pearson)),
-                      rep("s1.3", length(base.model1.3$lendbase$Pearson)),
-                      rep("s1.4", length(base.model1.4$lendbase$Pearson))))
-)
-
-
-pearson_plot <- ggplot(dfpearson_long, aes(x = Scenario, 
-                                            y = Pearson, 
-                                            fill = Scenario)) +
-  geom_boxplot(width = 0.2, alpha = 0.8,
-               outliers = FALSE) +
-  #geom_jitter(width = 0.01, alpha = 0.3) +
-  theme_minimal() +
-  scale_fill_manual(name = "Scenario",
-                    values = c("s1.1" = "#ca0020", 
-                               "s1.2" = "#f4a582", 
-                               "s1.3" = "#bababa", 
-                               "s1.4" = "#404040")) +
-  labs(title = "", x = "", y = "Residual") +
-  theme(legend.position = "none")
-
-```
-
-
-### Comparision RMSE
-
-```{r fig.height=3, fig.width=3}
-dfrmse <- data.frame(
-  s1.1 = as.numeric(base.model1.1$index_variance_tuning_check$RMSE),
-  s1.2 = as.numeric(base.model1.2$index_variance_tuning_check$RMSE[1:10]),
-  s1.3 = as.numeric(base.model1.3$index_variance_tuning_check$RMSE[1:10]),
-  s1.4 = as.numeric(base.model1.4$index_variance_tuning_check$RMSE[1:10])
-  
-)
-summary(dfrmse)
-
-t.test(dfrmse$s1.1, dfrmse$s1.2)  # Comparar s1.1 vs s1.2
-t.test(dfrmse$s1.1, dfrmse$s1.3)  # Comparar s1.1 vs s1.3
-t.test(dfrmse$s1.2, dfrmse$s1.3)
-t.test(dfrmse$s1.3, dfrmse$s1.4)
-anova_rmse <- aov(as.numeric(unlist(dfrmse)) ~ rep(1:4, each=nrow(dfrmse)))
-
-dfrmse_long <- reshape2::melt(dfrmse)
-rmse <-ggplot(dfrmse_long, aes(x = variable, 
-                        y = value, 
-                        fill= variable)) +
-  geom_boxplot(width=0.2,
-               alpha=0.8,
-               outliers = FALSE) +
-  #geom_jitter(width = 0.01, alpha = 0.3) +
-  theme_minimal() +
-  scale_fill_manual(name= "Scenario",
-                    values = c("s1.1" = "#ca0020", 
-                               "s1.2" = "#f4a582", 
-                               "s1.3" = "#bababa", 
-                               "s1.4" = "#404040")) +
-  labs(title = "", x = "", y = "RMSE")+
-  theme(legend.position = "none")
-```
-
-```{r}
-ggarrange(rmse,
-          pearson_plot,
-          ncol=2)
-```
-
-
-This boxplot compares a summary of the Root Mean Square Error (RMSE) across four different models (s1.1, s1.2, s1.3, and s1.4) used to evaluate recruitment estimates of Antarctic krill. RMSE serves as an indicator of model accuracy, with lower values representing better predictive performance.
-
-s1.1 exhibits the lowest median RMSE, suggesting it has the best overall fit among the four models. In contrast, Models 1.2, 1.3, and 1.4 show higher RMSE values, indicating comparatively lower predictive accuracy. The interquartile range (IQR) of these models is relatively similar, suggesting comparable variability in RMSE across models. Additionally, s1.1 has an outlier above 1.5 RMSE, which could indicate a case where the model's predictions deviated significantly from observed values.
-
-Overall, this analysis highlights that incorporating different environmental or predator-related variables in the models impacts their predictive ability. The differences in RMSE suggest that some models may overfit or underfit the recruitment patterns of krill, emphasizing the need to refine model selection based on ecological and statistical considerations.
-
-
-### Relationship Stock-Recruit
+## Relationship Stock-Recruit
 
 \[
-R = \frac{aS}{1 + bS}
+R = \frac{R_0 \cdot S}{S_0 (1 - h) + S (5h - 1)}
 \]
 
 Where:  
-- \( S \) is the spawning stock biomass.  
 - \( R \) is the predicted recruitment.  
-- \( a \) is the maximum recruitment capacity.  
-- \( b \) regulates density dependence (higher values of \( b \) result in a lower plateau).  
+- \( S \) is the spawning stock biomass.  
+- \( R_0 \) is the recruitment at unfished equilibrium.  
+- \( S_0 \) is the spawning biomass at unfished equilibrium.  
+- \( h \) is the steepness parameter (the proportion of \( R_0 \) produced when \( S = 20\% \cdot S_0 \)).
 
-The blue line will show the asymptotic curve that describes the relationship between spawning stock biomass and recruitment.
+The blue line represents the Beverton–Holt stock-recruitment relationship, commonly used in fisheries models to describe the compensatory response of recruitment to changes in spawning biomass.
+
 
 
 ```{r}
@@ -1112,7 +1143,7 @@ srr_sce <- ggplot() +
 ```
 
 
-### Productivity and Interannual Variability by Scenario
+## Productivity and Interannual Variability by Scenario
 
 Estimating the productivity of Antarctic krill is critical for understanding the species’ capacity to replenish its population in response to varying levels of spawning biomass. Productivity, defined as the ratio of recruitment to spawning stock biomass, provides a standardized measure of reproductive success and population resilience under different ecological and fishing pressures. Comparing productivity across scenarios—each representing different assumptions about environmental drivers, fishing mortality, or predator dynamics—enables a robust evaluation of how krill populations reflect this changes.
 
@@ -1172,26 +1203,531 @@ prod <- ggplot(resultados, aes(x = `SSB/SSB_virgin`, y = Productividad,
 ```
 
 
-These two panels provide insight into the stock-recruitment dynamics of Antarctic krill under four assessment scenarios, each incorporating different levels of ecosystem complexity.
+These two panels in Figure \@ref(fig:recpro) provide insight into the stock-recruitment dynamics of Antarctic krill under four assessment scenarios, each incorporating different levels of ecosystem complexity. Left panel compares the predicted recruitment across years with corresponding spawning biomass values for the four model scenarios (s1.1 to s1.4). Scenario s1.1 (red) shows a relatively flat and optimistic Beverton-Holt relationship, with high recruitment predicted even at low levels of SSB. The other scenarios, particularly s1.3 (gray) and s1.4 (black), show much more constrained recruitment estimates and a more saturating relationship, where recruitment increases only slightly with increasing SSB. This suggests that incorporating environmental (s1.3) and predator (s1.4) effects leads to a more conservative and ecologically realistic recruitment dynamic. Year labels illustrate how certain years (e.g., 2004, 2016, 2022) deviate between scenarios, especially at low biomass levels.
 
-**Left panel – Predicted Recruitment vs Spawning Stock Biomass (SSB):**  
-This plot compares the predicted recruitment across years with corresponding spawning biomass values for the four model scenarios (s1.1 to s1.4). Scenario s1.1 (red) shows a relatively flat and optimistic Beverton-Holt relationship, with high recruitment predicted even at low levels of SSB. The other scenarios, particularly s1.3 (gray) and s1.4 (black), show much more constrained recruitment estimates and a more saturating relationship, where recruitment increases only slightly with increasing SSB. This suggests that incorporating environmental (s1.3) and predator (s1.4) effects leads to a more conservative and ecologically realistic recruitment dynamic. Year labels illustrate how certain years (e.g., 2004, 2016, 2022) deviate between scenarios, especially at low biomass levels.
+Right panel displays recruitment efficiency (Recruitment/SSB) as a function of relative spawning biomass (SSB / SSB₀). In all models, recruitment efficiency is highest at very low biomass levels and declines as SSB increases, consistent with compensatory dynamics. However, s1.3 and s1.4 (which include environmental effects) show significantly lower overall productivity across all SSB levels compared to s1.1 and s1.2. This indicates that the inclusion of ecosystem drivers reduces the per-capita productivity of the stock, especially under depleted conditions.
 
-**Right panel – Recruitment per SSB vs Relative SSB (SSB / SSBo):**  
-This plot displays recruitment efficiency (Recruitment/SSB) as a function of relative spawning biomass (SSB / SSB₀). In all models, recruitment efficiency is highest at very low biomass levels and declines as SSB increases, consistent with compensatory dynamics. However, s1.3 and s1.4 (which include environmental effects) show significantly lower overall productivity across all SSB levels compared to s1.1 and s1.2. This indicates that the inclusion of ecosystem drivers reduces the per-capita productivity of the stock, especially under depleted conditions.
-
-**Interpretation:**  
 Together, these plots indicate that ecosystem-informed models (s1.3 and s1.4) produce more constrained and precautionary estimates of krill productivity. The more optimistic recruitment predicted by s1.1 (and to a lesser extent s1.2) may overestimate stock resilience, particularly in low SSB conditions. These findings emphasize the importance of accounting for environmental variability and predator dynamics in stock assessment models to avoid overoptimistic management advice and better reflect the biological limits of the krill population.
 
-```{r, fig.height=4, fig.width=6, fig.cap="Left panel: Stock–recruitment relationships for Antarctic krill under four assessment scenarios. Predicted recruitment as a function of spawning stock biomass (SSB), with fitted Beverton-Holt curves and annual labels for selected years. Right panel: Recruitment per unit of SSB plotted against relative SSB (SSB/SSBo), illustrating differences in per-capita productivity across models ( s1.1 (no ecosystem variables), s1.2 (with predator effects), s1.3 (with environmental variables), and s1.4 (with both predator and environmental effects))"}
+```{r recpro, fig.height=4, fig.width=6, fig.cap="Left panel: Stock–recruitment relationships for Antarctic krill under four assessment scenarios. Predicted recruitment as a function of spawning stock biomass (SSB), with fitted Beverton-Holt curves and annual labels for selected years. Right panel: Recruitment per unit of SSB plotted against relative SSB (SSB/SSBo), illustrating differences in per-capita productivity across models ( s1.1 (no ecosystem variables), s1.2 (with predator effects), s1.3 (with environmental variables), and s1.4 (with both predator and environmental effects))"}
 ggarrange(srr_sce,
           prod,
           ncol = 2)
 ```
 
-### Compara Fishing Mortality.
+
+
+## Recruit deviation
+
+```{r, warning=FALSE}
+dev1 <- base.model1.1$recruit[8:35,c(1,7)]%>% 
+  mutate(Serie = "s1.1")
+dev2 <- base.model1.2$recruit[8:35,c(1,7)] %>% 
+  mutate(Serie = "s1.2")
+dev3 <- base.model1.3$recruit[8:35,c(1,7)] %>% 
+  mutate(Serie = "s1.3")
+dev4 <- base.model1.4$recruit[8:35,c(1,7)] %>% 
+  mutate(Serie = "s1.4")
+
+
+data_list <- list(dev1, 
+                  dev2,
+                  dev3,
+                  dev4)
+titles <- c("Ref Model: No Env-Predator",
+                 "S1.1 w/ Predator data",
+                 "S1.1 w/ Env data",
+                 "S1.1 w/ Env and Predator data")
+# Lista para almacenar los gráficos
+plots <- list()
+
+for (i in 1:length(data_list)) {
+  p <- ggplot(data_list[[i]], aes(x = Yr, y = dev)) +
+    geom_point() +
+    stat_smooth(method = "loess", 
+                span = 0.15, 
+                se = T) +
+    geom_hline(yintercept = 0,
+               col="red",
+               linetype = "dotdash")+
+    ggtitle(titles[i]) +
+    theme(axis.text.x = element_text(angle = 90,
+                                   hjust = 1))+
+    ylim(-2,2)+
+    theme_few()
+  plots[[i]] <- p
+}
+
+# Organizar los gráficos con ggarrange
+combined_plot <- ggarrange(plotlist = plots, ncol = 2, nrow = 2)
+
+combined_plot
+```
+
+
+## Explotation Rate
+
+Explotation rato (havest rate) in Figure \@ref(fig:hrate)
+
+```{r hrate, warning=FALSE, message=FALSE, fig.cap="Harves rate by scenario in krill overtime"}
+df1 <- base.model1.1$exploitation[, c(1, 4)] %>% mutate(model = "s1.1")
+df2 <- base.model1.2$exploitation[, c(1, 4)] %>% mutate(model = "s1.2")
+df3 <- base.model1.3$exploitation[, c(1, 4)] %>% mutate(model = "s1.3")
+df4 <- base.model1.4$exploitation[, c(1, 4)] %>% mutate(model = "s1.4")
+
+
+df_all <- bind_rows(df1, df2, df3, df4)
+colnames(df_all) <- c("year", "exploitation_rate", "model")
+
+colores <- c("s1.1" = "#ca0020", 
+             "s1.2" = "#f4a582", 
+             "s1.3" = "#bababa", 
+             "s1.4" = "#404040")
+ggplot(df_all, aes(x = year, y = exploitation_rate, color = model)) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(values = colores) +
+  labs(
+    title = "Exploitation Rate Over Time",
+    x = "Year",
+    y = "Exploitation Rate",
+    color = "Model"
+  ) +
+  xlim(1997,2020)+
+  theme_minimal()
+```
+
+<!-- ### Platoons analisis -->
+
+<!-- ```{r} -->
+<!-- # Definir los valores del eje x -->
+<!-- x_values <- seq(0, 7, by=0.1) -->
+
+<!-- # Definir las medias y desviaciones estándar para los valores específicos -->
+<!-- means <- c( 2.9,  3.5, 4.1) -->
+<!-- std_devs <- c(0.65, 0.8, 0.65) -->
+
+
+<!-- # Crear un dataframe que contenga los valores de x, la media y las desviaciones estándar -->
+<!-- data <- data.frame( -->
+<!--   x = rep(x_values, each = length(means)), -->
+<!--   mean = rep(means, times = length(x_values)), -->
+<!--   std_dev = rep(std_devs, times = length(x_values)) -->
+<!-- ) -->
+
+<!-- # Calcular las curvas de las desviaciones estándar -->
+<!-- data <- data %>% -->
+<!--   mutate(y = exp(-((x - mean)^2) / (2 * std_dev^2))) -->
+
+<!-- # Graficar con ggplot -->
+<!-- ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) + -->
+<!--   geom_line(size = 1) + -->
+<!--   scale_linetype_manual(values = means, -->
+<!--                         name ="Platoon") + -->
+<!--   labs(x = "", y = "growth increment") + -->
+<!--   theme_minimal()+ -->
+<!--   xlim(0,7) -->
+
+<!-- ``` -->
+
+
+
+## Diagnosis and robustness
+
+A rigorous model diagnosis is essential to ensure the reliability and robustness of stock assessment models. The key steps for a good practice in model diagnosis include:  
+
+1. Convergence Check: The model must reach a final convergence criterion of 1.0e-04 to ensure numerical stability and reliable parameter estimation.  
+
+2. Residual Analysis: Both visual inspection and statistical metrics are used to evaluate model residuals, helping to detect patterns of bias or misfit.  
+
+3. Retrospective Analysis: The Mohn’s rho parameter is used to assess the consistency of model estimates when sequentially removing recent years of data, identifying potential overestimation or underestimation trends.  
+
+4. Likelihood Profile Analysis: This approach examines how the likelihood function behaves across a range of parameter values, providing insight into parameter uncertainty and model sensitivity.  
+
+This framework follows the recommendations outlined by @Carvalho2021b, aiming to enhance transparency and reproducibility in model evaluation.
+
+### Convergence Criteria
+
+The convergence criterion used for model calibration is set to a final threshold of **0.0001** (or equivalently **1.0e-04**). This criterion defines the minimum acceptable difference between successive model iterations. Convergence is considered achieved when the absolute change in the objective function value or key parameters falls below this threshold. A smaller convergence value ensures that the model achieves a high degree of accuracy and stability in its final estimates, indicating that further iterations are unlikely to result in significant changes to the parameter estimates.
+
+
+### Residuals 
+
+Figure \@ref(fig:bubble1), \@ref(fig:bubble2), \@ref(fig:bubble3) and \@ref(fig:bubble4) displays bubble plots of krill length-frequency distributions across different spatial strata and years. Each panel corresponds to a fishery-dependent or independent data source (e.g., FISHERYBS, SURVEYBS), and shows the proportional abundance of krill in different length classes (y-axis) over time (x-axis). The size of each circle is proportional to the relative frequency or standardized number of individuals in a given length bin for a specific year, providing a visual summary of size structure dynamics across regions and time periods.
+
+
+```{r bubble, fig.width=8, fig.height=6, fig.cap="Pearson residuals, comparing across fleets (plot 1 of 2) Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected) s1.1"}
+SSplotComps(base.model1.1,
+            subplots = 24,
+            maxrows = 9)
+```
+
+
+```{r bubble2,  fig.width=8, fig.height=6, fig.cap="Pearson residuals, comparing across fleets (plot 1 of 2) Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected) s1.2"}
+SSplotComps(base.model1.2,
+            subplots = 24,
+            maxrows = 10)
+```
+
+
+```{r bubble3,  fig.width=8, fig.height=6, fig.cap="Pearson residuals, comparing across fleets (plot 1 of 2) Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected) s1.3"}
+SSplotComps(base.model1.3,
+            subplots = 24,
+            maxrows = 9)
+```
+
+
+```{r bubble4,  fig.width=8, fig.height=6, fig.cap="Pearson residuals, comparing across fleets (plot 1 of 2) Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected) s1.4"}
+SSplotComps(base.model1.4,
+            subplots = 24,
+            maxrows = 10)
+```
+
+
+This Figure \@ref(fig:pearson) shows the Pearson residuals of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity. The residuals are visualized by year and length bin, allowing an assessment of model fit over time and across the size structure of the population. In the "Without Ecosystem Variables" scenario (top left), substantial lack of fit is evident across multiple years and length classes, particularly in the late 1990s and early 2000s. Positive Pearson residuals indicate that the model tends to underestimate frequencies of certain length bins, especially among smaller and mid-sized individuals, suggesting poor representation of recruitment and growth dynamics in the absence of environmental and predator effects. The "With Predator" scenario (top right) shows some improvement in model fit, with slightly more balanced residuals. However, there are still consistent deviations in the mid-size ranges across multiple years, indicating that predation alone does not fully explain observed variability in length composition. In the "With Environment" scenario (bottom left), there is a noticeable reduction in residual magnitude across several years and size classes, implying that incorporating environmental covariates helps align the model more closely with observed size distributions. This is particularly apparent in the early 2000s, where the residuals are closer to zero across most bins. Finally, the "With Predator and Ecosystem" scenario (bottom right) shows the most consistent reduction in Pearson residuals across time and size structure. The distribution of residuals is more homogeneous and centered around zero, indicating that the combined inclusion of predator and environmental drivers leads to the best model fit among the four scenarios.
+
+Overall, the results support the conclusion that ecosystem-informed models better capture the temporal and size-structured dynamics of krill, with the **joint inclusion of predator and environmental variables** yielding the most robust representation of observed length compositions.
+
+
+```{r pearson, fig.cap="Pearson residual by scenario and fleet"}
+create_heatmap_df <- function(df, model_name) {
+  df %>%
+    dplyr::filter(Pearson < 5) %>%
+    dplyr::select(c(1, 6, 19, 16)) %>%
+    dplyr::mutate(Fleet = dplyr::case_when(
+      Fleet == 1 ~ "FISHERYBS",
+      Fleet == 2 ~ "FISHERYEI",
+      Fleet == 3 ~ "FISHERYGS",
+      Fleet == 4 ~ "FISHERYJOIN",
+      Fleet == 5 ~ "FISHERYSSIW",
+      Fleet == 6 ~ "SURVEYBS",
+      Fleet == 7 ~ "SURVEYEI",
+      Fleet == 8 ~ "SURVEYGS",
+      Fleet == 9 ~ "SURVEYJOIN",
+      Fleet == 10 ~ "SURVEYSSIW",
+      Fleet == 11 ~ "PREDATOR",
+      TRUE ~ NA_character_
+    )) %>%
+    dplyr::mutate(Model = model_name)
+}
+
+# Unir los datasets en uno solo
+df_all <- bind_rows(
+  create_heatmap_df(base.model1.1$lendbase, "Model 1.1"),
+  create_heatmap_df(base.model1.2$lendbase, "Model 1.2"),
+  create_heatmap_df(base.model1.3$lendbase, "Model 1.3"),
+  create_heatmap_df(base.model1.4$lendbase, "Model 1.4")
+)
+
+# # Plot combinado: facet_grid por Modelo y Fleet
+# heatmapres <- ggplot(df_all, aes(x = Yr, y = Bin, fill = Pearson)) +
+#   geom_tile() +
+#   scale_fill_gradient2(low = "red", 
+#                        mid = "white", 
+#                        high = "blue",
+#                        midpoint = 0) +
+#   facet_grid(Model ~ Fleet) +
+#   theme_few() +
+#   theme(
+#     axis.text.x = element_text(angle = 90, hjust = 1, size = 5),         
+#     axis.text.y = element_text(size = 5),                               
+#     strip.text = element_text(size = 8),                                 
+#     legend.position = "none"
+#   ) +
+#   labs(x = "", y = "Length (cm)", fill = "Pearson")
+# 
+# heatmapres
+
+circleplot_res <- ggplot(df_all, aes(x = Yr, y = Bin)) +
+  geom_point(aes(fill = Pearson, size = abs(Pearson)),
+             shape = 21, color = "grey30", stroke = 0.2, alpha = 0.25) +
+  scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = 0) +
+  scale_alpha("none") +
+  scale_size_continuous(range = c(0.5, 2.5)) +
+  facet_grid(Model ~ Fleet) +
+  theme_few() +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 5),         
+    axis.text.y = element_text(size = 5),                               
+    strip.text = element_text(size = 8),
+    legend.position = "bottom"
+  ) +
+  labs(x = "", y = "Length (cm)", fill = "Pearson") +
+  guides(size = "none", alpha = "none")  # Esto oculta las leyendas de size y alpha
+
+circleplot_res
+```
+
+```{r}
+cpue_resid <- bind_rows(
+  base.model1.1$cpue %>% mutate(model = "s1.1"),
+  base.model1.2$cpue %>% mutate(model = "s1.2"),
+  base.model1.3$cpue %>% mutate(model = "s1.3"),
+  base.model1.4$cpue %>% mutate(model = "s1.4")
+)
+
+
+len_resid <- bind_rows(
+  base.model1.1$lendbase %>% mutate(model = "s1.1"),
+  base.model1.2$lendbase %>% mutate(model = "s1.2"),
+  base.model1.3$lendbase %>% mutate(model = "s1.3"),
+  base.model1.4$lendbase %>% mutate(model = "s1.4")
+)
+
+cpue_df <- cpue_resid %>%
+  transmute(
+    Yr = Yr,
+    Obs = Obs,
+    Exp = Exp,
+    model = model,
+    Fleet_name = as.character(Fleet_name),  # Asegura que es character
+    type = "Index"
+  )
+
+len_df <- len_resid %>%
+  transmute(
+    Yr = Yr,
+    Obs = Obs,
+    Exp = Exp,
+    model = model,
+    Fleet_name = as.character(Fleet),  # Lo convertimos para que combine bien
+    type = "Length"
+  )
+
+resid_all <- rbind(cpue_df,
+                   len_df)
+
+resid_all <- resid_all %>%
+  mutate(Fleet_name = as.character(Fleet_name),
+         Fleet_name = case_when(
+           Fleet_name == "1"  ~ "FISHERYBS",
+           Fleet_name == "2"  ~ "FISHERYEI",
+           Fleet_name == "3"  ~ "FISHERYGS",
+           Fleet_name == "4"  ~ "FISHERYJOIN",
+           Fleet_name == "5"  ~ "FISHERYSSIW",
+           Fleet_name == "6"  ~ "SURVEYBS",
+           Fleet_name == "7"  ~ "SURVEYEI",
+           Fleet_name == "8"  ~ "SURVEYGS",
+           Fleet_name == "9"  ~ "SURVEYJOIN",
+           Fleet_name == "10" ~ "SURVEYSSIW",
+           Fleet_name == "11" ~ "PREDATOR",
+           TRUE ~ Fleet_name  # mantiene los nombres ya correctos
+         ))
+
+```
+
+Also, we can check density of residual distribution in Figure \@ref(fig:resldens)
+
+```{r resldens, fig.width=10, fig.height=6, fig.cap="Density of residual distribution by scenarios in krill model"}
+ggplot(resid_all, aes(x = Obs - Exp, color = model)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(Fleet_name~type, scales = "free") +
+  labs(title = "Residual Distribution", 
+       x = "Residual (Obs - Exp)", 
+       y = "Density") +
+  scale_color_manual(name = "",
+                     values = c("s1.1" = "#ca0020",  
+                                "s1.2" = "#f4a582",  
+                                "s1.3" = "#bababa",  
+                                "s1.4" = "#404040")) +
+  theme_minimal()
+```
+### Residual consistency 
+
+Residual analysis is a critical component of model diagnostics in stock assessments. It helps evaluate the fit of the model to observed data and detect potential biases or inconsistencies. This process is applied to both length composition data and abundance indices such as CPUE (Catch Per Unit Effort) and survey-derived estimates. For length composition data, residuals represent the difference between observed and model-predicted length distributions. The standardized residuals are calculated as the difference between observed and expected proportions at each length bin. These residuals are plotted by year to identify systematic trends, biases, or inconsistencies in the data. Ideally, they should be randomly distributed around zero, indicating no systematic over- or underestimation.  
+
+For abundance indices such as CPUE and fishery-independent surveys, residuals are analyzed to assess model fit and potential sources of bias. Residuals are computed as the difference between observed index values and those predicted by the model, typically standardized by dividing by the standard error to facilitate comparison across years. These residuals are then plotted over time to evaluate trends. A shaded confidence region, like the green area in the provided plot, represents expected variability, with outliers highlighted in red or other distinct markers. Persistent positive or negative residuals may indicate systematic bias in the model or data collection process.  
+
+Statistical diagnostics are also performed to check for autocorrelation in residuals, which can indicate potential model misspecifications. When mean residual values are close to zero, the model fit is considered unbiased. By integrating these residual analyses for both length and abundance indices, stock assessment models can be refined, improving their reliability and increasing confidence in the assessment results.
+
+```{r}
+par(mfrow=c(2,4), mar=c(5,4,2,1)) 
+SSplotRunstest(base.model1.1,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1)) 
+SSplotRunstest(base.model1.2,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+par(mfrow=c(2,4), mar=c(5,4,2,1)) 
+SSplotRunstest(base.model1.3,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1)) 
+SSplotRunstest(base.model1.4,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+```
+
+
+```{r}
+par(mfrow=c(2,5), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.1,
+               subplots = "cpue",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.2,
+               subplots = "cpue",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.3,
+               subplots = "cpue",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.4,
+               subplots = "cpue",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+```
+
+
+### Residual Analysis and RMSE 
+
+Residual analysis of mean length data is a fundamental diagnostic tool in stock assessments. It helps evaluate whether the model provides an unbiased fit to the observed data and detects potential biases over time. In this figure, mean length residuals are plotted across years, differentiated by data source, including fishery-dependent (FISHERY) and fishery-independent (SURVEY) datasets, as well as predator-related observations (PREDATOR). The residuals represent the deviation of observed mean length from model-predicted values, standardized to facilitate interpretation.  
+
+The black line represents a locally estimated scatterplot smoothing (Loess) curve, which provides a trend line to visualize systematic deviations over time. The presence of persistent positive or negative trends in the residuals may indicate biases in the growth model, selectivity assumptions, or misrepresentation of recruitment variability. The gray bars highlight periods where residual variability is particularly high, suggesting potential inconsistencies between observed and predicted size structures.  
+
+RMSE quantifies the overall deviation between observed and predicted values, providing an aggregate measure of model fit. Lower RMSE values indicate better agreement between observed and predicted data. In fisheries stock assessment [@HurtadoF2015], RMSE thresholds for acceptable model performance typically range between *10% and 30%*, depending on the data quality and complexity of the population dynamics being modeled. Values exceeding this range suggest potential biases, requiring further investigation into the model structure, parameter estimation, or data sources.   
+
+By analyzing residual patterns and RMSE values, the model can be refined to improve the accuracy of mean length predictions, ultimately enhancing the reliability of stock assessment outcomes and management recommendations (Figure \@ref(fig:rmse1)).
+
+```{r rmse1, fig.height=8, fig.width=8, fig.cap="Time series of RMSE of length compositions by scenario"}
+par(mfrow=c(2,2), mar=c(5,4,2,1))
+rmse1l <- SSplotJABBAres(base.model1.1,
+               subplots = "len",
+               add=T)
+rmse2l <- SSplotJABBAres(base.model1.2,
+               subplots = "len",
+               add=T)
+rmse3l <- SSplotJABBAres(base.model1.3,
+               subplots = "len",
+               add=T)
+rmse4l <- SSplotJABBAres(base.model1.4,
+               subplots = "len",
+               add=T)
+```
+Figure \@ref(fig:rmse2) show RMSE to index.
+
+```{r rmse2, fig.height=8, fig.width=8, fig.cap="Time series of RMSE of CPUE compositions by scenario"}
+par(mfrow=c(2,2), mar=c(5,4,2,1))
+rmse1c <- SSplotJABBAres(base.model1.1,
+               subplots = "cpue",
+               add=T)
+rmse2c <- SSplotJABBAres(base.model1.2,
+               subplots = "cpue",
+               add=T)
+rmse3c <- SSplotJABBAres(base.model1.3,
+               subplots = "cpue",
+               add=T)
+rmse4c <- SSplotJABBAres(base.model1.4,
+               subplots = "cpue",
+               add=T)
+```
+### Comparision RMSE
+
+```{r}
+dfpearson_long <- data.frame(
+  Pearson = c(base.model1.1$lendbase$Pearson,
+              base.model1.2$lendbase$Pearson,
+              base.model1.3$lendbase$Pearson,
+              base.model1.4$lendbase$Pearson),
+  Scenario = factor(c(rep("s1.1", length(base.model1.1$lendbase$Pearson)),
+                      rep("s1.2", length(base.model1.2$lendbase$Pearson)),
+                      rep("s1.3", length(base.model1.3$lendbase$Pearson)),
+                      rep("s1.4", length(base.model1.4$lendbase$Pearson))))
+)
+
+pearson_plot <- ggplot(dfpearson_long, aes(x = Scenario, 
+                                            y = Pearson, 
+                                            fill = Scenario)) +
+  geom_boxplot(width = 0.2, alpha = 0.8,
+               outliers = FALSE) +
+  #geom_jitter(width = 0.01, alpha = 0.3) +
+  theme_minimal() +
+  scale_fill_manual(name = "Scenario",
+                    values = c("s1.1" = "#ca0020", 
+                               "s1.2" = "#f4a582", 
+                               "s1.3" = "#bababa", 
+                               "s1.4" = "#404040")) +
+  labs(title = "", x = "", y = "Residual") +
+  theme(legend.position = "none")
+
+```
+
+
+```{r}
+dfrmse <- data.frame(
+  s1.1 = as.numeric(base.model1.1$index_variance_tuning_check$RMSE),
+  s1.2 = as.numeric(base.model1.2$index_variance_tuning_check$RMSE[1:10]),
+  s1.3 = as.numeric(base.model1.3$index_variance_tuning_check$RMSE[1:10]),
+  s1.4 = as.numeric(base.model1.4$index_variance_tuning_check$RMSE[1:10])
+  )
+#summary(dfrmse)
+# t.test(dfrmse$s1.1, dfrmse$s1.2)  # Comparar s1.1 vs s1.2
+# t.test(dfrmse$s1.1, dfrmse$s1.3)  # Comparar s1.1 vs s1.3
+# t.test(dfrmse$s1.2, dfrmse$s1.3)
+# t.test(dfrmse$s1.3, dfrmse$s1.4)
+# anova_rmse <- aov(as.numeric(unlist(dfrmse)) ~ rep(1:4, each=nrow(dfrmse)))
+```
+
+
+```{r}
+dfrmse_long <- reshape2::melt(dfrmse)
+rmse <-ggplot(dfrmse_long, aes(x = variable, 
+                        y = value, 
+                        fill= variable)) +
+  geom_boxplot(width=0.2,
+               alpha=0.8,
+               outliers = FALSE) +
+  geom_jitter(width = 0.01, alpha = 0.3) +
+  theme_minimal() +
+  scale_fill_manual(name= "Scenario",
+                    values = c("s1.1" = "#ca0020", 
+                               "s1.2" = "#f4a582", 
+                               "s1.3" = "#bababa", 
+                               "s1.4" = "#404040")) +
+  labs(title = "", x = "", y = "RMSE")+
+  theme(legend.position = "none")
+```
+
+The Figure \@ref(fig:rmse3) presents evaluation results for krill models across different scenarios (s1.1 to s1.4). The RMSE (Root Mean Square Error) values range from 0.5 to 1.5, with lower values indicating better model accuracy. The Residuals vary between -1.0 and 1.0, showing deviations between predicted and observed values. Smaller residuals suggest better model fit. Scenario s1.4 appears to have the lowest RMSE (0.5), indicating higher precision, while residuals near zero in some scenarios reflect balanced predictions.
+
+
+
+```{r rmse3, fig.cap="RMSE and Residual values for krill model evaluation across scenarios (s1.1-s1.4), highlighting precision and prediction errors."}
+ggarrange(rmse,
+          pearson_plot,
+          ncol=2)
+```
+
+
+This boxplot compares a summary of the Root Mean Square Error (RMSE) across four different models (s1.1, s1.2, s1.3, and s1.4). RMSE serves as an indicator of model accuracy, with lower values representing better predictive performance.
+
+s1.1 exhibits the lowest median RMSE, suggesting it has the best overall fit among the four models. In contrast, Models 1.2, 1.3, and 1.4 show higher RMSE values, indicating comparatively lower predictive accuracy. The interquartile range (IQR) of these models is relatively similar, suggesting comparable variability in RMSE across models. Additionally, s1.1 has an outlier above 1.5 RMSE, which could indicate a case where the model's predictions deviated significantly from observed values.
+
+Overall, this analysis highlights that incorporating different environmental or predator-related variables in the models impacts their predictive ability. The differences in RMSE suggest that some models may overfit or underfit the recruitment patterns of krill, emphasizing the need to refine model selection based on ecological and statistical considerations.
+
+
+
+
 
 ```{r eval=FALSE}
+### Compara Fishing Mortality.
 escenarios <- list(
   s1.1 = base.model1.1$exploitation[1:5],
   s1.2 = base.model1.2$exploitation[1:5],
@@ -1244,11 +1780,7 @@ ggplot(resultados, aes(x = Yr, y = Relativo_annual_F, color = Scenario)) +
 
 ### Retrospective Analysis in Model Evaluation
 
-Retrospective analyses provide insights into the differences in estimation patterns (underestimation or overestimation) among the models evaluated. These analyses assess the consistency and reliability of stock assessment models by systematically removing the most recent years of data and comparing the resulting estimates with the full dataset.  
-
-In this study, we conducted a retrospective analysis to examine the sensitivity of our recruitment and spawning stock biomass (SSB) estimates to the inclusion or exclusion of recent data. By applying this approach to multiple models, we identified potential biases and evaluated the stability of the recruitment estimates over time.  
-
-The retrospective patterns were assessed by calculating the relative error between the predictions of truncated datasets and the full dataset. These differences allowed us to detect trends in model performance, such as systematic overestimation or underestimation of key population parameters. Understanding these deviations is crucial for improving the robustness of the stock assessment models and ensuring more reliable projections for fisheries management.
+Retrospective analyses provide insights into the differences in estimation patterns (underestimation or overestimation) among the models evaluated. These analyses assess the consistency and reliability of stock assessment models by systematically removing the most recent years of data and comparing the resulting estimates with the full dataset.  In this study, we conducted a retrospective analysis to examine the sensitivity of our recruitment and spawning stock biomass (SSB) estimates to the inclusion or exclusion of recent data. By applying this approach to multiple models, we identified potential biases and evaluated the stability of the recruitment estimates over time.  The retrospective patterns were assessed by calculating the relative error between the predictions of truncated datasets and the full dataset. These differences allowed us to detect trends in model performance, such as systematic overestimation or underestimation of key population parameters. 
 
 ```{r eval=FALSE}
 #one by one
@@ -1314,7 +1846,12 @@ retroSummary1.4 <- SSsummarize(retroModels1.4)
 
 ```
 
-```{r}
+
+Using `retro()` and `SSplotRetro()` functions, we obtain main results
+
+Retrospective analysis for spawning biomass (Figure \@ref(fig:retrossb))
+
+```{r retrossb, fig.cap="Retrospective analysis for spawning biomass by scenario in krill"}
 par(mfrow=c(2,2), mar=c(5,4,1,1)) 
 retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
@@ -1342,7 +1879,9 @@ retro1.4 <- SSplotRetro(retroSummary1.4,
             subplots = c("SSB"))
 ```
 
-```{r}
+Retrospective analysis for fishing mortality (Figure \@ref(fig:retrof))
+
+```{r retrof, fig.cap="Retrospective analysis for fishing mortality by scenario in krill"}
 par(mfrow=c(2,2), mar=c(5,4,1,1)) 
 retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
@@ -1370,118 +1909,6 @@ retro1.4 <- SSplotRetro(retroSummary1.4,
             subplots = c("F"))
 ```
 
-### Hindcast Cross-Validation and Prediction Skill
-
-The Hindcast Cross-Validation (HCxval) diagnostic in Stock Synthesis is implemented using the model outputs generated by the `r4ss::SS_doRetro()` function. This diagnostic evaluates the predictive performance of the model by comparing hindcast predictions with observed data.
-
-To assess prediction skill, we employ the Mean Absolute Scaled Error (MASE) as a robust metric. MASE is calculated by scaling the mean absolute error of the model predictions relative to the mean absolute error of a naïve baseline prediction. Specifically, the MASE score is computed as follows:
-
-- A MASE score greater than 1 indicates that the model’s average forecasts are less accurate than a random walk model.
-- A MASE score equal to 1 suggests that the model’s accuracy is similar to that of a random walk.
-- A MASE score less than 1 indicates that the model performs better than a random walk.
-- A MASE score of 0.5, for example, indicates that the model’s forecasts are twice as accurate as the naïve baseline prediction, suggesting the model has predictive skill.
-
-This approach provides a rigorous evaluation of model forecasting capabilities and helps identify improvements for model calibration.
-
-
-```{r}
-par(mfrow=c(2,4), mar=c(5,4,2,1))
-hci1 = SSplotHCxval(retroSummary1.1, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7)
-```
-
-
-```{r}
-par(mfrow=c(3,3), mar=c(5,4,2,1))
-hci2 = SSplotHCxval(retroSummary1.2, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7)
-```
-
-
-```{r}
-par(mfrow=c(2,4), mar=c(5,4,2,1))
-hci3 = SSplotHCxval(retroSummary1.3, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7)
-```
-
-
-```{r}
-par(mfrow=c(3,3), mar=c(5,4,2,1))
-hci4 = SSplotHCxval(retroSummary1.4, 
-                   add = T, 
-                   verbose = F, 
-                   legendcex = 0.7) 
-```
-
-### Kobe (status)
-
-
-```{r eval=FALSE}
-mvln = SSdeltaMVLN(base.model1.1,
-                   Fref = "MSY", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-mvln = SSdeltaMVLN(base.model1.2,
-                   Fref = "MSY", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-mvln = SSdeltaMVLN(base.model1.3,
-                   Fref = "MSY", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-mvln = SSdeltaMVLN(base.model1.4,
-                   Fref = "MSY", 
-                   plot = TRUE,
-                   addprj=TRUE,
-                   virgin = TRUE,
-                   mc=100)
-
-```
-another
-
-```{r eval=FALSE}
-nanios<-base.model1.1$Kobe$Yr
-SSBDep<-base.model1.1$Kobe$B.Bmsy
-y_BDPR<-base.model1.1$Kobe$F.Fmsy
-
-kobe1 <- ggplot(base.model1.1$Kobe)+
-  geom_rect(aes(xmin = 0, xmax = 0.5, ymin = 0, ymax = 5),
-            fill = "#E43338", alpha = 0.5) +
-  geom_rect(aes(xmin = 0.5, xmax = 0.75, ymin = 0, ymax = 5),
-            fill = "#F2ED23", alpha = 0.5) +
-  geom_rect(aes(xmin = 0.75, xmax = 1.25, ymin = 0, ymax = 5),
-            fill = "#ACC39A", alpha = 0.5) +
-  geom_rect(aes(xmin = 1.25, xmax = 9, ymin = 0, ymax = 1),
-            fill = "#608D68", alpha = 0.5) +
-  geom_rect(aes(xmin = 1.25, xmax = 9, ymin = 1, ymax = 5),
-            fill = "#808080", alpha = 0.5) +
-  geom_path(aes(x=base.model1.1$Kobe$B.Bmsy,y=base.model1.1$Kobe$F.Fmsy,
-                label=base.model1.1$Kobe$Yr))+
-  geom_point(aes(base.model1.1$Kobe$B.Bmsy, base.model1.1$Kobe$F.Fmsy),
-             lwd=2) +
-  geom_hline(yintercept = 1) +
-  geom_vline(xintercept = c(0.5, 0.75, 1.75, 1, 1.25), linetype=2)+
-  theme_few()+
-  labs(x = expression("BD/BD"[RMS]), y = expression("F/F"[RMS]))+
-  # geom_text(data = texto_coords, aes(x = x, y = y, label = etiqueta),
-  #            vjust = -0.5)+
-  geom_text(aes(x=base.model1.1$Kobe$B.Bmsy,y=base.model1.1$Kobe$F.Fmsy,label=base.model1.1$Kobe$Yr),
-            nudge_y = 0.1,size = 3,
-            check_overlap = TRUE)
-kobe1
-```
 
 ```{r}
 # model01
@@ -1570,9 +1997,10 @@ tablebias_combined <- bind_rows(
                             quant = "F", verbose = F))
 )
 ```
-Viz
 
-```{r, fig.height=4, fig.width=6}
+Figure \@ref(fig:bias) presents the retrospective bias (*Rho*) in Spawning Stock Biomass (SSB) and Fishing Mortality (F) across different peel years (2019–2016) and for the combined period under four model scenarios (s1.1 to s1.4). In the SSB panel, all models exhibit negative *Rho* values across the years, indicating a downward bias. The magnitude of the bias varies among models, with s1.3 and s1.4 showing the most pronounced deviations. In the F panel, *Rho* values are consistently positive, suggesting an upward bias. The combined *Rho* values for each metric confirm these trends, showing persistent differences among model scenarios.
+
+```{r bias, fig.cap= "Summary of retrospective analisis by scenario in F and SSB"}
 tablebias_combined <- tablebias_combined %>%
   mutate(Rho.peel = factor(Rho.peel, levels = unique(Rho.peel)))
 
@@ -1597,70 +2025,106 @@ ggplot(tablebias_combined, aes(x = Rho.peel, y = Rho.Rho, group = Model, fill = 
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "bottom")
 
-
 ```
- 
-The plot presents the retrospective bias (*Rho*) in Spawning Stock Biomass (SSB) and Fishing Mortality (F) across different peel years (2019–2016) and for the combined period under four model scenarios (s1.1 to s1.4). In the SSB panel, all models exhibit negative *Rho* values across the years, indicating a downward bias. The magnitude of the bias varies among models, with s1.3 and s1.4 showing the most pronounced deviations. In the F panel, *Rho* values are consistently positive, suggesting an upward bias. The combined *Rho* values for each metric confirm these trends, showing persistent differences among model scenarios.  
+See Table \@ref(tab:rho_parameters) for details.
 
-(Discussion)
-
-The observed retrospective bias in SSB and F aligns with findings from previous studies on krill population dynamics, where recruitment variability and model structure influence stock assessment estimates (Hill et al., 2016; Watters et al., 2020). The negative bias in SSB suggests that models may overestimate past biomass, potentially due to unaccounted environmental variability or underestimation of natural mortality (Meyer et al., 2021). The positive bias in F indicates a tendency to underestimate past fishing mortality, which could be linked to the inclusion of predator-based indices such as penguin foraging data (Trathan et al., 2018). These results highlight the importance of incorporating ecosystem interactions into stock assessments to improve predictive accuracy and support sustainable management of Antarctic krill.
-
-
-```{r}
-kbl(tablebias_combined, booktabs = T, 
+```{r rho_parameters}
+kbl(tablebias_combined, 
+    booktabs = TRUE, 
     format = "html", 
-    caption = "Rho parameter by model and quantity (SSB and F)") %>% 
+    caption = "Rho parameter by model and quantity (SSB and F)" ) %>%
   kable_styling(latex_options = "HOLD_position")
 
+```
+
+### Hindcast Cross-Validation and Prediction Skill
+
+The Hindcast Cross-Validation (HCxval) diagnostic in Stock Synthesis is implemented using the model outputs generated by the `r4ss::SS_doRetro()` and using `SSplotHCval()` function. This diagnostic evaluates the predictive performance of the model by comparing hindcast predictions with observed data. To assess prediction skill, we employ the Mean Absolute Scaled Error (MASE) as a robust metric. MASE is calculated by scaling the mean absolute error of the model predictions relative to the mean absolute error of a naïve baseline prediction. Specifically, the MASE score is computed as follows:
+
+- A MASE score greater than 1 indicates that the model’s average forecasts are less accurate than a random walk model.
+- A MASE score equal to 1 suggests that the model’s accuracy is similar to that of a random walk.
+- A MASE score less than 1 indicates that the model performs better than a random walk.
+- A MASE score of 0.5, for example, indicates that the model’s forecasts are twice as accurate as the naïve baseline prediction, suggesting the model has predictive skill.
+
+
+Hindcast validation for `s1.1` (Figure \@ref(fig:hcval1))
+
+```{r hcval1, fig.cap="Hindcast validation for s1.1 by fleet"}
+par(mfrow=c(3,3), mar=c(5,4,2,1))
+hci1 = SSplotHCxval(retroSummary1.1, 
+                   add = T, 
+                   verbose = F, 
+                   legendcex = 0.7)
+```
+
+Hindcast validation for `s1.2` (Figure \@ref(fig:hcval2))
+
+```{r hcval2, fig.cap="Hindcast validation for s1.2 by fleet"}
+par(mfrow=c(3,3), mar=c(5,4,2,1))
+hci2 = SSplotHCxval(retroSummary1.2, 
+                   add = T, 
+                   verbose = F, 
+                   legendcex = 0.7)
+```
+
+
+Hindcast validation for `s1.3` (Figure \@ref(fig:hcval3))
+
+```{r hcval3, fig.cap="Hindcast validation for s1.3 by fleet"}
+par(mfrow=c(3,3), mar=c(5,4,2,1))
+hci3 = SSplotHCxval(retroSummary1.3, 
+                   add = T, 
+                   verbose = F, 
+                   legendcex = 0.7)
+```
+
+Hindcast validation for `s1.4` (Figure \@ref(fig:hcval4))
+
+```{r hcval4, fig.cap="Hindcast validation for s1.4 by fleet"}
+par(mfrow=c(3,3), mar=c(5,4,2,1))
+hci4 = SSplotHCxval(retroSummary1.4, 
+                   add = T, 
+                   verbose = F, 
+                   legendcex = 0.7) 
+```
+
+
+```{r eval=FALSE}
+### Kobe (status) dont run
+mvln = SSdeltaMVLN(base.model1.1,
+                   Fref = "MSY", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
+mvln = SSdeltaMVLN(base.model1.2,
+                   Fref = "MSY", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
+mvln = SSdeltaMVLN(base.model1.3,
+                   Fref = "MSY", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
+mvln = SSdeltaMVLN(base.model1.4,
+                   Fref = "MSY", 
+                   plot = TRUE,
+                   addprj=TRUE,
+                   virgin = TRUE,
+                   mc=100)
 
 ```
 
-### Likelihood tables
-
-```{r}
-like1 <- base.model1.1$likelihoods_used
-like1$model <- rep("s1.1", nrow(like1))
-like1 <- rownames_to_column(like1, var = "Description")
-like2 <- base.model1.2$likelihoods_used
-like2$model <- rep("s1.2", nrow(like2))
-like2 <- rownames_to_column(like2, var = "Description")
-like3 <- base.model1.3$likelihoods_used
-like3$model <- rep("s1.3", nrow(like3))
-like3 <- rownames_to_column(like3, var = "Description")
-like4 <- base.model1.4$likelihoods_used
-like4$model <- rep("s1.4", nrow(like4))
-like4 <- rownames_to_column(like4, var = "Description")
-
-totalike <- rbind(like1,
-                   like2,
-                   like3,
-                   like4)
-```
-
-```{r}
-ggplot(totalike %>% 
-         filter(values>1))+
-  geom_bar( aes(y = reorder(Description, values), 
-                x =log(values)),
-            stat = "identity", position = "dodge") +
-  theme_few() +
-  facet_wrap(.~model, 
-             ncol=4)+
-  labs(y="",
-       x="Log Likelihood")+
-  theme(axis.text.x = element_text(angle = 90, 
-                                   hjust = 1))+
-  xlim(0,30)
-```
-
-### Likelihood Profile 
+<!-- ### Likelihood Profile  -->
 
 ```{r eval=FALSE, echo = FALSE}
 # 1. Identificar el directorio donde se encuentra el modelo base ----
-dirname.model.run <- here("s1.2")
+dirname.model.run <- here("s1.1")
 # 2. Crear un nuevo directorio para el "Perfil_Verosimilitud"  
-dirname.R0.profile <- here("s1.2",
+dirname.R0.profile <- here("s1.1",
                            "Perfil_Verosimilitud")
 dir.create(path=dirname.R0.profile, 
            showWarnings = TRUE, 
@@ -1729,11 +2193,8 @@ mainlike_components_labels  <- c('Total likelihood',
                                  "Catch Likelihood",
                                  'Size_at_age likelihood',
                                  'Recruitment likelihood') 
-
 ```
 
-
-### Likelihood Profile
 
 ```{r eval=FALSE, echo = FALSE}
 png(file.path(plotdir,"R0_profile_plot.png"),
@@ -1762,11 +2223,7 @@ dev.off()
 ```
 
 
-
-
-
-
-```{r eval=FALSE, echo = FALSE}
+```{r eval=FALSE}
 # Comparación de series de tiempo 
 labs <- paste("SR_Ln(R0) = ",R0.vec)
 labs[which(round(R0.vec,2)==Baseval)] <- paste("SR_Ln(R0) = ",
@@ -1781,9 +2238,9 @@ SSplotComparisons(prof.R0.summary,
 
 ```
 
-piner Plot
 
 ```{r eval = FALSE}
+#piner Plot
 #### R0_profile_plot_Length_like ----
 png(file.path(plotdir,"R0_profile_plot_Length_like.png"),
     width=7,
@@ -1829,7 +2286,41 @@ abline(v = Baseval, lty=2)
 dev.off()
 ```
 
-### Table Diagnosis
+### Likelihood tables
+
+```{r eval=FALSE}
+like1 <- base.model1.1$likelihoods_used
+like1$model <- rep("s1.1", nrow(like1))
+like1 <- rownames_to_column(like1, var = "Description")
+like2 <- base.model1.2$likelihoods_used
+like2$model <- rep("s1.2", nrow(like2))
+like2 <- rownames_to_column(like2, var = "Description")
+like3 <- base.model1.3$likelihoods_used
+like3$model <- rep("s1.3", nrow(like3))
+like3 <- rownames_to_column(like3, var = "Description")
+like4 <- base.model1.4$likelihoods_used
+like4$model <- rep("s1.4", nrow(like4))
+like4 <- rownames_to_column(like4, var = "Description")
+
+totalike <- rbind(like1,
+                   like2,
+                   like3,
+                   like4)
+
+ggplot(totalike %>% 
+         filter(values>1))+
+  geom_bar( aes(y = reorder(Description, values), 
+                x =log(values)),
+            stat = "identity", position = "dodge") +
+  theme_few() +
+  facet_wrap(.~model, 
+             ncol=4)+
+  labs(y="",
+       x="Log Likelihood")+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1))+
+  xlim(0,30)
+```
 
 
 
@@ -1919,120 +2410,128 @@ diag_tidy <- diag_all |>
   pivot_wider(names_from = Scenario, values_from = Value)
 
 diag_tidy[, 2:5] <- lapply(diag_tidy[, 2:5], function(x) as.numeric(format(round(x, 3), nsmall = 3)))
-
-
-#write_csv(diag_tidy, "model_diagnosis.csv")
-flextable(diag_tidy) |>
-  colformat_num(digits = 3) |>  
-  autofit() |>
-  theme_booktabs() |>
-  align(align = "center", part = "all") |>
-  bold(part = "header")
 ```
 
+See Table \@ref(tab:likecom) for details. 
 
-### Otra tab
+```{r likecom}
+diag_tidy %>%
+  kbl(digits = 3, 
+      caption = "Model Diagnosis Results",
+      align = "c",  # Centrar todas las columnas
+      booktabs = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE,
+                position = "center") %>%
+  row_spec(0, bold = TRUE)  # Encabezados en negrita
+```
 
-```{r eval=FALSE}
-cpue_resid <- bind_rows(
-  base.model1.1$cpue %>% mutate(model = "s1.1"),
-  base.model1.2$cpue %>% mutate(model = "s1.2"),
-  base.model1.3$cpue %>% mutate(model = "s1.3"),
-  base.model1.4$cpue %>% mutate(model = "s1.4")
+As shown in Table \@ref(tab:parameter-comparison), the models differ substantially in key parameter estimates and likelihood contributions.
+
+
+```{r parameter-comparison, warning=FALSE, message=FALSE}
+#read in all model runs
+#note if cover=T you need a hessian; if covar=F you do not need a hessian
+biglist <- SSgetoutput(keyvec = NULL,
+                       dirvec = c(dir1.1,
+                                  dir1.2,
+                                  dir1.3,
+                                  dir1.4),
+                       getcovar = F)
+summaryoutputall <- SSsummarize(biglist)
+
+legend.labels <- c('s1.1','s1.2','s1.3', 's1.4')
+
+#read in all model runs
+#note if cover=T you need a hessian; if covar=F you do not need a hessian
+biglist <- SSgetoutput(keyvec = NULL, dirvec = c(dir1.1,
+                                                 dir1.2,
+                                                 dir1.3,
+                                                 dir1.4),	getcovar = F)
+
+#create summary of model runs from list above
+summaryoutput <- SSsummarize(biglist)
+
+# Crear tabla con SStableComparisons
+tablelike <- SStableComparisons(
+  summaryoutput,
+  likenames = c("TOTAL", "Survey", "Length_comp", "Age_comp", "priors", "Size_at_age"), 
+  names = c("Recr_Virgin", "R0", "SSB_Virg", "Bratio_2020", "SPRratio_2020"),
+  digits = NULL,
+  modelnames = legend.labels,
+  csv = TRUE,
+  csvdir = "/Users/mauriciomardones/DOCAS/SA_Krill",
+  csvfile = "parameter_comparison_table.csv",
+  verbose = TRUE,
+  mcmc = FALSE
 )
 
+# Limpiar la tabla: eliminar columnas o filas con solo NAs y evitar notación científica
+table_clean <- tablelike %>%
+  mutate(across(where(is.numeric), ~ format(.x, scientific = FALSE, digits = 4))) %>%
+  select(where(~ !all(is.na(.))))  # elimina columnas que son completamente NA
 
-indres <- ggplot(cpue_resid, aes(x = Exp, y = Obs, color = model)) +
-  geom_point() +
-  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
-  facet_wrap(~Fleet_name, scales = "free") +
-  theme_minimal() +
-  labs(title = "Observed vs Expected (Index)",
-       x = "Expected",
-       y = "Observed")
-
-
-len_resid <- bind_rows(
-  base.model1.1$lendbase %>% mutate(model = "s1.1"),
-  base.model1.2$lendbase %>% mutate(model = "s1.2"),
-  base.model1.3$lendbase %>% mutate(model = "s1.3"),
-  base.model1.4$lendbase %>% mutate(model = "s1.4")
-)
-
-lenres <- ggplot(len_resid, aes(x = Exp, y = Obs, color = model)) +
-  geom_point() +
-  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
-  facet_wrap(~Fleet, scales = "free") +
-  theme_minimal() +
-  labs(title = "Observed vs Expected (Index)",
-       x = "Expected",
-       y = "Observed")
-
-ggarrange(indres,
-          lenres,
-          ncol=1,
-          common.legend = T)
-```
-```{r eval=FALSE}
-
-cpue_df <- cpue_resid %>%
-  transmute(
-    Yr = Yr,
-    Obs = Obs,
-    Exp = Exp,
-    model = model,
-    Fleet_name = as.character(Fleet_name),  # Asegura que es character
-    type = "Index"
-  )
-
-len_df <- len_resid %>%
-  transmute(
-    Yr = Yr,
-    Obs = Obs,
-    Exp = Exp,
-    model = model,
-    Fleet_name = as.character(Fleet),  # Lo convertimos para que combine bien
-    type = "Length"
-  )
-
-resid_all <- resid_all %>%
-  mutate(Fleet_name = as.character(Fleet_name),
-         Fleet_name = case_when(
-           Fleet_name == "1"  ~ "FISHERYBS",
-           Fleet_name == "2"  ~ "FISHERYEI",
-           Fleet_name == "3"  ~ "FISHERYGS",
-           Fleet_name == "4"  ~ "FISHERYJOIN",
-           Fleet_name == "5"  ~ "FISHERYSSIW",
-           Fleet_name == "6"  ~ "SURVEYBS",
-           Fleet_name == "7"  ~ "SURVEYEI",
-           Fleet_name == "8"  ~ "SURVEYGS",
-           Fleet_name == "9"  ~ "SURVEYJOIN",
-           Fleet_name == "10" ~ "SURVEYSSIW",
-           Fleet_name == "11" ~ "PREDATOR",
-           TRUE ~ Fleet_name  # mantiene los nombres ya correctos
-         ))
-
-
-ggplot(resid_all, aes(x = Exp, y = Obs, color = model)) +
-  geom_point(alpha = 0.6) +
-  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray40") +
-  facet_grid(type ~ Fleet_name, scales = "free") +
-  theme_minimal(base_size = 13) +
-  labs(title = "Observed vs Expected residuals",
-       x = "Expected", y = "Observed")
+# Renderizar con kable
+kbl(table_clean, booktabs = TRUE, format = "html", 
+    caption = "Model parameter and likelihood comparison") %>%
+  kable_styling(latex_options = "scale_down")
 
 ```
-```{r}
-ggplot(resid_all, aes(x = Obs - Exp, fill = model)) +
-  geom_density(alpha = 0.5) +
-  facet_wrap(Fleet_name~type, scales = "free") +
-  labs(title = "Distribución de residuales", x = "Residual (Obs - Exp)", y = "Densidad") +
-  theme_minimal()
 
+Total likelihood in Figure \@ref(fig:likecompo2)
+
+```{r likecompo2, fig.width=7, fig.height=3, fig.cap="total likelihood composition by scenario"}
+df1 <- base.model1.1$likelihoods_used %>%
+  select(values) %>%
+  mutate(Componente = rownames(base.model1.1$likelihoods_used), Modelo = "s1.1")
+df2 <- base.model1.2$likelihoods_used %>%
+  select(values) %>%
+  mutate(Componente = rownames(base.model1.2$likelihoods_used), Modelo = "s1.2")
+df3 <- base.model1.3$likelihoods_used %>%
+  select(values) %>%
+  mutate(Componente = rownames(base.model1.3$likelihoods_used), Modelo = "s1.3")
+df4 <- base.model1.4$likelihoods_used %>%
+  select(values) %>%
+  mutate(Componente = rownames(base.model1.4$likelihoods_used), Modelo = "s1.4")
+
+df <- bind_rows(df1, 
+                df2,
+                df3,
+                df4)
+ggplot(df %>% 
+         filter(values > 1), aes(x = Componente, y = values, fill = Modelo)) +
+  geom_col(position = position_dodge(), width = 0.7) +  
+  theme_few() +
+  coord_flip() +  
+  scale_fill_manual(name= "Scenario",
+                    values = c("s1.1" = '#ca0020',
+                               "s1.2" = '#f4a582', 
+                               "s1.3" = '#bababa',
+                               "s1.4" = '#404040')) + 
+  labs(x = "",
+       y = "Log-Normal Likelihood", 
+       title = "") 
 ```
-### Statistics
 
-```{r eval=FALSE, resumen_residuales, message=FALSE, warning=FALSE}
+This bar plot presents the log-normal likelihood contributions of different model components in an Antarctic krill stock assessment under four scenarios (s1.1, s1.2, s1.3, and s1.4).  
+
+**TOTAL Likelihood:** The overall likelihood is highest for scenario s1.4 (black), followed by s1.2 (light orange). This suggests that s1.4 provides the best overall model fit, while s1.1 (dark red) has the lowest likelihood, indicating a poorer fit.  
+
+**Survey Component:** The survey likelihood follows a similar pattern, with s1.4 and s1.2 showing better agreement with the data compared to s1.1.  
+
+**Recruitment, Parameter Priors, and Parameter Deviations:** These components contribute minimally to the total likelihood, indicating that they do not heavily influence model fit differences.  
+
+**Length Composition:** There is some variation in this component, with s1.2 showing a larger contribution than s1.1 and s1.3.  
+
+Scenario s1.4 seems to fit the data best, followed closely by s1.2. Scenario s1.1 has the poorest likelihood, meaning it is the least supported by the data. If s1.4 includes both environmental and predator effects, this suggests that incorporating ecosystem variables significantly improves the stock assessment model for Antarctic krill.
+
+
+### Statistics analisys differences bewteen models
+
+To evaluate the residual behavior across model scenarios, we computed residuals as the difference between observed and expected values (`residual = Obs - Exp`). Basic statistics, including sample size (`n()`), mean (`mean()`), and standard deviation (`sd()`), were calculated for each combination of model and type. To test the normality of residuals, we applied the Shapiro-Wilk test (`shapiro.test()`) [@shapiro1965analysis], which is appropriate for small to moderate sample sizes. Temporal autocorrelation was assessed using the Ljung-Box test (`Box.test()` [@ljung1978measure] with `type = "Ljung-Box"` and `lag = 10`), evaluating the null hypothesis of independence across lags. To detect heteroscedasticity, we used the Breusch-Pagan test (`bptest()` from the `lmtest` package) [@breusch1979simple], fitting a linear model of residuals against year (`residual ~ Yr`) and testing for non-constant variance in the residuals. These diagnostics provide insight into the validity of model assumptions across different scenarios.
+
+
+```{r message=FALSE, warning=FALSE}
 resid_all <- resid_all %>%
   mutate(residual = Obs - Exp)
 
@@ -2070,439 +2569,38 @@ bp_p <- resid_all %>%
     .groups = "drop"
   )
 
-# Unión de todo
+```
+
+As shown in Table \@ref(tab:residual-summary), the residuals exhibit different statistical properties across model scenarios.
+
+
+```{r residual-summary, message=FALSE, warning=FALSE}
 tabla_resumen <- resid_stats %>%
   left_join(shapiro_p, by = c("type", "model")) %>%
   left_join(ljung_p, by = c("type", "model")) %>%
   left_join(bp_p, by = c("type", "model")) %>%
-  mutate(across(where(is.numeric), ~ round(.x, 3)))
+  mutate(across(where(is.numeric), ~ round(.x, 5)))
 
-# Mostrar tabla
-flextable(tabla_resumen) %>%
-  set_caption("Tabla 1. Estadísticos y pruebas sobre residuales por tipo y modelo") %>%
-  autofit()
-
-```
-
-
-## Outputs
-
-### Outputs Model `s1.1`
-
-```{r}
-outps1 <- base.model1.1$timeseries[1:37, 2:8]
-
-# addWorksheet(wb, "variable_s2")
-# writeData(wb, "variable_s2", outps1)
-# 
-# # Guardar el workbook
-# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
-# 
-# 
-# out_s2 <- read_excel("DataKrill.xlsx", 
-#     sheet = "variable_s2")
-outps1 %>%
-  kbl(booktabs = TRUE,
-      format = "html",
-    caption = "Main variables outputs from stock asssessment krill in WAP `s1.1`") %>%
-  kable_paper("hover", 
-              full_width = TRUE)%>%
-  kable_styling(latex_options = c("striped",
-                                  "condensed"),
+tabla_resumen %>%
+  kbl(caption = "Summary statistics and residual diagnostic tests by type and model",
+      digits = 5,  # Redondeo a 5 decimales
+      align = "c",  # Centrado
+      booktabs = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
                 full_width = FALSE,
-                font_size=9,
-                html_font = "arial")#%>% 
-  #pack_rows(index = c("Estimation" = 1,
-   #                     "Prediction" = 45))
-```
-### Outputs Model `s1.2`
-
-```{r}
-outps2 <- base.model1.2$timeseries[1:37, 2:8]
-
-# addWorksheet(wb, "variable_s2")
-# writeData(wb, "variable_s2", outps1)
-# 
-# # Guardar el workbook
-# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
-# 
-# 
-# out_s2 <- read_excel("DataKrill.xlsx", 
-#     sheet = "variable_s2")
-outps2 %>%
-  kbl(booktabs = TRUE,
-      format = "html",
-    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.2`") %>%
-  kable_paper("hover", 
-              full_width = TRUE)%>%
-  kable_styling(latex_options = c("striped",
-                                  "condensed"),
-                full_width = FALSE,
-                font_size=9,
-                html_font = "arial")#%>% 
-  #pack_rows(index = c("Estimation" = 1,
-   #                     "Prediction" = 45))
+                position = "center",
+                latex_options = "HOLD_position") %>%
+  row_spec(0, bold = TRUE) %>%  # Encabezados en negrita
+  column_spec(1, bold = TRUE)   # Primera columna en negrita (opcional)
 ```
 
+The residual analysis shows distinct patterns between the Index and Length-based models across all four scenarios (`s1.1` to `s1.4`). For Index models, the mean residuals are notably large (ranging from approximately 105,610 to 143,409), with high standard deviations exceeding 1 million units, indicating substantial variability. The Shapiro-Wilk test consistently returned p-values of 0, strongly rejecting the null hypothesis of normality. The Ljung-Box test yielded very low p-values (≤ 0.00080), suggesting significant temporal autocorrelation in the residuals. In terms of heteroscedasticity, the Breusch-Pagan test showed moderate evidence of non-constant variance, with p-values ranging from 0.27150 (s1.1) to 0.01052 (s1.3), the latter indicating strong evidence of heteroscedasticity.
 
+In contrast, Length models present mean residuals near zero with low standard deviations (approximately 0.038–0.047), suggesting good overall model fit and low dispersion. However, despite the small residual magnitude, the Shapiro-Wilk and Ljung-Box tests consistently return p-values of 0, indicating violation of normality and presence of temporal autocorrelation. Furthermore, the Breusch-Pagan test returned extremely low p-values (≤ 0.00067), indicating strong evidence of heteroscedasticity across all Length-based scenarios.
 
-### Outputs Model `s1.3`
+These results suggest that while Length models achieve better central tendencies (mean near zero and low variance), they still suffer from violations of key assumptions—most notably autocorrelation and heteroscedasticity. Index models, on the other hand, display large-scale variability and systematic residual patterns that may require model refinement or transformation.
 
-```{r}
-outps3 <- base.model1.3$timeseries[1:37, 2:8]
-
-# addWorksheet(wb, "variable_s2")
-# writeData(wb, "variable_s2", outps1)
-# 
-# # Guardar el workbook
-# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
-# 
-# 
-# out_s2 <- read_excel("DataKrill.xlsx", 
-#     sheet = "variable_s2")
-outps3 %>%
-  kbl(booktabs = TRUE,
-      format = "html",
-    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.3`") %>%
-  kable_paper("hover", 
-              full_width = TRUE)%>%
-  kable_styling(latex_options = c("striped",
-                                  "condensed"),
-                full_width = FALSE,
-                font_size=9,
-                html_font = "arial")#%>% 
-  #pack_rows(index = c("Estimation" = 1,
-   #                     "Prediction" = 45))
-```
-
-### Outputs Model `s1.4`
-
-```{r}
-outps4 <- base.model1.3$timeseries[1:37, 2:8]
-
-# addWorksheet(wb, "variable_s2")
-# writeData(wb, "variable_s2", outps1)
-# 
-# # Guardar el workbook
-# saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
-# 
-# 
-# out_s2 <- read_excel("DataKrill.xlsx", 
-#     sheet = "variable_s2")
-outps4 %>%
-  kbl(booktabs = TRUE,
-      format = "html",
-    caption = "Main variables outputs from stock asssessment krill in WAP in `s1.4`") %>%
-  kable_paper("hover", 
-              full_width = TRUE)%>%
-  kable_styling(latex_options = c("striped",
-                                  "condensed"),
-                full_width = FALSE,
-                font_size=9,
-                html_font = "arial")#%>% 
-  #pack_rows(index = c("Estimation" = 1,
-   #                     "Prediction" = 45))
-```
-
-
-
-```{r}
-# Unir los data frames en uno solo
-outpsall <- rbind(outps1,  
-                  outps2,
-                  outps3,
-                outps4)
-```
-
-```{r}
-# Crear una columna de modelo en cada data frame
-outps1$Model <- "s1.1"
-outps2$Model <- "s1.2"
-outps3$Model <- "s1.3"
-outps4$Model <- "s1.4"
-
-# Unir los data frames en uno solo
-outpsall <- rbind(outps1,  
-                  outps2,
-                  outps3,
-                  outps4)
-
-
-outpsall_long <- outpsall %>%
-  pivot_longer(cols = c(Bio_all, Bio_smry, SpawnBio, Recruit_0), 
-               names_to = "Variable", values_to = "Value") %>% 
-  filter(Yr >= 1989, Yr <= 2020)
-
-
-
-# Gráfico de líneas por variable y modelo
-alloutput <- ggplot(outpsall_long, aes(x = Yr, y = Value, color = Model, group = Model)) +
-  geom_point() +
-  #geom_smooth(method = "lm")+
-  facet_wrap(~Variable, 
-             ncol = 4, 
-             scales = "free_y") + 
-  scale_color_manual(name = "Scenario",
-                     values = c("s1.1" = "#ca0020", 
-                                "s1.2" = "#f4a582", 
-                                "s1.3" = "#bababa", 
-                                "s1.4" = "#404040")) +
-  labs(title = "", x = "", y = "") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1),
-        legend.position = "bottom")
-
-alloutput
-
-```
-
-
-## Comparison
-
-### Comparison outputs betwwen scenarios
-
-```{r}
-
-#read in all model runs
-#note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist <- SSgetoutput(keyvec = NULL,
-                       dirvec = c(dir1.1,
-                                  dir1.2,
-                                  dir1.3,
-                                  dir1.4),
-                       getcovar = F)
-summaryoutputall <- SSsummarize(biglist)
-```
-
-```{r}
-legend.labels <- c('s1.1','s1.2','s1.3', 's1.4')
-
-#read in all model runs
-#note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist <- SSgetoutput(keyvec = NULL, dirvec = c(dir1.1,
-                                                 dir1.2,
-                                                 dir1.3,
-                                                 dir1.4),	getcovar = F)
-
-#create summary of model runs from list above
-summaryoutput <- SSsummarize(biglist)
-
-tablelike <- SStableComparisons(summaryoutput,
-                   likenames = c("TOTAL",
-                                 "Survey",
-                                 "Length_comp",
-                                 "Age_comp",
-                                 "priors",
-                                 "Size_at_age"), 
-                   names = c("Recr_Virgin",
-                             "R0",
-                             "SSB_Virg", 
-                             "Bratio_2020",
-                             "SPRratio_2020"),
-                   digits = NULL,
-                   modelnames = legend.labels,
-                   csv=TRUE,
-                   csvdir = "/Users/mauriciomardones/DOCAS/SA_Krill",
-                   csvfile = "parameter_comparison_table.csv", verbose = TRUE,
-                   mcmc = FALSE)
-kbl(tablelike, booktabs = T,
-    format = "html",
-    caption = "")  %>% 
-    kable_styling(latex_options = "scale_down")
-```
-
-```{r eval=FALSE}
-#read in all model runs
-#note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist1_4 <- SSgetoutput(keyvec = NULL,
-                       dirvec = c(
-                                  dir1.1,
-                                  dir1.2,
-                                  dir1.3,
-                                  dir1.4),
-                       getcovar = F)
-
-#create summary of model runs from list above
-summaryoutput1_4 <- SSsummarize(biglist1_4)
-
-SSplotComparisons(summaryoutput1_4,
-                  legendlabels = c("s1.1 (Ref Model)",
-                 "s1.2",
-                 "s1.3",
-                 "s1.4"),
-                 filenameprefix = "COM1",
-                 labels = c("Year", 
-                            "Spawning biomass (t)",
-                            "Relative spawning biomass", 
-                            "Age-0 recruits (1,000s)",
-                            "Recruitment deviations", 
-                            "Index", "Log index", 
-                            "1 - SPR", 
-                            "Density",
-                            "Management target", 
-                            "Minimum stock size threshold",
-                            "Spawning output",
-                            "Harvest rate"),
-                 png=TRUE,
-                 plotdir=Figs)
-```
-
-Comparison between select models `Ref Model: No Env-Predator` and `S1.1 w/ Env and Predator data`
-
-```{r eval=FALSE}
-#read in all model runs
-#note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist14 <- SSgetoutput(keyvec = NULL,
-                       dirvec = c(
-                                  dir1.1,
-                                  dir1.4),
-                       getcovar = F)
-
-#create summary of model runs from list above
-summaryoutput14 <- SSsummarize(biglist14)
-
-comp14 <- SSplotComparisons(summaryoutput14,
-                  legendlabels = c("Ref Model: No Env-Predator",
-                 "S1.1 w/ Env and Predator data"),
-                  filenameprefix = "COM2",
-                 labels = c("Year", 
-                            "Spawning biomass (t)",
-                            "Relative spawning biomass", 
-                            "Age-0 recruits (1,000s)",
-                            "Recruitment deviations", 
-                            "Index", "Log index", 
-                            "1 - SPR", 
-                            "Density",
-                            "Management target", 
-                            "Minimum stock size threshold",
-                            "Spawning output",
-                            "Harvest rate"),
-                 png=TRUE,plotdir=Figs)
-```
-
-Antoher comparision in `R0` (Natural log of virgin recruitment level)
-
-
-```{r}
-r0_vals <- data.frame(
-  model = c("s1.1", "s1.2", "s1.3", "s1.4"),
-  value = c(base.model1.1$jitter_info[1,1],
-            base.model1.2$jitter_info[2,1],
-            base.model1.3$jitter_info[1,1],
-            base.model1.4$jitter_info[2,1]),
-  cv = c(base.model1.1$jitter_info[1,6],
-         base.model1.2$jitter_info[2,6],
-         base.model1.3$jitter_info[1,6],
-         base.model1.4$jitter_info[2,6])
-)
-
-x_vals <- seq(10, 30, length.out = 1000)
-
-dens_data <- r0_vals %>%
-  rowwise() %>%
-  mutate(sd =  cv,  
-         density = list(data.frame(
-           x = x_vals,
-           y = dnorm(x_vals, mean = value, sd = sd),
-           model = model
-         ))) %>%
-  select(density) %>%
-  unnest(cols = c(density))
-
-colores <- c("s1.1" = "#ca0020", 
-             "s1.2" = "#f4a582", 
-             "s1.3" = "#bababa", 
-             "s1.4" = "#404040")
-
-r0plot <- ggplot(dens_data, aes(x = x, y = y, color = model, fill = model)) +
-  geom_area(alpha = 0.3, position = "identity", size = 0) +  # More transparent areas without borders
-  geom_line(size = 1.2) +  # Thicker lines for better visibility
-  scale_color_manual(values = colores, name = NULL) +  # Remove legend title for color
-  scale_fill_manual(values = colores, name = NULL) +   # Remove legend title for fill
-  labs(x = "ln(R0)", 
-       y = "Density") +
-  theme_bw(base_size = 14) +
-  theme(
-    legend.position = "bottom",  # Legend at bottom
-    legend.spacing.x = unit(0.5, 'cm'),  # Space between legend items
-    panel.grid.major = element_line(color = "gray90"),
-    panel.grid.minor = element_blank(),
-    axis.title = element_text(size = 12),
-    legend.text = element_text(size = 11)
-  ) +
-  xlim(16, 22) +
-  guides(color = guide_legend(nrow = 1),  # Single row legend
-         fill = guide_legend(nrow = 1))
-
-r0plot
-```
-
-### Comparsion in sd long term time series forecasting
-
-```{r fig.height=5, fig.width=8}
-
-errt <- data.frame(
-  Bio_all_1 = base.model1.1$timeseries$Bio_all,
-  Bio_all_2 = base.model1.2$timeseries$Bio_all,
-  Bio_all_3 = base.model1.3$timeseries$Bio_all,
-  Bio_all_4 = base.model1.4$timeseries$Bio_all,
-  
-  Bio_smry_1 = base.model1.1$timeseries$Bio_smry,
-  Bio_smry_2 = base.model1.2$timeseries$Bio_smry,
-  Bio_smry_3 = base.model1.3$timeseries$Bio_smry,
-  Bio_smry_4 = base.model1.4$timeseries$Bio_smry,
-  
-  SpawnBio_1 = base.model1.1$timeseries$SpawnBio,
-  SpawnBio_2 = base.model1.2$timeseries$SpawnBio,
-  SpawnBio_3 = base.model1.3$timeseries$SpawnBio,
-  SpawnBio_4 = base.model1.4$timeseries$SpawnBio,
-  
-  Recruit_0_1 = base.model1.1$timeseries$Recruit_0,
-  Recruit_0_2 = base.model1.2$timeseries$Recruit_0,
-  Recruit_0_3 = base.model1.3$timeseries$Recruit_0,
-  Recruit_0_4 = base.model1.4$timeseries$Recruit_0
-)
-
-
-err_long <- errt %>%
-  pivot_longer(cols = everything(), 
-               names_to = "Variable_Model",
-               values_to = "Value")
-
-err_long <- err_long %>%
-  extract(Variable_Model, into = c("Variable", "Model"), 
-          regex = "(.+?)_(\\d+)$")
-
-err_long <- err_long %>%
-  mutate(Model = case_when(
-    Model == "1" ~ "Ref Model: No Env-Predator",
-    Model == "2" ~ "S1.1 w/ Predator data",
-    Model == "3" ~ "S1.1 w/ Env data",
-    Model == "4" ~ "S1.1 w/ Env and Predator data",
-    TRUE ~ Model
-  ))
-
-comsum <- ggplot(err_long, aes(x = Model, y = Value, fill = Model)) +
-  geom_boxplot(width = 0.5, outlier.shape = NA,
-               outliers = F) +
-  #geom_jitter(width = 0.2, alpha = 0.1) +
-  facet_wrap(~Variable, ncol=4, 
-             scales = "free_y") +
-  scale_fill_manual(name = "Scenario",
-                    values = c("#ca0020", "#f4a582", "#bababa", "#404040")) +
-  labs(title = "",
-       x = "",
-       y = "") +
-  theme_few() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1),
-        legend.position = "none")
-ggarrange(
-          alloutput,
-          comsum,
-          ncol = 1)
-```
-
-Statistical diferences
+Another statistical analysis;
 
 ```{r}
 # Extraer los datos
@@ -2514,7 +2612,6 @@ shapiro.test(spawn_bio_1)
 shapiro.test(spawn_bio_4)
 
 # Prueba de igualdad de varianzas (Levene)
-library(car)
 leveneTest(c(spawn_bio_1, spawn_bio_4), 
            group = rep(c("Model 1.1", "Model 1.4"), each = length(spawn_bio_1)))
 
@@ -2549,215 +2646,5 @@ The **Wilcoxon test also rejects the null hypothesis** with an extremely small *
 
 Both tests strongly indicate that **Model 1.1 and Model 1.4 produce significantly different estimates of spawning biomass**. Specifically, **Model 1.1 predicts higher values**. This suggests that the factors or assumptions included in Model 1.4 result in **lower spawning biomass estimates**, which could have important implications for stock assessment and fisheries management.
 
-
-### Autocorrelation in Recruit 
-
-To evaluate the temporal correlation structure of krill recruitment under different model configurations, we performed an Autocorrelation Function (ACF) analysis. The ACF measures the correlation between observations at different time lags, helping to assess whether recruitment estimates exhibit persistence or randomness across time.
-
-The analysis was conducted on recruitment estimates derived from four model scenarios:
-
-A reference model without environmental or predator influences (Ref Model: No Env-Predator).
-A model incorporating predator data (S1.1 w/ Predator data).
-A model incorporating environmental data (S1.1 w/ Env data).
-A model incorporating both environmental and predator data (S1.1 w/ Env and Predator data).
-Each model's residuals were extracted, and the autocorrelation function (ACF) was computed for a time lag range of up to 15 years. The dashed blue lines in the plots represent the 95% confidence intervals, indicating the threshold beyond which correlation values are statistically significant. If autocorrelation values remain within this range, it suggests that the recruitment estimates behave as a random process with no significant dependence on past values. Conversely, autocorrelation values exceeding these bounds indicate recruitment persistence or cyclic patterns.
-
-```{r}
-recs1 <- base.model1.1$recruit$pred_recr
-recs2 <- base.model1.2$recruit$pred_recr
-recs3 <- base.model1.3$recruit$pred_recr
-recs4 <- base.model1.4$recruit$pred_recr
-
-p1 <- ggAcf(base.model1.1$recruit$pred_recr) +
-  ggtitle("s1.1") +
-  theme_few()
-p2 <- ggAcf(base.model1.2$recruit$pred_recr) +
-  ggtitle("s1.2") +
-  theme_few()
-p3 <- ggAcf(base.model1.3$recruit$pred_recr) +
-  ggtitle("s1.3") +
-  theme_few()
-p4 <- ggAcf(base.model1.4$recruit$pred_recr) +
-  ggtitle("s1.4") +
-  theme_few()
-
-ggarrange(p1, p2,p3,p4, ncol=4, nrow = 1, common.legend = T)
-
-```
-
-The ACF plots indicate that the reference model (without environmental or predator data) exhibits weak but noticeable positive autocorrelation at certain lags, suggesting some degree of recruitment dependence over time. However, this autocorrelation does not appear strong or systematic.
-
-The model incorporating only predator data shows a slight reduction in autocorrelation magnitude, suggesting that predator-driven recruitment variability may have captured part of the temporal structure in the data.
-
-The model with only environmental data exhibits a further reduction in autocorrelation, implying that environmental variability explains a larger portion of recruitment trends than predator effects alone.
-
-Finally, the model that includes both environmental and predator data presents the lowest autocorrelation values, with nearly all bars remaining within the confidence bounds. This suggests that incorporating both factors provides the most effective explanation of recruitment fluctuations, reducing unexplained temporal structure.
-
-Overall, these results indicate that recruitment variability is at least partially driven by environmental and predator influences, and models integrating these factors provide more robust and independent recruitment estimates, minimizing systematic dependencies over time.
-
-### Recruit deviation
-
-```{r, warning=FALSE}
-dev1 <- base.model1.1$recruit[8:35,c(1,7)]%>% 
-  mutate(Serie = "s1.1")
-dev2 <- base.model1.2$recruit[8:35,c(1,7)] %>% 
-  mutate(Serie = "s1.2")
-dev3 <- base.model1.3$recruit[8:35,c(1,7)] %>% 
-  mutate(Serie = "s1.3")
-dev4 <- base.model1.4$recruit[8:35,c(1,7)] %>% 
-  mutate(Serie = "s1.4")
-
-
-data_list <- list(dev1, 
-                  dev2,
-                  dev3,
-                  dev4)
-titles <- c("Ref Model: No Env-Predator",
-                 "S1.1 w/ Predator data",
-                 "S1.1 w/ Env data",
-                 "S1.1 w/ Env and Predator data")
-# Lista para almacenar los gráficos
-plots <- list()
-
-for (i in 1:length(data_list)) {
-  p <- ggplot(data_list[[i]], aes(x = Yr, y = dev)) +
-    geom_point() +
-    stat_smooth(method = "loess", 
-                span = 0.15, 
-                se = T) +
-    geom_hline(yintercept = 0,
-               col="red",
-               linetype = "dotdash")+
-    ggtitle(titles[i]) +
-    theme(axis.text.x = element_text(angle = 90,
-                                   hjust = 1))+
-    ylim(-2,2)+
-    theme_few()
-  plots[[i]] <- p
-}
-
-# Organizar los gráficos con ggarrange
-combined_plot <- ggarrange(plotlist = plots, ncol = 2, nrow = 2)
-
-combined_plot
-```
-
-
-
-```{r}
-df1 <- base.model1.1$likelihoods_used %>%
-  select(values) %>%
-  mutate(Componente = rownames(base.model1.1$likelihoods_used), Modelo = "s1.1")
-df2 <- base.model1.2$likelihoods_used %>%
-  select(values) %>%
-  mutate(Componente = rownames(base.model1.2$likelihoods_used), Modelo = "s1.2")
-df3 <- base.model1.3$likelihoods_used %>%
-  select(values) %>%
-  mutate(Componente = rownames(base.model1.3$likelihoods_used), Modelo = "s1.3")
-df4 <- base.model1.4$likelihoods_used %>%
-  select(values) %>%
-  mutate(Componente = rownames(base.model1.4$likelihoods_used), Modelo = "s1.4")
-
-df <- bind_rows(df1, 
-                df2,
-                df3,
-                df4)
-ggplot(df %>% 
-         filter(values > 1), aes(x = Componente, y = values, fill = Modelo)) +
-  geom_col(position = position_dodge(), width = 0.7) +  
-  theme_few() +
-  coord_flip() +  
-  scale_fill_manual(name= "Scenario",
-                    values = c("s1.1" = '#ca0020',
-                               "s1.2" = '#f4a582', 
-                               "s1.3" = '#bababa',
-                               "s1.4" = '#404040')) + 
-  labs(x = "",
-       y = "Log-Normal Likelihood", 
-       title = "") 
-```
-This bar plot presents the log-normal likelihood contributions of different model components in an Antarctic krill stock assessment under four scenarios (s1.1, s1.2, s1.3, and s1.4).  
-
-
-**TOTAL Likelihood:** The overall likelihood is highest for scenario s1.4 (black), followed by s1.2 (light orange). This suggests that s1.4 provides the best overall model fit, while s1.1 (dark red) has the lowest likelihood, indicating a poorer fit.  
-
-**Survey Component:** The survey likelihood follows a similar pattern, with s1.4 and s1.2 showing better agreement with the data compared to s1.1.  
-
-**Recruitment, Parameter Priors, and Parameter Deviations:** These components contribute minimally to the total likelihood, indicating that they do not heavily influence model fit differences.  
-
-**Length Composition:** There is some variation in this component, with s1.2 showing a larger contribution than s1.1 and s1.3.  
-
-Scenario s1.4 seems to fit the data best, followed closely by s1.2. Scenario s1.1 has the poorest likelihood, meaning it is the least supported by the data. If s1.4 includes both environmental and predator effects, this suggests that incorporating ecosystem variables significantly improves the stock assessment model for Antarctic krill.
-
-### Explotation Rate
-
-```{r}
-df1 <- base.model1.1$exploitation[, c(1, 4)] %>% mutate(model = "s1.1")
-df2 <- base.model1.2$exploitation[, c(1, 4)] %>% mutate(model = "s1.2")
-df3 <- base.model1.3$exploitation[, c(1, 4)] %>% mutate(model = "s1.3")
-df4 <- base.model1.4$exploitation[, c(1, 4)] %>% mutate(model = "s1.4")
-
-
-df_all <- bind_rows(df1, df2, df3, df4)
-colnames(df_all) <- c("year", "exploitation_rate", "model")
-
-colores <- c("s1.1" = "#ca0020", 
-             "s1.2" = "#f4a582", 
-             "s1.3" = "#bababa", 
-             "s1.4" = "#404040")
-ggplot(df_all, aes(x = year, y = exploitation_rate, color = model)) +
-  geom_line() +
-  geom_point() +
-  scale_color_manual(values = colores) +
-  labs(
-    title = "Exploitation Rate Over Time",
-    x = "Year",
-    y = "Exploitation Rate",
-    color = "Model"
-  ) +
-  theme_minimal()
-```
-
-
-### Platoons analisis
-
-```{r}
-# Definir los valores del eje x
-x_values <- seq(0, 7, by=0.1)
-
-# Definir las medias y desviaciones estándar para los valores específicos
-means <- c( 2.9,  3.5, 4.1)
-std_devs <- c(0.65, 0.8, 0.65)
-
-
-# Crear un dataframe que contenga los valores de x, la media y las desviaciones estándar
-data <- data.frame(
-  x = rep(x_values, each = length(means)),
-  mean = rep(means, times = length(x_values)),
-  std_dev = rep(std_devs, times = length(x_values))
-)
-
-# Calcular las curvas de las desviaciones estándar
-data <- data %>%
-  mutate(y = exp(-((x - mean)^2) / (2 * std_dev^2)))
-
-# Graficar con ggplot
-ggplot(data, aes(x = x, y = y, linetype = as.factor(mean))) +
-  geom_line(size = 1) +
-  scale_linetype_manual(values = means,
-                        name ="Platoon") +
-  labs(x = "", y = "growth increment") +
-  theme_minimal()+
-  xlim(0,7)
-
-```
-
-
-
-### Code Repository
-
-The repository with code to replicate this analysis can be found in this [GitHub author link](https://github.com/MauroMardones/SA_Krill)
-
-\newpage
 
 # REFERENCES
