@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.23)  3 APR 2025 17:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.23)  1 JUN 2025 17:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -576,10 +576,13 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__pdf_internal_box=\box119
 ) (./MS2_Krill.aux
 
-LaTeX Warning: Label `tab:unnamed-chunk-2' multiply defined.
+LaTeX Warning: Label `tab:parainit1' multiply defined.
 
 
-LaTeX Warning: Label `tab:unnamed-chunk-3' multiply defined.
+LaTeX Warning: Label `tab:parainit1' multiply defined.
+
+
+LaTeX Warning: Label `tab:diagnostics' multiply defined.
 
 )
 \openout1 = `MS2_Krill.aux'.
@@ -702,172 +705,131 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 136.
 [1
 
-{/Users/mauriciomardones/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4]
-
-LaTeX Warning: Reference `fig:mapa' on page 5 undefined on input line 172.
-
-[5]
+{/Users/mauriciomardones/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./MS2_Krill.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 184.
+(Font)              <10> on input line 4.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 184.
+(Font)              <7> on input line 4.
+)
+\tf@toc=\write3
+\openout3 = `MS2_Krill.toc'.
 
-Overfull \hbox (1225.97012pt too wide) in alignment at lines 202--210
- [] [] [] [] 
+[2] [3] [4] [5] [6] [7] [8] [9]
+Overfull \hbox (15.66966pt too wide) in alignment at lines 215--229
+ [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (1225.97012pt too wide) in alignment at lines 210--216
- [] [] [] [] 
+Overfull \hbox (15.66966pt too wide) in alignment at lines 229--241
+ [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (1225.97012pt too wide) in alignment at lines 216--262
- [] [] [] [] 
+Overfull \hbox (15.66966pt too wide) in alignment at lines 241--467
+ [] [] [] [] [] [] [] 
  []
 
-[6] [7]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 313.
+[10] [11] [12] [13] [14]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 582.
+[15]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 603.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-<Figs/AKL.png, id=112, 1545.775pt x 954.56625pt>
-File: Figs/AKL.png Graphic file (type png)
-<use Figs/AKL.png>
-Package pdftex.def Info: Figs/AKL.png  used on input line 317.
-(pdftex.def)             Requested size: 281.83624pt x 174.04303pt.
-[8]
+) [16]
 
-LaTeX Warning: Reference `fig:datas2' on page 9 undefined on input line 324.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[9 <./Figs/AKL.png>]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 333.
-[10] [11]
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 415.
-[12]
-<Figs/chla_grilled.png, id=178, 700.86844pt x 414.04688pt>
+[17]
+<Figs/chla_grilled.png, id=414, 700.86844pt x 414.04688pt>
 File: Figs/chla_grilled.png Graphic file (type png)
 <use Figs/chla_grilled.png>
-Package pdftex.def Info: Figs/chla_grilled.png  used on input line 427.
-(pdftex.def)             Requested size: 224.03651pt x 132.35239pt.
-[13 <./Figs/chla_grilled.png (PNG copy)>]
-<Figs/Predator_fleet.png, id=193, 587.796pt x 488.68286pt>
-File: Figs/Predator_fleet.png Graphic file (type png)
-<use Figs/Predator_fleet.png>
-Package pdftex.def Info: Figs/Predator_fleet.png  used on input line 457.
-(pdftex.def)             Requested size: 205.97383pt x 171.24289pt.
-[14 <./Figs/Predator_fleet.png (PNG copy)>]
-<s1.4/plots/index1_cpuedata_PREDATOR.png, id=200, 1957.3125pt x 1204.5pt>
-File: s1.4/plots/index1_cpuedata_PREDATOR.png Graphic file (type png)
-<use s1.4/plots/index1_cpuedata_PREDATOR.png>
-Package pdftex.def Info: s1.4/plots/index1_cpuedata_PREDATOR.png  used on input line 468.
-(pdftex.def)             Requested size: 281.84682pt x 173.44418pt.
-[15 <./s1.4/plots/index1_cpuedata_PREDATOR.png>] [16] [17] [18] [19]
+Package pdftex.def Info: Figs/chla_grilled.png  used on input line 719.
+(pdftex.def)             Requested size: 469.76122pt x 277.51736pt.
+[18]
+<MS2_Krill_files/figure-latex/chlindex-1.jpeg, id=423, 2710.125pt x 602.25pt>
+File: MS2_Krill_files/figure-latex/chlindex-1.jpeg Graphic file (type jpg)
+<use MS2_Krill_files/figure-latex/chlindex-1.jpeg>
+Package pdftex.def Info: MS2_Krill_files/figure-latex/chlindex-1.jpeg  used on input line 730.
+(pdftex.def)             Requested size: 469.73015pt x 104.38446pt.
+[19 <./Figs/chla_grilled.png (PNG copy)> <./MS2_Krill_files/figure-latex/chlindex-1.jpeg>]
+<Figs/Predator_fleet2.png, id=440, 806.01125pt x 797.98125pt>
+File: Figs/Predator_fleet2.png Graphic file (type png)
+<use Figs/Predator_fleet2.png>
+Package pdftex.def Info: Figs/Predator_fleet2.png  used on input line 746.
+(pdftex.def)             Requested size: 469.74982pt x 465.06987pt.
+[20] [21 <./Figs/Predator_fleet2.png>] [22] [23]
+<Figs/Pearson2.png, id=471, 984.67876pt x 578.16pt>
+File: Figs/Pearson2.png Graphic file (type png)
+<use Figs/Pearson2.png>
+Package pdftex.def Info: Figs/Pearson2.png  used on input line 770.
+(pdftex.def)             Requested size: 650.46094pt x 381.92201pt.
+[24
 
-LaTeX Warning: Reference `fig:res1' on page 20 undefined on input line 893.
+ <./Figs/Pearson2.png>]
+<Figs/unnamed-chunk-46-1.jpeg, id=478, 433.62pt x 289.08pt>
+File: Figs/unnamed-chunk-46-1.jpeg Graphic file (type jpg)
+<use Figs/unnamed-chunk-46-1.jpeg>
+Package pdftex.def Info: Figs/unnamed-chunk-46-1.jpeg  used on input line 789.
+(pdftex.def)             Requested size: 352.33524pt x 234.89014pt.
+[25
 
-
-LaTeX Warning: Reference `fig:res1a' on page 20 undefined on input line 893.
-
-
-LaTeX Warning: Reference `fig:resall' on page 20 undefined on input line 893.
-
-
-LaTeX Warning: Reference `fig:fitcom' on page 20 undefined on input line 893.
-
-[20]
-
-LaTeX Warning: Reference `fig:rmses1' on page 21 undefined on input line 898.
-
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 901.
-
-LaTeX Warning: Reference `fig:likepro' on page 21 undefined on input line 903.
-
-
-LaTeX Warning: Reference `tab:mainvar' on page 21 undefined on input line 905.
-
-
-LaTeX Warning: Reference `fig:acf' on page 21 undefined on input line 912.
-
-
-LaTeX Warning: Reference `fig:likeall' on page 21 undefined on input line 914.
-
-[21]
-
-LaTeX Warning: Reference `fig:longterm' on page 22 undefined on input line 916.
-
-
-LaTeX Warning: Reference `fig:comparision' on page 22 undefined on input line 918.
-
-[22] [23] [24]
-Underfull \hbox (badness 10000) in paragraph at lines 959--961
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 961--963
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 963--965
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 975--977
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 977--979
-
- []
-
-[25] [26] [27] [28] [29
-
-
-
-
-] [30] (./MS2_Krill.aux)
-
-LaTeX Warning: There were undefined references.
-
+ <./Figs/unnamed-chunk-46-1.jpeg>]
+<Figs/unnamed-chunk-29-1.jpeg, id=489, 216.81pt x 216.81pt>
+File: Figs/unnamed-chunk-29-1.jpeg Graphic file (type jpg)
+<use Figs/unnamed-chunk-29-1.jpeg>
+Package pdftex.def Info: Figs/unnamed-chunk-29-1.jpeg  used on input line 886.
+(pdftex.def)             Requested size: 216.81938pt x 216.81938pt.
+[26]
+<Figs/unnamed-chunk-66-1.jpeg, id=498, 578.16pt x 361.35pt>
+File: Figs/unnamed-chunk-66-1.jpeg Graphic file (type jpg)
+<use Figs/unnamed-chunk-66-1.jpeg>
+Package pdftex.def Info: Figs/unnamed-chunk-66-1.jpeg  used on input line 902.
+(pdftex.def)             Requested size: 469.75385pt x 293.59616pt.
+[27 <./Figs/unnamed-chunk-29-1.jpeg>]
+<Figs/alloutput_variable2.png, id=507, 742.775pt x 299.1175pt>
+File: Figs/alloutput_variable2.png Graphic file (type png)
+<use Figs/alloutput_variable2.png>
+Package pdftex.def Info: Figs/alloutput_variable2.png  used on input line 913.
+(pdftex.def)             Requested size: 469.76413pt x 189.17528pt.
+[28 <./Figs/unnamed-chunk-66-1.jpeg>]
+<Figs/R0plot.png, id=514, 610.28pt x 371.3875pt>
+File: Figs/R0plot.png Graphic file (type png)
+<use Figs/R0plot.png>
+Package pdftex.def Info: Figs/R0plot.png  used on input line 924.
+(pdftex.def)             Requested size: 352.32372pt x 214.40752pt.
+[29 <./Figs/alloutput_variable2.png>] [30 <./Figs/R0plot.png>]
+<Figs/produc_com.png, id=529, 860.21375pt x 358.33875pt>
+File: Figs/produc_com.png Graphic file (type png)
+<use Figs/produc_com.png>
+Package pdftex.def Info: Figs/produc_com.png  used on input line 935.
+(pdftex.def)             Requested size: 469.75882pt x 195.68716pt.
+<Figs/ACF_Plot.png, id=531, 1083.04625pt x 210.7875pt>
+File: Figs/ACF_Plot.png Graphic file (type png)
+<use Figs/ACF_Plot.png>
+Package pdftex.def Info: Figs/ACF_Plot.png  used on input line 946.
+(pdftex.def)             Requested size: 469.74966pt x 91.42487pt.
+[31 <./Figs/produc_com.png> <./Figs/ACF_Plot.png>] [32] [33] [34] [35] [36] [37] [38] [39] [40] [41] (./MS2_Krill.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16090 strings out of 478033
- 262341 string characters out of 5838239
- 1886330 words of memory out of 5000000
- 35521 multiletter control sequences out of 15000+600000
- 602986 words of font info for 211 fonts, out of 8000000 for 9000
+ 16268 strings out of 478033
+ 266482 string characters out of 5838239
+ 1887330 words of memory out of 5000000
+ 35606 multiletter control sequences out of 15000+600000
+ 603879 words of font info for 222 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 63i,12n,67p,2365b,605s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{ref-Maschete} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{ref-Tanasekos} has been referenced but does not exist, replaced by a fixed one
-
+ 63i,12n,67p,5886b,560s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{ref-REF} has been referenced but does not exist, replaced by a fixed one
 
-
-pdfTeX warning (dest): name{ref-Wang} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{ref-Kindzey} has been referenced but does not exist, replaced by a fixed one
-
-{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on MS2_Krill.pdf (30 pages, 965515 bytes).
+{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on MS2_Krill.pdf (41 pages, 1841899 bytes).
 PDF statistics:
- 602 PDF objects out of 1000 (max. 8388607)
- 515 compressed objects within 6 object streams
- 147 named destinations out of 1000 (max. 500000)
- 51445 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 934 PDF objects out of 1000 (max. 8388607)
+ 826 compressed objects within 9 object streams
+ 203 named destinations out of 1000 (max. 500000)
+ 51448 words of extra memory for PDF output out of 51595 (max. 10000000)
 

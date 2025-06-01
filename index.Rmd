@@ -985,10 +985,10 @@ err_long <- err_long %>%
 
 err_long <- err_long %>%
   mutate(Model = case_when(
-    Model == "1" ~ "Ref Model: No Env-Predator",
-    Model == "2" ~ "S1.1 w/ Predator data",
-    Model == "3" ~ "S1.1 w/ Env data",
-    Model == "4" ~ "S1.1 w/ Env and Predator data",
+    Model == "1" ~ "s1.1",
+    Model == "2" ~ "s1.2",
+    Model == "3" ~ "s1.3",
+    Model == "4" ~ "s1.4",
     TRUE ~ Model
   ))
 
@@ -1217,9 +1217,10 @@ ggarrange(srr_sce,
 
 
 
-## Recruit deviation
 
-```{r, warning=FALSE}
+
+```{r eval=FALSE, warning=FALSE}
+## Recruit deviation
 dev1 <- base.model1.1$recruit[8:35,c(1,7)]%>% 
   mutate(Serie = "s1.1")
 dev2 <- base.model1.2$recruit[8:35,c(1,7)] %>% 
@@ -1285,16 +1286,22 @@ colores <- c("s1.1" = "#ca0020",
              "s1.4" = "#404040")
 ggplot(df_all, aes(x = year, y = exploitation_rate, color = model)) +
   geom_line() +
-  geom_point() +
+  geom_point(size = 3, shape = 16) +
   scale_color_manual(values = colores) +
+  scale_x_continuous(
+    breaks = seq(1998, 2020, by = 1)  # etiquetas cada 2 años
+  ) +
   labs(
-    title = "Exploitation Rate Over Time",
-    x = "Year",
+    title = "",
+    x = "",
     y = "Exploitation Rate",
     color = "Model"
   ) +
   xlim(1997,2020)+
-  theme_minimal()
+  theme_minimal()+
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)  # texto vertical
+  )
 ```
 
 <!-- ### Platoons analisis -->
