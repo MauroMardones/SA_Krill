@@ -4,6 +4,7 @@ This repository contains the Stock Synthesis 3 (SS3) assessment model for *Eupha
 
 ## **Project Structure**  
 
+
 ```
 📂 SA_Krill  
 │── 📂 scenarios/      # SS3 files to run models
