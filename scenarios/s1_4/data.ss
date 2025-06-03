@@ -1,0 +1,627 @@
+#V3.30.21.00;_safe;_compile_date:_Feb 10 2023;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_13.1
+#_Stock_Synthesis_is_a_work_of_the_U.S._Government_and_is_not_subject_to_copyright_protection_in_the_United_States.
+#_Foreign_copyrights_may_apply._See_copyright.txt_for_more_information.
+#_User_support_available_at:NMFS.Stock.Synthesis@noaa.gov
+#_User_info_available_at:https://vlab.noaa.gov/group/stock-synthesis
+#_Source_code_at:_https://github.com/nmfs-stock-synthesis/stock-synthesis
+
+#_Start_time: Tue Feb 28 13:44:05 2023
+#_echo_input_data
+#C data file for simple example
+#V3.30.21.00;_safe;_compile_date:_Feb 10 2023;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_13.1
+1991 #_StartYr
+2020 #_EndYr
+1 #_Nseas
+12 #_months/season
+2 #_Nsubseasons (even number, minimum is 2)
+1 #_spawn_month
+1 #_Ngenders: 1, 2, -1  (use -1 for 1 sex setup with SSB multiplied by female_frac parameter)
+7 #_Nages=accumulator age, first age is always age 0
+1 #_Nareas
+11 #_Nfleets (including surveys and predators)
+#_fleet_type: 1=catch fleet; 2=bycatch only fleet; 3=survey; 4=predator(M2) 
+#_sample_timing: -1 for fishing fleet to use season-long catch-at-age for observations, or 1 to use observation month;  (always 1 for surveys)
+#_fleet_area:  area the fleet/survey operates in 
+#_units of catch:  1=bio; 2=num (ignored for surveys; their units read later)
+#_catch_mult: 0=no; 1=yes
+#_rows are fleets
+#_fleet_type fishery_timing area catch_units need_catch_mult fleetname
+1 -1 1 1 0 FISHERYBS  # 1
+1 -1 1 1 0 FISHERYEI  # 2
+1 -1 1 1 0 FISHERYGS  # 3
+1 -1 1 1 0 FISHERYJOIN  # 4
+1 -1 1 1 0 FISHERYSSIW  # 5
+3 1 1 2 0 SURVEYBS  # 6
+3 1 1 2 0 SURVEYEI  # 7
+3 1 1 2 0 SURVEYGS  # 8
+3 1 1 2 0 SURVEYJOIN  # 9
+3 1 1 2 0 SURVEYSSIW  # 10
+4 1 1 1 0 PREDATOR # 11
+#Bycatch_fleet_input_goes_next
+#a:  fleet index
+#b:  1=include dead bycatch in total dead catch for F0.1 and MSY optimizations and forecast ABC; 2=omit from total catch for these purposes (but still include the mortality)
+#c:  1=Fmult scales with other fleets; 2=bycatch F constant at input value; 3=bycatch F from range of years
+#d:  F or first year of range
+#e:  last year of range
+#f:  not used
+# a   b   c   d   e   f 
+#_Catch data: yr, seas, fleet, catch, catch_se
+#_catch_se:  standard error of log(catch)
+#_NOTE:  catch data is ignored for survey fleets
+-999	1	1 123198 0.02
+1997	1	1	99	0.02	#FISHERYBS
+1998	1	1	6673	0.02	#FISHERYBS
+1999	1	1	498.5	0.02	#FISHERYBS
+2000	1	1	3880.9	0.02	#FISHERYBS
+2001	1	1	2778.2	0.02	#FISHERYBS
+2002	1	1	354	0.02	#FISHERYBS
+2004	1	1	57	0.02	#FISHERYBS
+2005	1	1	8.5	0.02	#FISHERYBS
+2006	1	1	32881.2	0.02	#FISHERYBS
+2007	1	1	610.4	0.02	#FISHERYBS
+2009	1	1	10860.9	0.02	#FISHERYBS
+2010	1	1	114908.3	0.02	#FISHERYBS
+2011	1	1	11562.8	0.02	#FISHERYBS
+2012	1	1	12398.7	0.02	#FISHERYBS
+2013	1	1	115101.5	0.02	#FISHERYBS
+2014	1	1	107507.2	0.02	#FISHERYBS
+2015	1	1	100134	0.02	#FISHERYBS
+2016	1	1	101243.3	0.02	#FISHERYBS
+2017	1	1	79494.3	0.02	#FISHERYBS
+2018	1	1	17093.8	0.02	#FISHERYBS
+2019	1	1	17093.8	0.02	#FISHERYBS
+2020	1	1	17093.8	0.02	#FISHERYBS
+1997	1	2	633.8	0.02	#FISHERYEI
+1999	1	2	3798.4	0.02	#FISHERYEI
+2000	1	2	2839.9	0.02	#FISHERYEI
+2001	1	2	258.3	0.02	#FISHERYEI
+2002	1	2	1124	0.02	#FISHERYEI
+2003	1	2	65	0.02	#FISHERYEI
+2004	1	2	501	0.02	#FISHERYEI
+2006	1	2	2685.9	0.02	#FISHERYEI
+2007	1	2	2079.3	0.02	#FISHERYEI
+2008	1	2	1415.4	0.02	#FISHERYEI
+2009	1	2	4113.9	0.02	#FISHERYEI
+2010	1	2	1780.2	0.02	#FISHERYEI
+2011	1	2	13.2	0.02	#FISHERYEI
+2012	1	2	177.6	0.02	#FISHERYEI
+2013	1	2	5708.8	0.02	#FISHERYEI
+2014	1	2	1364	0.02	#FISHERYEI
+2015	1	2	7110.8	0.02	#FISHERYEI
+2016	1	2	4576.1	0.02	#FISHERYEI
+2017	1	2	285	0.02	#FISHERYEI
+2018	1	2	1478.7	0.02	#FISHERYEI
+2019	1	2	1478.7	0.02	#FISHERYEI
+2020	1	2	1478.7	0.02	#FISHERYEI
+2001	1	3	18.7	0.02	#FISHERYGS
+2004	1	3	2	0.02	#FISHERYGS
+2006	1	3	51.8	0.02	#FISHERYGS
+2007	1	3	4	0.02	#FISHERYGS
+2009	1	3	11.1	0.02	#FISHERYGS
+2010	1	3	13287.6	0.02	#FISHERYGS
+2011	1	3	67.3	0.02	#FISHERYGS
+2012	1	3	26589.5	0.02	#FISHERYGS
+2013	1	3	29908.1	0.02	#FISHERYGS
+2014	1	3	9912.1	0.02	#FISHERYGS
+2015	1	3	55160.2	0.02	#FISHERYGS
+2016	1	3	36005.4	0.02	#FISHERYGS
+2017	1	3	52658.9	0.02	#FISHERYGS
+2018	1	3	29108.4	0.02	#FISHERYGS
+2019	1	3	29108.4	0.02	#FISHERYGS
+2020	1	3	29108.4	0.02	#FISHERYGS
+1999	1	4	27.5	0.02	#FISHERYJOIN
+2009	1	4	10780.1	0.02	#FISHERYJOIN
+2012	1	4	20	0.02	#FISHERYJOIN
+2016	1	4	10	0.02	#FISHERYJOIN
+2017	1	4	191.4	0.02	#FISHERYJOIN
+2018	1	4	1.4	0.02	#FISHERYJOIN
+2019	1	4	1.4	0.02	#FISHERYJOIN
+2020	1	4	1.4	0.02	#FISHERYJOIN
+1998	1	5	288.4	0.02	#FISHERYSSIW
+1999	1	5	2444.5	0.02	#FISHERYSSIW
+2000	1	5	7507.7	0.02	#FISHERYSSIW
+2001	1	5	6182.1	0.02	#FISHERYSSIW
+2002	1	5	3	0.02	#FISHERYSSIW
+2003	1	5	1632.1	0.02	#FISHERYSSIW
+2004	1	5	140.5	0.02	#FISHERYSSIW
+2005	1	5	420	0.02	#FISHERYSSIW
+2006	1	5	50443.9	0.02	#FISHERYSSIW
+2007	1	5	7447.9	0.02	#FISHERYSSIW
+2008	1	5	331	0.02	#FISHERYSSIW
+2009	1	5	4998	0.02	#FISHERYSSIW
+2010	1	5	19351.4	0.02	#FISHERYSSIW
+2011	1	5	5602.9	0.02	#FISHERYSSIW
+2012	1	5	25419	0.02	#FISHERYSSIW
+2013	1	5	14813.9	0.02	#FISHERYSSIW
+2014	1	5	16327.1	0.02	#FISHERYSSIW
+2015	1	5	1984.3	0.02	#FISHERYSSIW
+2016	1	5	1115.1	0.02	#FISHERYSSIW
+2017	1	5	16815.3	0.02	#FISHERYSSIW
+2018	1	5	5972.5	0.02	#FISHERYSSIW
+2019	1	5	5972.5	0.02	#FISHERYSSIW
+2020	1	5	5972.5	0.02	#FISHERYSSIW
+-9999 0 0 0 0
+#
+#_CPUE_and_surveyabundance_and_index_observations
+#_Units: 0=numbers; 1=biomass; 2=F; 30=spawnbio; 31=exp(recdev); 36=recdev; 32=spawnbio*recdev; 33=recruitment; 34=depletion(&see Qsetup); 35=parm_dev(&see Qsetup)
+#_Errtype:  -1=normal; 0=lognormal; >0=T
+#_SD_Report: 0=no sdreport; 1=enable sdreport
+#_note that link functions are specified in Q_setup section of control file
+#_Fleet Units Errtype SD_Report
+1 1 0 0 # FISHERYBS
+2 1 0 0 # FISHERYEI
+3 1 0 0 # FISHERYGS
+4 1 0 0 # FISHERYJOIN
+5 1 0 0 # FISHERYSSIW
+6 1 0 1 # SURVEYBS
+7 1 0 1 # SURVEYEI
+8 1 0 1 # SURVEYGS
+9 1 0 1 # SURVEYJOIN
+10 1 0 1 # SURVEYSSIW
+11 2 0 0 # PREDATOR
+#_yr month fleet obs stderr
+1999	6	1	7.57	0.6	#FISHERYBS
+2000	6	1	3.11	0.6	#FISHERYBS
+2001	6	1	4.4	0.6	#FISHERYBS
+2002	6	1	4.57	0.6	#FISHERYBS
+2004	6	1	4.01	0.6	#FISHERYBS
+2005	6	1	1.12	0.6	#FISHERYBS
+2006	6	1	11.83	0.6	#FISHERYBS
+2007	6	1	10.08	0.6	#FISHERYBS
+2009	6	1	14.71	0.6	#FISHERYBS
+2010	6	1	12	0.6	#FISHERYBS
+2011	6	1	6.66	0.6	#FISHERYBS
+2012	6	1	7.22	0.6	#FISHERYBS
+2013	6	1	9.38	0.6	#FISHERYBS
+2014	6	1	10.71	0.6	#FISHERYBS
+2015	6	1	8.52	0.6	#FISHERYBS
+2016	6	1	9.78	0.6	#FISHERYBS
+2017	6	1	8.71	0.6	#FISHERYBS
+2018	6	1	10.49	0.6	#FISHERYBS
+2019	6	1	10.49	0.6	#FISHERYBS
+2020	6	1	10.49	0.6	#FISHERYBS
+1997	6	2	2.59	0.6	#FISHERYEI
+1999	6	2	8.01	0.6	#FISHERYEI
+2000	6	2	5.69	0.6	#FISHERYEI
+2001	6	2	4.65	0.6	#FISHERYEI
+2002	6	2	7.62	0.6	#FISHERYEI
+2003	6	2	6.19	0.6	#FISHERYEI
+2004	6	2	4.51	0.6	#FISHERYEI
+2006	6	2	9.16	0.6	#FISHERYEI
+2007	6	2	4.56	0.6	#FISHERYEI
+2008	6	2	5.08	0.6	#FISHERYEI
+2009	6	2	5.98	0.6	#FISHERYEI
+2010	6	2	13.78	0.6	#FISHERYEI
+2011	6	2	2.72	0.6	#FISHERYEI
+2012	6	2	3.91	0.6	#FISHERYEI
+2013	6	2	7.93	0.6	#FISHERYEI
+2014	6	2	7.47	0.6	#FISHERYEI
+2015	6	2	7.92	0.6	#FISHERYEI
+2016	6	2	5.98	0.6	#FISHERYEI
+2017	6	2	3.82	0.6	#FISHERYEI
+2018	6	2	6.2	0.6	#FISHERYEI
+2019	6	2	6.2	0.6	#FISHERYEI
+2020	6	2	6.2	0.6	#FISHERYEI
+2001	6	3	3.46	0.6	#FISHERYGS
+2004	6	3	0.75	0.6	#FISHERYGS
+2006	6	3	4.27	0.6	#FISHERYGS
+2007	6	3	1.07	0.6	#FISHERYGS
+2009	6	3	7.22	0.6	#FISHERYGS
+2010	6	3	9.52	0.6	#FISHERYGS
+2011	6	3	3.2	0.6	#FISHERYGS
+2012	6	3	6.67	0.6	#FISHERYGS
+2013	6	3	7.32	0.6	#FISHERYGS
+2014	6	3	8.54	0.6	#FISHERYGS
+2015	6	3	7.84	0.6	#FISHERYGS
+2016	6	3	8.35	0.6	#FISHERYGS
+2017	6	3	8.01	0.6	#FISHERYGS
+2018	6	3	11.61	0.6	#FISHERYGS
+2019	6	3	11.61	0.6	#FISHERYGS
+2020	6	3	11.61	0.6	#FISHERYGS
+1999	6	4	3.51	0.6	#FISHERYJOIN
+2009	6	4	12.28	0.6	#FISHERYJOIN
+2012	6	4	8.0 	0.6	#FISHERYJOIN
+2016	6	4	4.62	0.6	#FISHERYJOIN
+2017	6	4	5.8	0.6	#FISHERYJOIN
+2018	6	4	6.98	0.6	#FISHERYJOIN
+2019	6	4	6.98	0.6	#FISHERYJOIN
+2020	6	4	6.98	0.6	#FISHERYJOIN
+1998	6	5	6.32	0.6	#FISHERYSSIW
+1999	6	5	5.84	0.6	#FISHERYSSIW
+2000	6	5	6.03	0.6	#FISHERYSSIW
+2001	6	5	4.31	0.6	#FISHERYSSIW
+2002	6	5	1.96	0.6	#FISHERYSSIW
+2003	6	5	5.42	0.6	#FISHERYSSIW
+2004	6	5	4.64	0.6	#FISHERYSSIW
+2005	6	5	3.13	0.6	#FISHERYSSIW
+2006	6	5	9.15	0.6	#FISHERYSSIW
+2007	6	5	9.67	0.6	#FISHERYSSIW
+2008	6	5	9.52	0.6	#FISHERYSSIW
+2009	6	5	6.08	0.6	#FISHERYSSIW
+2010	6	5	10.92	0.6	#FISHERYSSIW
+2011	6	5	7.98	0.6	#FISHERYSSIW
+2012	6	5	7.57	0.6	#FISHERYSSIW
+2013	6	5	7.82	0.6	#FISHERYSSIW
+2014	6	5	6.31	0.6	#FISHERYSSIW
+2015	6	5	6.58	0.6	#FISHERYSSIW
+2016	6	5	6.73	0.6	#FISHERYSSIW
+2017	6	5	8.03	0.6	#FISHERYSSIW
+2018	6	5	9.33	0.6	#FISHERYSSIW
+2019	6	5	9.33	0.6	#FISHERYSSIW
+2020	6	5	9.33	0.6	#FISHERYSSIW
+1997	2	6	302205	0.56	#_	SURVEYBS
+1998	2	6	274253	0.36	#_	SURVEYBS
+1999	2	6	133683	0.1	#_	SURVEYBS
+2000	2	6	653831	0.81	#_	SURVEYBS
+2001	2	6	126391	0.39	#_	SURVEYBS
+2002	2	6	182369	0.76	#_	SURVEYBS
+2003	2	6	1230070	0.3	#_	SURVEYBS
+2004	2	6	39166	0.93	#_	SURVEYBS
+2005	2	6	460022	0.42	#_	SURVEYBS
+2006	2	6	372081	0.44	#_	SURVEYBS
+2007	2	6	1241085	0.33	#_	SURVEYBS
+2008	2	6	767417	0.55	#_	SURVEYBS
+2009	2	6	509163	0.26	#_	SURVEYBS
+2010	2	6	149322	0.54	#_	SURVEYBS
+2011	2	6	851869	0.49	#_	SURVEYBS
+2014	2	6	563314	0.24	#_	SURVEYBS
+2015	2	6	394970	0.46	#_	SURVEYBS
+2016	2	6	1034498	0.33	#_	SURVEYBS
+2018	2	6	798010	0.33	#_	SURVEYBS
+2019	2	6	2211875	0.19	#_	SURVEYBS
+2020	2	6	6375859	0.21	#_	SURVEYBS
+1996	2	7	4434840	0.26	#_	SURVEYEI
+1997	2	7	9747485	0.3	#_	SURVEYEI
+1998	2	7	2623315	0.17	#_	SURVEYEI
+1999	2	7	1264776	0.3	#_	SURVEYEI
+2000	2	7	3600547	0.22	#_	SURVEYEI
+2001	2	7	1114753	0.2	#_	SURVEYEI
+2002	2	7	561472	0.39	#_	SURVEYEI
+2003	2	7	1993664	0.14	#_	SURVEYEI
+2004	2	7	616303	0.29	#_	SURVEYEI
+2005	2	7	872913	0.43	#_	SURVEYEI
+2006	2	7	1693189	0.41	#_	SURVEYEI
+2007	2	7	4535641	0.43	#_	SURVEYEI
+2008	2	7	2274400	0.38	#_	SURVEYEI
+2009	2	7	5135276	0.16	#_	SURVEYEI
+2010	2	7	881687	0.09	#_	SURVEYEI
+2011	2	7	3689046	0.24	#_	SURVEYEI
+2019	2	7	2457825	0.37	#_	SURVEYEI
+2020	2	7	6197141	0.08	#_	SURVEYEI
+2002	2	9	151074	0.62	#_	SURVEYJOIN
+2004	2	9	56207	0.59	#_	SURVEYJOIN
+2005	2	9	214762	0.65	#_	SURVEYJOIN
+2008	2	9	1248085	0.2	#_	SURVEYJOIN
+2009	2	9	555490	0.4	#_	SURVEYJOIN
+2010	2	9	309719	0.59	#_	SURVEYJOIN
+2011	2	9	1392565	0.59	#_	SURVEYJOIN
+2019	2	9	1506746	0.32	#_	SURVEYJOIN
+2000	2	10	6616944	0.16	#_	SURVEYSSWI
+2019	2	10	3294904	0.24	#_	SURVEYSSWI
+1997	2	8	4845743	0.23	#_	SURVEYGS
+1998	2	8	4031289	0.21	#_	SURVEYGS
+1999	2	8	850310	0.38	#_	SURVEYGS
+2000	2	8	3674432	0.28	#_	SURVEYGS
+2001	2	8	85372	0.63	#_	SURVEYGS
+2002	2	8	53934	0.79	#_	SURVEYGS
+2003	2	8	2687049	0.32	#_	SURVEYGS
+2004	2	8	751218	0.31	#_	SURVEYGS
+2005	2	8	1138384	1.04	#_	SURVEYGS
+2006	2	8	1190392	0.55	#_	SURVEYGS
+2007	2	8	5266231	0.17	#_	SURVEYGS
+2008	2	8	2708237	0.42	#_	SURVEYGS
+2009	2	8	1965803	0.11	#_	SURVEYGS
+2010	2	8	452013	0.14	#_	SURVEYGS
+2011	2	8	1906938	0.18	#_	SURVEYGS
+2014	2	8	418271	0.35	#_	SURVEYGS
+2015	2	8	399952	0.43	#_	SURVEYGS
+2016	2	8	896428	0.26	#_	SURVEYGS
+2018	2	8	1794021	0.19	#_	SURVEYGS
+2019	2	8	1051743	0.36	#_	SURVEYGS
+2020	2	8	8838799	0.26	#_	SURVEYGS
+1991	6	11	28588	0.4	#_	PREDATOR
+1992	6	11	32498	0.4	#_	PREDATOR
+1993	6	11	17408	0.4	#_	PREDATOR
+1994	6	11	33903	0.4	#_	PREDATOR
+1995	6	11	34899	0.4	#_	PREDATOR
+1996	6	11	29639	0.4	#_	PREDATOR
+1997	6	11	33016	0.4	#_	PREDATOR	
+1998	6	11	32062	0.4	#_	PREDATOR	
+1999	6	11	24824	0.4	#_	PREDATOR	
+2000	6	11	26319	0.4	#_	PREDATOR	
+2001	6	11	24853	0.4	#_	PREDATOR	
+2002	6	11	19077	0.4	#_	PREDATOR	
+2003	6	11	17019	0.4	#_	PREDATOR	
+2004	6	11	15180	0.4	#_	PREDATOR	
+2005	6	11	14817	0.4	#_	PREDATOR	
+2006	6	11	16220	0.4	#_	PREDATOR	
+2007	6	11	14682	0.4	#_	PREDATOR	
+2008	6	11	19886	0.4	#_	PREDATOR	
+2009	6	11	17744	0.4	#_	PREDATOR	
+2010	6	11	27051	0.4	#_	PREDATOR	
+2011	6	11	24651	0.4	#_	PREDATOR	
+2012	6	11	23269	0.4	#_	PREDATOR	
+2013	6	11	29370	0.4	#_	PREDATOR	
+2014	6	11	24124	0.4	#_	PREDATOR	
+2015	6	11	20993	0.4	#_	PREDATOR	
+2016	6	11	26671	0.4	#_	PREDATOR	
+2017	6	11	22937	0.4	#_	PREDATOR	
+2018	6	11	9554	0.4	#_	PREDATOR	
+2019	6	11	8359	0.4	#_	PREDATOR	
+2020	6	11	192	0.4	#_	PREDATOR	
+-9999 1 1 1 1 # terminator for survey observations 
+#
+0 #_N_fleets_with_discard
+#_discard_units (1=same_as_catchunits(bio/num); 2=fraction; 3=numbers)
+#_discard_errtype:  >0 for DF of T-dist(read CV below); 0 for normal with CV; -1 for normal with se; -2 for lognormal; -3 for trunc normal with CV
+# note, only have units and errtype for fleets with discard 
+#_Fleet units errtype
+# -9999 0 0 0.0 0.0 # terminator for discard data 
+#
+0 #_use meanbodysize_data (0/1)
+#_COND_30 #_DF_for_meanbodysize_T-distribution_like
+# note:  use positive partition value for mean body wt, negative partition for mean body length 
+#_yr month fleet part obs stderr
+#  -9999 0 0 0 0 0 # terminator for mean body size data 
+#
+# set up population length bin structure (note - irrelevant if not using size data and using empirical wtatage
+2 # length bin method: 1=use databins; 2=generate from binwidth,min,max below; 3=read vector
+0.2 # binwidth for population size comp 
+1 # minimum size in the population (lower edge of first bin and size at age 0.00) 
+7 # maximum size in the population (lower edge of last bin) 
+1 # use length composition data (0/1)
+#_mintailcomp: upper and lower distribution for females and males separately are accumulated until exceeding this level.
+#_addtocomp:  after accumulation of tails; this value added to all bins
+#_males and females treated as combined gender below this bin number 
+#_compressbins: accumulate upper tail by this number of bins; acts simultaneous with mintailcomp; set=0 for no forced accumulation
+#_Comp_Error:  0=multinomial, 1=dirichlet
+#_Comp_Error2:  parm number  for dirichlet
+#_minsamplesize: minimum sample size; set to 1 to match 3.24, minimum value is 0.001
+#_mintailcomp addtocomp combM+F CompressBins CompError ParmSelect minsamplesize
+    -1 0.0001 0 0 0 0 0.1 #_fleet:1_FISHERYBS
+  -1 0.0001 0 0 0 0 0.1 #_fleet:2_FISHERYEI
+  -1 0.0001 0 0 0 0 0.1 #_fleet:3_FISHERYEX
+  -1 0.0001 0 0 0 0 0.1 #_fleet:4_FISHERYJOIN
+  -1 0.0001 0 0 0 0 0.1 #_fleet:5_FISHERYSSWI
+  -1 0.0001 0 0 0 0 0.1 #_fleet:6_SURVEYJOIN
+  -1 0.0001 0 0 0 0 0.1 #_fleet:7_SURVEYEI
+  -1 0.0001 0 0 0 0 0.1 #_fleet:8_SURVEYGS
+  -1 0.0001 0 0 0 0 0.1 #_fleet:9_SURVEYBS
+  -1 0.0001 0 0 0 0 0.1 #_fleet:10_SURVEYSSWW
+  -1 0.0001 0 0 0 0 0.1 #_fleet:7_PREDATOR
+# sex codes:  0=combined; 1=use female only; 2=use male only; 3=use both as joint sexxlength distribution
+# partition codes:  (0=combined; 1=discard; 2=retained
+  28 #_N_LengthBins; then enter lower edge of each length bin
+  1.2 1.4 1.6 1.8 2.0 2.2 2.4 2.6 2.8 3.0 3.2 3.4 3.6 3.8 4.0 4.2 4.4 4.6 4.8 5.0 5.2 5.4 5.6 5.8 6.0 6.2 6.4 6.6
+#_yr month fleet sex part Nsamp datavector(female-male)
+  1997	2	9	0	0	75	0	0	0	1	4	5	10	9	14	9	8	10	10	8	7	1	1	0	0	1	0	0	0	0	0	0	0	0	#SURVEYJOIN
+  2000	2	9	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	6	31	41	13	9	0	0	0	0	0	#SURVEYJOIN
+  2002	2	9	0	0	75	0	0	0	1	3	10	16	19	11	9	6	6	4	3	2	1	2	1	1	1	1	0	0	0	0	0	0	0	#SURVEYJOIN
+  2003	2	9	0	0	75	0	0	0	2	3	5	5	6	13	9	14	14	7	7	6	3	1	3	1	0	0	0	0	0	0	0	0	0	#SURVEYJOIN
+  2004	2	9	0	0	75	0	0	0	0	0	0	0	0	0	0	3	6	9	13	19	16	15	7	6	2	2	0	1	0	0	0	0	0	#SURVEYJOIN
+  2005	2	9	0	0	75	0	0	0	0	0	0	0	1	3	3	3	1	1	1	4	7	18	25	19	9	2	0	0	0	0	0	0	0	#SURVEYJOIN
+  2006	2	9	0	0	75	0	0	0	0	0	0	0	0	0	3	4	8	2	4	4	6	11	7	16	15	9	7	3	0	0	0	0	0	#SURVEYJOIN
+  2007	2	9	0	0	75	0	0	0	0	1	5	10	17	20	17	12	7	2	2	1	0	1	1	2	1	1	0	0	0	0	0	0	0	#SURVEYJOIN
+  2008	2	9	0	0	75	0	0	0	0	0	2	4	11	28	18	10	8	8	5	3	0	1	1	1	0	0	0	0	0	0	0	0	0	#SURVEYJOIN
+  2009	2	9	0	0	75	0	0	0	3	0	1	0	0	0	0	1	3	5	4	7	7	14	13	8	17	13	4	2	1	0	0	0	0	#SURVEYJOIN
+  2010	2	9	0	0	75	0	0	0	0	0	0	1	1	2	3	4	6	6	6	11	8	12	11	9	8	6	3	2	0	0	0	0	0	#SURVEYJOIN
+  2011	2	9	0	0	75	0	0	0	0	0	1	4	7	13	14	12	7	6	6	6	4	4	5	5	4	2	1	0	0	0	0	0	0	#SURVEYJOIN
+  1991	2	7	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	50	50	0	0	0	0	0	0	0	0	#SURVEYEI
+  1992	2	7	0	0	75	0	0	0	1	1	3	5	7	5	4	4	4	6	6	8	10	10	10	7	6	3	1	0	0	0	0	0	0	#SURVEYEI
+  1993	2	7	0	0	75	0	0	0	0	0	0	0	0	1	1	3	6	8	14	15	14	12	11	9	5	1	0	0	0	0	0	0	0	#SURVEYEI
+  1994	2	7	0	0	75	0	0	0	0	0	0	0	2	1	1	0	0	1	2	3	7	14	19	21	16	8	3	0	0	0	0	0	0	#SURVEYEI
+  1995	2	7	0	0	75	0	0	0	0	0	0	0	1	1	1	0	0	1	1	2	4	8	15	22	21	15	5	1	0	0	0	0	0	#SURVEYEI
+  1996	2	7	0	0	75	0	0	0	0	1	2	4	5	5	5	4	2	2	2	3	4	7	11	15	14	10	3	1	0	0	0	0	0	#SURVEYEI
+  1997	2	7	0	0	75	0	0	0	0	0	2	3	3	2	2	3	5	6	7	6	6	6	9	13	13	10	4	1	0	0	0	0	0	#SURVEYEI
+  1998	2	7	0	0	75	0	0	0	0	1	3	4	4	2	1	2	4	7	10	12	14	15	11	6	2	0	0	0	0	0	0	0	0	#SURVEYEI
+  1999	2	7	0	0	75	0	0	0	0	0	0	0	0	0	0	0	1	2	4	8	11	19	19	19	10	5	1	0	0	0	0	0	0	#SURVEYEI
+  2000	2	7	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	2	5	15	28	25	16	6	2	0	0	0	0	0	#SURVEYEI
+  2001	2	7	0	0	75	0	0	0	0	1	1	2	2	1	1	1	1	1	2	3	6	10	13	19	17	12	5	1	0	0	0	0	0	#SURVEYEI
+  2002	2	7	0	0	75	0	0	0	0	1	3	5	6	6	5	4	3	3	6	9	11	8	6	5	5	6	4	2	1	0	0	0	0	#SURVEYEI
+  2003	2	7	0	0	75	0	0	1	2	3	5	7	8	7	6	7	9	9	9	7	6	6	4	2	1	0	0	0	0	0	0	0	0	#SURVEYEI
+  2004	2	7	0	0	75	0	0	0	0	0	0	0	0	1	1	2	4	6	8	9	12	14	12	13	9	6	2	1	0	0	0	0	0	#SURVEYEI
+  2005	2	7	0	0	75	0	0	0	0	0	0	0	0	1	1	1	1	2	2	3	8	14	19	19	17	9	3	1	0	0	0	0	0	#SURVEYEI
+  2006	2	7	0	0	75	0	0	0	0	0	0	0	0	0	1	2	1	2	4	5	6	8	9	15	16	15	10	4	1	0	0	0	0	#SURVEYEI
+  2007	2	7	0	0	75	0	0	0	0	1	2	4	5	5	3	3	2	2	3	5	8	10	11	11	11	8	4	1	0	0	0	0	0	#SURVEYEI
+  2008	2	7	0	0	75	0	0	0	0	1	2	3	6	6	4	3	3	5	6	9	11	11	10	9	7	3	1	0	0	0	0	0	0	#SURVEYEI
+  2009	2	7	0	0	75	0	0	0	0	0	0	0	0	0	0	1	3	4	8	12	14	14	12	11	10	6	2	1	0	0	0	0	0	#SURVEYEI
+  2010	2	7	0	0	75	0	0	0	0	0	1	1	2	3	3	3	3	2	3	4	7	16	17	16	9	5	2	1	1	0	0	0	0	#SURVEYEI
+  2011	2	7	0	0	75	0	0	0	0	0	2	3	4	4	2	2	2	3	3	4	5	10	17	17	10	8	3	2	0	0	0	0	0	#SURVEYEI
+  1993	2	8	0	0	75	0	0	0	0	0	0	0	0	1	2	7	16	21	16	14	11	6	4	2	1	0	0	0	0	0	0	0	0	#SURVEYGS
+  1994	2	8	0	0	75	0	0	2	1	1	0	0	2	1	1	1	3	4	10	4	11	23	11	15	5	2	0	0	0	0	0	0	0	#SURVEYGS
+  1995	2	8	0	0	75	0	0	0	0	0	0	1	0	2	7	2	1	3	2	4	4	16	22	22	10	5	0	0	0	0	0	0	0	#SURVEYGS
+  1996	2	8	0	0	75	0	0	0	0	1	2	7	10	9	6	3	2	2	2	2	5	10	12	15	7	2	1	0	0	0	0	0	0	#SURVEYGS
+  1997	2	8	0	0	75	0	0	0	1	2	4	6	7	6	11	18	17	9	8	3	2	1	1	2	1	0	0	0	0	0	0	0	0	#SURVEYGS
+  1998	2	8	0	0	75	0	0	0	1	2	5	7	6	4	5	11	20	17	11	6	3	1	0	0	0	0	0	0	0	0	0	0	0	#SURVEYGS
+  1999	2	8	0	0	75	0	0	0	0	0	0	0	0	0	1	2	7	17	14	13	14	11	9	6	4	1	0	0	0	0	0	0	0	#SURVEYGS
+  2000	2	8	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	2	4	26	22	26	13	4	0	0	0	0	0	0	#SURVEYGS
+  2001	2	8	0	0	75	0	0	0	0	0	1	3	9	10	8	6	3	3	2	2	2	5	7	12	13	10	4	1	0	0	0	0	0	#SURVEYGS
+  2002	2	8	0	0	75	0	0	0	0	5	15	20	18	12	8	7	5	4	3	1	1	2	0	1	0	0	0	0	0	0	0	0	0	#SURVEYGS
+  2003	2	8	0	0	75	0	0	1	2	4	5	7	10	14	18	15	7	4	3	3	3	2	2	1	0	0	0	0	0	0	0	0	0	#SURVEYGS
+  2004	2	8	0	0	75	0	0	0	0	0	0	0	0	3	5	15	23	18	14	7	5	3	1	1	1	1	0	0	0	0	0	0	0	#SURVEYGS
+  2005	2	8	0	0	75	0	0	0	0	0	0	1	1	2	2	2	1	1	3	9	14	22	21	13	5	2	0	0	0	0	0	0	0	#SURVEYGS
+  2006	2	8	0	0	75	0	0	0	0	0	0	0	0	1	2	2	3	1	1	1	2	5	12	19	20	18	7	4	1	0	0	0	0	#SURVEYGS
+  2007	2	8	0	0	75	0	0	0	0	3	7	12	15	10	7	4	2	1	3	4	7	8	8	5	3	1	1	0	0	0	0	0	0	#SURVEYGS
+  2008	2	8	0	0	75	0	0	0	0	1	2	6	13	13	9	7	3	5	7	7	9	8	5	3	1	0	0	0	0	0	0	0	0	#SURVEYGS
+  2009	2	8	0	0	75	0	0	2	1	2	4	2	1	3	7	18	18	14	9	4	4	4	2	2	2	1	0	0	0	0	0	0	0	#SURVEYGS
+  2010	2	8	0	0	75	0	0	0	0	0	1	1	0	3	5	8	5	5	6	7	9	12	14	14	7	3	0	0	0	0	0	0	0	#SURVEYGS
+  2011	2	8	0	0	75	0	0	0	0	0	1	3	6	10	17	11	10	6	7	5	2	4	5	6	5	2	1	0	0	0	0	0	0	#SURVEYGS
+  1991	2	6	0	0	75	0	0	0	0	0	0	0	3	3	3	1	1	0	1	6	15	23	15	15	9	4	1	0	0	0	0	0	0	#SURVEYBS
+  1993	2	6	0	0	75	0	0	0	0	0	0	0	0	0	0	1	4	5	10	14	17	17	17	9	4	1	0	0	0	0	0	0	0	#SURVEYBS
+  1994	2	6	0	0	75	0	0	0	0	0	1	1	3	3	1	2	1	4	5	8	11	15	18	14	10	3	0	0	0	0	0	0	0	#SURVEYBS
+  1995	2	6	0	0	75	0	0	0	0	0	0	0	1	2	1	1	1	3	3	4	7	11	19	18	14	8	3	1	0	0	0	0	0	#SURVEYBS
+  1996	2	6	0	0	75	0	0	0	0	0	1	2	3	4	3	2	1	2	1	2	7	10	15	21	15	9	4	1	0	0	0	0	0	#SURVEYBS
+  1997	2	6	0	0	75	0	0	0	1	1	3	2	1	1	1	2	3	3	3	4	5	7	8	13	16	16	8	2	0	0	0	0	0	#SURVEYBS
+  1998	2	6	0	0	75	0	0	1	2	3	4	3	1	1	2	6	10	11	13	11	11	9	8	3	1	1	0	0	0	0	0	0	0	#SURVEYBS
+  1999	2	6	0	0	75	0	0	0	0	0	0	0	0	0	0	1	2	6	8	9	21	24	14	9	3	2	0	0	0	0	0	0	0	#SURVEYBS
+  2000	2	6	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	4	14	27	29	17	6	1	0	0	0	0	0	#SURVEYBS
+  2001	2	6	0	0	75	0	0	0	0	0	0	0	0	0	1	1	1	0	0	1	1	3	6	16	23	23	15	7	2	0	0	0	0	#SURVEYBS
+  2002	2	6	0	0	75	0	0	0	2	2	3	9	12	8	9	7	6	7	7	6	4	3	4	2	1	2	4	1	0	0	0	0	0	#SURVEYBS
+  2003	2	6	0	0	75	0	0	0	1	1	1	2	5	4	4	5	7	9	11	10	10	11	7	6	4	1	0	0	0	0	0	0	0	#SURVEYBS
+  2004	2	6	0	0	75	0	0	0	0	0	0	0	0	1	0	2	4	6	11	12	16	12	10	9	8	5	3	1	0	0	0	0	0	#SURVEYBS
+  2005	2	6	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	4	10	18	28	21	13	4	0	0	0	0	0	0	#SURVEYBS
+  2006	2	6	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	4	10	26	32	17	9	1	0	0	0	0	#SURVEYBS
+  2007	2	6	0	0	75	0	0	0	0	0	2	3	5	6	4	4	1	1	1	1	3	5	11	14	16	14	7	2	0	0	0	0	0	#SURVEYBS
+  2008	2	6	0	0	75	0	0	0	0	1	2	5	12	13	7	4	2	2	2	2	4	5	7	8	11	9	4	1	0	0	0	0	0	#SURVEYBS
+  2009	2	6	0	0	75	0	0	0	0	0	0	0	0	0	0	1	2	2	3	5	8	11	14	17	20	11	4	1	0	0	0	0	0	#SURVEYBS
+  2010	2	6	0	0	75	0	0	0	0	0	0	0	0	0	1	1	1	0	0	0	3	4	11	18	39	18	5	1	1	0	0	0	0	#SURVEYBS
+  2011	2	6	0	0	75	0	0	0	0	0	0	1	1	2	1	3	4	4	3	2	2	5	12	18	19	12	6	3	1	0	0	0	0	#SURVEYBS
+  2001	3	1	0	0	75	0	0	0	0	0	1	2	6	2	5	10	4	13	4	12	14	17	7	2	2	1	0	0	0	0	0	0	0	
+  2004	3	1	0	0	75	0	0	0	0	0	0	0	0	0	1	7	7	21	9	15	13	15	6	2	3	1	0	0	0	0	0	0	0	
+  2005	3	1	0	0	75	0	0	0	0	0	0	0	0	0	0	0	1	0	1	6	15	36	21	6	15	2	0	0	0	0	0	0	0	
+  2006	3	1	0	0	75	0	0	0	0	0	0	0	1	1	3	7	3	13	4	10	11	18	10	4	8	4	2	0	0	0	0	0	0	
+  2007	3	1	0	0	75	0	0	0	0	0	1	0	4	0	6	30	0	11	0	23	11	11	1	0	1	1	0	0	0	0	0	0	0	
+  2010	3	1	0	0	75	0	0	0	0	0	0	0	0	0	1	4	2	11	4	12	16	22	13	4	6	3	1	0	0	0	0	0	0	
+  2011	3	1	0	0	75	0	0	0	0	0	0	0	1	1	3	8	7	18	12	14	13	10	4	1	3	2	1	0	0	0	0	0	0	
+  2012	3	1	0	0	75	0	0	0	0	0	3	2	8	2	6	11	5	15	6	10	9	9	5	2	2	2	1	0	0	0	0	0	0	
+  2013	3	1	0	0	75	0	0	0	0	0	0	0	1	1	4	15	12	22	8	11	9	8	4	2	2	1	0	0	0	0	0	0	0	
+  2014	3	1	0	0	75	0	0	0	0	0	0	0	0	1	1	2	3	10	12	19	19	16	9	4	2	1	0	0	0	0	0	0	0	
+  2015	3	1	0	0	75	0	0	0	0	0	0	0	1	1	3	5	5	10	9	15	15	15	9	5	5	2	1	0	0	0	0	0	0	
+  2016	3	1	0	0	75	0	0	0	0	0	0	0	0	0	1	4	6	10	8	9	10	12	12	9	9	6	3	1	0	0	0	0	0	
+  2017	3	1	0	0	75	0	0	0	0	0	0	0	2	3	7	13	12	14	8	10	10	10	6	3	2	1	0	0	0	0	0	0	0	
+  2018	3	1	0	0	75	0	0	0	0	0	0	0	1	1	3	6	6	13	13	17	15	12	7	3	2	1	0	0	0	0	0	0	0	
+  2019	3	1	0	0	75	0	0	0	0	0	0	1	5	3	7	11	6	14	5	12	10	12	6	2	3	1	1	0	0	0	0	0	0	
+  2020	3	1	0	0	75	0	0	0	0	0	1	1	5	5	10	13	10	17	8	12	8	6	2	1	0	0	0	0	0	0	0	0	0	
+  2001	3	2	0	0	75	0	0	0	0	0	1	0	1	0	3	5	1	8	3	7	11	22	18	5	9	4	2	0	0	0	0	0	0	
+  2004	3	2	0	0	75	0	0	0	0	0	0	0	0	0	0	1	1	4	4	13	14	31	17	7	8	2	1	0	0	0	0	0	0	
+  2007	3	2	0	0	75	0	0	0	0	1	4	1	10	1	6	16	3	22	2	16	8	7	2	0	2	0	0	0	0	0	0	0	0	
+  2008	3	2	0	0	75	0	0	0	0	2	9	3	17	2	9	16	4	19	2	8	5	4	1	0	1	0	0	0	0	0	0	0	0	
+  2009	3	2	0	0	75	0	0	1	1	0	0	0	0	0	0	0	2	4	4	8	7	15	11	5	19	15	8	0	0	0	0	0	0	
+  2010	3	2	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	1	0	2	6	14	18	8	14	14	13	6	2	0	0	0	0	
+  2012	3	2	0	0	75	0	0	0	0	0	1	0	0	1	3	2	5	5	10	16	15	18	14	7	2	1	1	0	0	0	0	0	0	
+  2013	3	2	0	0	75	0	0	0	0	0	0	0	0	0	1	1	3	8	12	17	18	17	11	6	3	1	1	0	0	0	0	0	0	
+  2014	3	2	0	0	75	0	0	0	0	0	0	0	0	0	0	0	1	7	13	24	26	17	7	2	1	1	0	0	0	0	0	0	0	
+  2015	3	2	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	1	0	2	3	13	13	6	24	20	13	2	0	0	0	0	0	
+  2016	3	2	0	0	75	0	0	0	0	0	0	0	0	1	2	2	3	2	2	4	8	12	15	16	15	10	5	2	1	0	0	0	0	
+  2017	3	2	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	2	1	6	8	11	8	3	9	7	14	9	4	7	6	3	0	
+  2018	3	2	0	0	75	0	0	0	0	0	0	0	0	0	0	1	1	3	1	5	8	16	16	8	16	11	8	2	0	0	0	0	0	
+  2019	3	2	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	2	1	2	3	8	14	8	21	20	16	5	1	1	0	0	0	
+  2006	4	3	0	0	75	0	0	0	0	3	4	2	7	0	2	2	3	12	7	9	16	21	6	1	1	3	1	0	0	0	0	0	0	
+  2007	4	3	0	0	75	0	0	0	0	0	5	0	10	0	22	31	0	7	0	13	5	6	0	0	1	0	0	0	0	0	0	0	0	
+  2010	4	3	0	0	75	0	0	0	0	0	0	0	1	0	1	5	2	7	2	3	11	19	23	8	11	6	2	0	0	0	0	0	0	
+  2012	4	3	0	0	75	0	0	0	0	0	3	1	7	3	7	14	6	20	5	9	6	7	4	1	2	2	2	1	0	0	0	0	0	
+  2013	4	3	0	0	75	0	0	0	0	0	0	0	1	1	6	21	12	19	7	9	8	7	4	2	2	1	1	0	0	0	0	0	0	
+  2014	4	3	0	0	75	0	0	0	0	0	0	0	0	0	1	2	1	9	5	20	21	22	10	3	3	1	1	0	0	0	0	0	0	
+  2015	4	3	0	0	75	0	0	0	0	0	0	0	0	0	1	3	2	12	5	18	18	22	10	3	4	2	1	0	0	0	0	0	0	
+  2016	4	3	0	0	75	0	0	0	0	0	0	0	1	1	3	8	9	14	8	9	7	8	7	6	7	6	4	1	0	0	0	0	0	
+  2017	4	3	0	0	75	0	0	0	0	0	0	0	0	1	3	8	7	10	5	7	11	19	14	6	6	2	1	0	0	0	0	0	0	
+  2018	4	3	0	0	75	0	0	0	0	0	0	0	1	1	2	3	4	13	16	22	17	14	5	1	1	1	0	0	0	0	0	0	0	
+  2019	4	3	0	0	75	0	0	0	0	0	0	1	3	1	6	11	6	18	6	15	11	11	5	1	2	1	0	0	0	0	0	0	0	
+  2020	4	3	0	0	75	0	0	0	0	0	1	2	10	6	10	15	6	19	6	10	7	6	2	0	1	0	0	0	0	0	0	0	0	
+  2016	4	4	0	0	75	0	0	0	0	0	0	0	0	0	0	0	1	1	1	9	8	15	18	9	15	13	9	1	0	0	0	0	0	
+  2017	4	4	0	0	75	0	0	0	0	0	0	0	0	0	1	8	6	21	7	15	12	6	6	4	5	5	4	1	1	0	0	0	0	
+  2019	4	4	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	1	0	4	7	21	12	9	24	15	9	1	0	0	0	0	0	
+  2001	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	3	2	8	3	11	17	31	13	5	5	2	0	0	0	0	0	0	0	
+  2004	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	1	0	6	6	16	17	20	18	8	5	3	0	0	0	0	0	0	0	
+  2005	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	1	5	12	37	22	8	12	3	0	0	0	0	0	0	0	
+  2006	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	1	1	3	7	17	16	8	19	14	10	2	0	0	0	0	0	
+  2007	3	5	0	0	75	0	0	0	0	0	0	0	2	0	4	7	0	3	1	9	11	17	13	7	10	7	6	1	0	0	0	0	0	
+  2009	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	2	1	6	2	8	15	34	11	6	8	3	3	0	0	0	0	0	0	
+  2010	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	1	1	2	1	2	3	8	10	9	15	17	17	10	4	1	0	0	0	
+  2011	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	3	1	5	7	13	12	7	16	14	14	4	1	1	1	0	0	
+  2012	3	5	0	0	75	0	0	0	0	0	0	0	1	0	1	2	2	4	2	5	6	12	13	8	15	12	12	4	1	0	0	0	0	
+  2013	3	5	0	0	75	0	0	0	0	0	0	0	0	0	1	2	5	10	10	14	16	17	13	7	3	1	1	0	0	0	0	0	0	
+  2014	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	0	1	5	3	10	13	20	16	7	10	6	5	2	0	0	0	0	0	
+  2015	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	4	15	15	8	22	16	14	2	0	0	0	0	0	
+  2016	3	5	0	0	75	0	0	0	0	0	0	0	0	0	1	3	2	3	3	6	9	13	15	16	14	9	4	1	1	0	0	0	0	
+  2017	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	1	2	5	3	8	11	22	19	9	12	6	3	0	0	0	0	0	0	
+  2018	3	5	0	0	75	0	0	0	0	0	0	0	1	0	1	1	1	5	4	8	10	18	14	8	14	9	6	1	0	0	0	0	0	
+  2019	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	7	18	21	11	19	12	7	2	0	0	0	0	0	
+  2020	3	5	0	0	75	0	0	0	0	0	0	0	0	0	0	1	0	3	1	11	14	31	18	8	7	5	1	0	0	0	0	0	0	
+  1992	6	11	0	0	75	0	0	0	0	0	0	0	0	0	1	1	2	1	2	3	8	10	9	15	17	17	10	4	1	0	0	0	0
+  1993	6	11	0	0	75	0	0	0	0	0	0	0	0	0	0	0	3	1	5	7	13	12	7	16	14	14	4	1	1	1	0	0	0
+  1994	6	11	0	0	75	0	0	0	0	0	0	1	0	1	2	2	4	2	5	6	12	13	8	15	12	12	4	1	0	0	0	0	0
+  1995	6	11	0	0	75	0	0	0	0	0	0	0	0	1	2	5	10	10	14	16	17	13	7	3	1	1	0	0	0	0	0	0	0
+  1996	6	11	0	0	75	0	0	0	0	0	0	0	0	0	0	1	5	3	10	13	20	16	7	10	6	5	2	0	0	0	0	0	0
+  1997	6	11	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	2	4	15	15	8	22	16	14	2	0	0	0	0	0	0
+  1998	6	11	0	0	75	0	0	0	0	0	0	0	0	1	3	2	3	3	6	9	13	15	16	14	9	4	1	1	0	0	0	0	0
+  1999	6	11	0	0	75	0	0	0	0	0	0	0	0	0	1	2	5	3	8	11	22	19	9	12	6	3	0	0	0	0	0	0	0
+  2000	6	11	0	0	75	0	0	0	0	0	0	1	0	1	1	1	5	4	8	10	18	14	8	14	9	6	1	0	0	0	0	0	0
+  2001	6	11	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	2	7	18	21	11	19	12	7	2	0	0	0	0	0	0
+  2002	6	11	0	0	75	0	0	0	0	0	0	0	0	0	1	0	3	1	11	14	31	18	8	7	5	1	0	0	0	0	0	0	0
+  2003	6	11	0	0	75	0	0	0	0	0	0	1	2	1	2	4	4	7	7	11	15	15	13	10	6	2	0	0	0	0	0	0	0
+  2004	6	11	0	0	75	0	0	1	0	0	0	0	0	0	1	1	4	5	7	13	15	17	15	12	8	2	0	0	0	0	0	0	0
+  2005	6	11	0	0	75	0	0	0	0	0	0	1	0	2	2	5	6	7	7	13	15	18	9	7	5	1	2	0	0	0	0	0	0
+  2006	6	11	0	0	75	0	0	0	0	0	0	0	1	1	3	3	4	6	7	11	12	13	13	9	9	4	2	0	0	0	0	0	0
+  2007	6	11	0	0	75	0	0	0	0	0	0	0	1	1	3	4	7	12	10	15	13	13	12	5	3	1	0	0	0	0	0	0	0
+  2008	6	11	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	1	2	5	7	9	10	12	13	13	12	9	5	2	0	0	0
+  2009	6	11	0	0	75	0	0	0	0	0	1	2	1	2	4	6	7	13	10	12	13	11	8	5	3	1	0	0	0	0	0	0	0
+  2010	6	11	0	0	75	0	0	0	0	0	0	0	0	1	2	5	9	12	14	15	14	11	8	5	3	1	0	0	0	0	0	0	0
+  2011	6	11	0	0	75	0	0	0	0	0	0	0	0	0	1	2	5	11	16	21	17	12	7	4	2	1	1	0	0	0	0	0	0
+  2012	6	11	0	0	75	0	0	0	0	0	0	0	0	0	0	1	2	3	4	9	15	17	18	11	10	5	2	1	0	0	0	0	0
+  2013	6	11	0	0	75	0	0	0	0	0	1	1	2	3	4	5	5	5	4	7	10	12	14	11	8	5	2	0	0	0	0	0	0
+  2014	6	11	0	0	75	0	0	0	1	1	1	0	2	3	5	9	10	10	9	8	8	9	8	6	4	3	1	1	0	0	0	0	0
+  2015	6	11	0	0	75	0	0	0	0	0	0	0	1	2	6	10	16	16	16	14	10	6	3	1	0	0	0	0	0	0	0	0	0
+  2016	6	11	0	0	75	0	0	0	0	0	0	0	0	0	0	1	2	4	7	13	18	20	16	10	6	3	1	0	0	0	0	0	0
+  2017	6	11	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	1	2	5	8	12	18	16	17	11	6	2	1	0	0	0	0
+  2018	6	11	0	0	75	0	0	0	0	0	0	0	1	1	2	2	3	2	1	2	2	4	8	13	22	18	13	5	1	0	0	0	0
+  2019	6	11	0	0	75	0	0	0	0	0	0	0	1	1	2	4	8	10	9	10	9	9	9	6	8	5	4	2	2	0	0	0	0
+  2020	6	11	0	0	75	0	0	0	0	0	0	0	1	2	7	9	12	11	10	11	9	9	6	4	4	3	1	0	0	0	0	0	0
+  -9999	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	
+  0 #_N_age_bins
+#1 2 3 4 5 6 7 8  
+#0 #_N_ageerror_definitions
+# 0.5 1.5 2.5 3.5 4.5 5.5 6.5 7.5 8.5 9.5 10.5 11.5 12.5 
+# 0.05 0.15 0.25 0.35 0.45 0.55 0.65 0.75 0.85 0.95 1.05 1.15 1.25 
+# 0.5 1.5 2.5 3.5 4.5 5.5 6.5 7.5 8.5 9.5 10.5 11.5 12.5 
+# 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 
+# 10.5 10.5 10.5 10.5 10.5 10.5 10.5 10.5 10.5 10.5 10.5 10.5 10.5 
+# 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001
+#_mintailcomp: upper and lower distribution for females and males separately are accumulated until exceeding this level.
+#_addtocomp:  after accumulation of tails; this value added to all bins
+#_males and females treated as combined gender below this bin number 
+#_compressbins: accumulate upper tail by this number of bins; acts simultaneous with mintailcomp; set=0 for no forced accumulation
+#_Comp_Error:  0=multinomial, 1=dirichlet
+#_Comp_Error2:  parm number  for dirichlet
+#_minsamplesize: minimum sample size; set to 1 to match 3.24, minimum value is 0.001
+#_mintailcomp addtocomp combM+F CompressBins CompError ParmSelect minsamplesize
+#0 0.0001 -1 0 0 0 1 #_fleet:1_ALB
+#0 0.0001 -1 0 0 0 1 #_fleet:Dep
+#2 #_Lbin_method_for_Age_Data: 1=poplenbins; 2=datalenbins; 3=lengths
+# sex codes:  0=combined; 1=use female only; 2=use male only; 3=use both as joint sexxlength distribution
+# partition codes:  (0=combined; 1=discard; 2=retained
+#_yr month fleet sex part ageerr Lbin_lo Lbin_hi Nsamp datavector(female-male)
+#-9999  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+#
+0 #_Use_MeanSize-at-Age_obs (0/1)
+#1
+1 #_N_environ_variables
+#Yr Variable Value
+  2000    1   1.13
+  2001    1   0.684
+  2002    1   0.693
+  2003    1   0.737
+  2004    1   0.683
+  2005    1   0.716
+  2006    1   0.693
+  2007    1   0.670
+  2008    1   0.708
+  2009    1   0.653
+  2010    1   0.699
+  2011    1   0.642
+  2012    1   0.647
+  2013    1   0.672
+  2014    1   0.658
+  2015    1   0.694
+  2016    1   0.764
+  2017    1   0.675
+  2018    1   0.724
+  2019    1   0.662
+  2020    1   0.622
+  -9999 0 0 
+#
+  0 # N sizefreq methods to read 
+#
+  0 # do tags (0/1)
+#
+    0 #    morphcomp data(0/1) 
+#  Nobs, Nmorphs, mincomp
+#  yr, seas, type, partition, Nsamp, datavector_by_Nmorphs
+#
+    0  #  Do dataread for selectivity priors(0/1)
+# Yr, Seas, Fleet,  Age/Size,  Bin,  selex_prior,  prior_sd
+# feature not yet implemented
+#
+999
+ENDDATA
+      

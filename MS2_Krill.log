@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.23)  1 JUN 2025 17:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.23)  3 JUN 2025 10:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -741,25 +741,25 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [17]
-<Figs/chla_grilled.png, id=414, 700.86844pt x 414.04688pt>
+<Figs/chla_grilled.png, id=410, 700.86844pt x 414.04688pt>
 File: Figs/chla_grilled.png Graphic file (type png)
 <use Figs/chla_grilled.png>
 Package pdftex.def Info: Figs/chla_grilled.png  used on input line 719.
 (pdftex.def)             Requested size: 469.76122pt x 277.51736pt.
 [18]
-<MS2_Krill_files/figure-latex/chlindex-1.jpeg, id=423, 2710.125pt x 602.25pt>
+<MS2_Krill_files/figure-latex/chlindex-1.jpeg, id=419, 2710.125pt x 602.25pt>
 File: MS2_Krill_files/figure-latex/chlindex-1.jpeg Graphic file (type jpg)
 <use MS2_Krill_files/figure-latex/chlindex-1.jpeg>
 Package pdftex.def Info: MS2_Krill_files/figure-latex/chlindex-1.jpeg  used on input line 730.
 (pdftex.def)             Requested size: 469.73015pt x 104.38446pt.
 [19 <./Figs/chla_grilled.png (PNG copy)> <./MS2_Krill_files/figure-latex/chlindex-1.jpeg>]
-<Figs/Predator_fleet2.png, id=440, 806.01125pt x 797.98125pt>
+<Figs/Predator_fleet2.png, id=436, 806.01125pt x 797.98125pt>
 File: Figs/Predator_fleet2.png Graphic file (type png)
 <use Figs/Predator_fleet2.png>
 Package pdftex.def Info: Figs/Predator_fleet2.png  used on input line 746.
 (pdftex.def)             Requested size: 469.74982pt x 465.06987pt.
 [20] [21 <./Figs/Predator_fleet2.png>] [22] [23]
-<Figs/Pearson2.png, id=471, 984.67876pt x 578.16pt>
+<Figs/Pearson2.png, id=464, 984.67876pt x 578.16pt>
 File: Figs/Pearson2.png Graphic file (type png)
 <use Figs/Pearson2.png>
 Package pdftex.def Info: Figs/Pearson2.png  used on input line 770.
@@ -767,7 +767,7 @@ Package pdftex.def Info: Figs/Pearson2.png  used on input line 770.
 [24
 
  <./Figs/Pearson2.png>]
-<Figs/unnamed-chunk-46-1.jpeg, id=478, 433.62pt x 289.08pt>
+<Figs/unnamed-chunk-46-1.jpeg, id=471, 433.62pt x 289.08pt>
 File: Figs/unnamed-chunk-46-1.jpeg Graphic file (type jpg)
 <use Figs/unnamed-chunk-46-1.jpeg>
 Package pdftex.def Info: Figs/unnamed-chunk-46-1.jpeg  used on input line 789.
@@ -775,61 +775,58 @@ Package pdftex.def Info: Figs/unnamed-chunk-46-1.jpeg  used on input line 789.
 [25
 
  <./Figs/unnamed-chunk-46-1.jpeg>]
-<Figs/unnamed-chunk-29-1.jpeg, id=489, 216.81pt x 216.81pt>
+<Figs/unnamed-chunk-29-1.jpeg, id=482, 216.81pt x 216.81pt>
 File: Figs/unnamed-chunk-29-1.jpeg Graphic file (type jpg)
 <use Figs/unnamed-chunk-29-1.jpeg>
 Package pdftex.def Info: Figs/unnamed-chunk-29-1.jpeg  used on input line 886.
 (pdftex.def)             Requested size: 216.81938pt x 216.81938pt.
 [26]
-<Figs/unnamed-chunk-66-1.jpeg, id=498, 578.16pt x 361.35pt>
+<Figs/unnamed-chunk-66-1.jpeg, id=491, 578.16pt x 361.35pt>
 File: Figs/unnamed-chunk-66-1.jpeg Graphic file (type jpg)
 <use Figs/unnamed-chunk-66-1.jpeg>
-Package pdftex.def Info: Figs/unnamed-chunk-66-1.jpeg  used on input line 902.
+Package pdftex.def Info: Figs/unnamed-chunk-66-1.jpeg  used on input line 900.
 (pdftex.def)             Requested size: 469.75385pt x 293.59616pt.
 [27 <./Figs/unnamed-chunk-29-1.jpeg>]
-<Figs/alloutput_variable2.png, id=507, 742.775pt x 299.1175pt>
+<Figs/alloutput_variable2.png, id=500, 742.775pt x 299.1175pt>
 File: Figs/alloutput_variable2.png Graphic file (type png)
 <use Figs/alloutput_variable2.png>
-Package pdftex.def Info: Figs/alloutput_variable2.png  used on input line 913.
+Package pdftex.def Info: Figs/alloutput_variable2.png  used on input line 911.
 (pdftex.def)             Requested size: 469.76413pt x 189.17528pt.
 [28 <./Figs/unnamed-chunk-66-1.jpeg>]
-<Figs/R0plot.png, id=514, 610.28pt x 371.3875pt>
+<Figs/R0plot.png, id=507, 610.28pt x 371.3875pt>
 File: Figs/R0plot.png Graphic file (type png)
 <use Figs/R0plot.png>
-Package pdftex.def Info: Figs/R0plot.png  used on input line 924.
+Package pdftex.def Info: Figs/R0plot.png  used on input line 922.
 (pdftex.def)             Requested size: 352.32372pt x 214.40752pt.
 [29 <./Figs/alloutput_variable2.png>] [30 <./Figs/R0plot.png>]
-<Figs/produc_com.png, id=529, 860.21375pt x 358.33875pt>
+<Figs/produc_com.png, id=522, 860.21375pt x 358.33875pt>
 File: Figs/produc_com.png Graphic file (type png)
 <use Figs/produc_com.png>
-Package pdftex.def Info: Figs/produc_com.png  used on input line 935.
+Package pdftex.def Info: Figs/produc_com.png  used on input line 933.
 (pdftex.def)             Requested size: 469.75882pt x 195.68716pt.
-<Figs/ACF_Plot.png, id=531, 1083.04625pt x 210.7875pt>
+<Figs/ACF_Plot.png, id=524, 1083.04625pt x 210.7875pt>
 File: Figs/ACF_Plot.png Graphic file (type png)
 <use Figs/ACF_Plot.png>
-Package pdftex.def Info: Figs/ACF_Plot.png  used on input line 946.
+Package pdftex.def Info: Figs/ACF_Plot.png  used on input line 944.
 (pdftex.def)             Requested size: 469.74966pt x 91.42487pt.
-[31 <./Figs/produc_com.png> <./Figs/ACF_Plot.png>] [32] [33] [34] [35] [36] [37] [38] [39] [40] [41] (./MS2_Krill.aux)
+[31 <./Figs/produc_com.png> <./Figs/ACF_Plot.png>] [32] [33] [34] [35] [36] [37] [38] [39] [40] [41] [42] [43] (./MS2_Krill.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16268 strings out of 478033
- 266482 string characters out of 5838239
+ 16248 strings out of 478033
+ 266235 string characters out of 5838239
  1887330 words of memory out of 5000000
- 35606 multiletter control sequences out of 15000+600000
- 603879 words of font info for 222 fonts, out of 8000000 for 9000
+ 35605 multiletter control sequences out of 15000+600000
+ 602853 words of font info for 213 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 63i,12n,67p,5886b,560s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{ref-REF} has been referenced but does not exist, replaced by a fixed one
-
+ 63i,12n,67p,5771b,560s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on MS2_Krill.pdf (41 pages, 1841899 bytes).
+Output written on MS2_Krill.pdf (43 pages, 1846500 bytes).
 PDF statistics:
- 934 PDF objects out of 1000 (max. 8388607)
- 826 compressed objects within 9 object streams
- 203 named destinations out of 1000 (max. 500000)
- 51448 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 895 PDF objects out of 1000 (max. 8388607)
+ 786 compressed objects within 8 object streams
+ 202 named destinations out of 1000 (max. 500000)
+ 51440 words of extra memory for PDF output out of 51595 (max. 10000000)
 
