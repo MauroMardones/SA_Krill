@@ -28,4 +28,6 @@ Figs*/
 *.html
 index_files*/
 *.docx
+*.DS_Store
+*.R
 

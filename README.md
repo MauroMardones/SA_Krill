@@ -1,9 +1,8 @@
 # **Assessing environmental and predator impacts on Antarctic Krill (*Euphausia superba*) population dynamics from an integrated length-to-age assessment model perspective**  
 
-This repository contains the Stock Synthesis 3 (SS3) assessment model for *Euphausia superba* (Antarctic krill) in Subarea 48.1, considering spatial heterogeneity and ecosystem variables. The project includes multiple files and subdirectories, but the key functions and paths for conducting the assessment can be found at the following link: [SA_Krill Documentation](https://mauromardones.github.io/SA_Krill/).  
+This repository contains the Stock Synthesis 3 (SS3 v3.30.21) assessment model for *Euphausia superba* (Antarctic krill) in Subarea 48.1, considering spatial heterogeneity and ecosystem variables. The project includes multiple files and subdirectories, but the key functions and paths for conducting the assessment can be found at the following link: [SA_Krill Documentation](https://mauromardones.github.io/SA_Krill/).  
 
 ## **Project Structure**  
-
 
 ```
 📂 SA_Krill  

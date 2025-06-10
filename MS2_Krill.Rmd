@@ -1,12 +1,12 @@
 ---
 title: "Assessing environmental and predator impacts on Antarctic Krill (*Euphausia superba*) population dynamics from an integrated length-to-age assessment model perspective"
 author:
-  - Mauricio Mardones ^[Universidad de Magallanes, mamardon@umag.cl, Instituto Milenio Base]
+  - Mauricio Mardones ^[Universidad de Magallanes, mamardon@umag.cl; Instituto Milenio Base, Chile; Centro IDEAL, Chile; Instituto Español de Oceanografía, Spain]
   - Erica Jarvis Mason^[Antarctic División, SouthWest NOAA, La Jolla, California, USA]
-  - Andrea Pinones ^[Universidad Austral de Chile, Centro IDEAL, Instituto Milenio Base, Chile]
+  - Andrea Pinones ^[Universidad Austral de Chile; Centro IDEAL, Chile; Instituto Milenio Base, Chile]
   - Lucas Krüger ^[Instituto Antártico Chileno, Instituto Milenio Base, Chile]
-  - Francisco Santa Cruz ^[Instituto Antártico Chileno, Universidad de Magallanes, Instituto Milenio Base]
-  - César Cárdenas^[Instituto Antártico Chileno, Instituto Milenio Base, Chile]
+  - Francisco Santa Cruz ^[Instituto Antártico Chileno, Universidad de Magallanes, Chile; Instituto Milenio Base, Chile]
+  - César Cárdenas^[Instituto Antártico Chileno; Instituto Milenio Base, Chile]
   - Richard Methot ^[Fishery Science División, NorthWeast NOAA, Seattle, USA]
 output:
   bookdown::pdf_document2:
@@ -267,8 +267,8 @@ data <- data.frame(
     "Length-frequency distributions (0.2 cm bins)",
     "Biomass indices by strata from net sampling",
     "Monthly chlorophyll-a concentration from EU Copernicus Marine Service (interpolated; doi:10.48670/moi-00021, doi:10.48670/moi-00148)",
-    "Abundance and colony-specific trends of penguin populations",
-    "Length-frequency of krill in predator diets (e.g., penguins)"
+    "Abundance by colony-specific trends of penguin populations",
+    "Length-frequency of krill in predator diets"
   ),
   TimeSeries = c(
     "1997–2020",

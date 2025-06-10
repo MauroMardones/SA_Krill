@@ -192,7 +192,7 @@ knitr::include_graphics('Figs/conceptual.jpeg')
 
 ## Statistical Model (`SS3`)
 
-Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The spurce code can be find in [Github SS3 repository](https://github.com/nmfs-ost/ss3-source-code). In this exercise, `SS3` is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends in krill. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. Integrated models can effectively capture the age structure by transforming length observations into population-level dynamics [@Lee2024; @Punt2013]. 
+Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The source code can be find in [Github SS3 repository](https://github.com/nmfs-ost/ss3-source-code). In this exercise, `SS3` is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends in krill. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. Integrated models can effectively capture the age structure by transforming length observations into population-level dynamics [@Lee2024; @Punt2013]. 
 
 On the other hand, length data, which are cost-effective and readily available [@Canales2021; @Chong2019], provide valuable insights into krill population structure due to their correlation with age [@Thanassekos2014]. For made this transformation, the models often use an Age-Length Keys (ALKs). An ALK is a probabilistic matrix that estimates the likelihood of individuals of a given length belonging to specific age classed and this method assume both aged and measured fish are random samples from the same population and should be applied within the same time period to avoid biases [@ICCA2003; @Punt2003; @Punt2013; @Lee2024]. The ALK matrix is typically defined as:
 
@@ -441,9 +441,9 @@ knitr::include_graphics('Figs/pathmod.png')
 Figure \@ref(fig:dataserie) show time series of differente componentes of data sources to this krill stock assessment.
 
 ```{r dataserie, fig.width=9, fig.height=7}
-SSplotData(base.model1.4, 
+SSplotDataEnv(base.model1.4, 
            subplots = 1,
-           ptsize = 0.5)
+           ptsize = -2)
 ```
 
 ## Scenarios
@@ -752,7 +752,7 @@ outps3 %>%
 ### Outputs Variables `s1.4`
 
 ```{r}
-outps4 <- base.model1.3$timeseries[1:37, 2:8]
+outps4 <- base.model1.4$timeseries[1:37, 2:8]
 
 # addWorksheet(wb, "variable_s2")
 # writeData(wb, "variable_s2", outps1)
@@ -824,7 +824,55 @@ alloutput <- ggplot(outpsall_long, aes(x = Yr, y = Value, color = Model, group =
 
 alloutput
 
+
+outpsall %>%
+  filter(Model %in% c("s1.3", "s1.4")) %>%
+  group_by(Model) %>%
+  summarise(
+    n = n(),
+    Bio_all_sum = sum(Bio_all, na.rm = TRUE),
+    Recruit_0_sum = sum(Recruit_0, na.rm = TRUE)
+  )
+
 ```
+
+Difference between scenarios regarding to summary in populations variables in Table \@ref(tab:var_compar) for details.
+
+```{r var_compar}
+prom_hist <-outpsall %>%
+  group_by(Model) %>%
+  summarise(
+    Bio_all_hist = mean(Bio_all/1e6, na.rm = TRUE),
+    Recruit_0_hist = mean(Recruit_0/1e6, na.rm = TRUE)
+  )
+
+ult_5 <-outpsall %>%
+  group_by(Model) %>%
+  filter(Yr %in% sort(unique(Yr), decreasing = TRUE)[1:5]) %>%
+  summarise(
+    Bio_all_5yr = mean(Bio_all/1e6, na.rm = TRUE),
+    Recruit_0_5yr = mean(Recruit_0/1e6, na.rm = TRUE)
+  )
+
+resumen <- left_join(prom_hist, ult_5, by = "Model")
+
+base <- resumen %>% filter(Model == "s1.1")
+
+resumen <- resumen %>%
+  mutate(
+    Bio_all_hist_pct = 100 * (Bio_all_hist - base$Bio_all_hist) / base$Bio_all_hist,
+    Recruit_0_hist_pct = 100 * (Recruit_0_hist - base$Recruit_0_hist) / base$Recruit_0_hist,
+    Bio_all_5yr_pct = 100 * (Bio_all_5yr - base$Bio_all_5yr) / base$Bio_all_5yr,
+    Recruit_0_5yr_pct = 100 * (Recruit_0_5yr - base$Recruit_0_5yr) / base$Recruit_0_5yr
+  )
+
+resumen %>%
+  mutate(across(where(is.numeric), ~round(.x, 2))) %>%
+  kbl(caption = "Resumen por modelo: promedios históricos, últimos 5 años y cambio porcentual respecto a s1.1") %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
+
+```
+
 
 ```{r eval=FALSE}
 #read in all model runs
