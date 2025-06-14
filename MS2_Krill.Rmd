@@ -270,7 +270,7 @@ data <- data.frame(
     "Abundance by colony-specific trends of penguin populations",
     "Length-frequency of krill in predator diets"
   ),
-  TimeSeries = c(
+  TemporalScale = c(
     "1997–2020",
     "1997–2020",
     "2000–2020",
