@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.9.23)  11 JUN 2025 00:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2025.7.14)  21 AUG 2025 17:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -567,7 +567,7 @@ File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
 \BKM@id=\count323
 ))
 Package hyperref Info: Option `colorlinks' set `true' on input line 128.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 134.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 141.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
@@ -587,36 +587,36 @@ LaTeX Warning: Label `tab:diagnostics' multiply defined.
 )
 \openout1 = `MS2_Krill.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 134.
-LaTeX Font Info:    ... okay on input line 134.
-LaTeX Info: Redefining \microtypecontext on input line 134.
-Package microtype Info: Applying patch `item' on input line 134.
-Package microtype Info: Applying patch `toc' on input line 134.
-Package microtype Info: Applying patch `eqnum' on input line 134.
-Package microtype Info: Applying patch `footnote' on input line 134.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 141.
+LaTeX Font Info:    ... okay on input line 141.
+LaTeX Info: Redefining \microtypecontext on input line 141.
+Package microtype Info: Applying patch `item' on input line 141.
+Package microtype Info: Applying patch `toc' on input line 141.
+Package microtype Info: Applying patch `eqnum' on input line 141.
+Package microtype Info: Applying patch `footnote' on input line 141.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 134.
+LaTeX Info: Redefining \showhyphens on input line 141.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -662,47 +662,47 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 134.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 136.
+Package hyperref Info: Link coloring ON on input line 141.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 143.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 136.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 143.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 136.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 143.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 136.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 143.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 136.
+(Font)              <12> on input line 143.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 136.
+(Font)              <8> on input line 143.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 136.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 136.
+(Font)              <6> on input line 143.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 143.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 136.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 143.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 136.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 143.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 136.
+(Font)              <5> on input line 143.
 [1
 
 {/Users/mauriciomardones/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./MS2_Krill.toc
@@ -715,25 +715,25 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \openout3 = `MS2_Krill.toc'.
 
 [2] [3] [4] [5] [6] [7] [8] [9]
-Overfull \hbox (15.66966pt too wide) in alignment at lines 215--229
+Overfull \hbox (15.66966pt too wide) in alignment at lines 222--236
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (15.66966pt too wide) in alignment at lines 229--241
+Overfull \hbox (15.66966pt too wide) in alignment at lines 236--248
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (15.66966pt too wide) in alignment at lines 241--467
+Overfull \hbox (15.66966pt too wide) in alignment at lines 248--474
  [] [] [] [] [] [] [] 
  []
 
 [10] [11] [12] [13] [14]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 582.
+(Font)              <9> on input line 589.
 [15]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 603.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 610.
 (/Users/mauriciomardones/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [16]
@@ -741,92 +741,119 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [17]
-<Figs/chla_grilled.png, id=410, 700.86844pt x 414.04688pt>
+<Figs/chla_grilled.png, id=428, 700.86844pt x 414.04688pt>
 File: Figs/chla_grilled.png Graphic file (type png)
 <use Figs/chla_grilled.png>
-Package pdftex.def Info: Figs/chla_grilled.png  used on input line 719.
+Package pdftex.def Info: Figs/chla_grilled.png  used on input line 726.
 (pdftex.def)             Requested size: 469.76122pt x 277.51736pt.
 [18]
-<MS2_Krill_files/figure-latex/chlindex-1.jpeg, id=419, 2710.125pt x 602.25pt>
+<MS2_Krill_files/figure-latex/chlindex-1.jpeg, id=437, 2710.125pt x 602.25pt>
 File: MS2_Krill_files/figure-latex/chlindex-1.jpeg Graphic file (type jpg)
 <use MS2_Krill_files/figure-latex/chlindex-1.jpeg>
-Package pdftex.def Info: MS2_Krill_files/figure-latex/chlindex-1.jpeg  used on input line 730.
+Package pdftex.def Info: MS2_Krill_files/figure-latex/chlindex-1.jpeg  used on input line 737.
 (pdftex.def)             Requested size: 469.73015pt x 104.38446pt.
 [19 <./Figs/chla_grilled.png (PNG copy)> <./MS2_Krill_files/figure-latex/chlindex-1.jpeg>]
-<Figs/Predator_fleet2.png, id=436, 806.01125pt x 797.98125pt>
+<Figs/Predator_fleet2.png, id=454, 806.01125pt x 797.98125pt>
 File: Figs/Predator_fleet2.png Graphic file (type png)
 <use Figs/Predator_fleet2.png>
-Package pdftex.def Info: Figs/Predator_fleet2.png  used on input line 746.
+Package pdftex.def Info: Figs/Predator_fleet2.png  used on input line 753.
 (pdftex.def)             Requested size: 469.74982pt x 465.06987pt.
 [20] [21 <./Figs/Predator_fleet2.png>] [22] [23]
-<Figs/Pearson2.png, id=464, 984.67876pt x 578.16pt>
+<Figs/Pearson2.png, id=482, 984.67876pt x 578.16pt>
 File: Figs/Pearson2.png Graphic file (type png)
 <use Figs/Pearson2.png>
-Package pdftex.def Info: Figs/Pearson2.png  used on input line 770.
+Package pdftex.def Info: Figs/Pearson2.png  used on input line 777.
 (pdftex.def)             Requested size: 650.46094pt x 381.92201pt.
 [24
 
  <./Figs/Pearson2.png>]
-<Figs/unnamed-chunk-46-1.jpeg, id=471, 433.62pt x 289.08pt>
+<Figs/unnamed-chunk-46-1.jpeg, id=489, 433.62pt x 289.08pt>
 File: Figs/unnamed-chunk-46-1.jpeg Graphic file (type jpg)
 <use Figs/unnamed-chunk-46-1.jpeg>
-Package pdftex.def Info: Figs/unnamed-chunk-46-1.jpeg  used on input line 789.
+Package pdftex.def Info: Figs/unnamed-chunk-46-1.jpeg  used on input line 796.
 (pdftex.def)             Requested size: 352.33524pt x 234.89014pt.
 [25
 
  <./Figs/unnamed-chunk-46-1.jpeg>]
-<Figs/unnamed-chunk-29-1.jpeg, id=482, 216.81pt x 216.81pt>
+<Figs/unnamed-chunk-29-1.jpeg, id=500, 216.81pt x 216.81pt>
 File: Figs/unnamed-chunk-29-1.jpeg Graphic file (type jpg)
 <use Figs/unnamed-chunk-29-1.jpeg>
-Package pdftex.def Info: Figs/unnamed-chunk-29-1.jpeg  used on input line 886.
+Package pdftex.def Info: Figs/unnamed-chunk-29-1.jpeg  used on input line 893.
 (pdftex.def)             Requested size: 216.81938pt x 216.81938pt.
 [26]
-<Figs/unnamed-chunk-66-1.jpeg, id=491, 578.16pt x 361.35pt>
+<Figs/unnamed-chunk-66-1.jpeg, id=509, 578.16pt x 361.35pt>
 File: Figs/unnamed-chunk-66-1.jpeg Graphic file (type jpg)
 <use Figs/unnamed-chunk-66-1.jpeg>
-Package pdftex.def Info: Figs/unnamed-chunk-66-1.jpeg  used on input line 900.
+Package pdftex.def Info: Figs/unnamed-chunk-66-1.jpeg  used on input line 907.
 (pdftex.def)             Requested size: 469.75385pt x 293.59616pt.
 [27 <./Figs/unnamed-chunk-29-1.jpeg>]
-<Figs/alloutput_variable2.png, id=500, 742.775pt x 299.1175pt>
+<Figs/alloutput_variable2.png, id=518, 742.775pt x 299.1175pt>
 File: Figs/alloutput_variable2.png Graphic file (type png)
 <use Figs/alloutput_variable2.png>
-Package pdftex.def Info: Figs/alloutput_variable2.png  used on input line 911.
+Package pdftex.def Info: Figs/alloutput_variable2.png  used on input line 918.
 (pdftex.def)             Requested size: 469.76413pt x 189.17528pt.
 [28 <./Figs/unnamed-chunk-66-1.jpeg>]
-<Figs/R0plot.png, id=507, 610.28pt x 371.3875pt>
+<Figs/R0plot.png, id=525, 610.28pt x 371.3875pt>
 File: Figs/R0plot.png Graphic file (type png)
 <use Figs/R0plot.png>
-Package pdftex.def Info: Figs/R0plot.png  used on input line 922.
+Package pdftex.def Info: Figs/R0plot.png  used on input line 929.
 (pdftex.def)             Requested size: 352.32372pt x 214.40752pt.
 [29 <./Figs/alloutput_variable2.png>] [30 <./Figs/R0plot.png>]
-<Figs/produc_com.png, id=522, 860.21375pt x 358.33875pt>
+<Figs/produc_com.png, id=540, 860.21375pt x 358.33875pt>
 File: Figs/produc_com.png Graphic file (type png)
 <use Figs/produc_com.png>
-Package pdftex.def Info: Figs/produc_com.png  used on input line 933.
+Package pdftex.def Info: Figs/produc_com.png  used on input line 940.
 (pdftex.def)             Requested size: 469.75882pt x 195.68716pt.
-<Figs/ACF_Plot.png, id=524, 1083.04625pt x 210.7875pt>
+<Figs/ACF_Plot.png, id=542, 1083.04625pt x 210.7875pt>
 File: Figs/ACF_Plot.png Graphic file (type png)
 <use Figs/ACF_Plot.png>
-Package pdftex.def Info: Figs/ACF_Plot.png  used on input line 944.
+Package pdftex.def Info: Figs/ACF_Plot.png  used on input line 951.
 (pdftex.def)             Requested size: 469.74966pt x 91.42487pt.
-[31 <./Figs/produc_com.png> <./Figs/ACF_Plot.png>] [32] [33] [34] [35] [36] [37] [38] [39] [40] [41] [42] [43] (./MS2_Krill.aux)
+[31 <./Figs/produc_com.png> <./Figs/ACF_Plot.png>] [32] [33] [34] [35] [36] [37] [38] [39] [40] [41] [42] [43] [44] [45] [46] [47] [48] (./MS2_Krill.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16250 strings out of 478033
- 266255 string characters out of 5838239
+ 16303 strings out of 478033
+ 267245 string characters out of 5838239
  1887330 words of memory out of 5000000
- 35605 multiletter control sequences out of 15000+600000
- 602937 words of font info for 214 fonts, out of 8000000 for 9000
+ 35620 multiletter control sequences out of 15000+600000
+ 603255 words of font info for 217 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  63i,12n,67p,5771b,560s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{ref-Pallin2023} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{ref-Trivelpiece2011a} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{ref-Salmeron2023} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{ref-Kruger2019} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{ref-Emmerson2022} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{ref-ichii2023} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{ref-Ainley2017} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{chap2} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{chap3} has been referenced but does not exist, replaced by a fixed one
+
 {/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/mauriciomardones/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on MS2_Krill.pdf (43 pages, 1847401 bytes).
+Output written on MS2_Krill.pdf (48 pages, 1867687 bytes).
 PDF statistics:
- 895 PDF objects out of 1000 (max. 8388607)
- 786 compressed objects within 8 object streams
- 202 named destinations out of 1000 (max. 500000)
- 51440 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 1017 PDF objects out of 1200 (max. 8388607)
+ 901 compressed objects within 10 object streams
+ 234 named destinations out of 1000 (max. 500000)
+ 51496 words of extra memory for PDF output out of 51595 (max. 10000000)
 
