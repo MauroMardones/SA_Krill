@@ -62,29 +62,21 @@ Libraries necessary to made this analysis;
 # install.packages("caTools")
 # library("caTools")
 # install.packages("r4ss")
-library(r4ss)
-library(here)
-#remotes::install_github("PIFSCstockassessments/ss3diags")
-library(ss3diags)
-library(kableExtra)
-library(doParallel) 
-detectCores()
+pkgs<-c("r4ss","ss3diags","doParallel",
+        "tibble","tidyr","tidyverse",
+        "readxl","openxlsx","broom",
+        "forecast","mixR","lmtest",
+        "car","ggpubr","ggthemes",
+        "ggridges","ggrepel",
+        "kableExtra","flextable","here")
+
+instalar<-pkgs[!pkgs%in%installed.packages()]
+if(length(instalar)>0)install.packages(instalar)
+
+invisible(lapply(pkgs,library,character.only=TRUE))
+
+library(doParallel)
 registerDoParallel(8)
-library(ggpubr)
-library(tibble)
-library(openxlsx)
-library(ggthemes)
-library(forecast)
-library(tidyr)
-library(mixR)
-library(readxl)
-library(tidyverse)
-library(ggridges)
-library(ggrepel)
-library(broom)
-library(lmtest)
-library(flextable)
-library(car)
 ```
 
 ### Code Repository
@@ -355,7 +347,7 @@ p1 <- ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = categ
 p1
 ```
 
-### Length comositions
+### Length compositions
 
 ```{r warning=FALSE}
 dat_long <- dat1$lencomp %>% 

@@ -1,0 +1,241 @@
+---
+title: "Supplementary Material 2"
+subtitle: "Mathematical Formulas in SS3 for Krill Stock Assessment"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    toc_depth: 3
+    number_sections: false
+geometry: margin=2cm
+fontsize: 11pt
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{bm}
+classoption: fleqn
+---
+
+\pagebreak
+
+### State Model
+
+- Population Dynamics
+
+\begin{equation}
+N_{a,l,s,t+1} = N_{a-1,l,s,t} \cdot e^{-(M_{a-1,l,s,t} + F_{a-1,l,s,t})} \cdot T_{a-1 \rightarrow a,l,s,t} + R_{a,l,s,t}
+\end{equation}
+
+- Total Mortality
+
+\begin{equation}
+Z_{a,l,s,t} = M_{a,l,s,t} + F_{a,l,s,t}
+\end{equation}
+
+- Spawning Stock Biomass
+
+\begin{equation}
+SSB_t = \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot W_{a,l,s,t} \cdot \text{Mat}_{a,l,s,t} \cdot \text{Fec}_{a,l,s,t}
+\end{equation}
+
+- Total Biomass
+
+\begin{equation}
+B_t = \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot W_{a,l,s,t}
+\end{equation}
+
+### Sub-models
+
+- Selectivity
+
+\begin{equation}
+S_{a,l,f} = \frac{1}{1 + e^{-\ln(19) \cdot \frac{(L_l - L_{50,f})}{(L_{95,f} - L_{50,f})}}}
+\end{equation}
+
+\begin{equation}
+S_{a,f,t} = \sum_l S_{l,f,t} \cdot P(L_l|a,t)
+\end{equation}
+
+- Stock-Recruitment
+
+\begin{equation}
+R_t = \frac{\alpha \cdot SSB_{t-\tau}}{\beta + SSB_{t-\tau}} \cdot e^{\delta_t - \frac{\sigma_R^2}{2}}
+\end{equation}
+
+- Environmental Effects on Recruitment
+
+\begin{equation}
+E(\text{Recruitment}) = f(\text{SSB}) \times \exp(B \times \text{env}) \times \exp\left(-0.5 \times \pi_R^2\right)
+\end{equation}
+
+- Maturity
+
+\begin{equation}
+\text{Mat}_{l} = \frac{1}{1 + e^{-\ln(19) \cdot \frac{(L_l - L_{50})}{(L_{95} - L_{50})}}}
+\end{equation}
+
+\begin{equation}
+\text{Mat}_{a,t} = \sum_l \text{Mat}_l \cdot P(L_l|a,t)
+\end{equation}
+
+- Growth (Von Bertalanffy)
+
+\begin{equation}
+L_{a,s} = L_{\infty,s} \cdot (1 - e^{-K_s \cdot (a - t_{0,s})})
+\end{equation}
+
+- Weight-Length Relationship
+
+\begin{equation}
+W_{l,s} = w_s \cdot L_l^{b_s}
+\end{equation}
+
+- Length-at-Age Variability
+
+\begin{equation}
+P(L_l|a,s,t) = \frac{1}{\sqrt{2\pi}\sigma_{L|a,s}} \exp\left(-\frac{(L_l - \bar{L}_{a,s,t})^2}{2\sigma_{L|a,s}^2}\right)
+\end{equation}
+
+- Length-to-Age Transition Matrix
+
+\begin{equation}
+T_{a,l \rightarrow a+1,l',s,t} = P(L_{l'}|a+1,s,t+1) \cdot \text{Growth}_{l \rightarrow l'}
+\end{equation}
+
+- Fishing Mortality
+
+\begin{equation}
+F_{a,l,s,f,t} = F'_{f,t} \cdot S_{a,l,s,f,t}
+\end{equation}
+
+\begin{equation}
+F_{a,l,s,t} = \sum_f F_{a,l,s,f,t}
+\end{equation}
+
+- Predator Mortality
+
+\begin{equation}
+M_{a,t} = M1_{a,t} + M2_{a,t}
+\end{equation}
+
+\begin{equation}
+M2_{a,t} = \sum_{p=1}^{n_{\text{pred}}} \frac{C_{p,t} \cdot S_{p,a}}{B_{\text{avail},t}}
+\end{equation}
+
+### Catch Equations
+
+\begin{equation}
+C_{a,l,s,f,t} = \frac{F_{a,l,s,f,t}}{Z_{a,l,s,t}} \cdot N_{a,l,s,t} \cdot (1 - e^{-Z_{a,l,s,t}}) \cdot W_{a,l,s,t}
+\end{equation}
+
+\begin{equation}
+C_{f,t} = \sum_a \sum_l \sum_s C_{a,l,s,f,t}
+\end{equation}
+
+### Observation Model
+
+\begin{equation}
+\hat{I}_{q,t} = Q_q \cdot \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot S_{a,l,s,q,t} \cdot W_{a,l,s,t}
+\end{equation}
+
+\begin{equation}
+\hat{P}_{a,f,t} = \frac{C_{a,f,t}}{\sum_a C_{a,f,t}}
+\end{equation}
+
+\begin{equation}
+\hat{P}_{l,f,t} = \frac{\sum_a C_{a,l,f,t}}{\sum_a \sum_l C_{a,l,f,t}}
+\end{equation}
+
+### Likelihood Components
+
+\begin{equation}
+L_{\text{survey}} = -\sum_q \sum_t \frac{1}{2} \left[ \frac{(\ln(I_{q,t}) - \ln(\hat{I}_{q,t}))^2}{\sigma_{I,q}^2} + \ln(2\pi\sigma_{I,q}^2) \right]
+\end{equation}
+
+\begin{equation}
+L_{\text{age}} = -\sum_f \sum_t N_{eff,f,t} \sum_a P_{a,f,t} \ln(\hat{P}_{a,f,t})
+\end{equation}
+
+\begin{equation}
+L_{\text{length}} = -\sum_f \sum_t N_{eff,f,t} \sum_l P_{l,f,t} \ln(\hat{P}_{l,f,t})
+\end{equation}
+
+\begin{equation}
+L_{\text{rec}} = -\frac{1}{2} \sum_t \left[ \frac{\delta_t^2}{\sigma_R^2} + \ln(2\pi\sigma_R^2) \right]
+\end{equation}
+
+### Parameter Estimation
+
+\begin{equation}
+-\ln(L_{\text{total}}) = -\sum_i w_i \ln(L_i)
+\end{equation}
+
+\begin{equation}
+\text{Penalty} = \lambda \sum_j \left( \frac{\theta_j - \theta_{j,\text{prior}}}{\sigma_{\theta,j}} \right)^2
+\end{equation}
+
+
+\pagebreak
+
+### Glossary of Terms and Parameters
+
+| **Symbol** | **Description** | **Units** |
+|------------|-----------------|-----------|
+| $N_{a,l,s,t}$ | Number of individuals at age $a$, length $l$, sex $s$, time $t$ | Thousands |
+| $M_{a,l,s,t}$ | Natural mortality rate | yr$^{-1}$ |
+| $F_{a,l,s,t}$ | Fishing mortality rate | yr$^{-1}$ |
+| $Z_{a,l,s,t}$ | Total mortality rate | yr$^{-1}$ |
+| $R_t$ | Recruitment at time $t$ | Thousands |
+| $SSB_t$ | Spawning stock biomass at time $t$ | Metric tons |
+| $B_t$ | Total biomass at time $t$ | Metric tons |
+| $W_{a,l,s,t}$ | Weight-at-age-length-sex | Grams |
+| $\text{Mat}_{a,l,s,t}$ | Proportion mature at age-length-sex | Proportion |
+| $\text{Fec}_{a,l,s,t}$ | Fecundity-at-age-length-sex | Eggs/individual |
+| $S_{a,l,f}$ | Selectivity for fleet $f$ at age $a$, length $l$ | Proportion |
+| $L_{\infty,s}$ | Asymptotic length for sex $s$ | mm |
+| $K_s$ | Growth rate parameter for sex $s$ | yr$^{-1}$ |
+| $t_{0,s}$ | Theoretical age at length zero for sex $s$ | Years |
+| $w_s$ | Weight-length scaling parameter for sex $s$ | g/mm$^b$ |
+| $b_s$ | Weight-length allometric exponent for sex $s$ | Dimensionless |
+| $L_{50}$ | Length at 50% maturity | mm |
+| $L_{95}$ | Length at 95% maturity | mm |
+| $L_{50,f}$ | Length at 50% selectivity for fleet $f$ | mm |
+| $L_{95,f}$ | Length at 95% selectivity for fleet $f$ | mm |
+| $\alpha$ | Stock-recruitment steepness parameter | Various |
+| $\beta$ | Stock-recruitment capacity parameter | Various |
+| $\sigma_R$ | Recruitment variability | Dimensionless |
+| $\delta_t$ | Recruitment deviation in year $t$ | Log-scale |
+| $Q_q$ | Catchability coefficient for survey $q$ | Various |
+| $C_{a,l,s,f,t}$ | Catch at age-length-sex by fleet $f$ at time $t$ | Metric tons |
+| $I_{q,t}$ | Observed survey index for survey $q$ at time $t$ | Various |
+| $\hat{I}_{q,t}$ | Expected survey index for survey $q$ at time $t$ | Various |
+| $P_{a,f,t}$ | Observed age composition for fleet $f$ at time $t$ | Proportion |
+| $\hat{P}_{a,f,t}$ | Expected age composition for fleet $f$ at time $t$ | Proportion |
+| $P_{l,f,t}$ | Observed length composition for fleet $f$ at time $t$ | Proportion |
+| $\hat{P}_{l,f,t}$ | Expected length composition for fleet $f$ at time $t$ | Proportion |
+| $N_{eff,f,t}$ | Effective sample size for fleet $f$ at time $t$ | Dimensionless |
+| $\sigma_{I,q}$ | Standard deviation of survey index $q$ | Log-scale |
+| $M1_{a,t}$ | Base natural mortality at age $a$, time $t$ | yr$^{-1}$ |
+| $M2_{a,t}$ | Predation mortality at age $a$, time $t$ | yr$^{-1}$ |
+| $C_{p,t}$ | Consumption by predator $p$ at time $t$ | Metric tons |
+| $S_{p,a}$ | Age-specific selectivity by predator $p$ | Proportion |
+| $B_{\text{avail},t}$ | Available biomass for predation at time $t$ | Metric tons |
+| $\beta_i$ | Environmental coefficient for covariate $i$ | Various |
+| $X_{i,t}$ | Environmental covariate $i$ at time $t$ | Various |
+| $\lambda$ | Penalty weight | Dimensionless |
+| $w_i$ | Likelihood component weight | Dimensionless |
+| $\theta_j$ | Estimated parameter $j$ | Various |
+| $\theta_{j,\text{prior}}$ | Prior mean for parameter $j$ | Various |
+| $\sigma_{\theta,j}$ | Prior standard deviation for parameter $j$ | Various |
+| $\tau$ | Recruitment lag (spawning to recruitment age) | Years |
+| $F'_{f,t}$ | Fully-selected fishing mortality for fleet $f$ | yr$^{-1}$ |
+| $R_0$ | Unfished recruitment level | Thousands |
+| $h$ | Steepness parameter in stock-recruitment | Proportion |
+
+\pagebreak
+
+### References
+
+Methot, R.D. and Wetzel, C.R. (2013). Stock Synthesis: A biological and statistical framework for fish stock assessment and fishery management. *Fisheries Research*, 142: 86-99.
+
+NMFS-OST (2025). Stock Synthesis User Manual Version 3.30.23.2. Available at: https://nmfs-ost.github.io/ss3-doc/SS330_User_Manual_release.html

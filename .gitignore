@@ -30,4 +30,5 @@ index_files*/
 *.docx
 *.DS_Store
 *.R
-
+*.log
+*.tex
