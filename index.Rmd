@@ -1503,6 +1503,38 @@ circleplot_res <- ggplot(df_all, aes(x = Yr, y = Bin)) +
   guides(size = "none", alpha = "none")  # Esto oculta las leyendas de size y alpha
 
 circleplot_res
+
+
+# 1. Calcular pendiente y p-value por Fleet y Modelo
+lm_stats <- df_all %>%
+  group_by(Model, Fleet) %>%
+  do({
+    mod <- lm(Pearson ~ Yr, data = .)
+    out <- tidy(mod)
+    slope <- out$estimate[out$term == "Yr"]
+    pval <- out$p.value[out$term == "Yr"]
+    data.frame(slope = round(slope, 3),
+               pval = round(pval, 3))
+  }) %>%
+  ungroup()
+
+# 2. Plot con nubes de puntos y línea de tendencia
+ggplot(df_all, aes(x = Yr, y = Pearson)) +
+  geom_point(alpha = 0.5, size = 0.7, color = "grey30") +
+  geom_smooth(method = "lm", se = TRUE, color = "blue", linewidth = 0.6) +
+  facet_grid(Model ~ Fleet) +
+  theme_bw(base_size = 9) +
+  labs(x = "Year", y = "Pearson residuals") +
+  theme(strip.text = element_text(size = 7)) +
+  # 3. Añadir pendiente y p-value dentro de cada panel
+  geom_text(data = lm_stats,
+            aes(x = min(df_all$Yr) + 2,
+                y = max(df_all$Pearson, na.rm = TRUE) - 0.3,
+                label = paste0("slope=", slope, "\np=", pval)),
+            inherit.aes = FALSE,
+            size = 2.5, hjust = 0)
+
+
 ```
 
 ```{r}
@@ -1579,6 +1611,57 @@ ggplot(resid_all, aes(x = Obs - Exp, color = model)) +
                                 "s1.4" = "#404040")) +
   theme_minimal()
 ```
+
+```{r}
+# Lista de nombres de modelos
+model_names <- paste0("base.model1.", 1:4)
+
+# Bucle para calcular Pearson residual
+for (mn in model_names) {
+  # Obtener el objeto del modelo
+  mod <- get(mn)
+  
+  # Calcular residual de Pearson
+  mod$cpue$PearsonRes <- with(mod$cpue, (Obs - Exp) / SE_input)
+  
+  # Guardar de vuelta en el entorno global
+  assign(mn, mod)
+}
+
+# Revisar el resultado, ejemplo para el primero
+head(base.model1.1$cpue[, c("Obs", "Exp", "SE_input", "PearsonRes")])
+
+library(ggplot2)
+library(dplyr)
+
+# Lista de modelos
+model_names <- paste0("base.model1.", 1:4)
+
+# Crear un data.frame combinado con todos los modelos
+cpue_all <- bind_rows(
+  lapply(model_names, function(mn) {
+    mod <- get(mn)
+    df <- mod$cpue
+    df$Model <- mn  # añadir columna con el nombre del modelo
+    return(df)
+  })
+)
+
+# Plot de residuos de Pearson por año, por flota, facetado por modelo
+ggplot(cpue_all, aes(x = Yr, y = PearsonRes)) +
+  geom_point(alpha = 0.6) +
+  facet_grid(Model ~ Fleet_name) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  theme_minimal() +
+  labs(
+    title = "Residuos de Pearson por modelo y flota",
+    x = "Año",
+    y = "Residual de Pearson"
+  )+
+  ylim( -10,10)
+```
+
+
 ### Residual consistency 
 
 Residual analysis is a critical component of model diagnostics in stock assessments. It helps evaluate the fit of the model to observed data and detect potential biases or inconsistencies. This process is applied to both length composition data and abundance indices such as CPUE (Catch Per Unit Effort) and survey-derived estimates. For length composition data, residuals represent the difference between observed and model-predicted length distributions. The standardized residuals are calculated as the difference between observed and expected proportions at each length bin. These residuals are plotted by year to identify systematic trends, biases, or inconsistencies in the data. Ideally, they should be randomly distributed around zero, indicating no systematic over- or underestimation.  
