@@ -9,7 +9,7 @@ csl: apa.csl
 link-citations: yes
 linkcolor: blue
 output:
-  bookdown::html_document2:
+  bookdown::pdf_document2:
     keep_md: true
     toc: true
     toc_deep: 3
@@ -221,74 +221,61 @@ ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
 
 ### Parameters
 
-The following table summarizes the key parameters to conditioning the reference model, including biological, growth, and population dynamics factors.
+The following table summarizes the key parameters to conditioning the reference model, including biological, growth, and population dynamics factors (\@ref(tab:parainit1)).
 
-```{r}
-start1 <- SS_readstarter(file = file.path(dir1.4,
-                                          "starter.ss"),
-                              verbose = FALSE)
-dat1 <- SS_readdat(file = file.path(dir1.4, start1$datfile),
-                        verbose = FALSE)
-ctl1 <-  r4ss::SS_readctl(file = file.path(dir1.4,
-                                    start1$ctlfil),
-                        verbose = FALSE,
-                        use_datlist = TRUE, 
-                   datlist = dat1)
-fore1 <- r4ss::SS_readforecast(file = file.path(dir1.4, 
-                                                "forecast.ss"),
-                              verbose = FALSE)
-# can also read in wtatage.ss for an empirical wt at age model using
-# r4ss::SS_readwtatage()
+
+```{r parainit1, eval=TRUE}
+dir1.1 <- here("s1.1")
+
+start1 <- SS_readstarter(file = file.path(dir1.1, "starter.ss"), verbose = FALSE)
+dat1   <- SS_readdat(file = file.path(dir1.1, start1$datfile), verbose = FALSE)
+ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
+                     verbose = FALSE, use_datlist = TRUE, datlist = dat1)
+fore1  <- SS_readforecast(file = file.path(dir1.1, "forecast.ss"), verbose = FALSE)
+
+# Extraer parámetros
+parbio <- ctl1$MG_parms[1:10, c(1:4,7)]
+rownames(parbio) <- c("Nat M", "Lmin", "Lmax", "VonBert K",
+                      "CV young", "CV old", "Wt a", "Wt b", "L50%", "Mat slope")
+
+SRpar  <- ctl1$SR_parms[1:5, c(1:4,7)]
+Qpar   <- ctl1$Q_parms[1:2, c(1:4,7)]
+Selpar <- ctl1$size_selex_parms[1:20, c(1:4,7)]
+
+# Combinar parámetros
+parInit <- as.data.frame(rbind(parbio, SRpar, Qpar, Selpar))
+
+# Añadir nombres de fila como columna "Parameter"
+parInit$Parameter <- rownames(parInit)
+
+# Añadir categorías y reordenar columnas
+parInit <- parInit %>%
+  mutate(INIT  = round(INIT, 2),
+         PRIOR = round(PRIOR, 2))
+
+# Crear vector de categorías (39 filas)
+categories <- c(rep("Natural Mortality", 1),
+                rep("Growth", 4),
+                rep("Length-Weight Relation", 2),
+                rep("Maturity", 2),
+                rep("Stock-Recruit Relation", 5),
+                rep("Catchability", 2),
+                rep("Selectivity", 21))  # OJO: corregido a 23
+
+# Añadir categorías y reordenar columnas
+parInit <- parInit %>%
+  mutate(Category = categories) %>%
+  dplyr::relocate(Category, Parameter)
+
+# Crear flextable
+ft <- flextable(parInit)
+ft <- set_caption(ft, "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input")
+ft <- autofit(ft)
+ft <- theme_booktabs(ft)
+ft <- set_table_properties(ft, width = .5, layout = "autofit")
+ft <- fontsize(ft, size = 9, part = "all")
+ft
 ```
-
-
-```{r}
-parbio<-ctl1$MG_parms[1:10,c(1:3,7)]
- row.names( parbio)<-c("Nat M",
-                       "Lmin", 
-                       "Lmax",
-                       "VonBert K",
-                       "CV young",
-                       "CV old", 
-                       "Wt a", 
-                       "Wt b",
-                       "L50%", 
-                       "Mat slope")
-
- SRpar<-ctl1$SR_parms[1:5,c(1:3,7)]
- Qpar<-ctl1$Q_parms[1:2,c(1:3,7)]
- Selpar<-ctl1$size_selex_parms[1:22,c(1:3,7)]
- parInit<-as.data.frame(rbind(parbio,SRpar,Qpar,Selpar))
-
-wb <- createWorkbook()
-
-addWorksheet(wb, "parameters")
-writeData(wb, "parameters", parInit)
-
-# Guardar el workbook
-#saveWorkbook(wb, "DataKrill.xlsx", overwrite = TRUE)
-
-```
-
-```{r}
-parInit %>%
-  mutate(across(where(is.numeric), ~ round(., 3)))  %>% 
-  kbl(booktabs = TRUE,
-      format = "html",
-      caption = "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input") %>%
-      kable_styling(latex_options = "scale_down",  # Expande la tabla al ancho completo
-                font_size = 8) %>%  # Aplica la fuente Times New Roman
-  pack_rows(index = c("Natural Mortality" = 1,
-                      "Growth" = 5,
-                      "relationship Length-Weigth" = 2,
-                      "Maturity" = 2,
-                      "S-R relation" = 5,
-                      "Catchability" = 2,
-                      "Selectivity" = 4))
-
-```
-
-
 ### Index 
 
 Abundance index in Figure \@ref(fig:index)
@@ -432,7 +419,7 @@ knitr::include_graphics('Figs/pathmod.png')
 
 Figure \@ref(fig:dataserie) show time series of differente componentes of data sources to this krill stock assessment.
 
-```{r dataserie, fig.width=9, fig.height=7}
+```{r dataserie, fig.width=9, fig.height=7, fig.cap="Data series used in krill modelling in 48.1 Subarea"}
 SSplotDataEnv(base.model1.4, 
            subplots = 1,
            ptsize = -2)
