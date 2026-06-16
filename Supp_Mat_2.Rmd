@@ -234,6 +234,7 @@ L_{\text{rec}} = -\frac{1}{2} \sum_t \left[ \frac{\delta_t^2}{\sigma_R^2} + \ln(
 
 \pagebreak
 
+
 ### References
 
 Methot, R.D. and Wetzel, C.R. (2013). Stock Synthesis: A biological and statistical framework for fish stock assessment and fishery management. *Fisheries Research*, 142: 86-99.

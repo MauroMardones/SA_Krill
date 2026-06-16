@@ -1,0 +1,1255 @@
+---
+title: "Supplementary Information 1"
+subtitle: "Assessing ecosystem effects on the stock productivity of Antarctic Krill (*Euphausia superba*): An Integrated modeling perspective"
+author: "Mardones, M; Jarvis Mason, E.T.; Piñones, A.; Krüger, L.,Santa-Cruz, F.; Watters, G., Cárdenas, C.A; Methot, R."
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+bibliography: SA_krill.bib
+csl: apa.csl
+link-citations: yes
+linkcolor: blue
+output:
+  bookdown::pdf_document2:
+    keep_md: true
+    toc: true
+    toc_deep: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: simplex
+    fontsize: 0.9em
+    linestretch: 1.7
+    html-math-method: katex
+    self-contained: true
+    code-tools: true
+    number_sections: false
+always_allow_html: true
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+## MODELING SETTING
+
+```{r setup1, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = 'center',
+                      fig.pos = "H",
+                      fig.width = 6,
+                      fig.height = 4,
+                      dev = 'jpeg',
+                      fig.path = here::here("Figs", ""),
+                      dpi = 300,
+                      tidy.opts = list(width.cutoff = 50),
+                      tidy = TRUE)
+options(bitmapType = "cairo")
+
+# ── Output directories ────────────────────────────────────────────────────────
+dir.create(here::here("Figs"),    showWarnings = FALSE, recursive = TRUE)
+dir.create(here::here("outputs"), showWarnings = FALSE, recursive = TRUE)
+```
+
+### Libraries
+
+```{r libs, message=FALSE, eval=TRUE, echo=TRUE}
+pkgs <- c("r4ss", "ss3diags", "doParallel",
+          "tibble", "tidyr", "tidyverse",
+          "readxl", "openxlsx", "broom",
+          "forecast", "mixR", "lmtest",
+          "car", "ggpubr", "ggthemes",
+          "ggridges", "ggrepel",
+          "kableExtra", "flextable", "here")
+
+instalar <- pkgs[!pkgs %in% installed.packages()]
+if (length(instalar) > 0) install.packages(instalar)
+invisible(lapply(pkgs, library, character.only = TRUE))
+registerDoParallel(8)
+```
+
+### Shared constants
+
+All scenario-level constants are defined once here and reused throughout.
+
+```{r constants, echo=TRUE}
+# ── Scenario directories ──────────────────────────────────────────────────────
+dirs <- list(
+  s1.1 = here("s1.1"),   # baseline: no predator, no env
+  s1.2 = here("s1.2"),   # + predator
+  s1.3 = here("s1.3"),   # + env variable
+  s1.4 = here("s1.4")    # + predator and env variable
+)
+Figs <- here("Figs")
+
+# ── Color palette (scenario) ─────────────────────────────────────────────────
+scen_colors <- c("s1.1" = "#ca0020",
+                 "s1.2" = "#f4a582",
+                 "s1.3" = "#bababa",
+                 "s1.4" = "#404040")
+
+# ── Fleet label mapping ───────────────────────────────────────────────────────
+fleet_labels <- c(`1`  = "FISHERYBS",
+                  `2`  = "FISHERYEI",
+                  `3`  = "FISHERYGS",
+                  `4`  = "FISHERYJOIN",
+                  `5`  = "FISHERYSSIW",
+                  `6`  = "SURVEYBS",
+                  `7`  = "SURVEYEI",
+                  `8`  = "SURVEYGS",
+                  `9`  = "SURVEYJOIN",
+                  `10` = "SURVEYSSIW",
+                  `11` = "PREDATOR")
+
+fleet_levels <- unname(fleet_labels)
+
+# ── Helper: recode numeric fleet column to named factor ──────────────────────
+recode_fleet <- function(x) {
+  factor(dplyr::recode(as.character(x), !!!fleet_labels),
+         levels = fleet_levels)
+}
+```
+
+### Code Repository
+
+The repository with file templates by scenario can be found at this
+[GitHub author link](https://github.com/MauroMardones/SA_Krill/tree/main/scenarios).
+
+### Run Models
+
+```{r run_models, eval=FALSE, echo=TRUE, include=TRUE}
+for (d in dirs) {
+  r4ss::run(dir = d, exe = "ss_osx",
+            skipfinished = FALSE, show_in_console = TRUE)
+}
+```
+
+### Load model outputs
+
+```{r load_outputs, message=FALSE}
+base.model1.1 <- SS_output(dir = dirs$s1.1, covar = TRUE, forecast = TRUE)
+base.model1.2 <- SS_output(dir = dirs$s1.2, covar = TRUE, forecast = TRUE)
+base.model1.3 <- SS_output(dir = dirs$s1.3, covar = TRUE, forecast = TRUE)
+base.model1.4 <- SS_output(dir = dirs$s1.4, covar = TRUE, forecast = TRUE)
+
+base_models <- list(s1.1 = base.model1.1,
+                    s1.2 = base.model1.2,
+                    s1.3 = base.model1.3,
+                    s1.4 = base.model1.4)
+```
+
+### Generate SS plots
+
+```{r ss_plots, eval=FALSE, echo=TRUE, include=TRUE}
+for (nm in names(base_models)) {
+  folder_path <- file.path(nm, "plots")
+  if (dir.exists(folder_path)) unlink(folder_path, recursive = TRUE)
+  SS_plots(base_models[[nm]],
+           uncertainty = TRUE, datplot = TRUE,
+           png = TRUE, aalresids = FALSE,
+           btarg = 0.75, minbthresh = 0.2, forecast = TRUE)
+}
+```
+
+# OVERVIEW
+
+This study aims to evaluate the impact of ecosystem components—such as
+environmental variables and predator-prey interactions—on the
+productivity and key population dynamics of *Euphausia superba* in
+Subarea 48.1. This code forms part of the supplementary material for
+the scientific article titled **"Assessing environmental and predator
+impacts on Antarctic Krill (*Euphausia superba*) population dynamics
+from an integrated length-to-age assessment model perspective."**
+
+## Spatial dimension of stock assessment
+
+The study focuses on Subarea 48.1 in the Western Antarctic Peninsula,
+where most krill fishing occurs and CCAMLR is advancing spatially
+refined management. We use five CCAMLR-defined strata to increase
+spatial resolution, allowing detection of regional differences in krill
+dynamics (Figure \@ref(fig:mapa)). This structure, integrated into the
+stock assessment model, enhances its capacity to capture spatial
+variability in both biological and environmental data. In this approach,
+spatial structure is incorporated implicitly by treating different areas
+as separate fleets [@Nielsen2021; @Waterhouse2014].
+
+```{r mapa, fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)"}
+knitr::include_graphics('Figs/481.png')
+```
+
+Figure \@ref(fig:conceptual) illustrates a conceptual model with the
+spatial distribution and movement of Antarctic krill in the Western
+Antarctic Peninsula (WAP).
+
+\pagebreak
+
+\begin{landscape}
+```{r conceptual, out.width="50%", fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
+knitr::include_graphics('Figs/conceptual.jpeg')
+```
+\end{landscape}
+
+\pagebreak
+
+## Statistical Model (`SS3`)
+
+Stock Synthesis (v.3.30.21) is a widely used tool for assessing fish
+and invertebrate populations, including Antarctic krill. SS3 is
+implemented in `C++` with estimation enabled through automatic
+differentiation (ADMB) [@Fournier2012; @Methot2013]. The source code
+can be found in the
+[Github SS3 repository](https://github.com/nmfs-ost/ss3-source-code).
+The analysis of model outputs is conducted using R, utilizing the
+*r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023].
+
+## Data
+
+### Parameters
+
+```{r parainit1, eval=TRUE}
+start1 <- SS_readstarter(file = file.path(dirs$s1.1, "starter.ss"),
+                         verbose = FALSE)
+dat1   <- SS_readdat(file = file.path(dirs$s1.1, start1$datfile),
+                     verbose = FALSE)
+ctl1   <- SS_readctl(file = file.path(dirs$s1.1, start1$ctlfil),
+                     verbose = FALSE, use_datlist = TRUE, datlist = dat1)
+
+parbio <- ctl1$MG_parms[1:10, c(1:4, 7)]
+rownames(parbio) <- c("Nat M", "Lmin", "Lmax", "VonBert K",
+                      "CV young", "CV old", "Wt a", "Wt b",
+                      "L50%", "Mat slope")
+SRpar  <- ctl1$SR_parms[1:5, c(1:4, 7)]
+Qpar   <- ctl1$Q_parms[1:2, c(1:4, 7)]
+Selpar <- ctl1$size_selex_parms[1:20, c(1:4, 7)]
+
+parInit <- as.data.frame(rbind(parbio, SRpar, Qpar, Selpar)) %>%
+  mutate(INIT = round(INIT, 2), PRIOR = round(PRIOR, 2),
+         Parameter = rownames(.),
+         Category = c(rep("Natural Mortality", 1),
+                      rep("Growth", 4),
+                      rep("Length-Weight Relation", 2),
+                      rep("Maturity", 2),
+                      rep("Stock-Recruit Relation", 5),
+                      rep("Catchability", 2),
+                      rep("Selectivity", 21))) %>%
+  dplyr::relocate(Category, Parameter)
+
+ft <- flextable(parInit)
+ft <- set_caption(ft,
+  caption = as_paragraph(
+    "Input parameters for the initial SS3 model of krill. Each parameter line
+     contains a minimum value (LO), maximum value (HI), and initial value (INIT).
+     If the phase (PHASE) is negative, the parameter is fixed as input"),
+  autonum = NULL)
+ft <- autofit(ft)
+ft <- theme_booktabs(ft)
+ft <- set_table_properties(ft, width = .5, layout = "autofit")
+ft <- fontsize(ft, size = 9, part = "all")
+ft
+```
+
+### Index
+
+Abundance index in Figure \@ref(fig:index).
+
+```{r index_data}
+dat1_std <- dat1$CPUE %>%
+  mutate(
+    index_std = (obs - min(obs)) / (max(obs) - min(obs)),
+    index     = recode_fleet(index),
+    category  = case_when(
+      index %in% c("FISHERYBS", "FISHERYEI", "FISHERYGS",
+                   "FISHERYJOIN", "FISHERYSSIW") ~ "Fishery",
+      index %in% c("SURVEYBS", "SURVEYEI", "SURVEYGS",
+                   "SURVEYJOIN", "SURVEYSSIW")   ~ "Survey",
+      index == "PREDATOR"                        ~ "Predator",
+      TRUE ~ NA_character_
+    )
+  )
+```
+
+```{r index, fig.cap="Standardized indices of krill abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1."}
+ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = category)) +
+  geom_point() +
+  geom_smooth(method = "loess", se = FALSE) +
+  facet_wrap(~index, scales = "free_y", ncol = 5) +
+  scale_color_manual(values = c("Fishery" = '#1b9e77',
+                                "Survey"  = '#d95f02',
+                                "Predator"= '#7570b3')) +
+  theme_bw() +
+  theme(legend.position = "top",
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        axis.text.y = element_blank()) +
+  labs(x = "", y = "Standard index", color = "Category")
+ggsave(here("Figs", "index_std.png"), width = 10, height = 4, dpi = 300)
+```
+
+### Length compositions
+
+```{r lencomp_data, warning=FALSE}
+dat_lencomp <- dat1$lencomp
+
+# Normalize fleet column name across r4ss versions
+posibles_fleet <- c("FltSvy", "Fleet", "fleet", "Flt", "flt",
+                    "FLT", "FLT_SVY", "fltsvy")
+col_flota <- intersect(posibles_fleet, names(dat_lencomp))
+if (length(col_flota) == 0) {
+  col_flota <- names(dat_lencomp)[3]
+  message("AVISO: columna de flota no detectada por nombre. Usando columna 3: '",
+          col_flota, "'")
+}
+if (col_flota[1] != "FltSvy")
+  dat_lencomp <- dplyr::rename(dat_lencomp, FltSvy = !!rlang::sym(col_flota[1]))
+
+# Normalize year column (r4ss >= 1.46 uses "year")
+if (!"Yr" %in% names(dat_lencomp) && "year" %in% names(dat_lencomp))
+  dat_lencomp <- dplyr::rename(dat_lencomp, Yr = year)
+
+dat_long <- dat_lencomp %>%
+  pivot_longer(cols = starts_with("l"),
+               names_to = "Talla", values_to = "Frecuencia") %>%
+  mutate(Talla  = as.numeric(sub("l", "", Talla)),
+         FltSvy = recode_fleet(FltSvy))
+
+mean_talla   <- dat_long %>%
+  group_by(FltSvy) %>%
+  summarise(mean_Talla = mean(Talla, na.rm = TRUE))
+
+dat_expanded <- dat_long %>% uncount(weights = Frecuencia)
+```
+
+Length compositions in Figure \@ref(fig:length).
+
+```{r length, warning=FALSE, fig.cap="Annual length-frequency distributions of Antarctic krill across strata and data sources within Subarea 48.1. The vertical line marks the recruit reference length (3.6 cm)."}
+fleet_fill <- c(
+  FISHERYBS = '#1b9e77', FISHERYEI = '#1b9e77', FISHERYGS = '#1b9e77',
+  FISHERYJOIN = '#1b9e77', FISHERYSSIW = '#1b9e77',
+  SURVEYBS = '#d95f02', SURVEYEI = '#d95f02', SURVEYGS = '#d95f02',
+  SURVEYJOIN = '#d95f02', SURVEYSSIW = '#d95f02',
+  PREDATOR = '#7570b3')
+
+ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
+  geom_density_ridges_gradient(scale = 1.8, rel_min_height = 0.001,
+                               col = "black", alpha = 0.4) +
+  facet_wrap(~FltSvy, ncol = 10) +
+  geom_vline(data = mean_talla, aes(xintercept = mean_Talla),
+             color = "red", size = 0.7, alpha = 0.5) +
+  scale_fill_manual(values = fleet_fill) +
+  labs(x = "cm", y = "") +
+  theme_bw() +
+  theme(legend.position = "none")
+ggsave(here("Figs", "length_comps.png"), width = 12, height = 6, dpi = 300)
+```
+
+## Summary data sources
+
+
+The modeling framework pathway is shown in Figure \@ref(fig:path).
+```{r path, fig.cap="Framework path to stock assessment model in krill in WAP (Yellow boxes not implemented)."}
+knitr::include_graphics('Figs/pathmod.png')
+```
+
+
+Figure \@ref(fig:dataserie) summarizes the data series used as model input.
+
+```{r dataserie, fig.cap="Data series used in krill modelling in 48.1 Subarea"}
+SSplotData(base.model1.4, subplots = 1, ptsize = -2)
+```
+
+## Scenarios
+
+The **reference model** is `s1.1`, representing a baseline assessment
+excluding environmental and ecological variables.
+
+```{r scenarios, eval=TRUE}
+data.frame(
+  Scenario = c("s1.1", "s1.2", "s1.3", "s1.4"),
+  Description = c(
+    "Spatial data without environmental and predator components",
+    "\"s1.1\" with predator components",
+    "\"s1.1\" with environmental variable",
+    "\"s1.1\" with both predator fleet and environmental variable")) %>%
+  kbl(caption = "Scenarios used for modelling dynamics in krill",
+      align = "l", booktabs = TRUE,
+      col.names = c("Scenario", "Description")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE, position = "center", font_size = 10,
+                latex_options = "HOLD_position") %>%
+  row_spec(0, bold = TRUE, color = "black") %>%
+  column_spec(1, width = "2cm") %>%
+  column_spec(2, width = "10cm")
+```
+
+# RESULTS
+
+## Population Variables by scenario
+
+### ALK matrix
+
+
+Figure \@ref(fig:AKL) shows the age–length key (ALK) matrix for the baseline scenario.
+```{r AKL, fig.cap="Representation of ALK Matrix for krill in 48.1"}
+alk_df <- as.data.frame(as.table(base.model1.1$ALK[,,1]))
+colnames(alk_df) <- c("Length", "TrueAge", "Value")
+alk_df$Length   <- as.numeric(as.character(alk_df$Length))
+alk_df$TrueAge  <- as.numeric(as.character(alk_df$TrueAge))
+alk_df$Value    <- as.numeric(alk_df$Value)
+
+ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(x = "True Age", y = "Length", fill = "Value") +
+  theme_bw() +
+  theme(legend.position = "none")
+ggsave(here("Figs", "ALK_matrix.png"), width = 6, height = 4, dpi = 300)
+```
+
+### Time series per scenario
+
+Main population variables by scenario (Figures \@ref(fig:scen1)–\@ref(fig:scen4)).
+
+```{r scen1, fig.cap="Main variables scenario s1.1"}
+par(mfrow = c(1, 3), mar = c(5, 4, 1, 1))
+SSplotTimeseries(base.model1.1, subplot = 1, xlab = "")
+SSplotTimeseries(base.model1.1, subplot = 9, xlab = "")
+SSplotTimeseries(base.model1.1, subplot = 7, xlab = "")
+```
+
+```{r scen2, fig.cap="Main variables scenario s1.2"}
+par(mfrow = c(1, 3), mar = c(5, 4, 1, 1))
+SSplotTimeseries(base.model1.2, subplot = 1, xlab = "")
+SSplotTimeseries(base.model1.2, subplot = 9, xlab = "")
+SSplotTimeseries(base.model1.2, subplot = 7, xlab = "")
+```
+
+```{r scen3, fig.cap="Main variables scenario s1.3"}
+par(mfrow = c(1, 3), mar = c(5, 4, 1, 1))
+SSplotTimeseries(base.model1.3, subplot = 1, xlab = "")
+SSplotTimeseries(base.model1.3, subplot = 9, xlab = "")
+SSplotTimeseries(base.model1.3, subplot = 7, xlab = "")
+```
+
+```{r scen4, fig.cap="Main variables scenario s1.4"}
+par(mfrow = c(1, 3), mar = c(5, 4, 1, 1))
+SSplotTimeseries(base.model1.4, subplot = 1, xlab = "")
+SSplotTimeseries(base.model1.4, subplot = 9, xlab = "")
+SSplotTimeseries(base.model1.4, subplot = 7, xlab = "")
+```
+
+
+Selectivity curves by fleet and scenario are shown in Figure \@ref(fig:selectivity).
+```{r selectivity, fig.cap="Selectivity by fleet in each scenario"}
+par(mfrow = c(2, 2), mar = c(5, 4, 1, 1))
+for (nm in names(base_models)) {
+  SSplotSelex(base_models[[nm]], subplots = 1, mainTitle = FALSE)
+  mtext(nm, side = 3, line = 0.5, cex = 1.2)
+}
+```
+
+
+Fitted indices by scenario are presented in Figure \@ref(fig:index2).
+```{r index2, fig.cap="Standardized indices used as input in four model scenarios (s1.1 to s1.4)."}
+par(mfrow = c(2, 2), mar = c(5, 4, 2, 1))
+for (nm in names(base_models)) {
+  SSplotIndices(base_models[[nm]], subplots = 9)
+  mtext(nm, side = 3, line = 0.5, cex = 1.2)
+}
+```
+
+### Output time-series tables
+
+```{r output_tables, results='asis'}
+for (nm in names(base_models)) {
+  cat(sprintf("\n\n#### Outputs Variables `%s`\n\n", nm))
+  tbl <- base_models[[nm]]$timeseries[1:37, 2:8]
+  print(
+    kbl(tbl, booktabs = TRUE, format = "latex",
+        caption = sprintf("Main variables outputs from stock assessment krill in WAP `%s`", nm)) %>%
+      kable_styling(latex_options = c("scale_down", "striped"), font_size = 8)
+  )
+}
+```
+
+### Comparison between variables
+
+
+Figure \@ref(fig:popvar2) presents the time series of population variables by scenario.
+```{r popvar2, fig.cap="Time series of population variables by scenario"}
+# Add Model column before binding (avoids the previous double-rbind bug)
+outpsall <- map_dfr(names(base_models), function(nm) {
+  base_models[[nm]]$timeseries[1:37, 2:8] %>%
+    mutate(Model = nm)
+})
+
+outpsall_long <- outpsall %>%
+  pivot_longer(cols = c(Bio_all, Bio_smry, SpawnBio, Recruit_0),
+               names_to = "Variable", values_to = "Value") %>%
+  filter(Yr >= 1989, Yr <= 2020)
+
+ggplot(outpsall_long, aes(x = Yr, y = Value, color = Model, group = Model)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~Variable, ncol = 4, scales = "free_y") +
+  scale_color_manual(name = "Scenario", values = scen_colors) +
+  labs(x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "bottom")
+ggsave(here("Figs", "popvar_scenarios.png"), width = 8, height = 3, dpi = 300)
+```
+
+
+Total biomass trajectories by scenario are shown in Figure \@ref(fig:totbio_plot).
+```{r totbio_plot, fig.cap="Total biomass estimated by scenario — Subarea 48.1"}
+totbio <- map_dfr(
+  base_models,
+  ~ .x$timeseries[, c("Yr", "Bio_all", "Bio_smry", "SpawnBio", "Recruit_0")],
+  .id = "Model")
+
+totbio %>%
+  dplyr::filter(Yr >= 1991) %>%
+  ggplot(aes(x = Yr, y = Bio_all / 1e6, color = Model)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 1.5) +
+  labs(x = "", y = "Total biomass (Mt)", color = "Scenario") +
+  scale_color_manual(values = scen_colors) +
+  theme_bw()
+```
+
+Difference between scenarios regarding summary population variables in
+Table \@ref(tab:varcompar).
+
+```{r varcompar}
+prom_hist <- outpsall %>%
+  group_by(Model) %>%
+  summarise(Bio_all_hist    = mean(Bio_all / 1e6, na.rm = TRUE),
+            Recruit_0_hist  = mean(Recruit_0 / 1e6, na.rm = TRUE))
+
+ult_5 <- outpsall %>%
+  group_by(Model) %>%
+  filter(Yr %in% sort(unique(Yr), decreasing = TRUE)[1:5]) %>%
+  summarise(Bio_all_5yr   = mean(Bio_all / 1e6, na.rm = TRUE),
+            Recruit_0_5yr = mean(Recruit_0 / 1e6, na.rm = TRUE))
+
+base_vals <- filter(prom_hist, Model == "s1.1")
+
+resumen <- left_join(prom_hist, ult_5, by = "Model") %>%
+  mutate(
+    Bio_all_hist_pct   = 100 * (Bio_all_hist   - base_vals$Bio_all_hist)   / base_vals$Bio_all_hist,
+    Recruit_0_hist_pct = 100 * (Recruit_0_hist - base_vals$Recruit_0_hist) / base_vals$Recruit_0_hist,
+    Bio_all_5yr_pct    = 100 * (Bio_all_5yr    - base_vals$Bio_all_5yr)    / base_vals$Bio_all_5yr,
+    Recruit_0_5yr_pct  = 100 * (Recruit_0_5yr  - base_vals$Recruit_0_5yr)  / base_vals$Recruit_0_5yr
+  )
+
+resumen %>%
+  mutate(across(where(is.numeric), ~ round(.x, 2))) %>%
+  kbl(caption = "Summary comparison across scenarios") %>%
+  kable_styling(full_width = FALSE,
+                bootstrap_options = c("striped", "hover"))
+```
+
+```{r save_varcompar, echo=FALSE}
+write.csv(resumen, here("outputs", "summary_popvars.csv"), row.names = FALSE)
+```
+
+### Scenario comparisons (SSplotComparisons)
+
+```{r ssplot_compare_all, eval=FALSE, echo=TRUE}
+biglist <- SSgetoutput(keyvec = NULL,
+                       dirvec = unname(dirs),
+                       getcovar = FALSE)
+summaryoutput <- SSsummarize(biglist)
+
+SSplotComparisons(summaryoutput,
+                  legendlabels = c("s1.1 (Ref Model)", "s1.2", "s1.3", "s1.4"),
+                  filenameprefix = "COM1",
+                  labels = c("Year", "Spawning biomass (t)",
+                             "Relative spawning biomass",
+                             "Age-0 recruits (1,000s)",
+                             "Recruitment deviations", "Index", "Log index",
+                             "1 - SPR", "Density", "Management target",
+                             "Minimum stock size threshold",
+                             "Spawning output", "Harvest rate"),
+                  png = TRUE, plotdir = Figs)
+```
+
+### R0 comparison
+
+
+The estimated R0 distributions by scenario are shown in Figure \@ref(fig:r0).
+```{r r0, warning=FALSE, message=FALSE, fig.cap="R0 probability predicted by scenario"}
+r0_vals <- map_dfr(names(base_models), function(nm) {
+  idx <- if (nm %in% c("s1.2", "s1.4")) 2L else 1L
+  data.frame(model = nm,
+             value = base_models[[nm]]$jitter_info[idx, 1],
+             cv    = base_models[[nm]]$jitter_info[idx, 6])
+})
+
+x_vals <- seq(10, 30, length.out = 1000)
+
+dens_data <- r0_vals %>%
+  rowwise() %>%
+  mutate(density = list(data.frame(
+    x = x_vals, y = dnorm(x_vals, mean = value, sd = cv), model = model))) %>%
+  dplyr::select(density) %>%
+  unnest(cols = c(density))
+
+ggplot(dens_data, aes(x = x, y = y, color = model, fill = model)) +
+  geom_area(alpha = 0.3, position = "identity", size = 0) +
+  geom_line(size = 1.2) +
+  scale_color_manual(values = scen_colors, name = NULL) +
+  scale_fill_manual(values = scen_colors, name = NULL) +
+  labs(x = "ln(R0)", y = "Density") +
+  xlim(20, 30) +
+  theme_bw(base_size = 14) +
+  theme(legend.position = "bottom",
+        panel.grid.minor = element_blank())
+ggsave(here("Figs", "R0_distributions.png"), width = 7, height = 4, dpi = 300)
+```
+
+### Cumulative comparison
+
+
+Figure \@ref(fig:cumsum) shows the distribution of population variables across scenarios.
+```{r cumsum, fig.cap="Comparison of population variable distributions across scenarios"}
+err_long <- map_dfr(names(base_models), function(nm) {
+  ts <- base_models[[nm]]$timeseries
+  data.frame(
+    Bio_all  = ts$Bio_all,
+    Bio_smry = ts$Bio_smry,
+    SpawnBio = ts$SpawnBio,
+    Recruit_0 = ts$Recruit_0,
+    Model    = nm
+  )
+}) %>%
+  pivot_longer(cols = c(Bio_all, Bio_smry, SpawnBio, Recruit_0),
+               names_to = "Variable", values_to = "Value")
+
+comsum <- ggplot(err_long, aes(x = Model, y = Value, fill = Model)) +
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  facet_wrap(~Variable, ncol = 4, scales = "free_y") +
+  scale_fill_manual(name = "Scenario", values = scen_colors) +
+  labs(x = "", y = "") +
+  theme_few() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "none")
+
+comsum
+ggsave(filename = "Figs/COMSUM.png", plot = comsum,
+       width = 10, height = 4, dpi = 300)
+```
+
+## Autocorrelation in Recruitment
+
+
+Autocorrelation in recruitment by scenario is presented in Figure \@ref(fig:acf).
+```{r acf, fig.cap="Autocorrelation in recruitment by scenario"}
+acf_plots <- imap(base_models, ~ {
+  ggAcf(.x$recruit$pred_recr) + ggtitle(.y) + theme_few()
+})
+p_acf <- ggarrange(plotlist = acf_plots, ncol = 4, nrow = 1, common.legend = TRUE)
+p_acf
+ggsave(here("Figs", "ACF_recruitment.png"), p_acf, width = 12, height = 3, dpi = 300)
+```
+
+## Relationship Stock-Recruit
+
+\[
+R = \frac{R_0 \cdot S}{S_0 (1 - h) + S (5h - 1)}
+\]
+
+```{r srr_calc}
+shapes <- c("s1.1" = 5, "s1.2" = 6, "s1.3" = 15, "s1.4" = 4)
+
+plot_data  <- list()
+curve_data <- list()
+label_data <- list()
+
+for (nm in names(base_models)) {
+  model <- base_models[[nm]]
+  l  <- model$recruit$SpawnBio
+  m  <- model$recruit$pred_recr
+  yr <- model$timeseries$Yr[1:35]
+
+  valid <- which(is.finite(l) & is.finite(m) & l > 0 & m > 0)
+  l  <- l[valid]; m <- m[valid]; yr <- yr[valid]
+
+  plot_data[[nm]]  <- data.frame(l = l, m = m, yr = yr, Group = nm)
+  label_data[[nm]] <- filter(plot_data[[nm]], yr %% 3 == 0)
+
+  tryCatch({
+    fit    <- nls(m ~ (a * l) / (1 + b * l),
+                  start = list(a = max(m), b = 1 / max(l)),
+                  data  = data.frame(l, m))
+    l_pred <- seq(min(l), max(l), length.out = 100)
+    curve_data[[nm]] <- data.frame(
+      l = l_pred, m = predict(fit, newdata = data.frame(l = l_pred)), Group = nm)
+  }, error = function(e)
+    message("Beverton-Holt fit failed for ", nm, ": ", e$message))
+}
+
+plot_data_all  <- bind_rows(plot_data)
+curve_data_all <- bind_rows(curve_data)
+label_data_all <- bind_rows(label_data)
+
+srr_sce <- ggplot() +
+  geom_point(data = plot_data_all,
+             aes(x = l, y = m, shape = Group), size = 2) +
+  geom_line(data = curve_data_all,
+            aes(x = l, y = m, color = Group), linewidth = 1.2) +
+  geom_text_repel(data = label_data_all,
+                  aes(x = l, y = m, label = yr, color = Group),
+                  size = 4, max.overlaps = 50) +
+  scale_shape_manual(values = shapes) +
+  scale_color_manual(values = scen_colors) +
+  labs(x = "SSB", y = "Predicted Recruitment",
+       shape = "Model", color = "Model") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+## Productivity and Interannual Variability
+
+```{r productivity_calc}
+resultados <- imap_dfr(base_models, function(mod, nm) {
+  mod$SPAWN_RECR_CURVE %>%
+    mutate(Scenario     = nm,
+           Productividad = Recruitment / SSB,
+           Cambio_Recruit = c(NA, diff(Recruitment)) / lag(Recruitment) * 100,
+           Cambio_SSB     = c(NA, diff(SSB)) / lag(SSB) * 100)
+})
+
+prod <- ggplot(resultados, aes(x = `SSB/SSB_virgin`, y = Productividad,
+                               color = Scenario)) +
+  geom_point(size = 1.1) +
+  scale_color_manual(name = "", values = scen_colors) +
+  labs(y = "Recruitment / SSB", x = "SSB / SSB_virgin") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+
+Stock–recruitment relationships and productivity are shown in Figure \@ref(fig:recpro).
+```{r recpro, fig.cap="Left: Stock–recruitment relationships. Right: Recruitment per unit SSB vs. relative SSB."}
+p_recpro <- ggarrange(srr_sce, prod, ncol = 2)
+p_recpro
+ggsave(here("Figs", "SRR_productivity.png"), p_recpro, width = 12, height = 5, dpi = 300)
+```
+
+## Exploitation Rate
+
+
+Exploitation rates over time by scenario are presented in Figure \@ref(fig:hrate).
+```{r hrate, warning=FALSE, message=FALSE, fig.cap="Harvest rate by scenario over time"}
+df_exploit <- map_dfr(names(base_models), function(nm) {
+  base_models[[nm]]$exploitation[, c(1, 4)] %>%
+    mutate(model = nm)
+})
+colnames(df_exploit) <- c("year", "exploitation_rate", "model")
+
+ggplot(df_exploit, aes(x = year, y = exploitation_rate, color = model)) +
+  geom_line() +
+  geom_point(size = 3, shape = 16) +
+  scale_color_manual(values = scen_colors) +
+  scale_x_continuous(breaks = seq(1998, 2020, by = 1)) +
+  xlim(1997, 2020) +
+  labs(x = "", y = "Exploitation Rate", color = "Model") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+ggsave(here("Figs", "harvest_rate.png"), width = 9, height = 4, dpi = 300)
+```
+
+## Diagnosis and Robustness
+
+A rigorous model diagnosis is essential to ensure the reliability and
+robustness of stock assessment models. Key steps include:
+
+1. **Convergence check** — final criterion of 1.0e-04.
+2. **Residual analysis** — visual and statistical evaluation.
+3. **Retrospective analysis** — Mohn's rho for consistency.
+4. **Likelihood profile analysis** — parameter uncertainty and sensitivity.
+
+This framework follows the recommendations of @Carvalho2021b.
+
+### Residuals
+
+
+Pearson residuals by scenario and fleet are shown in Figure \@ref(fig:pearson).
+```{r pearson, fig.cap="Pearson residuals by scenario and fleet"}
+# Helper: normalize column names across r4ss versions
+normalize_lendbase <- function(df, model_name) {
+  if (!"Yr" %in% names(df) && "year" %in% names(df))
+    df <- dplyr::rename(df, Yr = year)
+  bin_col  <- intersect(c("Bin", "bin", "Lbin_lo", "lbin_lo"), names(df))[1]
+  if (!is.na(bin_col) && bin_col != "Bin")
+    df <- dplyr::rename(df, Bin = !!rlang::sym(bin_col))
+  pear_col <- intersect(c("Pearson", "pearson"), names(df))[1]
+  if (!is.na(pear_col) && pear_col != "Pearson")
+    df <- dplyr::rename(df, Pearson = !!rlang::sym(pear_col))
+  fleet_col <- intersect(c("Fleet", "FltSvy", "fleet", "Flt"), names(df))[1]
+  if (!is.na(fleet_col) && fleet_col != "Fleet")
+    df <- dplyr::rename(df, Fleet = !!rlang::sym(fleet_col))
+
+  df %>%
+    dplyr::filter(Pearson < 5) %>%
+    dplyr::select(Yr, Bin, Pearson, Fleet) %>%
+    dplyr::mutate(Fleet = dplyr::recode(as.character(Fleet), !!!fleet_labels),
+                  Model = model_name)
+}
+
+df_pearson <- map2_dfr(
+  base_models,
+  paste("Model", c("1.1", "1.2", "1.3", "1.4")),
+  ~ normalize_lendbase(.x$lendbase, .y))
+
+ggplot(df_pearson, aes(x = Yr, y = Bin)) +
+  geom_point(aes(fill = Pearson, size = abs(Pearson)),
+             shape = 21, color = "grey30", stroke = 0.2, alpha = 0.25) +
+  scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = 0) +
+  scale_size_continuous(range = c(0.5, 2.5)) +
+  facet_grid(Model ~ Fleet) +
+  theme_few() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 5),
+        axis.text.y = element_text(size = 5),
+        strip.text  = element_text(size = 8),
+        legend.position = "bottom") +
+  labs(x = "", y = "Length (cm)", fill = "Pearson") +
+  guides(size = "none", alpha = "none")
+ggsave(here("Figs", "Pearson_residuals.png"), width = 14, height = 8, dpi = 300)
+```
+
+
+Temporal trends in Pearson residuals by fleet and scenario are shown in Figure \@ref(fig:pearson_trend).
+```{r pearson_trend, fig.cap="Pearson residual trend by scenario and fleet"}
+lm_stats <- df_pearson %>%
+  group_by(Model, Fleet) %>%
+  do({
+    mod <- lm(Pearson ~ Yr, data = .)
+    out <- tidy(mod)
+    data.frame(
+      slope = round(out$estimate[out$term == "Yr"], 3),
+      pval  = round(out$p.value[out$term  == "Yr"], 3))
+  }) %>%
+  ungroup()
+
+ggplot(df_pearson, aes(x = Yr, y = Pearson)) +
+  geom_point(alpha = 0.5, size = 0.7, color = "grey30") +
+  geom_smooth(method = "lm", se = TRUE, color = "blue", linewidth = 0.6) +
+  facet_grid(Model ~ Fleet) +
+  theme_bw(base_size = 9) +
+  labs(x = "Year", y = "Pearson residuals") +
+  theme(strip.text = element_text(size = 7)) +
+  geom_text(data = lm_stats,
+            aes(x = min(df_pearson$Yr) + 2,
+                y = max(df_pearson$Pearson, na.rm = TRUE) - 0.3,
+                label = paste0("slope=", slope, "\np=", pval)),
+            inherit.aes = FALSE, size = 2.5, hjust = 0)
+ggsave(here("Figs", "Pearson_trend.png"), width = 14, height = 8, dpi = 300)
+```
+
+\end{landscape}
+
+\pagebreak
+
+```{r build_resid_all}
+# Normalize helper reused for both cpue and lendbase
+norm_yr   <- function(df) {
+  if (!"Yr" %in% names(df) && "year" %in% names(df))
+    dplyr::rename(df, Yr = year)
+  else df
+}
+norm_fleet <- function(df) {
+  if (!"Fleet" %in% names(df)) {
+    fc <- intersect(c("FltSvy", "fleet", "Flt"), names(df))[1]
+    if (!is.na(fc)) dplyr::rename(df, Fleet = !!rlang::sym(fc))
+    else df
+  } else df
+}
+
+cpue_resid <- map_dfr(names(base_models),
+  ~ norm_yr(base_models[[.x]]$cpue) %>% mutate(model = .x))
+
+len_resid <- map_dfr(names(base_models),
+  ~ norm_yr(norm_fleet(base_models[[.x]]$lendbase)) %>% mutate(model = .x))
+
+cpue_df <- cpue_resid %>%
+  transmute(Yr, Obs, Exp, model,
+            Fleet_name = as.character(Fleet_name), type = "Index")
+
+len_df <- len_resid %>%
+  transmute(Yr, Obs, Exp, model,
+            Fleet_name = as.character(Fleet), type = "Length")
+
+resid_all <- bind_rows(cpue_df, len_df) %>%
+  mutate(Fleet_name = dplyr::recode(Fleet_name, !!!fleet_labels))
+```
+
+### Residual consistency
+
+
+Runs tests for length composition residuals are presented below.
+```{r runs_len}
+par(mfrow = c(2, 4), mar = c(5, 4, 2, 1))
+for (mod in base_models)
+  SSplotRunstest(mod, subplots = "len", add = TRUE, plot = TRUE, plotdir = Figs)
+```
+
+
+Runs tests for CPUE residuals are presented below.
+```{r runs_cpue}
+par(mfrow = c(2, 5), mar = c(5, 4, 2, 1))
+for (mod in base_models)
+  SSplotRunstest(mod, subplots = "cpue", add = TRUE, plot = TRUE, plotdir = Figs)
+```
+
+### Residual Analysis and RMSE
+
+
+Figure \@ref(fig:rmse1) shows RMSE time series for length compositions by scenario.
+```{r rmse1, fig.height=8, fig.width=8, fig.cap="Time series of RMSE of length compositions by scenario"}
+par(mfrow = c(2, 2), mar = c(5, 4, 2, 1))
+rmse_len  <- lapply(base_models, SSplotJABBAres, subplots = "len",  add = TRUE)
+```
+
+
+Figure \@ref(fig:rmse2) shows RMSE time series for CPUE by scenario.
+```{r rmse2, fig.height=8, fig.width=8, fig.cap="Time series of RMSE of CPUE by scenario"}
+par(mfrow = c(2, 2), mar = c(5, 4, 2, 1))
+rmse_cpue <- lapply(base_models, SSplotJABBAres, subplots = "cpue", add = TRUE)
+```
+
+### Comparison RMSE
+
+```{r rmse_data}
+dfrmse <- data.frame(
+  s1.1 = as.numeric(base.model1.1$index_variance_tuning_check$RMSE),
+  s1.2 = as.numeric(base.model1.2$index_variance_tuning_check$RMSE[1:10]),
+  s1.3 = as.numeric(base.model1.3$index_variance_tuning_check$RMSE[1:10]),
+  s1.4 = as.numeric(base.model1.4$index_variance_tuning_check$RMSE[1:10]))
+
+dfrmse_long <- dfrmse %>%
+  pivot_longer(cols = everything(),
+               names_to = "variable", values_to = "value")
+
+rmse_plot <- ggplot(dfrmse_long, aes(x = variable, y = value, fill = variable)) +
+  geom_boxplot(width = 0.2, alpha = 0.8, outliers = FALSE) +
+  geom_jitter(width = 0.01, alpha = 0.3) +
+  scale_fill_manual(name = "Scenario", values = scen_colors) +
+  labs(x = "", y = "RMSE") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+dfpearson_long <- map_dfr(names(base_models), function(nm) {
+  data.frame(Pearson  = base_models[[nm]]$lendbase$Pearson,
+             Scenario = nm)
+})
+
+pearson_plot <- ggplot(dfpearson_long, aes(x = Scenario, y = Pearson, fill = Scenario)) +
+  geom_boxplot(width = 0.2, alpha = 0.8, outliers = FALSE) +
+  scale_fill_manual(name = "Scenario", values = scen_colors) +
+  labs(x = "", y = "Residual") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+Figure \@ref(fig:rmse3) compares RMSE and Pearson residual distributions across scenarios.
+```{r rmse3, fig.cap="RMSE and Pearson residuals by scenario"}
+ggarrange(rmse_plot, pearson_plot, ncol = 2)
+```
+
+### Retrospective Analysis
+
+```{r retro_run, eval=FALSE, echo=TRUE}
+for (d in dirs) {
+  retro(dir = d, oldsubdir = "", newsubdir = "Retrospective",
+        years = 0:-5, exe = "ss_osx",
+        extras = "-nox", skipfinished = FALSE)
+}
+```
+
+```{r retro_load, message=FALSE, warning=FALSE}
+retro_summaries <- lapply(dirs, function(d) {
+  models <- SSgetoutput(
+    dirvec = file.path(d, "Retrospective", paste0("retro", 0:-4)))
+  SSsummarize(models)
+})
+# Convenience aliases
+retroSummary1.1 <- retro_summaries$s1.1
+retroSummary1.2 <- retro_summaries$s1.2
+retroSummary1.3 <- retro_summaries$s1.3
+retroSummary1.4 <- retro_summaries$s1.4
+```
+
+
+Retrospective patterns for spawning biomass are shown in Figure \@ref(fig:retrossb).
+```{r retrossb, fig.cap="Retrospective analysis for spawning biomass by scenario"}
+par(mfrow = c(2, 2), mar = c(5, 4, 1, 1))
+for (rs in retro_summaries)
+  SSplotRetro(rs, add = TRUE, forecast = FALSE,
+              legend = TRUE, verbose = FALSE, subplots = "SSB")
+```
+
+
+Retrospective patterns for fishing mortality are shown in Figure \@ref(fig:retrof).
+```{r retrof, fig.cap="Retrospective analysis for fishing mortality by scenario"}
+par(mfrow = c(2, 2), mar = c(5, 4, 1, 1))
+for (rs in retro_summaries)
+  SSplotRetro(rs, add = TRUE, forecast = FALSE,
+              legend = TRUE, verbose = FALSE, subplots = "F")
+```
+
+```{r rho_tables}
+# Build combined Rho table across all scenarios and quantities
+tablebias_list <- lapply(names(retro_summaries), function(nm) {
+  rs <- retro_summaries[[nm]]
+  bind_rows(
+    data.frame(Model = nm, Quant = "SSB",
+               SShcbias(rs, quant = "SSB", verbose = FALSE)),
+    data.frame(Model = nm, Quant = "F",
+               SShcbias(rs, quant = "F",   verbose = FALSE))
+  )
+})
+
+tablebias_combined <- bind_rows(tablebias_list) %>%
+  mutate(Rho = factor(Rho, levels = unique(Rho)))
+
+# Per-scenario individual tables (SSB and F)
+for (nm in names(retro_summaries)) {
+  rs <- retro_summaries[[nm]]
+  cat(sprintf("\n\n#### Rho — %s\n\n", nm))
+  print(kbl(SShcbias(rs, quant = "SSB", verbose = FALSE),
+            booktabs = TRUE, format = "latex",
+            caption = sprintf("Rho SSB — %s", nm)) %>%
+          kable_styling(latex_options = "HOLD_position"))
+  print(kbl(SShcbias(rs, quant = "F", verbose = FALSE),
+            booktabs = TRUE, format = "latex",
+            caption = sprintf("Rho F — %s", nm)) %>%
+          kable_styling(latex_options = "HOLD_position"))
+}
+```
+
+
+Retrospective bias (Rho) by scenario and quantity is shown in Figure \@ref(fig:bias).
+```{r bias, fig.cap="Retrospective bias (Rho) in SSB and F by scenario and peel year"}
+ggplot(tablebias_combined,
+       aes(y = Rho, group = Model, fill = Model)) +
+  geom_point(size = 3, shape = 21, color = "black") +
+  geom_hline(yintercept = 0, color = "grey") +
+  facet_wrap(~Quant, scales = "free_y") +
+  scale_fill_manual(name = "Scenario", values = scen_colors) +
+  scale_color_manual(name = "Scenario", values = scen_colors) +
+  labs(x = "", y = "Rho Value") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "bottom")
+ggsave(here("Figs", "retrospective_rho.png"), width = 8, height = 4, dpi = 300)
+```
+
+```{r rhoparameters}
+kbl(tablebias_combined,
+    booktabs = TRUE, format = "latex",
+    caption = "Rho parameter by model and quantity (SSB and F)") %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+### Hindcast Cross-Validation and Prediction Skill
+
+
+Hindcast cross-validation results by scenario are shown in Figure \@ref(fig:hcval_all).
+```{r hcval_all, fig.cap="Hindcast validation by scenario", results='asis'}
+hcval_list <- list()
+for (nm in names(retro_summaries)) {
+  cat(sprintf("\n\n#### Hindcast — `%s`\n\n", nm))
+  par(mfrow = c(3, 3), mar = c(5, 4, 2, 1))
+  hcval_list[[nm]] <- SSplotHCxval(retro_summaries[[nm]],
+                                   add = TRUE, verbose = FALSE,
+                                   legendcex = 0.7)
+}
+```
+
+### Model Diagnostics Summary
+
+```{r diag_build}
+# Helper: extract all diagnostics for one scenario
+make_diag <- function(nm, mod, rmse_c, rmse_l, hci, bias_ssb, bias_f) {
+  data.frame(
+    Scenario          = nm,
+    Convergency       = mod$maximum_gradient_component,
+    AIC               = as.numeric(
+      2 * dim(mod$estimated_non_dev_parameters)[1] +
+      2 * mod$likelihoods_used[1, 1]),
+    Total_like        = mod$likelihoods_used$values[
+      rownames(mod$likelihoods_used) == "TOTAL"],
+    N_Params          = as.numeric(
+      2 * dim(mod$estimated_non_dev_parameters)[1]),
+    Survey_like       = mod$likelihoods_used$values[
+      rownames(mod$likelihoods_used) == "Survey"],
+    Length_comp_like  = mod$likelihoods_used$values[
+      rownames(mod$likelihoods_used) == "Length_comp"],
+    RMSE_index        = rmse_c$RMSE.perc[rmse_c$indices == "Combined"],
+    RMSE_length       = rmse_l$RMSE.perc[rmse_l$indices == "Combined"],
+    MASE              = mean(hci$MAE.base, na.rm = TRUE),
+    Retro_Rho_ssb     = bias_ssb[5, 3],
+    Forecast_Rho_ssb  = bias_ssb[5, 4],
+    Forecast_Rho_f    = bias_f[5, 3],
+    Rho_f             = bias_f[5, 4])
+}
+
+# Unpack per-scenario objects from previously computed lists
+diag_all <- bind_rows(
+  make_diag("s1.1", base.model1.1,
+            rmse_cpue[[1]], rmse_len[[1]], hcval_list[["s1.1"]],
+            SShcbias(retroSummary1.1, quant = "SSB", verbose = FALSE),
+            SShcbias(retroSummary1.1, quant = "F",   verbose = FALSE)),
+  make_diag("s1.2", base.model1.2,
+            rmse_cpue[[2]], rmse_len[[2]], hcval_list[["s1.2"]],
+            SShcbias(retroSummary1.2, quant = "SSB", verbose = FALSE),
+            SShcbias(retroSummary1.2, quant = "F",   verbose = FALSE)),
+  make_diag("s1.3", base.model1.3,
+            rmse_cpue[[3]], rmse_len[[3]], hcval_list[["s1.3"]],
+            SShcbias(retroSummary1.3, quant = "SSB", verbose = FALSE),
+            SShcbias(retroSummary1.3, quant = "F",   verbose = FALSE)),
+  make_diag("s1.4", base.model1.4,
+            rmse_cpue[[4]], rmse_len[[4]], hcval_list[["s1.4"]],
+            SShcbias(retroSummary1.4, quant = "SSB", verbose = FALSE),
+            SShcbias(retroSummary1.4, quant = "F",   verbose = FALSE))
+)
+
+diag_tidy <- diag_all %>%
+  pivot_longer(cols = -Scenario, names_to = "Description", values_to = "Value") %>%
+  pivot_wider(names_from = Scenario, values_from = Value)
+
+diag_tidy[, 2:5] <- lapply(diag_tidy[, 2:5],
+  function(x) as.numeric(format(round(x, 3), nsmall = 3)))
+write.csv(diag_tidy, here("outputs", "model_diagnostics.csv"), row.names = FALSE)
+```
+
+```{r likecom}
+diag_tidy %>%
+  kbl(digits = 3, caption = "Model Diagnosis Results",
+      align = "c", booktabs = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE, position = "center") %>%
+  row_spec(0, bold = TRUE)
+```
+
+### Parameter and Likelihood Comparison
+
+```{r parametercomparison, warning=FALSE, message=FALSE}
+biglist       <- SSgetoutput(keyvec = NULL, dirvec = unname(dirs), getcovar = FALSE)
+summaryoutput <- SSsummarize(biglist)
+
+tablelike <- SStableComparisons(
+  summaryoutput,
+  likenames  = c("TOTAL", "Survey", "Length_comp", "Age_comp",
+                 "priors", "Size_at_age"),
+  names      = c("Recr_Virgin", "R0", "SSB_Virg", "Bratio_2020", "SPRratio_2020"),
+  digits     = NULL,
+  modelnames = names(dirs),
+  csv        = TRUE,
+  csvdir     = here(),
+  csvfile    = "parameter_comparison_table.csv",
+  verbose    = TRUE, mcmc = FALSE)
+
+tablelike %>%
+  mutate(across(where(is.numeric),
+                ~ format(.x, scientific = FALSE, digits = 4))) %>%
+  dplyr::select(where(~ !all(is.na(.)))) %>%
+  kbl(booktabs = TRUE, format = "latex",
+      caption = "Model parameter and likelihood comparison") %>%
+  kable_styling(latex_options = "scale_down")
+```
+
+### Total Likelihood Composition
+
+
+Likelihood composition by scenario is shown in Figure \@ref(fig:likecompo2).
+```{r likecompo2, fig.cap="Total likelihood composition by scenario"}
+like_df <- map_dfr(names(base_models), function(nm) {
+  base_models[[nm]]$likelihoods_used %>%
+    dplyr::select(values) %>%
+    mutate(Componente = rownames(base_models[[nm]]$likelihoods_used),
+           Modelo = nm)
+})
+
+ggplot(like_df %>% filter(values > 1),
+       aes(x = Componente, y = values, fill = Modelo)) +
+  geom_col(position = position_dodge(), width = 0.7) +
+  coord_flip() +
+  scale_fill_manual(name = "Scenario", values = scen_colors) +
+  labs(x = "", y = "Log-Normal Likelihood") +
+  theme_few()
+ggsave(here("Figs", "likelihood_components.png"), width = 8, height = 5, dpi = 300)
+```
+
+### Statistical Differences Between Models
+
+```{r residual_stats, message=FALSE, warning=FALSE}
+resid_all <- resid_all %>% mutate(residual = Obs - Exp)
+
+resid_stats <- resid_all %>%
+  group_by(type, model) %>%
+  summarise(N    = n(),
+            Mean = mean(residual, na.rm = TRUE),
+            SD   = sd(residual,   na.rm = TRUE),
+            .groups = "drop")
+
+shapiro_p <- resid_all %>%
+  group_by(type, model) %>%
+  summarise(
+    shapiro_p = ifelse(n() > 3, shapiro.test(residual)$p.value, NA),
+    .groups = "drop")
+
+ljung_p <- resid_all %>%
+  group_by(type, model) %>%
+  summarise(
+    ljung_p = ifelse(n() > 10,
+                     Box.test(residual, lag = 10, type = "Ljung-Box")$p.value, NA),
+    .groups = "drop")
+
+bp_p <- resid_all %>%
+  group_by(type, model) %>%
+  summarise(
+    bp_p = ifelse(n() > 3,
+                  bptest(lm(residual ~ Yr, data = cur_data()))$p.value, NA),
+    .groups = "drop")
+```
+
+```{r residualsummary, message=FALSE, warning=FALSE}
+resid_stats %>%
+  left_join(shapiro_p, by = c("type", "model")) %>%
+  left_join(ljung_p,   by = c("type", "model")) %>%
+  left_join(bp_p,      by = c("type", "model")) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 5))) %>%
+  kbl(caption = "Summary statistics and residual diagnostic tests by type and model",
+      digits = 5, align = "c", booktabs = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE, position = "center",
+                latex_options = "HOLD_position") %>%
+  row_spec(0, bold = TRUE) %>%
+  column_spec(1, bold = TRUE)
+```
+
+### Spawning Biomass Comparison: s1.1 vs s1.4
+
+```{r bio_stats}
+spawn_bio_1 <- base.model1.1$timeseries$SpawnBio
+spawn_bio_4 <- base.model1.4$timeseries$SpawnBio
+
+shapiro.test(spawn_bio_1)
+shapiro.test(spawn_bio_4)
+
+leveneTest(c(spawn_bio_1, spawn_bio_4),
+           group = rep(c("Model 1.1", "Model 1.4"),
+                       each = length(spawn_bio_1)))
+
+t.test(spawn_bio_1, spawn_bio_4, var.equal = TRUE)
+wilcox.test(spawn_bio_1, spawn_bio_4)
+```
+
+Both tests strongly indicate that Model s1.1 and Model s1.4 produce
+significantly different estimates of spawning biomass. Model s1.1
+predicts higher values, suggesting that the ecosystem components in
+s1.4 result in more conservative stock status estimates.
+
+# REFERENCES
