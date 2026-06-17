@@ -30,7 +30,61 @@ This repository contains the Stock Synthesis 3 (SS3 v3.30.21) assessment model f
 
 ## Reproducibility
 
-All SS3 model configuration files are available within each scenario folder. Additional information required to fully reproduce the analysis can be shared upon request.
+All SS3 model configuration files (`starter.ss`, `forecast.ss`, `control.ss`, `data.ss`) are available within each scenario folder. To run the models, the SS3 executable is required and can be downloaded directly from R using `r4ss`:
+
+```r
+r4ss::get_ss3_exe(dir = "s1.1", version = "v3.30.21")
+```
+
+Run the same line for each scenario folder (`s1.2`, `s1.3`, `s1.4`).
+
+### R Packages
+
+```r
+pkgs <- c("r4ss", "ss3diags", "doParallel",
+          "tibble", "tidyr", "tidyverse",
+          "readxl", "openxlsx", "broom",
+          "forecast", "mixR", "lmtest",
+          "car", "ggpubr", "ggthemes",
+          "ggridges", "ggrepel", "cowplot",
+          "kableExtra", "flextable", "here",
+          "scales", "patchwork")
+
+instalar <- pkgs[!pkgs %in% installed.packages()]
+if (length(instalar) > 0) install.packages(instalar)
+invisible(lapply(pkgs, library, character.only = TRUE))
+```
+
+### Run Models
+
+```r
+directorios <- c("s1.1", "s1.2", "s1.3", "s1.4")
+
+for (dir in directorios) {
+  r4ss::run(
+    dir = dir,
+    exe = "ss_osx",       # use "ss" on Windows
+    skipfinished = FALSE,
+    show_in_console = TRUE
+  )
+}
+```
+
+### Read Outputs
+
+```r
+library(here)
+
+dir1.1 <- here("s1.1")
+dir1.2 <- here("s1.2")
+dir1.3 <- here("s1.3")
+dir1.4 <- here("s1.4")
+
+base.model1.1 <- SS_output(dir = dir1.1, covar = TRUE, forecast = TRUE)
+base.model1.2 <- SS_output(dir = dir1.2, covar = TRUE, forecast = TRUE)
+base.model1.3 <- SS_output(dir = dir1.3, covar = TRUE, forecast = TRUE)
+base.model1.4 <- SS_output(dir = dir1.4, covar = TRUE, forecast = TRUE)
+```
 
 ## Contributions
 
