@@ -1,108 +1,148 @@
 ---
 title: "Supplementary Material 2"
-subtitle: "Mathematical Formulas in SS3 for Krill Stock Assessment"
-output: 
-  pdf_document:
-    latex_engine: xelatex
-    toc: true
-    toc_depth: 3
+subtitle: "Mathematical Formulas and parameters used in SS3 for Krill Stock Assessment"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+bibliography: bib/SA_krill.bib
+csl: bib/apa.csl
+link-citations: yes
+linkcolor: blue
+output:
+  bookdown::pdf_document2:
+    keep_md: false
+    toc: false
     number_sections: false
-geometry: margin=2cm
-fontsize: 11pt
+    fontsize: 11pt
+    linestretch: 1.5
+    latex_engine: xelatex
 header-includes:
   - \usepackage{amsmath}
   - \usepackage{amssymb}
-  - \usepackage{bm}
-classoption: fleqn
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+always_allow_html: true
 ---
 
-\pagebreak
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
 
-### State Model
+```{r libs, echo=FALSE, message=FALSE, warning=FALSE}
+library(here)
+library(r4ss)
+library(dplyr)
+library(kableExtra)
 
-- Population Dynamics
+kbl_pdf <- function(x, caption = NULL, scale = TRUE, font = 9, ...) {
+  opts <- c("HOLD_position", if (scale) "scale_down")
+  kbl(x, booktabs = TRUE, format = "latex", caption = caption, ...) %>%
+    kable_styling(latex_options = opts, font_size = font, full_width = FALSE)
+}
+```
+
+\newpage
+
+# Main equations
+
+## State Model
+
+**Population Dynamics**
 
 \begin{equation}
-N_{a,l,s,t+1} = N_{a-1,l,s,t} \cdot e^{-(M_{a-1,l,s,t} + F_{a-1,l,s,t})} \cdot T_{a-1 \rightarrow a,l,s,t} + R_{a,l,s,t}
+N_{a,l,s,t+1} = N_{a-1,l,s,t} \cdot e^{-(M_{a-1,l,s,t} + F_{a-1,l,s,t})} \cdot T_{a-1 \to a,l,s,t} + R_{a,l,s,t}
 \end{equation}
 
-- Total Mortality
+**Total Mortality**
 
 \begin{equation}
 Z_{a,l,s,t} = M_{a,l,s,t} + F_{a,l,s,t}
 \end{equation}
 
-- Spawning Stock Biomass
+**Spawning Stock Biomass**
 
 \begin{equation}
 SSB_t = \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot W_{a,l,s,t} \cdot \text{Mat}_{a,l,s,t} \cdot \text{Fec}_{a,l,s,t}
 \end{equation}
 
-- Total Biomass
+**Total Biomass**
 
 \begin{equation}
 B_t = \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot W_{a,l,s,t}
 \end{equation}
 
-### Sub-models
+## Sub-models
 
-- Selectivity
+**Selectivity**
 
 \begin{equation}
-S_{a,l,f} = \frac{1}{1 + e^{-\ln(19) \cdot \frac{(L_l - L_{50,f})}{(L_{95,f} - L_{50,f})}}}
+S_{a,l,f} = \frac{1}{1 + e^{-\ln(19) \cdot \frac{L_l - L_{50,f}}{L_{95,f} - L_{50,f}}}}
 \end{equation}
 
 \begin{equation}
-S_{a,f,t} = \sum_l S_{l,f,t} \cdot P(L_l|a,t)
+S_{a,f,t} = \sum_l S_{l,f,t} \cdot P(L_l \mid a, t)
 \end{equation}
 
-- Stock-Recruitment
+**Stock-Recruitment**
 
 \begin{equation}
-R_t = \frac{\alpha \cdot SSB_{t-\tau}}{\beta + SSB_{t-\tau}} \cdot e^{\delta_t - \frac{\sigma_R^2}{2}}
+R_t = \frac{\alpha \cdot SSB_{t-\tau}}{\beta + SSB_{t-\tau}} \cdot e^{\delta_t - \frac{\sigma^2_R}{2}}
 \end{equation}
 
-- Environmental Effects on Recruitment
+**Environmental Effects on Recruitment**
 
 \begin{equation}
-E(\text{Recruitment}) = f(\text{SSB}) \times \exp(B \times \text{env}) \times \exp\left(-0.5 \times \pi_R^2\right)
+E(\text{Recruitment}) = f(SSB) \times \exp(B \times \text{env}) \times \exp\!\left(-0.5 \times \pi^2_R\right)
 \end{equation}
 
-- Maturity
+**Maturity**
 
 \begin{equation}
-\text{Mat}_{l} = \frac{1}{1 + e^{-\ln(19) \cdot \frac{(L_l - L_{50})}{(L_{95} - L_{50})}}}
+\text{Mat}_l = \frac{1}{1 + e^{-\ln(19) \cdot \frac{L_l - L_{50}}{L_{95} - L_{50}}}}
 \end{equation}
 
 \begin{equation}
-\text{Mat}_{a,t} = \sum_l \text{Mat}_l \cdot P(L_l|a,t)
+\text{Mat}_{a,t} = \sum_l \text{Mat}_l \cdot P(L_l \mid a, t)
 \end{equation}
 
-- Growth (Von Bertalanffy)
+**Growth (Von Bertalanffy)**
 
 \begin{equation}
-L_{a,s} = L_{\infty,s} \cdot (1 - e^{-K_s \cdot (a - t_{0,s})})
+L_{a,s} = L_{\infty,s} \cdot \left(1 - e^{-K_s \cdot (a - t_{0,s})}\right)
 \end{equation}
 
-- Weight-Length Relationship
+**Weight-Length Relationship**
 
 \begin{equation}
-W_{l,s} = w_s \cdot L_l^{b_s}
+W_{l,s} = w_s \cdot L^{b_s}_l
 \end{equation}
 
-- Length-at-Age Variability
+**Length-at-Age Variability**
 
 \begin{equation}
-P(L_l|a,s,t) = \frac{1}{\sqrt{2\pi}\sigma_{L|a,s}} \exp\left(-\frac{(L_l - \bar{L}_{a,s,t})^2}{2\sigma_{L|a,s}^2}\right)
+P(L_l \mid a, s, t) = \frac{1}{\sqrt{2\pi}\,\sigma_{L|a,s}} \exp\!\left(-\frac{(L_l - \bar{L}_{a,s,t})^2}{2\sigma^2_{L|a,s}}\right)
 \end{equation}
 
-- Length-to-Age Transition Matrix
+**Length-to-Age Transition Matrix**
 
 \begin{equation}
-T_{a,l \rightarrow a+1,l',s,t} = P(L_{l'}|a+1,s,t+1) \cdot \text{Growth}_{l \rightarrow l'}
+T_{a,l \to a+1,l',s,t} = P(L_{l'} \mid a+1, s, t+1) \cdot \text{Growth}_{l \to l'}
 \end{equation}
 
-- Fishing Mortality
+The ALK matrix is typically defined as:
+
+\begin{equation}
+P(A = a \mid L = l) = \frac{N_{a,l}}{\sum_a N_{a,l}}
+\end{equation}
+
+where $P(A = a \mid L = l)$ is the probability that an individual of length $l$ belongs to age $a$, $N_{a,l}$ is the number of individuals of age $a$ observed at length $l$, and the denominator $\sum_a N_{a,l}$ ensures that the probabilities sum to 1 for each length class. This matrix is then used in the model to allocate observed length compositions into age classes:
+
+\begin{equation}
+N_a = \sum_l P(A = a \mid L = l) \cdot N_l
+\end{equation}
+
+where $N_l$ is the number of fish observed at length $l$, and $N_a$ is the estimated number at age.
+
+**Fishing Mortality**
 
 \begin{equation}
 F_{a,l,s,f,t} = F'_{f,t} \cdot S_{a,l,s,f,t}
@@ -112,27 +152,27 @@ F_{a,l,s,f,t} = F'_{f,t} \cdot S_{a,l,s,f,t}
 F_{a,l,s,t} = \sum_f F_{a,l,s,f,t}
 \end{equation}
 
-- Predator Mortality
+**Predator Mortality**
 
 \begin{equation}
 M_{a,t} = M1_{a,t} + M2_{a,t}
 \end{equation}
 
 \begin{equation}
-M2_{a,t} = \sum_{p=1}^{n_{\text{pred}}} \frac{C_{p,t} \cdot S_{p,a}}{B_{\text{avail},t}}
+M2_{a,t} = \sum_{p=1}^{n_\text{pred}} \frac{C_{p,t} \cdot S_{p,a}}{B_{\text{avail},t}}
 \end{equation}
 
-### Catch Equations
+## Catch Equations
 
 \begin{equation}
-C_{a,l,s,f,t} = \frac{F_{a,l,s,f,t}}{Z_{a,l,s,t}} \cdot N_{a,l,s,t} \cdot (1 - e^{-Z_{a,l,s,t}}) \cdot W_{a,l,s,t}
+C_{a,l,s,f,t} = \frac{F_{a,l,s,f,t}}{Z_{a,l,s,t}} \cdot N_{a,l,s,t} \cdot \left(1 - e^{-Z_{a,l,s,t}}\right) \cdot W_{a,l,s,t}
 \end{equation}
 
 \begin{equation}
 C_{f,t} = \sum_a \sum_l \sum_s C_{a,l,s,f,t}
 \end{equation}
 
-### Observation Model
+## Observation Model
 
 \begin{equation}
 \hat{I}_{q,t} = Q_q \cdot \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot S_{a,l,s,q,t} \cdot W_{a,l,s,t}
@@ -146,97 +186,189 @@ C_{f,t} = \sum_a \sum_l \sum_s C_{a,l,s,f,t}
 \hat{P}_{l,f,t} = \frac{\sum_a C_{a,l,f,t}}{\sum_a \sum_l C_{a,l,f,t}}
 \end{equation}
 
-### Likelihood Components
+## Likelihood Components
 
 \begin{equation}
-L_{\text{survey}} = -\sum_q \sum_t \frac{1}{2} \left[ \frac{(\ln(I_{q,t}) - \ln(\hat{I}_{q,t}))^2}{\sigma_{I,q}^2} + \ln(2\pi\sigma_{I,q}^2) \right]
+\mathcal{L}_\text{survey} = -\sum_q \sum_t \frac{1}{2} \left[\frac{(\ln I_{q,t} - \ln \hat{I}_{q,t})^2}{\sigma^2_{I,q}} + \ln(2\pi\sigma^2_{I,q})\right]
 \end{equation}
 
 \begin{equation}
-L_{\text{age}} = -\sum_f \sum_t N_{eff,f,t} \sum_a P_{a,f,t} \ln(\hat{P}_{a,f,t})
+\mathcal{L}_\text{age} = -\sum_f \sum_t N_{\text{eff},f,t} \sum_a P_{a,f,t} \ln \hat{P}_{a,f,t}
 \end{equation}
 
 \begin{equation}
-L_{\text{length}} = -\sum_f \sum_t N_{eff,f,t} \sum_l P_{l,f,t} \ln(\hat{P}_{l,f,t})
+\mathcal{L}_\text{length} = -\sum_f \sum_t N_{\text{eff},f,t} \sum_l P_{l,f,t} \ln \hat{P}_{l,f,t}
 \end{equation}
 
 \begin{equation}
-L_{\text{rec}} = -\frac{1}{2} \sum_t \left[ \frac{\delta_t^2}{\sigma_R^2} + \ln(2\pi\sigma_R^2) \right]
+\mathcal{L}_\text{rec} = -\frac{1}{2}\left[\sum_t \frac{\delta^2_t}{\sigma^2_R} + \ln(2\pi\sigma^2_R)\right]
 \end{equation}
 
-### Parameter Estimation
+## Parameter Estimation
 
 \begin{equation}
--\ln(L_{\text{total}}) = -\sum_i w_i \ln(L_i)
+-\ln(\mathcal{L}_\text{total}) = -\sum_i w_i \ln(\mathcal{L}_i)
 \end{equation}
 
 \begin{equation}
-\text{Penalty} = \lambda \sum_j \left( \frac{\theta_j - \theta_{j,\text{prior}}}{\sigma_{\theta,j}} \right)^2
+\text{Penalty} = \lambda \sum_j \left(\frac{\theta_j - \theta_{j,\text{prior}}}{\sigma_{\theta,j}}\right)^2
 \end{equation}
 
+\newpage
 
-\pagebreak
+# Model Parameter Configuration
 
-### Glossary of Terms and Parameters
+The following table summarizes the key parameters used to condition the reference model, including biological, growth, and population dynamics factors (Table \@ref(tab:parainit1)).
 
-| **Symbol** | **Description** | **Units** |
-|------------|-----------------|-----------|
-| $N_{a,l,s,t}$ | Number of individuals at age $a$, length $l$, sex $s$, time $t$ | Thousands |
-| $M_{a,l,s,t}$ | Natural mortality rate | yr$^{-1}$ |
-| $F_{a,l,s,t}$ | Fishing mortality rate | yr$^{-1}$ |
-| $Z_{a,l,s,t}$ | Total mortality rate | yr$^{-1}$ |
-| $R_t$ | Recruitment at time $t$ | Thousands |
-| $SSB_t$ | Spawning stock biomass at time $t$ | Metric tons |
-| $B_t$ | Total biomass at time $t$ | Metric tons |
-| $W_{a,l,s,t}$ | Weight-at-age-length-sex | Grams |
-| $\text{Mat}_{a,l,s,t}$ | Proportion mature at age-length-sex | Proportion |
-| $\text{Fec}_{a,l,s,t}$ | Fecundity-at-age-length-sex | Eggs/individual |
-| $S_{a,l,f}$ | Selectivity for fleet $f$ at age $a$, length $l$ | Proportion |
-| $L_{\infty,s}$ | Asymptotic length for sex $s$ | mm |
-| $K_s$ | Growth rate parameter for sex $s$ | yr$^{-1}$ |
-| $t_{0,s}$ | Theoretical age at length zero for sex $s$ | Years |
-| $w_s$ | Weight-length scaling parameter for sex $s$ | g/mm$^b$ |
-| $b_s$ | Weight-length allometric exponent for sex $s$ | Dimensionless |
-| $L_{50}$ | Length at 50% maturity | mm |
-| $L_{95}$ | Length at 95% maturity | mm |
-| $L_{50,f}$ | Length at 50% selectivity for fleet $f$ | mm |
-| $L_{95,f}$ | Length at 95% selectivity for fleet $f$ | mm |
-| $\alpha$ | Stock-recruitment steepness parameter | Various |
-| $\beta$ | Stock-recruitment capacity parameter | Various |
-| $\sigma_R$ | Recruitment variability | Dimensionless |
-| $\delta_t$ | Recruitment deviation in year $t$ | Log-scale |
-| $Q_q$ | Catchability coefficient for survey $q$ | Various |
-| $C_{a,l,s,f,t}$ | Catch at age-length-sex by fleet $f$ at time $t$ | Metric tons |
-| $I_{q,t}$ | Observed survey index for survey $q$ at time $t$ | Various |
-| $\hat{I}_{q,t}$ | Expected survey index for survey $q$ at time $t$ | Various |
-| $P_{a,f,t}$ | Observed age composition for fleet $f$ at time $t$ | Proportion |
-| $\hat{P}_{a,f,t}$ | Expected age composition for fleet $f$ at time $t$ | Proportion |
-| $P_{l,f,t}$ | Observed length composition for fleet $f$ at time $t$ | Proportion |
-| $\hat{P}_{l,f,t}$ | Expected length composition for fleet $f$ at time $t$ | Proportion |
-| $N_{eff,f,t}$ | Effective sample size for fleet $f$ at time $t$ | Dimensionless |
-| $\sigma_{I,q}$ | Standard deviation of survey index $q$ | Log-scale |
-| $M1_{a,t}$ | Base natural mortality at age $a$, time $t$ | yr$^{-1}$ |
-| $M2_{a,t}$ | Predation mortality at age $a$, time $t$ | yr$^{-1}$ |
-| $C_{p,t}$ | Consumption by predator $p$ at time $t$ | Metric tons |
-| $S_{p,a}$ | Age-specific selectivity by predator $p$ | Proportion |
-| $B_{\text{avail},t}$ | Available biomass for predation at time $t$ | Metric tons |
-| $\beta_i$ | Environmental coefficient for covariate $i$ | Various |
-| $X_{i,t}$ | Environmental covariate $i$ at time $t$ | Various |
-| $\lambda$ | Penalty weight | Dimensionless |
-| $w_i$ | Likelihood component weight | Dimensionless |
-| $\theta_j$ | Estimated parameter $j$ | Various |
-| $\theta_{j,\text{prior}}$ | Prior mean for parameter $j$ | Various |
-| $\sigma_{\theta,j}$ | Prior standard deviation for parameter $j$ | Various |
-| $\tau$ | Recruitment lag (spawning to recruitment age) | Years |
-| $F'_{f,t}$ | Fully-selected fishing mortality for fleet $f$ | yr$^{-1}$ |
-| $R_0$ | Unfished recruitment level | Thousands |
-| $h$ | Steepness parameter in stock-recruitment | Proportion |
+```{r parainit1, eval=TRUE}
+dir1.1 <- here("s1.1")
+start1 <- SS_readstarter(file = file.path(dir1.1, "starter.ss"), verbose = FALSE)
+dat1   <- SS_readdat(file = file.path(dir1.1, start1$datfile), verbose = FALSE)
+ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
+                     verbose = FALSE, use_datlist = TRUE, datlist = dat1)
+fore1  <- SS_readforecast(file = file.path(dir1.1, "forecast.ss"), verbose = FALSE)
 
-\pagebreak
+# Extraer parámetros
+parbio <- ctl1$MG_parms[1:10, c(1:4,7)]
+rownames(parbio) <- c("Nat M", "Lmin", "Lmax", "VonBert K",
+                      "CV young", "CV old", "Wt a", "Wt b", "L50%", "Mat slope")
+SRpar  <- ctl1$SR_parms[1:5, c(1:4,7)]
+Qpar   <- ctl1$Q_parms[1:2, c(1:4,7)]
+Selpar <- ctl1$size_selex_parms[1:20, c(1:4,7)]
+
+# Combinar parámetros
+parInit <- as.data.frame(rbind(parbio, SRpar, Qpar, Selpar))
+parInit$Parameter <- rownames(parInit)
+
+# Añadir categorías y reordenar columnas
+categories <- c(rep("Natural Mortality", 1),
+                rep("Growth", 4),
+                rep("Length-Weight Relation", 2),
+                rep("Maturity", 2),
+                rep("CV young/old", 1),
+                rep("Stock-Recruit Relation", 5),
+                rep("Catchability", 2),
+                rep("Selectivity", 20))
+
+parInit <- parInit %>%
+  mutate(INIT  = round(INIT, 2),
+         PRIOR = round(PRIOR, 2),
+         Category = categories) %>%
+  dplyr::relocate(Category, Parameter)
+
+kbl_pdf(parInit, font = 8,
+        caption = "Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input.")
+```
 
 
-### References
+\newpage
 
-Methot, R.D. and Wetzel, C.R. (2013). Stock Synthesis: A biological and statistical framework for fish stock assessment and fishery management. *Fisheries Research*, 142: 86-99.
+# Glossary of Terms and Parameters
 
-NMFS-OST (2025). Stock Synthesis User Manual Version 3.30.23.2. Available at: https://nmfs-ost.github.io/ss3-doc/SS330_User_Manual_release.html
+```{r glossary, echo=FALSE}
+library(kableExtra)
+
+glossary <- data.frame(
+  Symbol = c(
+    "$N_{a,l,s,t}$", "$M_{a,l,s,t}$", "$F_{a,l,s,t}$", "$Z_{a,l,s,t}$",
+    "$R_t$", "$SSB_t$", "$B_t$", "$W_{a,l,s,t}$", "$\\text{Mat}_{a,l,s,t}$",
+    "$\\text{Fec}_{a,l,s,t}$", "$S_{a,l,f}$", "$L_{\\infty,s}$", "$K_s$",
+    "$t_{0,s}$", "$w_s$", "$b_s$", "$L_{50}$", "$L_{95}$",
+    "$L_{50,f}$", "$L_{95,f}$", "$\\alpha$", "$\\beta$",
+    "$\\sigma_R$", "$\\delta_t$", "$Q_q$", "$C_{a,l,s,f,t}$",
+    "$I_{q,t}$", "$\\hat{I}_{q,t}$", "$P_{a,f,t}$", "$\\hat{P}_{a,f,t}$",
+    "$P_{l,f,t}$", "$\\hat{P}_{l,f,t}$", "$N_{\\text{eff},f,t}$",
+    "$\\sigma_{I,q}$", "$M1_{a,t}$", "$M2_{a,t}$", "$C_{p,t}$",
+    "$S_{p,a}$", "$B_{\\text{avail},t}$", "$\\beta_i$", "$X_{i,t}$",
+    "$\\lambda$", "$w_i$", "$\\theta_j$", "$\\theta_{j,\\text{prior}}$",
+    "$\\sigma_{\\theta,j}$", "$\\tau$", "$F'_{f,t}$", "$R_0$", "$h$"
+  ),
+  Description = c(
+    "Number of individuals at age $a$, length $l$, sex $s$, time $t$",
+    "Natural mortality rate", "Fishing mortality rate", "Total mortality rate",
+    "Recruitment at time $t$", "Spawning stock biomass at time $t$",
+    "Total biomass at time $t$", "Weight-at-age-length-sex",
+    "Proportion mature at age-length-sex", "Fecundity-at-age-length-sex",
+    "Selectivity for fleet $f$ at age $a$, length $l$",
+    "Asymptotic length for sex $s$", "Growth rate parameter for sex $s$",
+    "Theoretical age at length zero for sex $s$",
+    "Weight-length scaling parameter for sex $s$",
+    "Weight-length allometric exponent for sex $s$",
+    "Length at 50\\% maturity", "Length at 95\\% maturity",
+    "Length at 50\\% selectivity for fleet $f$",
+    "Length at 95\\% selectivity for fleet $f$",
+    "Stock-recruitment steepness parameter",
+    "Stock-recruitment capacity parameter",
+    "Recruitment variability", "Recruitment deviation in year $t$",
+    "Catchability coefficient for survey $q$",
+    "Catch at age-length-sex by fleet $f$ at time $t$",
+    "Observed survey index for survey $q$ at time $t$",
+    "Expected survey index for survey $q$ at time $t$",
+    "Observed age composition for fleet $f$ at time $t$",
+    "Expected age composition for fleet $f$ at time $t$",
+    "Observed length composition for fleet $f$ at time $t$",
+    "Expected length composition for fleet $f$ at time $t$",
+    "Effective sample size for fleet $f$ at time $t$",
+    "Standard deviation of survey index $q$",
+    "Base natural mortality at age $a$, time $t$",
+    "Predation mortality at age $a$, time $t$",
+    "Consumption by predator $p$ at time $t$",
+    "Age-specific selectivity by predator $p$",
+    "Available biomass for predation at time $t$",
+    "Environmental coefficient for covariate $i$",
+    "Environmental covariate $i$ at time $t$",
+    "Penalty weight", "Likelihood component weight",
+    "Estimated parameter $j$", "Prior mean for parameter $j$",
+    "Prior standard deviation for parameter $j$",
+    "Recruitment lag (spawning to recruitment age)",
+    "Fully-selected fishing mortality for fleet $f$",
+    "Unfished recruitment level",
+    "Steepness parameter in stock-recruitment"
+  ),
+  Units = c(
+    "Thousands", "yr$^{-1}$", "yr$^{-1}$", "yr$^{-1}$",
+    "Thousands", "Metric tons", "Metric tons", "Grams",
+    "Proportion", "Eggs/individual", "Proportion",
+    "mm", "yr$^{-1}$", "Years", "g/mm$^b$", "Dimensionless",
+    "mm", "mm", "mm", "mm",
+    "Various", "Various", "Dimensionless", "Log-scale",
+    "Various", "Metric tons", "Various", "Various",
+    "Proportion", "Proportion", "Proportion", "Proportion",
+    "Dimensionless", "Log-scale", "yr$^{-1}$", "yr$^{-1}$",
+    "Metric tons", "Proportion", "Metric tons",
+    "Dimensionless", "Various", "Dimensionless", "Dimensionless",
+    "Various", "Various", "Various", "Years",
+    "yr$^{-1}$", "Thousands", "Proportion"
+  ),
+  stringsAsFactors = FALSE
+)
+
+kbl(glossary,
+    booktabs = TRUE,
+    format = "latex",
+    escape = FALSE,
+    longtable = TRUE,
+    caption = "Glossary of terms and parameters used in the SS3 krill stock assessment model.",
+    col.names = c("Symbol", "Description", "Units")) %>%
+  kable_styling(latex_options = c("repeat_header", "HOLD_position"),
+                font_size = 9,
+                full_width = TRUE) %>%
+  column_spec(1, width = "2.5cm") %>%
+  column_spec(2, width = "9cm") %>%
+  column_spec(3, width = "3cm")
+```
+
+\newpage
+
+```{r echo=TRUE}
+sessionInfo()
+```
+
+
+\newpage
+
+# References
+
+Methot, R.D. and Wetzel, C.R. (2013). Stock Synthesis: A biological and statistical framework for fish stock assessment and fishery management. *Fisheries Research*, 142: 86–99.
+
+NMFS-OST (2025). *Stock Synthesis User Manual Version 3.30.23.2*. Available at: https://nmfs-ost.github.io/ss3-doc/SS330_User_Manual_release.html

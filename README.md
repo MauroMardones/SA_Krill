@@ -1,24 +1,37 @@
-# **Assessing environmental and predator impacts on Antarctic Krill (*Euphausia superba*) population dynamics from an integrated length-to-age assessment model perspective**  
+# Integrating environmental and predator effects into a length-based stock assessment of Antarctic krill (*Euphausia superba*)
 
-This repository contains the Stock Synthesis 3 (SS3 v3.30.21) assessment model for *Euphausia superba* (Antarctic krill) in Subarea 48.1, considering spatial heterogeneity and ecosystem variables. The project includes multiple files and subdirectories, but the key functions and paths for conducting the assessment can be found at the following link: [SA_Krill Documentation](https://mauromardones.github.io/SA_Krill/).  
+This repository contains the Stock Synthesis 3 (SS3 v3.30.21) assessment model for *Euphausia superba* (Antarctic krill) in Subarea 48.1, incorporating spatial heterogeneity and ecosystem variables (environmental covariates and predator-derived natural mortality). Four model configurations are evaluated, ranging from a baseline spatial implicit model to fully ecosystem-informed scenarios. Key functions and documentation are available at: [SA_Krill Documentation](https://mauromardones.github.io/SA_Krill/).
 
-## **Project Structure**  
+## Project Structure
 
 ```
-📂 SA_Krill  
-│── 📂 scenarios/      # SS3 files to run models
-│── 📄 index.Rmd       # Guide and code to run and reproduce stock assessments outputs 
-│── 📂 Figs/           # Output figures from the models  
-│── 📂 Results/        # Processed results and reports  
-│── 📄 README.md       # Project overview    
-│── 📄 SA_krill.bib    # bibtex files with references 
-```  
+📂 SA_Krill
+│── 📂 s1.1/           # Baseline spatial implicit model (fishery + survey data)
+│── 📂 s1.2/           # Baseline + predator mortality (M2)
+│── 📂 s1.3/           # Baseline + environmental covariate (Chl-a → recruitment)
+│── 📂 s1.4/           # Baseline + predator mortality + environmental covariate
+│── 📂 Figs/           # Output figures
+│── 📂 outputs/        # Processed results and diagnostics
+│── 📄 MS2_Krill_revised.Rmd   # Main manuscript (R Markdown)
+│── 📄 Supp_Mat_1.Rmd          # Supplementary Material 1
+│── 📄 Supp_Mat_2.Rmd          # Supplementary Material 2 (model equations)
+│── 📄 SA_krill.bib            # BibTeX references
+│── 📄 README.md               # Project overview
+```
 
-## **Reproducibility**  
+## Model Scenarios
 
-Any add information to fully reproduce the analysis can be shared upon request.  
+| Scenario | Predator (M₂) | Environment (Chl-a) |
+|----------|:-------------:|:-------------------:|
+| s1.1     | No            | No                  |
+| s1.2     | Yes           | No                  |
+| s1.3     | No            | Yes                 |
+| s1.4     | Yes           | Yes                 |
 
-## **Outputs and Reports**  
+## Reproducibility
 
-This assessment contributes to the **WG-SAM 2025** working group discussions by providing updated model outputs and analyses relevant to krill stock management.  
+All SS3 model configuration files are available within each scenario folder. Additional information required to fully reproduce the analysis can be shared upon request.
 
+## Contributions
+
+This assessment contributes to **WG-SAM 2025** working group discussions, providing ecosystem-informed model outputs relevant to CCAMLR's krill fishery management strategy in Subarea 48.1.

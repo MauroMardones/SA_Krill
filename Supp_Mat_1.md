@@ -1,7 +1,6 @@
 ---
-title: "Supplementary Information 1"
-subtitle: "Assessing ecosystem effects on the stock productivity of Antarctic Krill (*Euphausia superba*): An Integrated modeling perspective"
-author: "Mardones, M; Jarvis Mason, E.T.; Piñones, A.; Krüger, L.,Santa-Cruz, F.; Watters, G., Cárdenas, C.A; Methot, R."
+title: "Supplementary Material 1"
+subtitle: "Reproducible Code to Output and Model Diagnostics for Antarctic Krill Stock Assessment"
 date:  "17 June, 2026"
 bibliography: SA_krill.bib
 csl: apa.csl
@@ -29,18 +28,19 @@ editor_options:
     wrap: 72
 ---
 
-# OVERVIEW
+\newpage
 
-This code forms part of the supplementary material for the scientific article titled **"Assessing environmental and predator impacts on Antarctic Krill (*Euphausia superba*) population dynamics from an integrated length-to-age assessment model perspective."**
+# Overview
 
-# MODELING SETTING
+This documents have outputs and tables supplementaries as part of the scientific article titled **"Environmental and predator impacts on Antarctic Krill (*Euphausia superba*) population dynamics from an integrated length-to-age assessment model perspective."**
+
+# Modeling setting
 
 
 
 ### Libraries
 
 Libraries necessary to made this analysis;
-
 
 
 ``` r
@@ -63,19 +63,45 @@ library(doParallel)
 registerDoParallel(8)
 ```
 
+
+
 ### Code Repository
 
 The repository with files templates by scenario to replicate this analysis can be found in this [GitHub author link](https://github.com/MauroMardones/SA_Krill/tree/main/scenarios)
 
-
-### Run models
-
+### Run Models
 
 
 
 
+``` r
+### Run all Models
+directorios <- c("s1.1", "s1.2", "s1.3", "s1.4")
+
+for (dir in directorios) {
+    r4ss::run(dir = dir, exe = "ss_osx", skipfinished = FALSE,
+        show_in_console = TRUE)
+}
+```
 
 
+
+
+
+``` r
+# reading ss3 outputs s1.1
+base.model1.1 <- SS_output(dir = dir1.1, covar = T,
+    forecast = T)
+# s1.2
+base.model1.2 <- SS_output(dir = dir1.2, covar = T,
+    forecast = T)
+# s1.3
+base.model1.3 <- SS_output(dir = dir1.3, covar = T,
+    forecast = T)
+# s1.4
+base.model1.4 <- SS_output(dir = dir1.4, covar = T,
+    forecast = T)
+```
 
 ## Spatial dimension of stock assessment
 
@@ -84,7 +110,7 @@ The study focuses on Subarea 48.1 in the Western Antarctic Peninsula, where most
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=6.35in]{Figs/map_SA_krilll} 
+{\centering \includegraphics[width=\linewidth]{Figs/map_SA_krilll} 
 
 }
 
@@ -110,7 +136,7 @@ In a catch-at-length model like krill assessment the AKL matrix (Figure \@ref(fi
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/AKL-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/AKL-1} 
 
 }
 
@@ -119,286 +145,13 @@ In a catch-at-length model like krill assessment the AKL matrix (Figure \@ref(fi
 
 ## Data
 
-### Parameters
-
-The following table summarizes the key parameters to conditioning the reference model, including biological, growth, and population dynamics factors (\@ref(tab:parainit1)).
-
-
-
-```{=latex}
-\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
-
-\global\setlength{\Oldtabcolsep}{\tabcolsep}
-
-\setlength{\tabcolsep}{2pt}
-
-\renewcommand*{\arraystretch}{1.5}
-
-
-
-\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
-
-\begin{longtable}[c]{ccccccc}
-
-\caption{\textcolor[HTML]{000000}{\fontsize{11}{13}\selectfont{Input\ parameters\ for\ the\ initial\ SS3\ model\ of\ krill.\ Each\ parameter\ line\ contains\ a\ minimum\ value\ (LO),\ maximum\ value\ (HI),\ and\ initial\ value\ (INIT).\ If\ the\ phase\ (PHASE)\ for\ the\ parameter\ is\ negative,\ the\ parameter\ is\ fixed\ as\ input}}}(\#tab:parainit1)\\
-
-\ascline{1.5pt}{666666}{1-7}
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Category}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Parameter}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{LO}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{HI}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{INIT}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{PRIOR}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{PHASE}}} \\
-
-\ascline{1.5pt}{666666}{1-7}\endfirsthead \caption[]{\textcolor[HTML]{000000}{\fontsize{11}{13}\selectfont{Input\ parameters\ for\ the\ initial\ SS3\ model\ of\ krill.\ Each\ parameter\ line\ contains\ a\ minimum\ value\ (LO),\ maximum\ value\ (HI),\ and\ initial\ value\ (INIT).\ If\ the\ phase\ (PHASE)\ for\ the\ parameter\ is\ negative,\ the\ parameter\ is\ fixed\ as\ input}}}(\#tab:parainit1)\\
-
-\ascline{1.5pt}{666666}{1-7}
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Category}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Parameter}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{LO}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{HI}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{INIT}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{PRIOR}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{PHASE}}} \\
-
-\ascline{1.5pt}{666666}{1-7}\endhead
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Natural\ Mortality}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Nat\ M}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.20}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.27}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.27}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Growth}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Lmin}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{5.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.40}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.40}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Growth}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Lmax}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{10.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{5.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{5.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Growth}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{VonBert\ K}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.05}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.80}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.47}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.47}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Growth}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{CV\ young}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.05}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.25}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.14}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.14}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Length-Weight\ Relation}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{CV\ old}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.05}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.25}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.07}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.07}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Length-Weight\ Relation}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Wt\ a}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Maturity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Wt\ b}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{4.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.35}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.35}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Maturity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{L50\%}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.20}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{5.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.80}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.80}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Stock-Recruit\ Relation}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Mat\ slope}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-3.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-2.90}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-2.90}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Stock-Recruit\ Relation}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SR\_LN(R0)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{30.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{23.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{23.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Stock-Recruit\ Relation}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SR\_BH\_steep}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.20}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.85}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.85}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Stock-Recruit\ Relation}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SR\_sigmaR}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.20}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.20}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Stock-Recruit\ Relation}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SR\_regime}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-5.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{5.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-4}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Catchability}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SR\_autocorr}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-99}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Catchability}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{LnQ\_base\_FISHERYBS(1)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-25.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{25.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-5.72}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{LnQ\_base\_FISHERYEI(2)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-25.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{25.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{-5.72}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_FISHERYBS(1)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.01}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_FISHERYBS(1)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.10}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_FISHERYEI(2)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.01}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{10.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_FISHERYEI(2)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{4.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{4.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_FISHERYGS(3)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.01}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_FISHERYGS(3)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_FISHERYJOIN(4)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.01}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_FISHERYJOIN(4)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_FISHERYSSIW(5)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.01}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_FISHERYSSIW(5)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{0.50}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{8.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_SURVEYBS(6)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_SURVEYBS(6)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_SURVEYEI(7)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_SURVEYEI(7)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_SURVEYGS(8)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_SURVEYGS(8)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_SURVEYJOIN(9)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_SURVEYJOIN(9)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_1\_SURVEYSSIW(10)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{2}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{Selectivity}}} & \multicolumn{1}{>{}l}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{SizeSel\_P\_2\_SURVEYSSIW(10)}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{7.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{1.00}}} & \multicolumn{1}{>{}r}{\textcolor[HTML]{000000}{\fontsize{9}{9}\selectfont{3}}} \\
-
-\ascline{1.5pt}{666666}{1-7}
-
-
-
-\end{longtable}
-
-
-
-\arrayrulecolor[HTML]{000000}
-
-\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
-
-\global\setlength{\tabcolsep}{\Oldtabcolsep}
-
-\renewcommand*{\arraystretch}{1}
-```
-
-
 ### Index 
 
 Abundance index in Figure \@ref(fig:index)
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/index-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/index-1} 
 
 }
 
@@ -411,7 +164,7 @@ Length compositions in Figure \@ref(fig:length)
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/length-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/length-1} 
 
 }
 
@@ -434,7 +187,7 @@ The interannual variability of this environmental index from 2000 to 2020 is sho
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/chlindex-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/chlindex-1} 
 
 }
 
@@ -457,9 +210,11 @@ The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributio
 
 This information and all sources can be represented through the following flow diagram (Figure \@ref(fig:path)) of inputs, model, and outputs.
 
+
+
 \begin{figure}[H]
 
-{\centering \includegraphics[width=7.98in]{Figs/pathmod} 
+{\centering \includegraphics[width=0.75\linewidth]{Figs/pathmod} 
 
 }
 
@@ -470,7 +225,7 @@ Figure \@ref(fig:dataserie) show time series of differente componentes of data s
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/dataserie-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/dataserie-1} 
 
 }
 
@@ -485,20 +240,21 @@ The **reference model** is `s1.1`, wich represents a baseline assessment of *Eup
 \centering
 \caption{(\#tab:scenarios)Scenarios used for modelling dynamics in krill}
 \centering
-\fontsize{10}{12}\selectfont
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{10cm}}
 \toprule
-\textcolor{black}{\textbf{Scenario}} & \textcolor{black}{\textbf{Description}}\\
+Scenario & Description\\
 \midrule
 s1.1 & Spatial data without environmental and predator components\\
 s1.2 & "s1.1" with predator components\\
 s1.3 & "s1.1" with environmental variable\\
 s1.4 & "s1.1" with both predator fleet and environmental variable\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
-# RESULTS
+# Results
 
 
 
@@ -509,7 +265,7 @@ Selectivity estimated by scenario in Figure \@ref(fig:selectivity).
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/selectivity-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/selectivity-1} 
 
 }
 
@@ -520,7 +276,7 @@ This Figure \@ref(fig:index2) shows standardized time series of input indices us
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/index2-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/index2-1} 
 
 }
 
@@ -531,7 +287,7 @@ Main Variables poulation in `s1.1` scenario (Figure \@ref(fig:scen1))
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/scen1-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/scen1-1} 
 
 }
 
@@ -542,7 +298,7 @@ Main Variables poulation in `s1.2` scenario (Figure \@ref(fig:scen2))
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/scen2-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/scen2-1} 
 
 }
 
@@ -553,7 +309,7 @@ Main Variables poulation in `s1.3` scenario (Figure \@ref(fig:scen3))
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/scen3-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/scen3-1} 
 
 }
 
@@ -565,7 +321,7 @@ Main Variables poulation in `s1.4` scenario (Figure \@ref(fig:scen4))
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/scen4-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/scen4-1} 
 
 }
 
@@ -575,15 +331,18 @@ Main Variables poulation in `s1.4` scenario (Figure \@ref(fig:scen4))
 
 ## Population variables 
 
-(Figure \@ref(fig:popvar2))
-
 
 
 Comparsion in long term time series forecasting Figure \@ref(fig:cumsum)
 
+\begin{figure}[H]
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-7-1} \end{center}
+{\centering \includegraphics[width=\linewidth]{Figs/cumsum-1} 
 
+}
+
+\caption{Summary of estimation of different populations variables}(\#fig:cumsum)
+\end{figure}
 
 
 
@@ -633,7 +392,7 @@ These metrics allow us to analyze both the productivity and the temporal dynamic
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/recpro-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/recpro-1} 
 
 }
 
@@ -644,12 +403,12 @@ Figure \@ref(fig:recdev) shows the recruitment deviations for the four assessmen
 
 
 
-\begin{center}\includegraphics{Figs/recdev-1} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/recdev-1} \end{center}
 Explotation rato (havest rate) in Figure \@ref(fig:hrate)
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/hrate-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/hrate-1} 
 
 }
 
@@ -664,40 +423,32 @@ The convergence criterion used for model calibration is set to a final threshold
 
 
 
-
-
 This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pearson residuals and trends of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity.
 
 \begin{landscape}
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/pearson-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/pearson-1} 
 
 }
 
 \caption{Pearson residual by scenario and fleet}(\#fig:pearson)
 \end{figure}
+
 \end{landscape}
-
-\pagebreak
-
+\clearpage
 \begin{landscape}
-
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/pearsontrend-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/pearsontrend-1} 
 
 }
 
 \caption{Pearson residual trend by scenario and fleet}(\#fig:pearsontrend)
 \end{figure}
-
-
 \end{landscape}
-
-\pagebreak
 
 
 
@@ -719,7 +470,7 @@ Statistical diagnostics are also performed to check for autocorrelation in resid
 
 
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-11-1} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-10-1} \end{center}
 
 ```
 ## 
@@ -766,7 +517,7 @@ Statistical diagnostics are also performed to check for autocorrelation in resid
 
 
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-11-2} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-10-2} \end{center}
 
 ```
 ## 
@@ -776,7 +527,7 @@ Statistical diagnostics are also performed to check for autocorrelation in resid
 
 
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-11-3} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-10-3} \end{center}
 
 ```
 ## 
@@ -823,7 +574,7 @@ Statistical diagnostics are also performed to check for autocorrelation in resid
 
 
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-11-4} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-10-4} \end{center}
 
 
 
@@ -854,7 +605,7 @@ Statistical diagnostics are also performed to check for autocorrelation in resid
 
 
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-12-1} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-11-1} \end{center}
 
 ```
 ## 
@@ -864,7 +615,7 @@ Statistical diagnostics are also performed to check for autocorrelation in resid
 
 
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-12-2} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-11-2} \end{center}
 
 ```
 ## 
@@ -913,7 +664,7 @@ Statistical diagnostics are also performed to check for autocorrelation in resid
 
 
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-12-3} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-11-3} \end{center}
 
 ```
 ## 
@@ -923,7 +674,7 @@ Statistical diagnostics are also performed to check for autocorrelation in resid
 
 
 
-\begin{center}\includegraphics{Figs/unnamed-chunk-12-4} \end{center}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-11-4} \end{center}
 
 ```
 ## 
@@ -984,7 +735,7 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/rmse1-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/rmse1-1} 
 
 }
 
@@ -1031,7 +782,7 @@ Figure \@ref(fig:rmse2) show RMSE to index.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/rmse2-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/rmse2-1} 
 
 }
 
@@ -1050,20 +801,23 @@ Figure \@ref(fig:rmse2) show RMSE to index.
 
 Table of RMSE values for each scenario and type (index and length) is created below. The RMSE values are extracted from the respective data frames for each scenario.
 
-
-\begin{tabular}[t]{l|r|r}
-\hline
+\begin{table}[H]
+\centering
+\caption{(\#tab:unnamed-chunk-13)Combined RMSE values by scenario for abundance indices and length compositions}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
+\begin{tabular}[t]{lrr}
+\toprule
 Scenario & RMSE\_index & RMSE\_length\\
-\hline
+\midrule
 s1.1 & 77.3 & 9.1\\
-\hline
 s1.2 & 72.5 & 9.8\\
-\hline
 s1.3 & 76.1 & 9.1\\
-\hline
 s1.4 & 74.6 & 10.0\\
-\hline
-\end{tabular}
+\bottomrule
+\end{tabular}}
+\end{table}
 
 
 ### Retrospective Analysis in Model Evaluation
@@ -1090,7 +844,7 @@ Retrospective analysis for spawning biomass (Figure \@ref(fig:retrossb))
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/retrossb-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/retrossb-1} 
 
 }
 
@@ -1101,7 +855,7 @@ Retrospective analysis for fishing mortality (Figure \@ref(fig:retrof))
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/retrof-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/retrof-1} 
 
 }
 
@@ -1111,8 +865,10 @@ Retrospective analysis for fishing mortality (Figure \@ref(fig:retrof))
 
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-18)Rho parameter in SSB model s01}
+\caption{(\#tab:unnamed-chunk-17)Mohn's rho — SSB, scenario s1.1}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
@@ -1125,13 +881,15 @@ SSB & 2015 & 0.1185312 & -0.0364350\\
 \addlinespace
 SSB & Combined & -0.0287220 & -0.2233220\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-18)Rho parameter in F model s01}
+\caption{(\#tab:unnamed-chunk-17)Mohn's rho — F, scenario s1.1}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
@@ -1144,13 +902,15 @@ F & 2015 & -0.9504147 & -0.8985415\\
 \addlinespace
 F & Combined & -0.0416294 & 0.0522547\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-18)Rho parameter in SSB model s2}
+\caption{(\#tab:unnamed-chunk-17)Mohn's rho — SSB, scenario s1.2}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
@@ -1163,13 +923,15 @@ SSB & 2015 & -0.2204097 & -0.3243105\\
 \addlinespace
 SSB & Combined & -0.2159669 & -0.2479524\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-18)Rho parameter in F model s2}
+\caption{(\#tab:unnamed-chunk-17)Mohn's rho — F, scenario s1.2}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
@@ -1182,13 +944,15 @@ F & 2015 & -0.9023174 & -0.8692552\\
 \addlinespace
 F & Combined & -0.3493504 & -0.1131696\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-18)Rho parameter in SSB model s3}
+\caption{(\#tab:unnamed-chunk-17)Mohn's rho — SSB, scenario s1.3}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
@@ -1201,13 +965,15 @@ SSB & 2015 & 0.4459562 & 0.2683618\\
 \addlinespace
 SSB & Combined & 0.2902915 & 0.0537330\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-18)Rho parameter in F model s3}
+\caption{(\#tab:unnamed-chunk-17)Mohn's rho — F, scenario s1.3}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
@@ -1220,13 +986,15 @@ F & 2015 & -0.9719480 & -0.9537146\\
 \addlinespace
 F & Combined & -0.4257000 & -0.3491817\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-18)Rho parameter in SSB model s4}
+\caption{(\#tab:unnamed-chunk-17)Mohn's rho — SSB, scenario s1.4}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
@@ -1239,13 +1007,15 @@ SSB & 2015 & -0.6293981 & -0.6959091\\
 \addlinespace
 SSB & Combined & -0.3563263 & -0.3810762\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-18)Rho parameter in F model s4}
+\caption{(\#tab:unnamed-chunk-17)Mohn's rho — F, scenario s1.4}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
 type & peel & Rho & ForcastRho\\
@@ -1258,7 +1028,7 @@ F & 2015 & 1.8267918 & 1.7537096\\
 \addlinespace
 F & Combined & 1.1566791 & 1.3830946\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 
@@ -1286,22 +1056,22 @@ s1.4 & -0.356 & 1.157\\
 The Hindcast Cross-Validation (HCxval) diagnostic in Stock Synthesis is implemented using the model outputs generated by the `r4ss::SS_doRetro()` and using `SSplotHCval()` function. This diagnostic evaluates the predictive performance of the model by comparing hindcast predictions with observed data. To assess prediction skill, we employ the Mean Absolute Scaled Error (MASE) as a robust metric. MASE is calculated by scaling the mean absolute error of the model predictions relative to the mean absolute error of a naïve baseline prediction. Specifically, the MASE score is computed as follows:
 
 
-Hindcast validation for `s1.1` (Figure \@ref(fig:hcval1))
+Hindcast validation in `s1.1` (Figure \@ref(fig:hcval1)), `s1.2` (Figure \@ref(fig:hcval2)), `s1.3` (Figure \@ref(fig:hcval3)) and  `s1.4` (Figure \@ref(fig:hcval4)).
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/hcval1-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/hcval1-1} 
 
 }
 
 \caption{Hindcast validation for s1.1 by fleet}(\#fig:hcval1)
 \end{figure}
 
-Hindcast validation for `s1.2` (Figure \@ref(fig:hcval2))
+
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/hcval2-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/hcval2-1} 
 
 }
 
@@ -1309,22 +1079,22 @@ Hindcast validation for `s1.2` (Figure \@ref(fig:hcval2))
 \end{figure}
 
 
-Hindcast validation for `s1.3` (Figure \@ref(fig:hcval3))
+
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/hcval3-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/hcval3-1} 
 
 }
 
 \caption{Hindcast validation for s1.3 by fleet}(\#fig:hcval3)
 \end{figure}
 
-Hindcast validation for `s1.4` (Figure \@ref(fig:hcval4))
+
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/hcval4-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/hcval4-1} 
 
 }
 
@@ -1343,7 +1113,7 @@ Figure \@ref(fig:likecompo2) show the likelihood components for the four models.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{Figs/likecompo2-1} 
+{\centering \includegraphics[width=\linewidth]{Figs/likecompo2-1} 
 
 }
 
@@ -1358,11 +1128,12 @@ See Table \@ref(tab:likecom) for details.
 
 As shown in Table \@ref(tab:parametercomparison), the models differ substantially in key parameter estimates and likelihood contributions.
 
-\begin{table}
+\begin{table}[H]
 \centering
 \caption{(\#tab:parametercomparison)Model parameter and likelihood comparison}
 \centering
 \resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{8}{10}\selectfont
 \begin{tabular}[t]{lllll}
 \toprule
 Label & s1.1 & s1.2 & s1.3 & s1.4\\
@@ -1396,9 +1167,11 @@ As shown in Table \@ref(tab:residualsummary), the residuals exhibit different st
 \centering
 \caption{(\#tab:residualsummary)Summary statistics and residual diagnostic tests by type and model}
 \centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{>{}cccccccc}
 \toprule
-\textbf{type} & \textbf{model} & \textbf{N} & \textbf{Mean} & \textbf{SD} & \textbf{shapiro\_p} & \textbf{ljung\_p} & \textbf{bp\_p}\\
+type & model & N & Mean & SD & shapiro\_p & ljung\_p & bp\_p\\
 \midrule
 \textbf{Index} & s1.1 & 159 & 124451.1 & 1.343964e+06 & 0 & 0.69593 & 0.35996\\
 \textbf{Index} & s1.2 & 188 & 101332.3 & 1.185888e+06 & 0 & 0.42597 & 0.23572\\
@@ -1410,8 +1183,9 @@ As shown in Table \@ref(tab:residualsummary), the residuals exhibit different st
 \textbf{Length} & s1.3 & 3752 & 0.0 & 3.628000e-02 & 0 & 0.00000 & 0.02956\\
 \textbf{Length} & s1.4 & 4564 & 0.0 & 3.819000e-02 & 0 & 0.00000 & 0.01661\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
+\newpage 
 
-# REFERENCES
+# References

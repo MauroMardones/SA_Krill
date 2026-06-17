@@ -1,10 +1,9 @@
 ---
-title: "Supplementary Information 1"
-subtitle: "Assessing ecosystem effects on the stock productivity of Antarctic Krill (*Euphausia superba*): An Integrated modeling perspective"
-author: "Mardones, M; Jarvis Mason, E.T.; Piñones, A.; Krüger, L.,Santa-Cruz, F.; Watters, G., Cárdenas, C.A; Methot, R."
+title: "Supplementary Material 1"
+subtitle: "Reproducible Code to Output and Model Diagnostics for Antarctic Krill Stock Assessment"
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
-bibliography: SA_krill.bib
-csl: apa.csl
+bibliography: bib/SA_krill.bib
+csl: bib/apa.csl
 #csl: icesjournal.csl
 link-citations: yes
 linkcolor: blue
@@ -31,11 +30,11 @@ editor_options:
 
 \newpage
 
-# OVERVIEW
+# Overview
 
-This code forms part of the supplementary material for the scientific article titled **"Assessing environmental and predator impacts on Antarctic Krill (*Euphausia superba*) population dynamics from an integrated length-to-age assessment model perspective."**
+This documents have outputs and tables supplementaries as part of the scientific article titled **"Environmental and predator impacts on Antarctic Krill (*Euphausia superba*) population dynamics from an integrated length-to-age assessment model perspective."**
 
-# MODELING SETTING
+# Modeling setting
 
 ```{r setup1, echo=FALSE}
 #rm(list = ls())
@@ -47,6 +46,7 @@ knitr::opts_chunk$set(echo = FALSE,
                       fig.pos = "H",
                       fig.width = 6,
                       fig.height = 4,
+                      out.width = "\\linewidth",
                       dev = 'jpeg',
                       fig.path = "Figs/",
                       dpi = 300,
@@ -87,23 +87,32 @@ library(doParallel)
 registerDoParallel(8)
 ```
 
+```{r pdf-table-helper, include=FALSE}
+kbl_pdf <- function(x, caption = NULL, scale = TRUE, font = 9, ...) {
+  opts <- c("HOLD_position", if (scale) "scale_down")
+  kbl(x, booktabs = TRUE, format = "latex", caption = caption, ...) %>%
+    kable_styling(latex_options = opts, font_size = font, full_width = FALSE)
+}
+```
+
 ### Code Repository
 
 The repository with files templates by scenario to replicate this analysis can be found in this [GitHub author link](https://github.com/MauroMardones/SA_Krill/tree/main/scenarios)
 
+### Run Models
+
 ```{r message=FALSE, warning=FALSE}
+# setting folders
 dir1.1<-here::here("s1.1") # no predador- environmental
 dir1.2 <- here::here("s1.2") # s1.1 w/ predador
 dir1.3 <- here::here("s1.3") # s1.1 w/ env
 dir1.4 <- here::here("s1.4") # s1.1 predator and env
 Figs <- here::here("Figs")
-dir1 <- here::here("s1")
 outdir <- here::here("outputs")
 ```
-### Run models
 
-```{r eval=FALSE, message=F, include=FALSE, echoo=TRUE}
-### Run Models
+```{r eval=FALSE, message=F, echo=TRUE}
+### Run all Models
 directorios <- c("s1.1",
                  "s1.2",
                  "s1.3",
@@ -154,7 +163,8 @@ r4ss::run(
 )
 ```
 
-```{r message=F, include=FALSE}
+```{r message=F, echo=TRUE, results='hide'}
+#reading ss3 outputs
 #s1.1
 base.model1.1 <- SS_output(dir=dir1.1,
                         covar=T,
@@ -194,7 +204,7 @@ Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invert
 
 In a catch-at-length model like krill assessment the AKL matrix (Figure \@ref(fig:AKL)) is modeled trough parametrization process and have this shape;
 
-```{r AKL,fig.cap="Representation of ALK Matrix to krill in 48.1"}
+```{r AKL, fig.width=5, fig.height=4, fig.cap="Representation of ALK Matrix to krill in 48.1"}
 alk_matrix <- base.model1.1$ALK[,,1] # Ajusta las dimensiones según tu matriz
 
 # Convertir la matriz en un data.frame
@@ -223,73 +233,17 @@ ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
 
 ## Data
 
-### Parameters
-
-The following table summarizes the key parameters to conditioning the reference model, including biological, growth, and population dynamics factors (\@ref(tab:parainit1)).
-
-
-```{r parainit1, eval=TRUE}
-dir1.1 <- here("s1.1")
-
-start1 <- SS_readstarter(file = file.path(dir1.1, "starter.ss"), verbose = FALSE)
-dat1   <- SS_readdat(file = file.path(dir1.1, start1$datfile), verbose = FALSE)
-ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
-                     verbose = FALSE, use_datlist = TRUE, datlist = dat1)
-fore1  <- SS_readforecast(file = file.path(dir1.1, "forecast.ss"), verbose = FALSE)
-
-# Extraer parámetros
-parbio <- ctl1$MG_parms[1:10, c(1:4,7)]
-rownames(parbio) <- c("Nat M", "Lmin", "Lmax", "VonBert K",
-                      "CV young", "CV old", "Wt a", "Wt b", "L50%", "Mat slope")
-
-SRpar  <- ctl1$SR_parms[1:5, c(1:4,7)]
-Qpar   <- ctl1$Q_parms[1:2, c(1:4,7)]
-Selpar <- ctl1$size_selex_parms[1:20, c(1:4,7)]
-
-# Combinar parámetros
-parInit <- as.data.frame(rbind(parbio, SRpar, Qpar, Selpar))
-
-# Añadir nombres de fila como columna "Parameter"
-parInit$Parameter <- rownames(parInit)
-
-# Añadir categorías y reordenar columnas
-parInit <- parInit %>%
-  mutate(INIT  = round(INIT, 2),
-         PRIOR = round(PRIOR, 2))
-
-# Crear vector de categorías (39 filas)
-categories <- c(rep("Natural Mortality", 1),
-                rep("Growth", 4),
-                rep("Length-Weight Relation", 2),
-                rep("Maturity", 2),
-                rep("Stock-Recruit Relation", 5),
-                rep("Catchability", 2),
-                rep("Selectivity", 21))  # OJO: corregido a 23
-
-# Añadir categorías y reordenar columnas
-parInit <- parInit %>%
-  mutate(Category = categories) %>%
-  dplyr::relocate(Category, Parameter)
-
-# Crear flextable
-ft <- flextable(parInit)
-ft <- set_caption(ft,
-                  caption = as_paragraph("Input parameters for the initial SS3 model of krill. Each parameter line contains a minimum value (LO), maximum value (HI), and initial value (INIT). If the phase (PHASE) for the parameter is negative, the parameter is fixed as input"),
-                  autonum = NULL)
-ft <- autofit(ft)
-ft <- theme_booktabs(ft)
-ft <- set_table_properties(ft, width = .5, layout = "autofit")
-ft <- fontsize(ft, size = 9, part = "all")
-ft
-```
-
-
 ### Index 
 
 Abundance index in Figure \@ref(fig:index)
 
 ```{r index, fig.cap="Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea."}
-
+dir1.1 <- here("s1.1")
+start1 <- SS_readstarter(file = file.path(dir1.1, "starter.ss"), verbose = FALSE)
+dat1   <- SS_readdat(file = file.path(dir1.1, start1$datfile), verbose = FALSE)
+ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
+                     verbose = FALSE, use_datlist = TRUE, datlist = dat1)
+fore1  <- SS_readforecast(file = file.path(dir1.1, "forecast.ss"), verbose = FALSE)
 
 dat1_std <- dat1$CPUE %>%
   mutate(
@@ -452,7 +406,7 @@ knitr::include_graphics('Figs/chla_grilled.png')
 
 The interannual variability of this environmental index from 2000 to 2020 is shown in Figure \@ref(fig:chlindex). The figure highlights fluctuations across years, with periods of higher-than-average chlorophyll variability (e.g., 2003, 2016) as well as years with significantly lower values (e.g., 2011, 2020).
 
-```{r chlindex, fig.height=3, fig.width=9, fig.cap="Interannual variability of the Chlorophyll Variability Index from 2000 to 2020. Positive anomalies (in red) and negative anomalies (in black) indicate below-average conditions"}
+```{r chlindex, fig.height=3, fig.width=8, fig.cap="Interannual variability of the Chlorophyll Variability Index from 2000 to 2020. Positive anomalies (in red) and negative anomalies (in black) indicate below-average conditions"}
 chl <- dat1$envdat |>
   setNames(c("year", "variable", "chl_z")) |>
   filter(variable == 1, year != -9999) |>
@@ -491,7 +445,7 @@ knitr::include_graphics('Figs/pathmod.png')
 
 Figure \@ref(fig:dataserie) show time series of differente componentes of data sources to this krill stock assessment.
 
-```{r dataserie, fig.width=6, fig.height=10 fig.cap="Data series used in krill modelling in 48.1 Subarea"}
+```{r dataserie, fig.width=6, fig.height=9, fig.cap="Data series used in krill modelling in 48.1 Subarea"}
 SSplotData(base.model1.4, 
            subplots = 1,
            ptsize = -1.5)
@@ -514,22 +468,15 @@ scenario_table <- data.frame(
   stringsAsFactors = FALSE
 )
 
-scenario_table %>%
-  kbl(caption = "Scenarios used for modelling dynamics in krill",
-      align = "l",  # Left alignment (or use "c" for center)
-      booktabs = TRUE,
-      col.names = c("Scenario", "Description")) %>%
-  kable_styling(bootstrap_options = c("striped", "hover"),
-                full_width = FALSE,
-                position = "center",
-                font_size = 10,  # Equivalent to fontsize(size = 10)
-                latex_options = "HOLD_position") %>%
-  row_spec(0, bold = TRUE, color = "black") %>%  # Header formatting
-  column_spec(1, width = "2cm") %>%  # Adjust column widths
+kbl_pdf(scenario_table,
+        caption = "Scenarios used for modelling dynamics in krill",
+        col.names = c("Scenario", "Description"),
+        align = "ll") %>%
+  column_spec(1, width = "2cm") %>%
   column_spec(2, width = "10cm")
 ```
 
-# RESULTS
+# Results
 
 
 
@@ -722,8 +669,6 @@ SSplotTimeseries(base.model1.4,
 
 ## Population variables 
 
-(Figure \@ref(fig:popvar2))
-
 ```{r popvar2, fig.cap="Time series of different populations variables"}
 cols <- c("Yr", "Bio_all", "Bio_smry", "SpawnBio", "Recruit_0")
 
@@ -834,7 +779,7 @@ ggsave(alloutput, filename = "Figs/popvar_scenarios.png",
 
 Comparsion in long term time series forecasting Figure \@ref(fig:cumsum)
 
-```{r}
+```{r cumsum, fig.cap="Summary of estimation of different populations variables" }
 # Renombrar y reordenar variables
 var_labels <- c(
   "Bio_all"   = "Total Biomass (t)",
@@ -884,7 +829,6 @@ boxout <- ggplot(outpsall_box,
 
 boxout
 ```
-
 
 
 ```{r eval=FALSE}
@@ -1042,7 +986,7 @@ srr_sce <- ggplot() +
   geom_text_repel(
     data  = label_data_all,
     aes(x = l / 1e6, y = m / 1e9, label = yr, color = Group),
-    size = 2.5, max.overlaps = 10,
+    size = 2.5, max.overlaps = 20,
     segment.size = 0.3, segment.alpha = 0.4,
     box.padding = 0.3, show.legend = FALSE
   ) +
@@ -1055,7 +999,7 @@ srr_sce <- ggplot() +
   scale_y_continuous(
     labels = label_number(suffix = " B")
   ) +
-  coord_cartesian(ylim = c(0, 60)) +
+  coord_cartesian(ylim = c(0, 150)) +
   labs(
     x = "Spawning Stock Biomass",
     y = "Predicted Recruitment (B)"
@@ -1197,7 +1141,12 @@ fig_recpro <- plot_grid(
 fig_recpro
 
 # Guardar (opcional)
-#ggsave("fig_recpro.png", fig_recpro, width = 10, height = 4, dpi = 300)
+
+ggsave("Figs/fig_recpro.png",
+       plot   = fig_recpro,
+       width  = 10,
+       height = 4,
+       dpi    = 300)
 ```
 
 Figure \@ref(fig:recdev) shows the recruitment deviations for the four assessment scenarios. The reference model (s1.1) shows a relatively stable pattern of recruitment deviations, while the other scenarios exhibit more variability, particularly in the later years. This suggests that incorporating predator and environmental data can influence the estimated recruitment dynamics of Antarctic krill.
@@ -1313,7 +1262,7 @@ p2 <- plot_acf_color(base.model1.2$recruit$pred_recr, "s1.2", cols["s1.2"])
 p3 <- plot_acf_color(base.model1.3$recruit$pred_recr, "s1.3", cols["s1.3"])
 p4 <- plot_acf_color(base.model1.4$recruit$pred_recr, "s1.4", cols["s1.4"])
 
-acf_combined <- wrap_plots(list(p1, p2, p3, p4), ncol = 4, nrow = 1)
+acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, ncol = 4)
 
 ggsave("Figs/acf_recruitment.png",
        plot   = acf_combined,
@@ -1322,13 +1271,11 @@ ggsave("Figs/acf_recruitment.png",
        dpi    = 300)
 ```
 
-
-
 This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pearson residuals and trends of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity.
 
 \begin{landscape}
 
-```{r pearson, fig.cap="Pearson residual by scenario and fleet"}
+```{r pearson, fig.width=9, fig.height=7, fig.cap="Pearson residual by scenario and fleet"}
 # ── Función robusta: normaliza nombres de columna según versión de r4ss
 create_heatmap_df <- function(df, model_name) {
   df_norm <- df
@@ -1429,14 +1376,12 @@ ggsave(
   dpi      = 300
 )
 ```
+
 \end{landscape}
-
-\pagebreak
-
+\clearpage
 \begin{landscape}
 
-
-```{r pearsontrend, message=FALSE, warning=F, fig.cap="Pearson residual trend by scenario and fleet"}
+```{r pearsontrend, fig.width=9, fig.height=7,  message=FALSE, warning=F, fig.cap="Pearson residual trend by scenario and fleet"}
 # 1. Calcular pendiente y p-value por Fleet y Modelo
 lm_stats <- df_all %>%
   group_by(Model, Fleet) %>%
@@ -1469,11 +1414,7 @@ ggplot(df_all, aes(x = Yr, y = Pearson)) +
   
   ylim(-2, 2)
 ```
-
-
 \end{landscape}
-
-\pagebreak
 
 ```{r}
 cpue_resid <- bind_rows(
@@ -1614,7 +1555,7 @@ SSplotRunstest(base.model1.4,
 
 By analyzing residual patterns and RMSE values, the model can be refined to improve the accuracy of mean length predictions, ultimately enhancing the reliability of stock assessment outcomes and management recommendations (Figure \@ref(fig:rmse1)).
 
-```{r rmse1, fig.height=8, fig.width=8, fig.cap="Time series of RMSE of length compositions by scenario"}
+```{r rmse1, fig.height=7, fig.width=6.5, fig.cap="Time series of RMSE of length compositions by scenario"}
 par(mfrow=c(2,2), mar=c(5,4,2,1))
 rmse1l <- SSplotJABBAres(base.model1.1,
                subplots = "len",
@@ -1631,7 +1572,7 @@ rmse4l <- SSplotJABBAres(base.model1.4,
 ```
 Figure \@ref(fig:rmse2) show RMSE to index.
 
-```{r rmse2, fig.height=8, fig.width=8, fig.cap="Time series of RMSE of CPUE compositions by scenario"}
+```{r rmse2, fig.height=7, fig.width=6.5, fig.cap="Time series of RMSE of CPUE compositions by scenario"}
 par(mfrow=c(2,2), mar=c(5,4,2,1))
 rmse1c <- SSplotJABBAres(base.model1.1,
                subplots = "cpue",
@@ -1738,7 +1679,7 @@ p_rmse_index <- plot_rmse(dfrmse_index, "Abundance indices")
 p_rmse_len   <- plot_rmse(dfrmse_len,   "Length compositions")
 
 ggsave(file.path(Figs, "rmse_scenarios.png"),
-      p_rmse_index + p_rmse_len,
+      cowplot::plot_grid(p_rmse_index, p_rmse_len, ncol = 2),
        width = 10, height = 4, dpi = 300)
 
 ```
@@ -1756,7 +1697,8 @@ combined_rmse <- tibble(
                    rmse3l |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse4l |> filter(indices == "Combined") |> pull(RMSE.perc))
 )
-kbl(combined_rmse)
+kbl_pdf(combined_rmse,
+        caption = "Combined RMSE values by scenario for abundance indices and length compositions")
 ```
 
 
@@ -1895,50 +1837,26 @@ retro1.4 <- SSplotRetro(retroSummary1.4,
 tablebias01 <- SShcbias(retroSummary1.1,quant="SSB",verbose=F)
 tablebias01a <- SShcbias(retroSummary1.1,quant="F",verbose=F)
 
-kbl(tablebias01, booktabs = T,format = "latex",
-    caption = "Rho parameter in SSB model s01")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-kbl(tablebias01a, booktabs = T,format = "latex",
-    caption = "Rho parameter in F model s01")  %>% 
-    kable_styling(latex_options = "HOLD_position")
+kbl_pdf(tablebias01,  caption = "Mohn's rho — SSB, scenario s1.1")
+kbl_pdf(tablebias01a, caption = "Mohn's rho — F, scenario s1.1")
 
 # model2
-tablebias2 <- SShcbias(retroSummary1.2,quant="SSB",verbose=F)
-tablebias2a <- SShcbias(retroSummary1.2,quant="F",verbose=F)
-
-kbl(tablebias2, booktabs = T,format = "latex",
-    caption = "Rho parameter in SSB model s2")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-kbl(tablebias2a, booktabs = T,format = "latex",
-    caption = "Rho parameter in F model s2")  %>% 
-    kable_styling(latex_options = "HOLD_position")
+tablebias2  <- SShcbias(retroSummary1.2, quant = "SSB", verbose = F)
+tablebias2a <- SShcbias(retroSummary1.2, quant = "F",   verbose = F)
+kbl_pdf(tablebias2,  caption = "Mohn's rho — SSB, scenario s1.2")
+kbl_pdf(tablebias2a, caption = "Mohn's rho — F, scenario s1.2")
 
 # model3
-tablebias3 <- SShcbias(retroSummary1.3,quant="SSB",verbose=F)
-tablebias3a <- SShcbias(retroSummary1.3,quant="F",verbose=F)
-
-kbl(tablebias3, booktabs = T,format = "latex",
-    caption = "Rho parameter in SSB model s3")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-kbl(tablebias3a, booktabs = T,format = "latex",
-    caption = "Rho parameter in F model s3")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
+tablebias3  <- SShcbias(retroSummary1.3, quant = "SSB", verbose = F)
+tablebias3a <- SShcbias(retroSummary1.3, quant = "F",   verbose = F)
+kbl_pdf(tablebias3,  caption = "Mohn's rho — SSB, scenario s1.3")
+kbl_pdf(tablebias3a, caption = "Mohn's rho — F, scenario s1.3")
 
 # model4
-tablebias4 <- SShcbias(retroSummary1.4,quant="SSB",verbose=F)
-tablebias4a <- SShcbias(retroSummary1.4,quant="F",verbose=F)
-
-kbl(tablebias4, booktabs = T,format = "latex",
-    caption = "Rho parameter in SSB model s4")  %>% 
-    kable_styling(latex_options = "HOLD_position")
-
-kbl(tablebias4a, booktabs = T,format = "latex",
-    caption = "Rho parameter in F model s4")  %>% 
-    kable_styling(latex_options = "HOLD_position")
+tablebias4  <- SShcbias(retroSummary1.4, quant = "SSB", verbose = F)
+tablebias4a <- SShcbias(retroSummary1.4, quant = "F",   verbose = F)
+kbl_pdf(tablebias4,  caption = "Mohn's rho — SSB, scenario s1.4")
+kbl_pdf(tablebias4a, caption = "Mohn's rho — F, scenario s1.4")
 
 
 # Combine the results from all models into one table
@@ -2034,20 +1952,20 @@ tablerho
 The Hindcast Cross-Validation (HCxval) diagnostic in Stock Synthesis is implemented using the model outputs generated by the `r4ss::SS_doRetro()` and using `SSplotHCval()` function. This diagnostic evaluates the predictive performance of the model by comparing hindcast predictions with observed data. To assess prediction skill, we employ the Mean Absolute Scaled Error (MASE) as a robust metric. MASE is calculated by scaling the mean absolute error of the model predictions relative to the mean absolute error of a naïve baseline prediction. Specifically, the MASE score is computed as follows:
 
 
-Hindcast validation for `s1.1` (Figure \@ref(fig:hcval1))
+Hindcast validation in `s1.1` (Figure \@ref(fig:hcval1)), `s1.2` (Figure \@ref(fig:hcval2)), `s1.3` (Figure \@ref(fig:hcval3)) and  `s1.4` (Figure \@ref(fig:hcval4)).
 
-```{r hcval1, fig.cap="Hindcast validation for s1.1 by fleet"}
-par(mfrow=c(3,3), mar=c(5,4,2,1))
+```{r hcval1, fig.height=10, fig.width=5, fig.cap="Hindcast validation for s1.1 by fleet"}
+par(mfrow=c(5,2), mar=c(5,4,2,1))
 hci1 = SSplotHCxval(retroSummary1.1, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
 ```
 
-Hindcast validation for `s1.2` (Figure \@ref(fig:hcval2))
 
-```{r hcval2, fig.cap="Hindcast validation for s1.2 by fleet"}
-par(mfrow=c(3,3), mar=c(5,4,2,1))
+
+```{r hcval2, fig.height=10, fig.width=5, fig.cap="Hindcast validation for s1.2 by fleet"}
+par(mfrow=c(5,2), mar=c(5,4,2,1))
 hci2 = SSplotHCxval(retroSummary1.2, 
                    add = T, 
                    verbose = F, 
@@ -2055,20 +1973,20 @@ hci2 = SSplotHCxval(retroSummary1.2,
 ```
 
 
-Hindcast validation for `s1.3` (Figure \@ref(fig:hcval3))
 
-```{r hcval3, fig.cap="Hindcast validation for s1.3 by fleet"}
-par(mfrow=c(3,3), mar=c(5,4,2,1))
+
+```{r hcval3, fig.height=10, fig.width=5, fig.cap="Hindcast validation for s1.3 by fleet"}
+par(mfrow=c(5,2), mar=c(5,4,2,1))
 hci3 = SSplotHCxval(retroSummary1.3, 
                    add = T, 
                    verbose = F, 
                    legendcex = 0.7)
 ```
 
-Hindcast validation for `s1.4` (Figure \@ref(fig:hcval4))
 
-```{r hcval4, fig.cap="Hindcast validation for s1.4 by fleet"}
-par(mfrow=c(3,3), mar=c(5,4,2,1))
+
+```{r hcval4,fig.height=10, fig.width=5, fig.cap="Hindcast validation for s1.4 by fleet"}
+par(mfrow=c(5,2), mar=c(5,4,2,1))
 hci4 = SSplotHCxval(retroSummary1.4, 
                    add = T, 
                    verbose = F, 
@@ -2476,9 +2394,8 @@ table_clean <- tablelike %>%
   dplyr::select(where(~ !all(is.na(.))))  # elimina columnas que son completamente NA
 
 # Renderizar con kable
-kbl(table_clean, booktabs = TRUE, format = "latex", 
-    caption = "Model parameter and likelihood comparison") %>%
-  kable_styling(latex_options = "scale_down")
+kbl_pdf(table_clean, font = 8,
+        caption = "Model parameter and likelihood comparison")
 
 ```
 
@@ -2537,18 +2454,11 @@ tabla_resumen <- resid_stats %>%
   left_join(bp_p, by = c("type", "model")) %>%
   mutate(across(where(is.numeric), ~ round(.x, 5)))
 
-tabla_resumen %>%
-  kbl(caption = "Summary statistics and residual diagnostic tests by type and model",
-      digits = 5,  # Redondeo a 5 decimales
-      align = "c",  # Centrado
-      booktabs = TRUE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover"),
-                full_width = FALSE,
-                position = "center",
-                latex_options = "HOLD_position") %>%
-  row_spec(0, bold = TRUE) %>%  # Encabezados en negrita
-  column_spec(1, bold = TRUE)   # Primera columna en negrita (opcional)
+kbl_pdf(tabla_resumen, digits = 5, align = "c",
+        caption = "Summary statistics and residual diagnostic tests by type and model") %>%
+  column_spec(1, bold = TRUE)
 ```
 
+\newpage 
 
-# REFERENCES
+# References

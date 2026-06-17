@@ -1,14 +1,40 @@
+# ============================================================
+# R and RStudio
+# ============================================================
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-./s01*
-*.hes
-*.sso
-*.html
-*.png
-*.xlsx
-*.csv
+*.Rproj
+
+# ============================================================
+# Scenario folders — ignore all contents, keep 4 SS3 inputs
+# ============================================================
+s1.1/*
+!s1.1/starter.ss
+!s1.1/forecast.ss
+!s1.1/control.ss
+!s1.1/data.ss
+
+s1.2/*
+!s1.2/starter.ss
+!s1.2/forecast.ss
+!s1.2/control.ss
+!s1.2/data.ss
+
+s1.3/*
+!s1.3/starter.ss
+!s1.3/forecast.ss
+!s1.3/control.ss
+!s1.3/data.ss
+
+s1.4/*
+!s1.4/starter.ss
+!s1.4/forecast.ss
+!s1.4/control.ss
+!s1.4/data.ss
+
+# Other scenario folders (not tracked)
 s01*/
 s1/
 s2*/
@@ -18,17 +44,37 @@ s5*/
 s6*/
 s7*/
 s8*/
-s1.1*/
-s1.2*/
-s1.3*/
-s1.4*/
-Ejercicios*/
-Figs*/
+s9*/
+scenarios/
+
+# ============================================================
+# Compiled outputs
+# ============================================================
+*.docx
 *.pdf
+~$*.docx
 *.html
 index_files*/
-*.docx
-*.DS_Store
-*.R
+
+# ============================================================
+# Data and figure outputs
+# ============================================================
+Figs/
+outputs/
+*.png
+*.xlsx
+*.csv
+
+# ============================================================
+# SS3 output file types (safety net)
+# ============================================================
+*.sso
+*.hes
 *.log
 *.tex
+
+# ============================================================
+# System
+# ============================================================
+.DS_Store
+Ejercicios*/
