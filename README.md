@@ -5,18 +5,18 @@ This repository contains the Stock Synthesis 3 (SS3 v3.30.21) assessment model f
 ## Project Structure
 
 ```
-📂 SA_Krill
-│── 📂 s1.1/           # Baseline spatial implicit model (fishery + survey data)
-│── 📂 s1.2/           # Baseline + predator mortality (M2)
-│── 📂 s1.3/           # Baseline + environmental covariate (Chl-a → recruitment)
-│── 📂 s1.4/           # Baseline + predator mortality + environmental covariate
-│── 📂 Figs/           # Output figures
-│── 📂 outputs/        # Processed results and diagnostics
-│── 📄 MS2_Krill_revised.Rmd   # Main manuscript (R Markdown)
-│── 📄 Supp_Mat_1.Rmd          # Supplementary Material 1
-│── 📄 Supp_Mat_2.Rmd          # Supplementary Material 2 (model equations)
-│── 📄 SA_krill.bib            # BibTeX references
-│── 📄 README.md               # Project overview
+SA_Krill
+│── s1.1/           # Baseline spatial implicit model (fishery + survey data)
+│── s1.2/           # Baseline + predator mortality (M2)
+│── s1.3/           # Baseline + environmental covariate (Chl-a → recruitment)
+│── s1.4/           # Baseline + predator mortality + environmental covariate
+│── Figs/           # Output figures
+│── outputs/        # Processed results and diagnostics
+│── MS2_Krill_revised.Rmd   # Main manuscript (R Markdown)
+│── Supp_Mat_1.Rmd          # Supplementary Material 1 (to run, read outputs and rreproduce excercise)
+│── Supp_Mat_2.Rmd          # Supplementary Material 2 (model equations)
+│── SA_krill.bib            # BibTeX references
+│── README.md               # Project overview
 ```
 
 ## Model Scenarios
