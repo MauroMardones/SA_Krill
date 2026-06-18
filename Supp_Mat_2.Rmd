@@ -338,7 +338,7 @@ glossary <- data.frame(
     "Metric tons", "Proportion", "Metric tons",
     "Dimensionless", "Various", "Dimensionless", "Dimensionless",
     "Various", "Various", "Various", "Years",
-    "yr$^{-1}$", "Thousands", "Proportion"
+    "yr$^{-1}$", "Thousands", "Dimensionless"
   ),
   stringsAsFactors = FALSE
 )

@@ -58,7 +58,7 @@ options(bitmapType = "cairo")
 # Lo mapas se hacen mas rapido
 ```
 
-### Libraries
+## Libraries
 
 Libraries necessary to made this analysis;
 
@@ -95,11 +95,11 @@ kbl_pdf <- function(x, caption = NULL, scale = TRUE, font = 9, ...) {
 }
 ```
 
-### Code Repository
+## Code Repository
 
 The repository with files templates by scenario to replicate this analysis can be found in this [GitHub author link](https://github.com/MauroMardones/SA_Krill/tree/main/scenarios)
 
-### Run Models
+## Run Models
 
 ```{r message=FALSE, warning=FALSE}
 # setting folders
@@ -109,6 +109,22 @@ dir1.3 <- here::here("s1.3") # s1.1 w/ env
 dir1.4 <- here::here("s1.4") # s1.1 predator and env
 Figs <- here::here("Figs")
 outdir <- here::here("outputs")
+
+dir1.1 <- here("s1.1")
+start1 <- SS_readstarter(file = file.path(dir1.1, "starter.ss"), verbose = FALSE)
+dat1   <- SS_readdat(file = file.path(dir1.1, start1$datfile), verbose = FALSE)
+ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
+                     verbose = FALSE, use_datlist = TRUE, datlist = dat1)
+fore1  <- SS_readforecast(file = file.path(dir1.1, "forecast.ss"), verbose = FALSE)
+
+
+dir1.4 <- here("s1.4")
+start4 <- SS_readstarter(file = file.path(dir1.4, "starter.ss"), verbose = FALSE)
+dat4   <- SS_readdat(file = file.path(dir1.4, start4$datfile), verbose = FALSE)
+ctl4   <- SS_readctl(file = file.path(dir1.4, start4$ctlfil),
+                     verbose = FALSE, use_datlist = TRUE, datlist = dat4)
+fore4  <- SS_readforecast(file = file.path(dir1.4, "forecast.ss"), verbose = FALSE)
+
 ```
 
 ```{r eval=FALSE, message=F, echo=TRUE}
@@ -185,14 +201,7 @@ base.model1.4 <- SS_output(dir=dir1.4,
 
 ## Spatial dimension of stock assessment
 
-The study focuses on Subarea 48.1 in the Western Antarctic Peninsula, where most krill fishing occurs and CCAMLR is advancing spatially refined management. We use five CCAMLR-defined strata to increase spatial resolution, allowing detection of regional differences in krill dynamics (Figure \@ref(fig:mapa)). This structure, integrated into the stock assessment model, enhances its capacity to capture spatial variability in both biological and environmental data. In this approach, spatial structure is incorporated implicitly by treating different areas as separate fleets [@Nielsen2021; @Waterhouse2014]. This constitutes a spatially implicit modeling framework, where differences among strata are recognized both from the perspective of krill population dynamics and from the influence of environmental variability within Subarea 48.1.
-
-
-```{r mapa, fig.cap="Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)"}
-knitr::include_graphics('Figs/map_SA_krilll.png')
-```
-
-Figure \@ref(fig:conceptual) illustrates a conceptual model with the spatial distribution and movement of Antarctic krill in the Western Antarctic Peninsula (WAP). Adult krill are concentrated and move primarily in the northern areas, while juvenile krill dominate the southern regions. Arrows indicate directional flows, suggesting ontogenetic or environmentally-driven migration patterns. In terms of assumptions, although there are spatial differences in population structure, all these areas are considered part of a single, closed population unit upon which the stock assessment is conducted. By leveraging a spatially implicit, ecosystem-informed approach, this assessment provides a robust framework for evaluating krill stock dynamics under changing environmental conditions. These insights are crucial for informing sustainable management strategies in the Antarctic Peninsula region, where krill plays a foundational role in the marine food web.  
+The spatial structure of the assessment reflects a conceptual model of krill distribution in Subarea 48.1, where adult krill concentrate in northern strata and juveniles dominate southern areas, with directional movement likely driven by ontogenetic migration Figure \@ref(fig:conceptual). This structure is incorporated implicitly into the stock assessment by treating each stratum as a separate fleet within a single closed-population unit, allowing regional differences in biology and environmental forcing to be captured without assuming independent stocks.
 
 ```{r conceptual, out.width="50%", fig.cap="Conceptual model used to model dynamics population in Antarctic krill in WAP"}
 knitr::include_graphics('Figs/conceptual.jpeg')
@@ -231,21 +240,55 @@ ggplot(alk_df, aes(x = TrueAge, y = Length, fill = Value)) +
   theme(legend.position = "none")
 ```
 
-## Data
+# Data
 
-### Index 
+## Environmental Data
+
+Based on @Flores2012; @Morley2020; @Veytia2021; @Walsh2020, Chl-a emerged as the most influential predictor and was therefore selected for incorporation into the stock assessment model as an environmental covariate. Figure \@ref(fig:mapachl) presents a time series of Chl-a concentration (mg m$^{-3}$) in the waters around the Antarctic Peninsula from 2000 to 2020. Each panel represents a different year, showing spatial variations in Chl-a levels as an indicator of phytoplankton biomass. The highest concentrations were observed along the coastal regions, while offshore areas exhibited lower Chl-a levels.
+
+```{r mapachl, out.width="100%", fig.cap="Time series (2000-2020) to Chlorophyll in Subarea 48.1"}
+knitr::include_graphics('Figs/chla_grilled.png')
+```
+
+The interannual variability of this environmental index from 2000 to 2020 is shown in Figure \@ref(fig:chlindex). The figure highlights fluctuations across years, with periods of higher-than-average chlorophyll variability (e.g., 2003, 2016) as well as years with significantly lower values (e.g., 2011, 2020).
+
+```{r chlindex, fig.height=3, fig.width=8, fig.cap="Interannual variability of the Chlorophyll Variability Index from 2000 to 2020. Positive anomalies (in red) and negative anomalies (in black) indicate below-average conditions"}
+chl <- dat1$envdat |>
+  setNames(c("year", "variable", "chl_z")) |>
+  filter(variable == 1, year != -9999) |>
+  mutate(color_z = ifelse(chl_z >= 0, "above", "below"))
+
+# Plot
+ggplot(chl, aes(year, chl_z, fill = color_z)) +
+  geom_col(width = 0.7, show.legend = FALSE) +
+  geom_hline(yintercept = 0, color = "grey30") +
+  scale_fill_manual(values = c("above" = "grey20", "below" = "#F44336")) +
+  scale_x_continuous(breaks = seq(2000, 2020, 5)) +
+  labs(x = "", 
+       y = expression(Chl-italic(a)~anomaly~(italic(z)-score))) +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        # poner en vertical los nombres de los años
+        axis.text.x=element_text(angle=90,vjust=0.5))
+```
+
+## Predator Component as a Driver of Krill Dynamics
+
+The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributions derived from penguin diet samples, displayed by predator species. Although median krill lengths remain relatively consistent over time, there is notable interannual variability in the spread and distribution of sizes. Spatiotemporal distribution patterns of the three penguin species across the Antarctic Peninsula showed interannual variability from 2001 to 2020. Adélie penguins exhibited a relatively consistent presence across the northern sector of the Peninsula, with larger colony sizes concentrated toward the southwestern Bransfield Strait, particularly during the early 2000s. Chinstrap penguins were widespread and dominant in both spatial extent and colony size across most years, especially in the central and northeastern portions of the Peninsula. Gentoo penguins appeared in fewer and more localized sites but displayed a slight increase in spatial occurrence during the latter part of the time series  The index exhibits fluctuations over time, with a general decline from the early 1990s to the mid-2000s, followed by a period of relative stabilization and a strong decline toward the end of the time series (bottom panel in Figure \@ref(fig:mapapre)).
+
+
+```{r mapapre, eval=TRUE, out.width="100%", fig.cap= "Ecosystem indicators derived from penguin predator data in the Western Antarctic Peninsula. Top panel: Annual krill length distributions from penguin diet samples by species: adélie, chinstrap, and gentoo. A red horizontal line marks the 3.6 cm as recruit size for reference purposes. Bottom panel: Synoptic index of relative predator biomass, used as an ecosystem input in the stock assessment model."}
+knitr::include_graphics('Figs/new_predator_plot.png')
+```
+
+
+## Abundances Index 
 
 Abundance index in Figure \@ref(fig:index)
 
 ```{r index, fig.cap="Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea."}
-dir1.1 <- here("s1.1")
-start1 <- SS_readstarter(file = file.path(dir1.1, "starter.ss"), verbose = FALSE)
-dat1   <- SS_readdat(file = file.path(dir1.1, start1$datfile), verbose = FALSE)
-ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
-                     verbose = FALSE, use_datlist = TRUE, datlist = dat1)
-fore1  <- SS_readforecast(file = file.path(dir1.1, "forecast.ss"), verbose = FALSE)
 
-dat1_std <- dat1$CPUE %>%
+dat4_std <- dat4$CPUE %>%
   mutate(
     index_std = (obs - min(obs)) / (max(obs) - min(obs)),
     index = dplyr::recode(index,
@@ -280,7 +323,7 @@ dat1_std <- dat1$CPUE %>%
   )
 
 
-p1 <- ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = category)) +
+p1_b <- ggplot(dat4_std, aes(x = year, y = index_std, group = index, color = category)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   facet_wrap(~index, scales = "free_y", ncol = 5) +  # Ajusta ncol para obtener 3 filas
@@ -292,16 +335,16 @@ p1 <- ggplot(dat1_std, aes(x = year, y = index_std, group = index, color = categ
     axis.text.x = element_text(angle = 90, hjust = 1),
          axis.text.y = element_blank()) +
   labs(title = "", x = "", y = "Standard index", color = "Category")
-p1
+p1_b
 ```
 
-### Length compositions
+## Length compositions
 
 Length compositions in Figure \@ref(fig:length)
 
 ```{r length, warning=FALSE, fig.cap="Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm)."}
 
-dat_lencomp <- dat1$lencomp
+dat_lencomp <- dat4$lencomp
 
 # ── Diagnóstico: muestra columnas reales (quitar comentario si hay problemas)
 # message("Columnas en dat1$lencomp: ", paste(names(dat_lencomp), collapse = ", "))
@@ -372,7 +415,7 @@ p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
                                rel_min_height = 0.001,
                                col = "black",
                                alpha=0.4) +
-  facet_wrap(~FltSvy, ncol = 10) +
+  facet_wrap(~FltSvy, ncol = 11) +
   geom_vline(data = mean_talla, aes(xintercept = mean_Talla), 
              color = "red", 
              size = 0.7,
@@ -396,44 +439,6 @@ p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
   theme(legend.position = "none")
 p2
 ```
-### Environmental Data
-
-Based on @Mardones2026, Chl-a emerged as the most influential predictor and was therefore selected for incorporation into the stock assessment model as an environmental covariate. Figure \@ref(fig:mapachl) presents a time series of Chl-a concentration (mg m$^{-3}$) in the waters around the Antarctic Peninsula from 2000 to 2020. Each panel represents a different year, showing spatial variations in Chl-a levels as an indicator of phytoplankton biomass. The highest concentrations were observed along the coastal regions, while offshore areas exhibited lower Chl-a levels.
-
-```{r mapachl, out.width="100%", fig.cap="Time series (2000-2020) to Chlorophyll in Subarea 48.1"}
-knitr::include_graphics('Figs/chla_grilled.png')
-```
-
-The interannual variability of this environmental index from 2000 to 2020 is shown in Figure \@ref(fig:chlindex). The figure highlights fluctuations across years, with periods of higher-than-average chlorophyll variability (e.g., 2003, 2016) as well as years with significantly lower values (e.g., 2011, 2020).
-
-```{r chlindex, fig.height=3, fig.width=8, fig.cap="Interannual variability of the Chlorophyll Variability Index from 2000 to 2020. Positive anomalies (in red) and negative anomalies (in black) indicate below-average conditions"}
-chl <- dat1$envdat |>
-  setNames(c("year", "variable", "chl_z")) |>
-  filter(variable == 1, year != -9999) |>
-  mutate(color_z = ifelse(chl_z >= 0, "above", "below"))
-
-# Plot
-ggplot(chl, aes(year, chl_z, fill = color_z)) +
-  geom_col(width = 0.7, show.legend = FALSE) +
-  geom_hline(yintercept = 0, color = "grey30") +
-  scale_fill_manual(values = c("above" = "grey20", "below" = "#F44336")) +
-  scale_x_continuous(breaks = seq(2000, 2020, 5)) +
-  labs(x = "", 
-       y = expression(Chl-italic(a)~anomaly~(italic(z)-score))) +
-  theme_bw() +
-  theme(panel.grid.minor = element_blank(),
-        # poner en vertical los nombres de los años
-        axis.text.x=element_text(angle=90,vjust=0.5))
-```
-
-### Predator Component as a Driver of Krill Dynamics
-
-The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributions derived from penguin diet samples, displayed by predator species. Although median krill lengths remain relatively consistent over time, there is notable interannual variability in the spread and distribution of sizes. Spatiotemporal distribution patterns of the three penguin species across the Antarctic Peninsula showed interannual variability from 2001 to 2020. Adélie penguins exhibited a relatively consistent presence across the northern sector of the Peninsula, with larger colony sizes concentrated toward the southwestern Bransfield Strait, particularly during the early 2000s. Chinstrap penguins were widespread and dominant in both spatial extent and colony size across most years, especially in the central and northeastern portions of the Peninsula. Gentoo penguins appeared in fewer and more localized sites but displayed a slight increase in spatial occurrence during the latter part of the time series  The index exhibits fluctuations over time, with a general decline from the early 1990s to the mid-2000s, followed by a period of relative stabilization and a strong decline toward the end of the time series (bottom panel in Figure \@ref(fig:mapapre)).. 
-
-
-```{r mapapre, eval=TRUE, out.width="100%", fig.cap= "Ecosystem indicators derived from penguin predator data in the Western Antarctic Peninsula. Top panel: Annual krill length distributions from penguin diet samples by species: adélie, chinstrap, and gentoo. A red horizontal line marks the 3.6 cm as recruit size for reference purposes. Bottom panel: Synoptic index of relative predator biomass, used as an ecosystem input in the stock assessment model."}
-knitr::include_graphics('Figs/new_predator_plot.png')
-```
 
 This information and all sources can be represented through the following flow diagram (Figure \@ref(fig:path)) of inputs, model, and outputs.
 
@@ -445,15 +450,13 @@ knitr::include_graphics('Figs/pathmod.png')
 
 Figure \@ref(fig:dataserie) show time series of differente componentes of data sources to this krill stock assessment.
 
-```{r dataserie, fig.width=6, fig.height=9, fig.cap="Data series used in krill modelling in 48.1 Subarea"}
+```{r dataserie, fig.width=5, fig.height=8, fig.cap="Data series used in krill modelling in 48.1 Subarea"}
 SSplotData(base.model1.4, 
            subplots = 1,
            ptsize = -1.5)
 ```
 
 ## Scenarios
-
-The **reference model** is `s1.1`, wich represents a baseline assessment of *Euphausia superba* population dynamics in Subarea 48.1, excluding environmental and ecological variables. This model assumes that krill productivity and population parameters are driven  by intrinsic biological processes, such as growth, mortality, and recruitment and fishery impacts without accounting for external influences like environmental variability or predation pressure. By serving as a *control scenario*, this model provides a benchmark against which the impact of ecosystem components in productivity can be evaluated, allowing for a direct comparison of how environmental and ecological factors influence krill stock dynamics. Table \@ref(tab:scenarios) show scenarios used for modelling dynamics in krill
 
 ```{r scenarios, eval=TRUE}
 # Tu código de flextable aquí
@@ -571,7 +574,7 @@ SS_plots(base.model1.4,
 
 Selectivity estimated by scenario in Figure \@ref(fig:selectivity).
 
-```{r selectivity, fig.height=7, fig.cap="Selectivity by fleet in each scenario"}
+```{r selectivity, fig.height=7, fig.width=6.5, fig.cap="Selectivity by fleet in each scenario"}
 par(mfrow=c(2,2), mar=c(5,4,1,1))
 SSplotSelex(base.model1.1,
             subplots = 1,
@@ -593,7 +596,7 @@ mtext("s1.4", side=3, line=0.5, cex=1.2)
 
 This Figure \@ref(fig:index2) shows standardized time series of input indices used in four different model scenarios (s1.1 to s1.4) for the stock assessment of Antarctic krill in Subarea 48.1.
 
-```{r index2,  fig.height=8, fig.cap= "Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework"}
+```{r index2, fig.height=7, fig.width=6.5, fig.cap= "Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework"}
 par(mfrow=c(2,2), mar=c(5,4,2,1)) 
 SSplotIndices(base.model1.1, subplots = 9)
 mtext("s1.1", side=3, line=0.5, cex=1.2)
@@ -604,68 +607,6 @@ mtext("s1.3", side=3, line=0.5, cex=1.2)
 SSplotIndices(base.model1.4, subplots = 9)
 mtext("s1.4", side=3, line=0.5, cex=1.2)
 ```
-
-Main Variables poulation in `s1.1` scenario (Figure \@ref(fig:scen1))
-
-```{r scen1, fig.cap="Main variables scenario s1.1"}
-par(mfrow=c(1,3), mar=c(5,4,1,1)) 
-SSplotTimeseries(base.model1.1,
-                 subplot = 1,
-                 xlab = "")
-SSplotTimeseries(base.model1.1,
-                 subplot = 9,
-                 xlab = "")
-SSplotTimeseries(base.model1.1,
-                 subplot = 7,
-                 xlab = "")
-```
-
-Main Variables poulation in `s1.2` scenario (Figure \@ref(fig:scen2))
-
-```{r scen2, fig.cap="Main variables scenario s1.2"}
-par(mfrow=c(1,3), mar=c(5,4,1,1))
-SSplotTimeseries(base.model1.2,
-                 subplot = 1,
-                 xlab = "")
-SSplotTimeseries(base.model1.2,
-                 subplot = 9,
-                 xlab = "")
-SSplotTimeseries(base.model1.2,
-                 subplot = 7,
-                 xlab = "")
-```
-
-Main Variables poulation in `s1.3` scenario (Figure \@ref(fig:scen3))
-
-```{r scen3,  fig.cap="Main variables scenario s1.3"}
-par(mfrow=c(1,3), mar=c(5,4,1,1))
-SSplotTimeseries(base.model1.3,
-                 subplot = 1,
-                 xlab = "")
-SSplotTimeseries(base.model1.3,
-                 subplot = 9,
-                 xlab = "")
-SSplotTimeseries(base.model1.3,
-                 subplot = 7,
-                 xlab = "")
-```
-
-
-Main Variables poulation in `s1.4` scenario (Figure \@ref(fig:scen4))
-
-```{r scen4,  fig.cap="Main variables scenario s1.4"}
-par(mfrow=c(1,3), mar=c(5,4,1,1))
-SSplotTimeseries(base.model1.4,
-                 subplot = 1,
-                 xlab = "")
-SSplotTimeseries(base.model1.4,
-                 subplot = 9,
-                 xlab = "")
-SSplotTimeseries(base.model1.4,
-                 subplot = 7,
-                 xlab = "")
-```
-
 
 ## Population variables 
 
@@ -748,7 +689,7 @@ alloutput <- ggplot(
   ) +
   facet_wrap(
     ~ factor(Variable, levels = panel_order),
-    ncol   = 4,
+    ncol   = 2,
     scales = "free_y"
   ) +
   scale_color_manual(
@@ -772,8 +713,8 @@ alloutput <- ggplot(
   )
 
 ggsave(alloutput, filename = "Figs/popvar_scenarios.png", 
-       width = 8, 
-       height = 4, 
+       width = 5, 
+       height = 6, 
        units = "in", dpi = 300)
 ```
 
@@ -809,7 +750,7 @@ outpsall_box <- outpsall |>
 boxout <- ggplot(outpsall_box,
                  aes(x = Model, y = Value, fill = Model)) +
   geom_boxplot(outlier.size = 0.8, outlier.alpha = 0.5, linewidth = 0.4) +
-  facet_wrap(~ Variable, ncol = 4, scales = "free_y") +
+  facet_wrap(~ Variable, ncol = 2, scales = "free_y") +
   scale_fill_manual(
     name   = "Scenario",
     values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
@@ -1149,10 +1090,12 @@ ggsave("Figs/fig_recpro.png",
        dpi    = 300)
 ```
 
-Figure \@ref(fig:recdev) shows the recruitment deviations for the four assessment scenarios. The reference model (s1.1) shows a relatively stable pattern of recruitment deviations, while the other scenarios exhibit more variability, particularly in the later years. This suggests that incorporating predator and environmental data can influence the estimated recruitment dynamics of Antarctic krill.
 
 
-```{r recdev, warning=FALSE, message=FALSE}
+```{r recdev, eval=FALSE, message=FALSE}
+# 
+# Figure \@ref(fig:recdev) shows the recruitment deviations for the four assessment scenarios. The reference model (s1.1) shows a relatively stable pattern of recruitment deviations, while the other scenarios exhibit more variability, particularly in the later years. This suggests that incorporating predator and environmental data can influence the estimated recruitment dynamics of Antarctic krill.
+
 ## Recruit deviation
 dev1 <- base.model1.1$recruit[8:35,c(1,7)]%>% 
   mutate(Serie = "s1.1")
@@ -1232,7 +1175,6 @@ ggplot(df_all, aes(x = year, y = exploitation_rate, color = model)) +
   )
 ```
 
-
 ## Model Perfomance
 
 The convergence criterion used for model calibration is set to a final threshold of **0.0001** (or equivalently **1.0e-04**). This criterion defines the minimum acceptable difference between successive model iterations. Convergence is considered achieved when the absolute change in the objective function value or key parameters falls below this threshold. A smaller convergence value ensures that the model achieves a high degree of accuracy and stability in its final estimates, indicating that further iterations are unlikely to result in significant changes to the parameter estimates.
@@ -1262,12 +1204,12 @@ p2 <- plot_acf_color(base.model1.2$recruit$pred_recr, "s1.2", cols["s1.2"])
 p3 <- plot_acf_color(base.model1.3$recruit$pred_recr, "s1.3", cols["s1.3"])
 p4 <- plot_acf_color(base.model1.4$recruit$pred_recr, "s1.4", cols["s1.4"])
 
-acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, ncol = 4)
+acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, ncol = 2)
 
 ggsave("Figs/acf_recruitment.png",
        plot   = acf_combined,
-       width  = 10,
-       height = 3,
+       width  = 5,
+       height = 6,
        dpi    = 300)
 ```
 
@@ -1487,15 +1429,15 @@ resid_all <- resid_all %>%
 ```
 
 
-### Residual consistency 
+<!-- ### Residual consistency  -->
 
-Residual analysis is a critical component of model diagnostics in stock assessments. It helps evaluate the fit of the model to observed data and detect potential biases or inconsistencies. This process is applied to both length composition data and abundance indices such as CPUE (Catch Per Unit Effort) and survey-derived estimates. For length composition data, residuals represent the difference between observed and model-predicted length distributions. The standardized residuals are calculated as the difference between observed and expected proportions at each length bin. These residuals are plotted by year to identify systematic trends, biases, or inconsistencies in the data. Ideally, they should be randomly distributed around zero, indicating no systematic over- or underestimation.  
+<!-- Residual analysis is a critical component of model diagnostics in stock assessments. It helps evaluate the fit of the model to observed data and detect potential biases or inconsistencies. This process is applied to both length composition data and abundance indices such as CPUE (Catch Per Unit Effort) and survey-derived estimates. For length composition data, residuals represent the difference between observed and model-predicted length distributions. The standardized residuals are calculated as the difference between observed and expected proportions at each length bin. These residuals are plotted by year to identify systematic trends, biases, or inconsistencies in the data. Ideally, they should be randomly distributed around zero, indicating no systematic over- or underestimation.   -->
 
-For abundance indices such as CPUE and fishery-independent surveys, residuals are analyzed to assess model fit and potential sources of bias. Residuals are computed as the difference between observed index values and those predicted by the model, typically standardized by dividing by the standard error to facilitate comparison across years. These residuals are then plotted over time to evaluate trends. A shaded confidence region, like the green area in the provided plot, represents expected variability, with outliers highlighted in red or other distinct markers. Persistent positive or negative residuals may indicate systematic bias in the model or data collection process.  
+<!-- For abundance indices such as CPUE and fishery-independent surveys, residuals are analyzed to assess model fit and potential sources of bias. Residuals are computed as the difference between observed index values and those predicted by the model, typically standardized by dividing by the standard error to facilitate comparison across years. These residuals are then plotted over time to evaluate trends. A shaded confidence region, like the green area in the provided plot, represents expected variability, with outliers highlighted in red or other distinct markers. Persistent positive or negative residuals may indicate systematic bias in the model or data collection process.   -->
 
-Statistical diagnostics are also performed to check for autocorrelation in residuals, which can indicate potential model misspecifications. When mean residual values are close to zero, the model fit is considered unbiased. By integrating these residual analyses for both length and abundance indices, stock assessment models can be refined, improving their reliability and increasing confidence in the assessment results.
+<!-- Statistical diagnostics are also performed to check for autocorrelation in residuals, which can indicate potential model misspecifications. When mean residual values are close to zero, the model fit is considered unbiased. By integrating these residual analyses for both length and abundance indices, stock assessment models can be refined, improving their reliability and increasing confidence in the assessment results. -->
 
-```{r}
+```{r eval=FALSE}
 par(mfrow=c(2,4), mar=c(5,4,2,1)) 
 SSplotRunstest(base.model1.1,
                subplots = "len",
@@ -1523,7 +1465,7 @@ SSplotRunstest(base.model1.4,
 ```
 
 
-```{r}
+```{r eval=FALSE}
 par(mfrow=c(2,5), mar=c(5,4,2,1))
 SSplotRunstest(base.model1.1,
                subplots = "cpue",
@@ -1773,7 +1715,7 @@ Using `retro()` and `SSplotRetro()` functions, we obtain main results
 
 Retrospective analysis for spawning biomass (Figure \@ref(fig:retrossb))
 
-```{r retrossb, fig.cap="Retrospective analysis for spawning biomass by scenario in krill"}
+```{r retrossb, fig.height=7, fig.width=6.5,, fig.cap="Retrospective analysis for spawning biomass by scenario in krill"}
 par(mfrow=c(2,2), mar=c(5,4,1,1)) 
 retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
@@ -1803,7 +1745,7 @@ retro1.4 <- SSplotRetro(retroSummary1.4,
 
 Retrospective analysis for fishing mortality (Figure \@ref(fig:retrof))
 
-```{r retrof, fig.cap="Retrospective analysis for fishing mortality by scenario in krill"}
+```{r retrof, fig.height=7, fig.width=6.5, fig.cap="Retrospective analysis for fishing mortality by scenario in krill"}
 par(mfrow=c(2,2), mar=c(5,4,1,1)) 
 retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
@@ -2025,7 +1967,7 @@ p_mase <- ggplot(mase_all, aes(x = Index, y = MASE)) +
   scale_fill_manual(values = c("TRUE" = "#2166AC", "FALSE" = "#B2182B"),
                     labels = c("TRUE" = "MASE < 1", "FALSE" = "MASE ≥ 1"),
                     name = NULL) +
-  facet_wrap(~ Scenario, ncol = 1) +
+  facet_wrap(~ Scenario, ncol = 2) +
   labs(x = NULL, y = "MASE") +
   theme_bw() +
   theme(panel.grid.minor = element_blank(),
@@ -2035,7 +1977,7 @@ p_mase <- ggplot(mase_all, aes(x = Index, y = MASE)) +
         axis.text.x      = element_text(angle = 90, hjust = 1, size = 8))
 
 ggsave(file.path(Figs, "mase_hcxval_scenarios.png"), p_mase,
-       width = 4, height = 8, dpi = 300)
+       width = 5, height = 6, dpi = 300)
 ```
 
 

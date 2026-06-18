@@ -1,9 +1,9 @@
 ---
 title: "Supplementary Material 1"
 subtitle: "Reproducible Code to Output and Model Diagnostics for Antarctic Krill Stock Assessment"
-date:  "17 June, 2026"
-bibliography: SA_krill.bib
-csl: apa.csl
+date:  "18 June, 2026"
+bibliography: bib/SA_krill.bib
+csl: bib/apa.csl
 #csl: icesjournal.csl
 link-citations: yes
 linkcolor: blue
@@ -38,7 +38,7 @@ This documents have outputs and tables supplementaries as part of the scientific
 
 
 
-### Libraries
+## Libraries
 
 Libraries necessary to made this analysis;
 
@@ -65,11 +65,11 @@ registerDoParallel(8)
 
 
 
-### Code Repository
+## Code Repository
 
 The repository with files templates by scenario to replicate this analysis can be found in this [GitHub author link](https://github.com/MauroMardones/SA_Krill/tree/main/scenarios)
 
-### Run Models
+## Run Models
 
 
 
@@ -105,19 +105,7 @@ base.model1.4 <- SS_output(dir = dir1.4, covar = T,
 
 ## Spatial dimension of stock assessment
 
-The study focuses on Subarea 48.1 in the Western Antarctic Peninsula, where most krill fishing occurs and CCAMLR is advancing spatially refined management. We use five CCAMLR-defined strata to increase spatial resolution, allowing detection of regional differences in krill dynamics (Figure \@ref(fig:mapa)). This structure, integrated into the stock assessment model, enhances its capacity to capture spatial variability in both biological and environmental data. In this approach, spatial structure is incorporated implicitly by treating different areas as separate fleets [@Nielsen2021; @Waterhouse2014]. This constitutes a spatially implicit modeling framework, where differences among strata are recognized both from the perspective of krill population dynamics and from the influence of environmental variability within Subarea 48.1.
-
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/map_SA_krilll} 
-
-}
-
-\caption{Subarea 48.1 and management strata considered in the spatio-temporal analysis of intrinsic productivity of Krill (BS=Brainsfield Strait, EI= Elephant Island, Gerlache= Gerlache strait, JOIN= Joinville Island, SSWI= South West)}(\#fig:mapa)
-\end{figure}
-
-Figure \@ref(fig:conceptual) illustrates a conceptual model with the spatial distribution and movement of Antarctic krill in the Western Antarctic Peninsula (WAP). Adult krill are concentrated and move primarily in the northern areas, while juvenile krill dominate the southern regions. Arrows indicate directional flows, suggesting ontogenetic or environmentally-driven migration patterns. In terms of assumptions, although there are spatial differences in population structure, all these areas are considered part of a single, closed population unit upon which the stock assessment is conducted. By leveraging a spatially implicit, ecosystem-informed approach, this assessment provides a robust framework for evaluating krill stock dynamics under changing environmental conditions. These insights are crucial for informing sustainable management strategies in the Antarctic Peninsula region, where krill plays a foundational role in the marine food web.  
+The spatial structure of the assessment reflects a conceptual model of krill distribution in Subarea 48.1, where adult krill concentrate in northern strata and juveniles dominate southern areas, with directional movement likely driven by ontogenetic migration Figure \@ref(fig:conceptual). This structure is incorporated implicitly into the stock assessment by treating each stratum as a separate fleet within a single closed-population unit, allowing regional differences in biology and environmental forcing to be captured without assuming independent stocks.
 
 \begin{figure}[H]
 
@@ -143,36 +131,11 @@ In a catch-at-length model like krill assessment the AKL matrix (Figure \@ref(fi
 \caption{Representation of ALK Matrix to krill in 48.1}(\#fig:AKL)
 \end{figure}
 
-## Data
+# Data
 
-### Index 
+## Environmental Data
 
-Abundance index in Figure \@ref(fig:index)
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/index-1} 
-
-}
-
-\caption{Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea.}(\#fig:index)
-\end{figure}
-
-### Length compositions
-
-Length compositions in Figure \@ref(fig:length)
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/length-1} 
-
-}
-
-\caption{Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm).}(\#fig:length)
-\end{figure}
-### Environmental Data
-
-Based on @Mardones2026, Chl-a emerged as the most influential predictor and was therefore selected for incorporation into the stock assessment model as an environmental covariate. Figure \@ref(fig:mapachl) presents a time series of Chl-a concentration (mg m$^{-3}$) in the waters around the Antarctic Peninsula from 2000 to 2020. Each panel represents a different year, showing spatial variations in Chl-a levels as an indicator of phytoplankton biomass. The highest concentrations were observed along the coastal regions, while offshore areas exhibited lower Chl-a levels.
+Based on @Flores2012; @Morley2020; @Veytia2021; @Walsh2020, Chl-a emerged as the most influential predictor and was therefore selected for incorporation into the stock assessment model as an environmental covariate. Figure \@ref(fig:mapachl) presents a time series of Chl-a concentration (mg m$^{-3}$) in the waters around the Antarctic Peninsula from 2000 to 2020. Each panel represents a different year, showing spatial variations in Chl-a levels as an indicator of phytoplankton biomass. The highest concentrations were observed along the coastal regions, while offshore areas exhibited lower Chl-a levels.
 
 \begin{figure}[H]
 
@@ -194,9 +157,9 @@ The interannual variability of this environmental index from 2000 to 2020 is sho
 \caption{Interannual variability of the Chlorophyll Variability Index from 2000 to 2020. Positive anomalies (in red) and negative anomalies (in black) indicate below-average conditions}(\#fig:chlindex)
 \end{figure}
 
-### Predator Component as a Driver of Krill Dynamics
+## Predator Component as a Driver of Krill Dynamics
 
-The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributions derived from penguin diet samples, displayed by predator species. Although median krill lengths remain relatively consistent over time, there is notable interannual variability in the spread and distribution of sizes. Spatiotemporal distribution patterns of the three penguin species across the Antarctic Peninsula showed interannual variability from 2001 to 2020. Adélie penguins exhibited a relatively consistent presence across the northern sector of the Peninsula, with larger colony sizes concentrated toward the southwestern Bransfield Strait, particularly during the early 2000s. Chinstrap penguins were widespread and dominant in both spatial extent and colony size across most years, especially in the central and northeastern portions of the Peninsula. Gentoo penguins appeared in fewer and more localized sites but displayed a slight increase in spatial occurrence during the latter part of the time series  The index exhibits fluctuations over time, with a general decline from the early 1990s to the mid-2000s, followed by a period of relative stabilization and a strong decline toward the end of the time series (bottom panel in Figure \@ref(fig:mapapre)).. 
+The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributions derived from penguin diet samples, displayed by predator species. Although median krill lengths remain relatively consistent over time, there is notable interannual variability in the spread and distribution of sizes. Spatiotemporal distribution patterns of the three penguin species across the Antarctic Peninsula showed interannual variability from 2001 to 2020. Adélie penguins exhibited a relatively consistent presence across the northern sector of the Peninsula, with larger colony sizes concentrated toward the southwestern Bransfield Strait, particularly during the early 2000s. Chinstrap penguins were widespread and dominant in both spatial extent and colony size across most years, especially in the central and northeastern portions of the Peninsula. Gentoo penguins appeared in fewer and more localized sites but displayed a slight increase in spatial occurrence during the latter part of the time series  The index exhibits fluctuations over time, with a general decline from the early 1990s to the mid-2000s, followed by a period of relative stabilization and a strong decline toward the end of the time series (bottom panel in Figure \@ref(fig:mapapre)).
 
 
 \begin{figure}[H]
@@ -206,6 +169,33 @@ The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributio
 }
 
 \caption{Ecosystem indicators derived from penguin predator data in the Western Antarctic Peninsula. Top panel: Annual krill length distributions from penguin diet samples by species: adélie, chinstrap, and gentoo. A red horizontal line marks the 3.6 cm as recruit size for reference purposes. Bottom panel: Synoptic index of relative predator biomass, used as an ecosystem input in the stock assessment model.}(\#fig:mapapre)
+\end{figure}
+
+
+## Abundances Index 
+
+Abundance index in Figure \@ref(fig:index)
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/index-1} 
+
+}
+
+\caption{Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea.}(\#fig:index)
+\end{figure}
+
+## Length compositions
+
+Length compositions in Figure \@ref(fig:length)
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/length-1} 
+
+}
+
+\caption{Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm).}(\#fig:length)
 \end{figure}
 
 This information and all sources can be represented through the following flow diagram (Figure \@ref(fig:path)) of inputs, model, and outputs.
@@ -233,8 +223,6 @@ Figure \@ref(fig:dataserie) show time series of differente componentes of data s
 \end{figure}
 
 ## Scenarios
-
-The **reference model** is `s1.1`, wich represents a baseline assessment of *Euphausia superba* population dynamics in Subarea 48.1, excluding environmental and ecological variables. This model assumes that krill productivity and population parameters are driven  by intrinsic biological processes, such as growth, mortality, and recruitment and fishery impacts without accounting for external influences like environmental variability or predation pressure. By serving as a *control scenario*, this model provides a benchmark against which the impact of ecosystem components in productivity can be evaluated, allowing for a direct comparison of how environmental and ecological factors influence krill stock dynamics. Table \@ref(tab:scenarios) show scenarios used for modelling dynamics in krill
 
 \begin{table}[H]
 \centering
@@ -282,52 +270,6 @@ This Figure \@ref(fig:index2) shows standardized time series of input indices us
 
 \caption{Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework}(\#fig:index2)
 \end{figure}
-
-Main Variables poulation in `s1.1` scenario (Figure \@ref(fig:scen1))
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/scen1-1} 
-
-}
-
-\caption{Main variables scenario s1.1}(\#fig:scen1)
-\end{figure}
-
-Main Variables poulation in `s1.2` scenario (Figure \@ref(fig:scen2))
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/scen2-1} 
-
-}
-
-\caption{Main variables scenario s1.2}(\#fig:scen2)
-\end{figure}
-
-Main Variables poulation in `s1.3` scenario (Figure \@ref(fig:scen3))
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/scen3-1} 
-
-}
-
-\caption{Main variables scenario s1.3}(\#fig:scen3)
-\end{figure}
-
-
-Main Variables poulation in `s1.4` scenario (Figure \@ref(fig:scen4))
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/scen4-1} 
-
-}
-
-\caption{Main variables scenario s1.4}(\#fig:scen4)
-\end{figure}
-
 
 ## Population variables 
 
@@ -399,11 +341,9 @@ These metrics allow us to analyze both the productivity and the temporal dynamic
 \caption{Stock–recruitment relationships (A), recruitment efficiency (B), and posterior distribution of ln(R0) (C) for Antarctic krill under four assessment scenarios: s1.1 (base), s1.2 (predator mortality), s1.3 (environmental covariates), and s1.4 (predator + environment). Beverton–Holt curves fitted to observed SSB–recruitment pairs; panel B shows per-capita productivity (R/SSB) as a function of relative spawning biomass (SSB/SSB\textsubscript{0}); panel C shows the marginal posterior of virgin recruitment.}(\#fig:recpro)
 \end{figure}
 
-Figure \@ref(fig:recdev) shows the recruitment deviations for the four assessment scenarios. The reference model (s1.1) shows a relatively stable pattern of recruitment deviations, while the other scenarios exhibit more variability, particularly in the later years. This suggests that incorporating predator and environmental data can influence the estimated recruitment dynamics of Antarctic krill.
 
 
 
-\begin{center}\includegraphics[width=\linewidth]{Figs/recdev-1} \end{center}
 Explotation rato (havest rate) in Figure \@ref(fig:hrate)
 
 \begin{figure}[H]
@@ -414,7 +354,6 @@ Explotation rato (havest rate) in Figure \@ref(fig:hrate)
 
 \caption{Harves rate by scenario in krill overtime}(\#fig:hrate)
 \end{figure}
-
 
 ## Model Perfomance
 
@@ -453,248 +392,18 @@ This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pea
 
 
 
-### Residual consistency 
+<!-- ### Residual consistency  -->
 
-Residual analysis is a critical component of model diagnostics in stock assessments. It helps evaluate the fit of the model to observed data and detect potential biases or inconsistencies. This process is applied to both length composition data and abundance indices such as CPUE (Catch Per Unit Effort) and survey-derived estimates. For length composition data, residuals represent the difference between observed and model-predicted length distributions. The standardized residuals are calculated as the difference between observed and expected proportions at each length bin. These residuals are plotted by year to identify systematic trends, biases, or inconsistencies in the data. Ideally, they should be randomly distributed around zero, indicating no systematic over- or underestimation.  
+<!-- Residual analysis is a critical component of model diagnostics in stock assessments. It helps evaluate the fit of the model to observed data and detect potential biases or inconsistencies. This process is applied to both length composition data and abundance indices such as CPUE (Catch Per Unit Effort) and survey-derived estimates. For length composition data, residuals represent the difference between observed and model-predicted length distributions. The standardized residuals are calculated as the difference between observed and expected proportions at each length bin. These residuals are plotted by year to identify systematic trends, biases, or inconsistencies in the data. Ideally, they should be randomly distributed around zero, indicating no systematic over- or underestimation.   -->
 
-For abundance indices such as CPUE and fishery-independent surveys, residuals are analyzed to assess model fit and potential sources of bias. Residuals are computed as the difference between observed index values and those predicted by the model, typically standardized by dividing by the standard error to facilitate comparison across years. These residuals are then plotted over time to evaluate trends. A shaded confidence region, like the green area in the provided plot, represents expected variability, with outliers highlighted in red or other distinct markers. Persistent positive or negative residuals may indicate systematic bias in the model or data collection process.  
+<!-- For abundance indices such as CPUE and fishery-independent surveys, residuals are analyzed to assess model fit and potential sources of bias. Residuals are computed as the difference between observed index values and those predicted by the model, typically standardized by dividing by the standard error to facilitate comparison across years. These residuals are then plotted over time to evaluate trends. A shaded confidence region, like the green area in the provided plot, represents expected variability, with outliers highlighted in red or other distinct markers. Persistent positive or negative residuals may indicate systematic bias in the model or data collection process.   -->
 
-Statistical diagnostics are also performed to check for autocorrelation in residuals, which can indicate potential model misspecifications. When mean residual values are close to zero, the model fit is considered unbiased. By integrating these residual analyses for both length and abundance indices, stock assessment models can be refined, improving their reliability and increasing confidence in the assessment results.
-
-
-```
-## 
-##  Running Runs Test Diagnosics for Mean length 
-## Plotting Residual Runs Tests
-```
+<!-- Statistical diagnostics are also performed to check for autocorrelation in residuals, which can indicate potential model misspecifications. When mean residual values are close to zero, the model fit is considered unbiased. By integrating these residual analyses for both length and abundance indices, stock assessment models can be refined, improving their reliability and increasing confidence in the assessment results. -->
 
 
 
-\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-10-1} \end{center}
-
-```
-## 
-## Runs Test stats by Mean length:
-```
-
-```
-##         Index runs.p     test  sigma3.lo sigma3.hi type
-## 1   FISHERYBS  0.150   Passed -0.1213298 0.1213298  len
-## 2   FISHERYEI  0.048   Failed -0.2134676 0.2134676  len
-## 3   FISHERYGS  0.113   Passed -0.2061879 0.2061879  len
-## 4 FISHERYJOIN     NA Excluded         NA        NA  len
-## 5 FISHERYSSIW  0.406   Passed -0.1097446 0.1097446  len
-## 6    SURVEYBS  0.189   Passed -0.2518861 0.2518861  len
-## 7    SURVEYEI  0.133   Passed -0.2110748 0.2110748  len
-## 8    SURVEYGS  0.121   Passed -0.2821691 0.2821691  len
-## 9  SURVEYJOIN  0.301   Passed -0.4085578 0.4085578  len
-```
-
-```
-## 
-##  Running Runs Test Diagnosics for Mean length 
-## Plotting Residual Runs Tests
-```
-
-```
-## 
-## Runs Test stats by Mean length:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.162   Passed -0.2022220 0.2022220  len
-## 2    FISHERYEI  0.145   Passed -0.2988309 0.2988309  len
-## 3    FISHERYGS  0.126   Passed -0.2753485 0.2753485  len
-## 4  FISHERYJOIN     NA Excluded         NA        NA  len
-## 5  FISHERYSSIW  0.406   Passed -0.1489705 0.1489705  len
-## 6     SURVEYBS  0.084   Passed -0.2760675 0.2760675  len
-## 7     SURVEYEI  0.148   Passed -0.2445821 0.2445821  len
-## 8     SURVEYGS  0.270   Passed -0.3666111 0.3666111  len
-## 9   SURVEYJOIN  0.500   Passed -0.5184894 0.5184894  len
-## 10    PREDATOR  0.100   Passed -0.1526407 0.1526407  len
-```
 
 
-
-\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-10-2} \end{center}
-
-```
-## 
-##  Running Runs Test Diagnosics for Mean length 
-## Plotting Residual Runs Tests
-```
-
-
-
-\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-10-3} \end{center}
-
-```
-## 
-## Runs Test stats by Mean length:
-```
-
-```
-##         Index runs.p     test  sigma3.lo sigma3.hi type
-## 1   FISHERYBS  0.500   Passed -0.1481059 0.1481059  len
-## 2   FISHERYEI  0.048   Failed -0.2672209 0.2672209  len
-## 3   FISHERYGS  0.126   Passed -0.2140458 0.2140458  len
-## 4 FISHERYJOIN     NA Excluded         NA        NA  len
-## 5 FISHERYSSIW  0.107   Passed -0.1124051 0.1124051  len
-## 6    SURVEYBS  0.189   Passed -0.2540503 0.2540503  len
-## 7    SURVEYEI  0.448   Passed -0.2143059 0.2143059  len
-## 8    SURVEYGS  0.121   Passed -0.2830553 0.2830553  len
-## 9  SURVEYJOIN  0.301   Passed -0.4105918 0.4105918  len
-```
-
-```
-## 
-##  Running Runs Test Diagnosics for Mean length 
-## Plotting Residual Runs Tests
-```
-
-```
-## 
-## Runs Test stats by Mean length:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.203   Passed -0.2204450 0.2204450  len
-## 2    FISHERYEI  0.014   Failed -0.3014418 0.3014418  len
-## 3    FISHERYGS  0.338   Passed -0.2672220 0.2672220  len
-## 4  FISHERYJOIN     NA Excluded         NA        NA  len
-## 5  FISHERYSSIW  0.406   Passed -0.1530585 0.1530585  len
-## 6     SURVEYBS  0.338   Passed -0.2802449 0.2802449  len
-## 7     SURVEYEI  0.148   Passed -0.2444785 0.2444785  len
-## 8     SURVEYGS  0.334   Passed -0.3617006 0.3617006  len
-## 9   SURVEYJOIN  0.500   Passed -0.5136722 0.5136722  len
-## 10    PREDATOR  0.483   Passed -0.1482921 0.1482921  len
-```
-
-
-
-\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-10-4} \end{center}
-
-
-
-```
-## 
-##  Running Runs Test Diagnosics for Index 
-## Plotting Residual Runs Tests
-```
-
-```
-## 
-## Runs Test stats by Index:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.011   Failed -1.0110632 1.0110632 cpue
-## 2    FISHERYEI  0.018   Failed -1.2825406 1.2825406 cpue
-## 3    FISHERYGS  0.754   Passed -2.2398079 2.2398079 cpue
-## 4  FISHERYJOIN  0.140   Passed -1.0152476 1.0152476 cpue
-## 5  FISHERYSSIW  0.028   Failed -0.6979294 0.6979294 cpue
-## 6     SURVEYBS  0.871   Passed -2.6572700 2.6572700 cpue
-## 7     SURVEYEI  0.708   Passed -2.7265412 2.7265412 cpue
-## 8     SURVEYGS  0.448   Passed -3.2392943 3.2392943 cpue
-## 9   SURVEYJOIN  0.268   Passed -3.2497145 3.2497145 cpue
-## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
-```
-
-
-
-\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-11-1} \end{center}
-
-```
-## 
-##  Running Runs Test Diagnosics for Index 
-## Plotting Residual Runs Tests
-```
-
-
-
-\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-11-2} \end{center}
-
-```
-## 
-## Runs Test stats by Index:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.011   Failed -0.9436134 0.9436134 cpue
-## 2    FISHERYEI  0.100   Passed -1.2002168 1.2002168 cpue
-## 3    FISHERYGS  0.162   Passed -1.9030515 1.9030515 cpue
-## 4  FISHERYJOIN  0.140   Passed -1.2192093 1.2192093 cpue
-## 5  FISHERYSSIW  0.003   Failed -0.6801487 0.6801487 cpue
-## 6     SURVEYBS  0.871   Passed -2.4334783 2.4334783 cpue
-## 7     SURVEYEI  0.928   Passed -2.5174738 2.5174738 cpue
-## 8     SURVEYGS  0.448   Passed -3.1269568 3.1269568 cpue
-## 9   SURVEYJOIN  0.268   Passed -2.8213958 2.8213958 cpue
-## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
-## 11    PREDATOR  0.096   Passed -0.7888557 0.7888557 cpue
-```
-
-```
-## 
-##  Running Runs Test Diagnosics for Index 
-## Plotting Residual Runs Tests
-```
-
-```
-## 
-## Runs Test stats by Index:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.089   Passed -0.9219751 0.9219751 cpue
-## 2    FISHERYEI  0.100   Passed -1.0892078 1.0892078 cpue
-## 3    FISHERYGS  0.921   Passed -2.1810865 2.1810865 cpue
-## 4  FISHERYJOIN  0.140   Passed -0.9256734 0.9256734 cpue
-## 5  FISHERYSSIW  0.028   Failed -0.5860675 0.5860675 cpue
-## 6     SURVEYBS  0.628   Passed -2.6087126 2.6087126 cpue
-## 7     SURVEYEI  0.708   Passed -2.7022450 2.7022450 cpue
-## 8     SURVEYGS  0.448   Passed -3.2344710 3.2344710 cpue
-## 9   SURVEYJOIN  0.860   Passed -3.2818799 3.2818799 cpue
-## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
-```
-
-
-
-\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-11-3} \end{center}
-
-```
-## 
-##  Running Runs Test Diagnosics for Index 
-## Plotting Residual Runs Tests
-```
-
-
-
-\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-11-4} \end{center}
-
-```
-## 
-## Runs Test stats by Index:
-```
-
-```
-##          Index runs.p     test  sigma3.lo sigma3.hi type
-## 1    FISHERYBS  0.011   Failed -0.8863397 0.8863397 cpue
-## 2    FISHERYEI  0.100   Passed -1.2262797 1.2262797 cpue
-## 3    FISHERYGS  0.609   Passed -1.8907261 1.8907261 cpue
-## 4  FISHERYJOIN  0.012   Failed -1.1985249 1.1985249 cpue
-## 5  FISHERYSSIW  0.001   Failed -0.7178503 0.7178503 cpue
-## 6     SURVEYBS  0.871   Passed -2.4517975 2.4517975 cpue
-## 7     SURVEYEI  0.928   Passed -2.5076981 2.5076981 cpue
-## 8     SURVEYGS  0.448   Passed -3.1554519 3.1554519 cpue
-## 9   SURVEYJOIN  0.268   Passed -2.8399792 2.8399792 cpue
-## 10  SURVEYSSIW     NA Excluded         NA        NA cpue
-## 11    PREDATOR  0.085   Passed -0.4970376 0.4970376 cpue
-```
 
 
 ### Residual Analysis and RMSE 
