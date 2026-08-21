@@ -68,10 +68,13 @@ Libraries necessary to made this analysis;
 # install.packages("caTools")
 # library("caTools")
 # install.packages("r4ss")
+# Requiere el paquete funtimes (no está en tu lista de pkgs actual)
+#install.packages("funtimes")
 pkgs<-c("r4ss","ss3diags","doParallel",
         "tibble","tidyr","tidyverse",
         "readxl","openxlsx","broom",
         "forecast","mixR","lmtest",
+        "funtimes",
         "car","ggpubr","ggthemes",
         "ggridges","ggrepel",
         "cowplot",
@@ -207,7 +210,7 @@ The spatial structure of the assessment reflects a conceptual model of krill dis
 knitr::include_graphics('Figs/conceptual.jpeg')
 ```
 
-## Statistical Model (`SS3`)
+## Statistical Model 
 
 Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The source code can be find in [Github SS3 repository](https://github.com/nmfs-ost/ss3-source-code). In this exercise, `SS3` is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends in krill. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. Integrated models can effectively capture the age structure by transforming length observations into population-level dynamics [@Lee2024; @Punt2013]. 
 
@@ -663,10 +666,59 @@ survey_total <- dat1$CPUE |>
     hi       = Value * exp( 1.96 * cv_pool)
   )
 
+# ── Incertidumbre de las variables poblacionales (derived_quants, SS3) ──
+# SSB y Reclutamiento siempre traen StdDev en derived_quants. Bio_all/Bio_smry
+# solo la tendrán si el starter.ss tiene activado el reporte extendido de
+# desviaciones estándar (more_stddev_reporting = 1); si no está activado,
+# esos dos paneles simplemente quedan sin banda de incertidumbre (no falla).
+get_pop_unc <- function(model, modelname) {
+  dq <- model$derived_quants
+
+  extract_dq <- function(prefix, varname) {
+    dq |>
+      dplyr::filter(grepl(paste0("^", prefix, "_[0-9]{4}$"), Label)) |>
+      dplyr::mutate(
+        Yr       = as.numeric(gsub(paste0(prefix, "_"), "", Label)),
+        Variable = varname,
+        Model    = modelname
+      ) |>
+      dplyr::select(Yr, Variable, Model, Value, StdDev)
+  }
+
+  dplyr::bind_rows(
+    extract_dq("SSB",     "Spawning Stock Biomass (t)"),
+    extract_dq("Recr",    "Recruitment (N)"),
+    extract_dq("TotBio",  "Total Biomass (t)"),
+    extract_dq("SmryBio", "Summary Biomass (t)")
+  )
+}
+
+pop_unc <- dplyr::bind_rows(
+  get_pop_unc(base.model1.1, "s1.1"),
+  get_pop_unc(base.model1.2, "s1.2"),
+  get_pop_unc(base.model1.3, "s1.3"),
+  get_pop_unc(base.model1.4, "s1.4")
+) |>
+  dplyr::filter(Yr >= 1989, Yr <= 2020) |>
+  dplyr::mutate(
+    cv = StdDev / Value,
+    lo = Value * exp(-1.96 * cv),
+    hi = Value * exp( 1.96 * cv)
+  )
+
 alloutput <- ggplot(
   outpsall_long,
-  aes(x = Yr, y = Value, color = Model, group = Model)
-) +
+  aes(x = Yr,
+      y = Value,
+      color = Model,
+      group = Model)) +
+  geom_ribbon(
+    data        = pop_unc,
+    aes(x = Yr, ymin = lo, ymax = hi, fill = Model),
+    inherit.aes = FALSE,
+    alpha       = 0.15,
+    color       = NA
+  ) +
   geom_line(linewidth = 0.8) +
   geom_point(size = 1.2, alpha = 0.7) +
   geom_errorbar(
@@ -693,16 +745,21 @@ alloutput <- ggplot(
     scales = "free_y"
   ) +
   scale_color_manual(
-    name   = "Scenario",
+    name   = "",
     values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
                "s1.3" = "#bababa", "s1.4" = "#404040")
+  ) +
+  scale_fill_manual(
+    values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
+               "s1.3" = "#bababa", "s1.4" = "#404040"),
+    guide  = "none"
   ) +
   scale_y_continuous(
     labels = label_number(scale_cut = cut_short_scale())
   ) +
   scale_x_continuous(breaks = seq(1990, 2020, by = 5)) +
   labs(x = "", y = "") +
-  theme_few() +
+  theme_bw() +
   theme(
     axis.text.x     = element_text(angle = 90, hjust = 1, size = 8),
     axis.text.y     = element_text(size = 8),
@@ -1888,6 +1945,121 @@ tablerho <- tablebias_combined |>
   kable_styling(latex_options = "HOLD_position")
 tablerho
 ```
+
+### Test formal de tendencia en recruitment deviates (Merino et al. 2022) 
+
+```{r}
+## ── Distribución de parámetros ESTIMADOS (phase > 0), por escenario ──
+## Basado en revisión directa de s1.1-s1.4/control.ss (no en SD>0, que puede
+## fallar por Hessiano no invertido y confundirse con "fijo")
+
+models <- list(s1.1 = base.model1.1, s1.2 = base.model1.2,
+               s1.3 = base.model1.3, s1.4 = base.model1.4)
+
+target_params <- c(
+  "NatM_uniform_Fem_GP_1",
+  "SR_LN(R0)",
+  "SR_LN(R0)_ENV_add",
+  "M2_pred1",
+  "LnQ_base_FISHERY(1)",
+  "LnQ_base_FISHERY(2)",
+  "LnQ_base_FISHERY(3)",
+  "LnQ_base_FISHERY(4)",
+  "LnQ_base_FISHERY(5)",
+  "LnQ_base_SURVEYBS(6)",
+  "LnQ_base_SURVEYEI(7)",
+  "LnQ_base_SURVEYGS(8)",
+  "LnQ_base_SURVEYJOIN(9)",
+  "LnQ_base_PREDATOR(11)",
+  "Size_inflection_FISHERY(1)",
+  "Size_95%width_FISHERY(1)",
+  "Size_inflection_SURVEY1(6)",
+  "Size_95%width_SURVEY1(6)",
+  "Size_inflection_PREDATOR(11)",
+  "Size_95%width_PREDATOR(11)"
+)
+
+## Phase > 0 es la fuente de verdad de "estimado" (viene del control.ss real,
+## no depende de si el Hessiano se pudo invertir)
+extract_param <- function(model, label) {
+  pars <- model$parameters
+  row  <- pars[pars$Label == label, ]
+  if (nrow(row) == 0 || is.na(row$Phase[1]) || row$Phase[1] <= 0) return(NULL)
+  data.frame(value = row$Value[1], sd = row$Parm_StDev[1])
+}
+
+## Curvas de densidad (phase>0 y SD válida)
+param_dens <- purrr::map_dfr(target_params, function(lab) {
+  purrr::map_dfr(names(models), function(sc) {
+    info <- extract_param(models[[sc]], lab)
+    if (is.null(info) || is.na(info$sd) || info$sd <= 0) return(NULL)
+    x <- seq(info$value - 4 * info$sd, info$value + 4 * info$sd, length.out = 200)
+    data.frame(parameter = lab, Scenario = sc, x = x,
+               density = dnorm(x, info$value, info$sd))
+  })
+})
+
+## Estimado (phase>0) pero SD no disponible (Hessiano no invertido): marcador
+## de aviso en vez de curva, para no confundirlo con "parámetro fijo"
+param_nohess <- purrr::map_dfr(target_params, function(lab) {
+  purrr::map_dfr(names(models), function(sc) {
+    info <- extract_param(models[[sc]], lab)
+    if (is.null(info) || !(is.na(info$sd) || info$sd <= 0)) return(NULL)
+    data.frame(parameter = lab, Scenario = sc, value = info$value)
+  })
+})
+
+colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
+            "s1.3" = "#bababa", "s1.4" = "#404040")
+
+p_params <- ggplot() +
+  geom_line(data = param_dens, aes(x = x, y = density, color = Scenario),
+            linewidth = 0.7) +
+  geom_point(data = param_nohess, aes(x = value, y = 0, color = Scenario),
+             shape = 4, size = 2.5, stroke = 1) +
+  facet_wrap(~ parameter, scales = "free", ncol = 5) +
+  scale_color_manual(values = colors, name = "Scenario") +
+  labs(x = "Valor del parámetro", y = "Densidad",
+       caption = "x = estimado (phase>0) pero sin SD (Hessiano no invertido)") +
+  theme_few() +
+  theme(
+    strip.text      = element_text(size = 8),
+    axis.text       = element_text(size = 7),
+    legend.position = "bottom"
+  )
+
+p_params
+
+ggsave("Figs/param_distributions_estimated.png", plot = p_params,
+       width = 13, height = 9, dpi = 300)
+
+
+## Asegúrate de recargar el modelo con los resultados de la corrida nueva:
+# base.model1.4 <- SS_output(dir = dir1.4, covar = TRUE, forecast = TRUE)
+
+check_bounds <- function(model, tag) {
+  model$parameters |>
+    dplyr::filter(Phase > 0) |>
+    dplyr::mutate(
+      range        = Max - Min,
+      pct_from_min = (Value - Min) / range,
+      pct_from_max = (Max - Value) / range
+    ) |>
+    dplyr::filter(pct_from_min <= 0.01 | pct_from_max <= 0.01) |>
+    dplyr::mutate(Scenario = tag) |>
+    dplyr::select(Scenario, Label, Value, Min, Max, pct_from_min, pct_from_max)
+}
+
+bounds_all <- dplyr::bind_rows(
+  check_bounds(base.model1.1, "s1.1"),
+  check_bounds(base.model1.2, "s1.2"),
+  check_bounds(base.model1.3, "s1.3"),
+  check_bounds(base.model1.4, "s1.4")
+)
+
+bounds_all
+```
+
 
 ### Hindcast Cross-Validation and Prediction Skill
 
