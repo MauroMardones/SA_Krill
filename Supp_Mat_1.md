@@ -1,7 +1,7 @@
 ---
 title: "Supplementary Material 1"
 subtitle: "Reproducible Code to Output and Model Diagnostics for Antarctic Krill Stock Assessment"
-date:  "18 June, 2026"
+date:  "27 August, 2026"
 bibliography: bib/SA_krill.bib
 csl: bib/apa.csl
 #csl: icesjournal.csl
@@ -48,11 +48,15 @@ Libraries necessary to made this analysis;
 # devtools::install_github('r4ss/r4ss',
 # ref='development') install.packages('caTools')
 # library('caTools') install.packages('r4ss')
+# Requiere el paquete funtimes (no está en tu
+# lista de pkgs actual)
+# install.packages('funtimes')
 pkgs <- c("r4ss", "ss3diags", "doParallel", "tibble",
     "tidyr", "tidyverse", "readxl", "openxlsx", "broom",
-    "forecast", "mixR", "lmtest", "car", "ggpubr",
-    "ggthemes", "ggridges", "ggrepel", "cowplot", "kableExtra",
-    "flextable", "here", "scales", "ggthemes", "patchwork")
+    "forecast", "mixR", "lmtest", "funtimes", "car",
+    "ggpubr", "ggthemes", "ggridges", "ggrepel", "cowplot",
+    "kableExtra", "flextable", "here", "scales", "ggthemes",
+    "patchwork")
 
 instalar <- pkgs[!pkgs %in% installed.packages()]
 if (length(instalar) > 0) install.packages(instalar)
@@ -103,33 +107,6 @@ base.model1.4 <- SS_output(dir = dir1.4, covar = T,
     forecast = T)
 ```
 
-## Spatial dimension of stock assessment
-
-The spatial structure of the assessment reflects a conceptual model of krill distribution in Subarea 48.1, where adult krill concentrate in northern strata and juveniles dominate southern areas, with directional movement likely driven by ontogenetic migration Figure \@ref(fig:conceptual). This structure is incorporated implicitly into the stock assessment by treating each stratum as a separate fleet within a single closed-population unit, allowing regional differences in biology and environmental forcing to be captured without assuming independent stocks.
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=0.5\linewidth]{Figs/conceptual} 
-
-}
-
-\caption{Conceptual model used to model dynamics population in Antarctic krill in WAP}(\#fig:conceptual)
-\end{figure}
-
-## Statistical Model (`SS3`)
-
-Stock Synthesis (v.3.30.21)  is a widely used tool for assessing fish and invertebrate populations, including Antarctic krill. SS3 is implemented in `C++` with estimation enabled through automatic differentiation (ADMB) [@Fournier2012; @Methot2013]. The source code can be find in [Github SS3 repository](https://github.com/nmfs-ost/ss3-source-code). In this exercise, `SS3` is configured as an integrated stock assessment model, explicitly accounting for age and size structure while incorporating key ecosystem drivers. The model simulates population processes such as growth, maturity, fecundity, recruitment, movement, and mortality, while also integrating environmental variability and predator-prey relationships to refine estimates of population trends in krill. The analysis of model outputs is conducted using R, utilizing the *r4ss* and *ss3diags* packages [@Taylor2019; @Winker2023]. Integrated models can effectively capture the age structure by transforming length observations into population-level dynamics [@Lee2024; @Punt2013]. 
-
-In a catch-at-length model like krill assessment the AKL matrix (Figure \@ref(fig:AKL)) is modeled trough parametrization process and have this shape;
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/AKL-1} 
-
-}
-
-\caption{Representation of ALK Matrix to krill in 48.1}(\#fig:AKL)
-\end{figure}
 
 # Data
 
@@ -157,10 +134,9 @@ The interannual variability of this environmental index from 2000 to 2020 is sho
 \caption{Interannual variability of the Chlorophyll Variability Index from 2000 to 2020. Positive anomalies (in red) and negative anomalies (in black) indicate below-average conditions}(\#fig:chlindex)
 \end{figure}
 
-## Predator Component as a Driver of Krill Dynamics
+## Predator Component 
 
-The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributions derived from penguin diet samples, displayed by predator species. Although median krill lengths remain relatively consistent over time, there is notable interannual variability in the spread and distribution of sizes. Spatiotemporal distribution patterns of the three penguin species across the Antarctic Peninsula showed interannual variability from 2001 to 2020. Adélie penguins exhibited a relatively consistent presence across the northern sector of the Peninsula, with larger colony sizes concentrated toward the southwestern Bransfield Strait, particularly during the early 2000s. Chinstrap penguins were widespread and dominant in both spatial extent and colony size across most years, especially in the central and northeastern portions of the Peninsula. Gentoo penguins appeared in fewer and more localized sites but displayed a slight increase in spatial occurrence during the latter part of the time series  The index exhibits fluctuations over time, with a general decline from the early 1990s to the mid-2000s, followed by a period of relative stabilization and a strong decline toward the end of the time series (bottom panel in Figure \@ref(fig:mapapre)).
-
+The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributions derived from penguin diet samples, displayed by predator species.
 
 \begin{figure}[H]
 
@@ -174,7 +150,7 @@ The top panel in Figure \@ref(fig:mapapre) shows annual krill length distributio
 
 ## Abundances Index 
 
-Abundance index in Figure \@ref(fig:index)
+Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea Figure \@ref(fig:index))
 
 \begin{figure}[H]
 
@@ -182,12 +158,12 @@ Abundance index in Figure \@ref(fig:index)
 
 }
 
-\caption{Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea.}(\#fig:index)
+\caption{Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1}(\#fig:index)
 \end{figure}
 
 ## Length compositions
 
-Length compositions in Figure \@ref(fig:length)
+Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm) (Figure \@ref(fig:length)).
 
 \begin{figure}[H]
 
@@ -195,11 +171,10 @@ Length compositions in Figure \@ref(fig:length)
 
 }
 
-\caption{Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm).}(\#fig:length)
+\caption{Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020.}(\#fig:length)
 \end{figure}
 
 This information and all sources can be represented through the following flow diagram (Figure \@ref(fig:path)) of inputs, model, and outputs.
-
 
 
 \begin{figure}[H]
@@ -221,30 +196,9 @@ Figure \@ref(fig:dataserie) show time series of differente componentes of data s
 
 \caption{Data series used in krill modelling in 48.1 Subarea}(\#fig:dataserie)
 \end{figure}
-
-## Scenarios
-
-\begin{table}[H]
-\centering
-\caption{(\#tab:scenarios)Scenarios used for modelling dynamics in krill}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{10cm}}
-\toprule
-Scenario & Description\\
-\midrule
-s1.1 & Spatial data without environmental and predator components\\
-s1.2 & "s1.1" with predator components\\
-s1.3 & "s1.1" with environmental variable\\
-s1.4 & "s1.1" with both predator fleet and environmental variable\\
-\bottomrule
-\end{tabular}}
-\end{table}
+\newpage
 
 # Results
-
-
 
 
 
@@ -285,10 +239,6 @@ Comparsion in long term time series forecasting Figure \@ref(fig:cumsum)
 
 \caption{Summary of estimation of different populations variables}(\#fig:cumsum)
 \end{figure}
-
-
-
-
 
 
 ## Relationship Stock-Recruit
@@ -332,28 +282,10 @@ These metrics allow us to analyze both the productivity and the temporal dynamic
 
 
 
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/recpro-1} 
-
-}
-
-\caption{Stock–recruitment relationships (A), recruitment efficiency (B), and posterior distribution of ln(R0) (C) for Antarctic krill under four assessment scenarios: s1.1 (base), s1.2 (predator mortality), s1.3 (environmental covariates), and s1.4 (predator + environment). Beverton–Holt curves fitted to observed SSB–recruitment pairs; panel B shows per-capita productivity (R/SSB) as a function of relative spawning biomass (SSB/SSB\textsubscript{0}); panel C shows the marginal posterior of virgin recruitment.}(\#fig:recpro)
-\end{figure}
 
 
 
 
-Explotation rato (havest rate) in Figure \@ref(fig:hrate)
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/hrate-1} 
-
-}
-
-\caption{Harves rate by scenario in krill overtime}(\#fig:hrate)
-\end{figure}
 
 ## Model Perfomance
 
@@ -364,7 +296,9 @@ The convergence criterion used for model calibration is set to a final threshold
 
 This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pearson residuals and trends of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity.
 
+
 \begin{landscape}
+
 
 \begin{figure}[H]
 
@@ -376,7 +310,9 @@ This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pea
 \end{figure}
 
 \end{landscape}
+
 \clearpage
+
 \begin{landscape}
 
 \begin{figure}[H]
@@ -387,6 +323,7 @@ This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pea
 
 \caption{Pearson residual trend by scenario and fleet}(\#fig:pearsontrend)
 \end{figure}
+
 \end{landscape}
 
 
@@ -503,30 +440,32 @@ Figure \@ref(fig:rmse2) show RMSE to index.
 ## RMSE stats by Index:
 ```
 
+Table \@ref(tab:combined_rmse) of RMSE values for each scenario and type (index and length) is created below. The RMSE values are extracted from the respective data frames for each scenario.
 
-
-
-
-
-Table of RMSE values for each scenario and type (index and length) is created below. The RMSE values are extracted from the respective data frames for each scenario.
 
 \begin{table}[H]
-\centering
-\caption{(\#tab:unnamed-chunk-13)Combined RMSE values by scenario for abundance indices and length compositions}
-\centering
+\centering\begingroup\fontsize{9}{11}\selectfont
+
 \resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
 \begin{tabular}[t]{lrr}
 \toprule
 Scenario & RMSE\_index & RMSE\_length\\
 \midrule
-s1.1 & 77.3 & 9.1\\
+s1.1 & 77.1 & 9.1\\
 s1.2 & 72.5 & 9.8\\
 s1.3 & 76.1 & 9.1\\
 s1.4 & 74.6 & 10.0\\
 \bottomrule
 \end{tabular}}
+\endgroup{}
 \end{table}
+
+The RMSE values for each scenario and type (index and length) are summarized in the table above. 
+
+
+
+
+
 
 
 ### Retrospective Analysis in Model Evaluation
@@ -534,6 +473,7 @@ s1.4 & 74.6 & 10.0\\
 
 
 
+Code to run all retrospective analysis for all scenarios in a loop:
 
 
 ``` r
@@ -547,9 +487,7 @@ for (dir in directorios) {
 
 
 
-Using `retro()` and `SSplotRetro()` functions, we obtain main results
-
-Retrospective analysis for spawning biomass (Figure \@ref(fig:retrossb))
+Using `retro()` and `SSplotRetro()` functions, we obtain main results of retrospective analysis for spawning biomass (SSB) and recruitment (R0) for each scenario. The retrospective analysis is a diagnostic tool used to evaluate the consistency of model estimates over time by sequentially removing recent years of data and refitting the model. This helps identify potential biases or inconsistencies in the model's predictions. Retrospective analysis for spawning biomass (Figure \@ref(fig:retrossb))
 
 \begin{figure}[H]
 
@@ -572,193 +510,49 @@ Retrospective analysis for fishing mortality (Figure \@ref(fig:retrof))
 \end{figure}
 
 
+Mohn's rho and one-step-ahead forecast bias, summarized across retrospective peels for SSB and F, are in  Table \@ref(tab:hcbiastable).
+
+
+
 \begin{table}[H]
 \centering
-\caption{(\#tab:unnamed-chunk-17)Mohn's rho — SSB, scenario s1.1}
+\caption{(\#tab:hcbiastable)Mohn's rho and mean one-step-ahead forecast bias by scenario and quantity}
 \centering
 \resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
 \fontsize{9}{11}\selectfont
 \begin{tabular}[t]{llrr}
 \toprule
-type & peel & Rho & ForcastRho\\
+Scenario & type & MohnsRho & ForecastRho\\
 \midrule
-SSB & 2019 & -0.2769110 & -0.2067518\\
-SSB & 2018 & -0.5088447 & -0.4108565\\
-SSB & 2017 & 0.2224873 & -0.6241760\\
-SSB & 2016 & 0.3011274 & 0.1616092\\
-SSB & 2015 & 0.1185312 & -0.0364350\\
+s1.1 & SSB & -0.029 & -0.223\\
+s1.1 & F & -0.042 & 0.052\\
+s1.2 & SSB & -0.216 & -0.248\\
+s1.2 & F & -0.349 & -0.113\\
+s1.3 & SSB & 0.290 & 0.054\\
 \addlinespace
-SSB & Combined & -0.0287220 & -0.2233220\\
+s1.3 & F & -0.426 & -0.349\\
+s1.4 & SSB & -0.356 & -0.381\\
+s1.4 & F & 1.157 & 1.383\\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-\begin{table}[H]
-\centering
-\caption{(\#tab:unnamed-chunk-17)Mohn's rho — F, scenario s1.1}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{llrr}
-\toprule
-type & peel & Rho & ForcastRho\\
-\midrule
-F & 2019 & 0.6739242 & 0.2566312\\
-F & 2018 & 0.5470557 & 0.4660322\\
-F & 2017 & 0.4490246 & 0.0253775\\
-F & 2016 & -0.9277369 & 0.4117739\\
-F & 2015 & -0.9504147 & -0.8985415\\
-\addlinespace
-F & Combined & -0.0416294 & 0.0522547\\
-\bottomrule
-\end{tabular}}
-\end{table}
+### Test distribution on parameters
 
-\begin{table}[H]
-\centering
-\caption{(\#tab:unnamed-chunk-17)Mohn's rho — SSB, scenario s1.2}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{llrr}
-\toprule
-type & peel & Rho & ForcastRho\\
-\midrule
-SSB & 2019 & -0.1267328 & -0.1256980\\
-SSB & 2018 & -0.1516056 & -0.1475894\\
-SSB & 2017 & -0.2541246 & -0.3071961\\
-SSB & 2016 & -0.3269617 & -0.3349681\\
-SSB & 2015 & -0.2204097 & -0.3243105\\
-\addlinespace
-SSB & Combined & -0.2159669 & -0.2479524\\
-\bottomrule
-\end{tabular}}
-\end{table}
+The Figure \@ref(fig:desvpar) shows the distribution of estimated parameters (phase > 0) by scenario. The parameters were selected based on a direct review of the `control.ss` files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with "fixed" parameters.
 
-\begin{table}[H]
-\centering
-\caption{(\#tab:unnamed-chunk-17)Mohn's rho — F, scenario s1.2}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{llrr}
-\toprule
-type & peel & Rho & ForcastRho\\
-\midrule
-F & 2019 & 0.0659853 & 0.1045846\\
-F & 2018 & -0.4504207 & -0.1942686\\
-F & 2017 & 0.3664157 & -0.2488087\\
-F & 2016 & -0.8264147 & 0.6418999\\
-F & 2015 & -0.9023174 & -0.8692552\\
-\addlinespace
-F & Combined & -0.3493504 & -0.1131696\\
-\bottomrule
-\end{tabular}}
-\end{table}
+\begin{figure}[H]
 
-\begin{table}[H]
-\centering
-\caption{(\#tab:unnamed-chunk-17)Mohn's rho — SSB, scenario s1.3}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{llrr}
-\toprule
-type & peel & Rho & ForcastRho\\
-\midrule
-SSB & 2019 & -0.0923850 & 0.0120014\\
-SSB & 2018 & 0.2272719 & -0.2518332\\
-SSB & 2017 & 0.1501911 & -0.3423489\\
-SSB & 2016 & 0.7204235 & 0.5824839\\
-SSB & 2015 & 0.4459562 & 0.2683618\\
-\addlinespace
-SSB & Combined & 0.2902915 & 0.0537330\\
-\bottomrule
-\end{tabular}}
-\end{table}
+{\centering \includegraphics[width=\linewidth]{Figs/desvpar-1} 
 
-\begin{table}[H]
-\centering
-\caption{(\#tab:unnamed-chunk-17)Mohn's rho — F, scenario s1.3}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{llrr}
-\toprule
-type & peel & Rho & ForcastRho\\
-\midrule
-F & 2019 & 0.0157214 & -0.0560430\\
-F & 2018 & -0.2318650 & -0.1288584\\
-F & 2017 & 0.0269673 & -0.3393574\\
-F & 2016 & -0.9673759 & -0.2679349\\
-F & 2015 & -0.9719480 & -0.9537146\\
-\addlinespace
-F & Combined & -0.4257000 & -0.3491817\\
-\bottomrule
-\end{tabular}}
-\end{table}
+}
 
-\begin{table}[H]
-\centering
-\caption{(\#tab:unnamed-chunk-17)Mohn's rho — SSB, scenario s1.4}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{llrr}
-\toprule
-type & peel & Rho & ForcastRho\\
-\midrule
-SSB & 2019 & -0.1103281 & -0.1202344\\
-SSB & 2018 & -0.2034344 & -0.1680842\\
-SSB & 2017 & -0.7728512 & -0.7858864\\
-SSB & 2016 & -0.0656195 & -0.1352667\\
-SSB & 2015 & -0.6293981 & -0.6959091\\
-\addlinespace
-SSB & Combined & -0.3563263 & -0.3810762\\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-\begin{table}[H]
-\centering
-\caption{(\#tab:unnamed-chunk-17)Mohn's rho — F, scenario s1.4}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{llrr}
-\toprule
-type & peel & Rho & ForcastRho\\
-\midrule
-F & 2019 & 0.1478294 & 0.1403481\\
-F & 2018 & 0.2050004 & 0.2132926\\
-F & 2017 & 3.3712264 & 3.7000235\\
-F & 2016 & 0.2325479 & 1.1080993\\
-F & 2015 & 1.8267918 & 1.7537096\\
-\addlinespace
-F & Combined & 1.1566791 & 1.3830946\\
-\bottomrule
-\end{tabular}}
-\end{table}
+\caption{Distribution of estimated parameters (phase > 0) by scenario. Parameters were selected based on a direct review of the control.ss files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with 'fixed' parameters.}(\#fig:desvpar)
+\end{figure}
 
 
 
-See Table \@ref(tab:rhoparameters) for details.
 
-\begin{table}[H]
-\centering
-\caption{(\#tab:rhoparameters)Mohn's $\rho$ (combined retrospective) for fishing mortality (F) and spawning stock biomass (SSB) across assessment scenarios.}
-\centering
-\begin{tabular}[t]{lrr}
-\toprule
-Scenario & F & SSB\\
-\midrule
-s1.1 & -0.029 & -0.042\\
-s1.2 & -0.216 & -0.349\\
-s1.3 & 0.290 & -0.426\\
-s1.4 & -0.356 & 1.157\\
-\bottomrule
-\end{tabular}
-\end{table}
 
 ### Hindcast Cross-Validation and Prediction Skill
 
@@ -812,6 +606,23 @@ Hindcast validation in `s1.1` (Figure \@ref(fig:hcval1)), `s1.2` (Figure \@ref(f
 
 
 
+A summary version of the same diagnostic, averaged across indices, is shown in Figure \@ref(fig:masesummary).
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/masesummary-1} 
+
+}
+
+\caption{Mean MASE by scenario, averaged across indices with n.eval > 2. The dashed line marks MASE = 1 (naive forecast threshold). FISHERYGS is excluded due to its extreme skill values relative to all other indices (see Figure \@ref(fig:mase) for the full breakdown).}(\#fig:masesummary)
+\end{figure}
+
+
+
+
+
+Failure counts by scenario and index can be tallied directly for the Results text with `table(runs_grid$Scenario, runs_grid$test, runs_grid$Type)`, once the diagnostic table above is reviewed.
+
 
 
 
@@ -831,11 +642,11 @@ Figure \@ref(fig:likecompo2) show the likelihood components for the four models.
 
 
 
-See Table \@ref(tab:likecom) for details. 
 
 
 
-As shown in Table \@ref(tab:parametercomparison), the models differ substantially in key parameter estimates and likelihood contributions.
+
+As shown in Table \@ref(tab:parametercomparison), the models differ in key parameter estimates and likelihood contributions.
 
 \begin{table}[H]
 \centering
@@ -847,17 +658,17 @@ As shown in Table \@ref(tab:parametercomparison), the models differ substantiall
 \toprule
 Label & s1.1 & s1.2 & s1.3 & s1.4\\
 \midrule
-TOTAL\_like & 773.19500 & 1214.9200 & 766.70500 & 1275.5400\\
-Survey\_like & 363.58100 & 290.1570 & 346.82500 & 306.8210\\
-Length\_comp\_like & 395.70500 & 907.6210 & 393.13300 & 948.8740\\
-Parm\_priors\_like & 1.80605 & 1.5700 & 7.03105 & 2.2464\\
-Recr\_Virgin\_billions & 65289.70000 & 16793.6000 & 41541.00000 & 14774.0000\\
+TOTAL\_like & 770.46600 & 1214.9200 & 766.70500 & 1275.5400\\
+Survey\_like & 362.03000 & 290.1570 & 346.82500 & 306.8210\\
+Length\_comp\_like & 394.07300 & 907.6210 & 393.13300 & 948.8740\\
+Parm\_priors\_like & 1.78642 & 1.5700 & 7.03105 & 2.2464\\
+Recr\_Virgin\_billions & 36244.90000 & 16793.6000 & 41541.00000 & 14774.0000\\
 \addlinespace
-SR\_LN(R0) & 24.90210 & 23.5443 & 24.44990 & 23.4161\\
+SR\_LN(R0) & 24.31360 & 23.5443 & 24.44990 & 23.4161\\
 SR\_LN(R0)\_ENV\_add & NA & NA & 2.62509 & -0.9144\\
-SSB\_Virgin & 36833100.00000 & 40245900.0000 & 31092000.00000 & 39847300.0000\\
-Bratio\_2020 & 1.64701 & 0.9474 & 1.50852 & 1.0561\\
-SPRratio\_2020 & 0.05162 & 0.1088 & 0.07419 & 0.1203\\
+SSB\_Virgin & 32410400.00000 & 40245900.0000 & 31092000.00000 & 39847300.0000\\
+Bratio\_2020 & 1.77416 & 0.9474 & 1.50852 & 1.0561\\
+SPRratio\_2020 & 0.06769 & 0.1088 & 0.07419 & 0.1203\\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -882,11 +693,11 @@ As shown in Table \@ref(tab:residualsummary), the residuals exhibit different st
 \toprule
 type & model & N & Mean & SD & shapiro\_p & ljung\_p & bp\_p\\
 \midrule
-\textbf{Index} & s1.1 & 159 & 124451.1 & 1.343964e+06 & 0 & 0.69593 & 0.35996\\
+\textbf{Index} & s1.1 & 159 & 128193.6 & 1.341717e+06 & 0 & 0.67588 & 0.41023\\
 \textbf{Index} & s1.2 & 188 & 101332.3 & 1.185888e+06 & 0 & 0.42597 & 0.23572\\
 \textbf{Index} & s1.3 & 159 & 134673.5 & 1.289550e+06 & 0 & 0.62566 & 0.56176\\
 \textbf{Index} & s1.4 & 188 & 102967.5 & 1.198603e+06 & 0 & 0.47671 & 0.21986\\
-\textbf{Length} & s1.1 & 3752 & 0.0 & 3.637000e-02 & 0 & 0.00000 & 0.04341\\
+\textbf{Length} & s1.1 & 3752 & 0.0 & 3.643000e-02 & 0 & 0.00000 & 0.05507\\
 \addlinespace
 \textbf{Length} & s1.2 & 4564 & 0.0 & 3.783000e-02 & 0 & 0.00000 & 0.01885\\
 \textbf{Length} & s1.3 & 3752 & 0.0 & 3.628000e-02 & 0 & 0.00000 & 0.02956\\

@@ -46,25 +46,25 @@ kbl_pdf <- function(x, caption = NULL, scale = TRUE, font = 9, ...) {
 
 ## State Model
 
-**Population Dynamics**
+Population Dynamics
 
 \begin{equation}
 N_{a,l,s,t+1} = N_{a-1,l,s,t} \cdot e^{-(M_{a-1,l,s,t} + F_{a-1,l,s,t})} \cdot T_{a-1 \to a,l,s,t} + R_{a,l,s,t}
 \end{equation}
 
-**Total Mortality**
+Total Mortality
 
 \begin{equation}
 Z_{a,l,s,t} = M_{a,l,s,t} + F_{a,l,s,t}
 \end{equation}
 
-**Spawning Stock Biomass**
+Spawning Stock Biomass
 
 \begin{equation}
 SSB_t = \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot W_{a,l,s,t} \cdot \text{Mat}_{a,l,s,t} \cdot \text{Fec}_{a,l,s,t}
 \end{equation}
 
-**Total Biomass**
+Total Biomass
 
 \begin{equation}
 B_t = \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot W_{a,l,s,t}
@@ -72,7 +72,7 @@ B_t = \sum_a \sum_l \sum_s N_{a,l,s,t} \cdot W_{a,l,s,t}
 
 ## Sub-models
 
-**Selectivity**
+Selectivity
 
 \begin{equation}
 S_{a,l,f} = \frac{1}{1 + e^{-\ln(19) \cdot \frac{L_l - L_{50,f}}{L_{95,f} - L_{50,f}}}}
@@ -82,19 +82,29 @@ S_{a,l,f} = \frac{1}{1 + e^{-\ln(19) \cdot \frac{L_l - L_{50,f}}{L_{95,f} - L_{5
 S_{a,f,t} = \sum_l S_{l,f,t} \cdot P(L_l \mid a, t)
 \end{equation}
 
-**Stock-Recruitment**
+Stock-Recruitment
 
 \begin{equation}
 R_t = \frac{\alpha \cdot SSB_{t-\tau}}{\beta + SSB_{t-\tau}} \cdot e^{\delta_t - \frac{\sigma^2_R}{2}}
 \end{equation}
 
-**Environmental Effects on Recruitment**
+Environmental Effects on Recruitment
+
+Environmental covariates enter SS3 through link functions applied to underlying model parameters (here, baseline recruitment) rather than acting directly on the derived quantities. The covariate (Chl-a) was first standardised to zero mean and unit variance:
 
 \begin{equation}
-E(\text{Recruitment}) = f(SSB) \times \exp(B \times \text{env}) \times \exp\!\left(-0.5 \times \pi^2_R\right)
+E_t = \frac{C_t - \bar{C}}{\sigma_C}
 \end{equation}
 
-**Maturity**
+and the environmental effect was implemented via an additive link (link type 2 in SS3):
+
+\begin{equation}
+P_t = P_{\text{base}} + \beta_E \cdot E_t
+\end{equation}
+
+where $P_t$ is the year-specific value of the linked parameter (here, $\ln(R_0)_t$), $P_{\text{base}} = \ln(R_0)_{\text{base}}$ is its baseline value, and $\beta_E$ is the freely estimated environmental sensitivity coefficient. For years with missing Chl-a observations, $E_t = 0$, reverting the parameter to its baseline value.
+
+Maturity
 
 \begin{equation}
 \text{Mat}_l = \frac{1}{1 + e^{-\ln(19) \cdot \frac{L_l - L_{50}}{L_{95} - L_{50}}}}
@@ -104,25 +114,25 @@ E(\text{Recruitment}) = f(SSB) \times \exp(B \times \text{env}) \times \exp\!\le
 \text{Mat}_{a,t} = \sum_l \text{Mat}_l \cdot P(L_l \mid a, t)
 \end{equation}
 
-**Growth (Von Bertalanffy)**
+Growth (Von Bertalanffy)
 
 \begin{equation}
 L_{a,s} = L_{\infty,s} \cdot \left(1 - e^{-K_s \cdot (a - t_{0,s})}\right)
 \end{equation}
 
-**Weight-Length Relationship**
+Weight-Length Relationship
 
 \begin{equation}
 W_{l,s} = w_s \cdot L^{b_s}_l
 \end{equation}
 
-**Length-at-Age Variability**
+Length-at-Age Variability
 
 \begin{equation}
 P(L_l \mid a, s, t) = \frac{1}{\sqrt{2\pi}\,\sigma_{L|a,s}} \exp\!\left(-\frac{(L_l - \bar{L}_{a,s,t})^2}{2\sigma^2_{L|a,s}}\right)
 \end{equation}
 
-**Length-to-Age Transition Matrix**
+Length-to-Age Transition Matrix
 
 \begin{equation}
 T_{a,l \to a+1,l',s,t} = P(L_{l'} \mid a+1, s, t+1) \cdot \text{Growth}_{l \to l'}
@@ -142,7 +152,7 @@ N_a = \sum_l P(A = a \mid L = l) \cdot N_l
 
 where $N_l$ is the number of fish observed at length $l$, and $N_a$ is the estimated number at age.
 
-**Fishing Mortality**
+Fishing Mortality
 
 \begin{equation}
 F_{a,l,s,f,t} = F'_{f,t} \cdot S_{a,l,s,f,t}
@@ -152,15 +162,23 @@ F_{a,l,s,f,t} = F'_{f,t} \cdot S_{a,l,s,f,t}
 F_{a,l,s,t} = \sum_f F_{a,l,s,f,t}
 \end{equation}
 
-**Predator Mortality**
+Predator Mortality
 
 \begin{equation}
 M_{a,t} = M1_{a,t} + M2_{a,t}
 \end{equation}
 
+Predation is incorporated in SS3 through a dedicated predator fleet: an estimable scaling parameter $S_p$ links the standardized predator abundance index $I_{p,t}$ to a year-specific predation mortality signal, which is then distributed across ages according to the predator fleet's own (length-based) selectivity, $\text{Sel}_p(a)$:
+
 \begin{equation}
-M2_{a,t} = \sum_{p=1}^{n_\text{pred}} \frac{C_{p,t} \cdot S_{p,a}}{B_{\text{avail},t}}
+M2_{p,t} = S_p(t) \cdot I_{p,t}
 \end{equation}
+
+\begin{equation}
+M2_{a,t} = \sum_{p=1}^{n_\text{pred}} M2_{p,t} \cdot \text{Sel}_{p}(a)
+\end{equation}
+
+In the krill assessment, penguin abundance was aggregated across species into a single combined predator index ($n_\text{pred} = 1$), and $S_p$ was itself made time-varying through annual log-scale deviations following a zero-reverting, logit-bounded random walk (deviation link option 5 in SS3), rather than through the environmental-link mechanism shown above for recruitment.
 
 ## Catch Equations
 
@@ -241,11 +259,14 @@ parInit <- as.data.frame(rbind(parbio, SRpar, Qpar, Selpar))
 parInit$Parameter <- rownames(parInit)
 
 # Añadir categorías y reordenar columnas
+# Orden real de las filas de parbio (ver rownames arriba): Nat M, Lmin, Lmax,
+# VonBert K, CV young, CV old, Wt a, Wt b, L50%, Mat slope -> el bloque de
+# crecimiento de SS3 son 5 parámetros (Lmin, Lmax, VonBert K, CV young, CV old),
+# no 4; no existe una categoría separada "CV young/old".
 categories <- c(rep("Natural Mortality", 1),
-                rep("Growth", 4),
+                rep("Growth", 5),
                 rep("Length-Weight Relation", 2),
                 rep("Maturity", 2),
-                rep("CV young/old", 1),
                 rep("Stock-Recruit Relation", 5),
                 rep("Catchability", 2),
                 rep("Selectivity", 20))
@@ -278,8 +299,8 @@ glossary <- data.frame(
     "$\\sigma_R$", "$\\delta_t$", "$Q_q$", "$C_{a,l,s,f,t}$",
     "$I_{q,t}$", "$\\hat{I}_{q,t}$", "$P_{a,f,t}$", "$\\hat{P}_{a,f,t}$",
     "$P_{l,f,t}$", "$\\hat{P}_{l,f,t}$", "$N_{\\text{eff},f,t}$",
-    "$\\sigma_{I,q}$", "$M1_{a,t}$", "$M2_{a,t}$", "$C_{p,t}$",
-    "$S_{p,a}$", "$B_{\\text{avail},t}$", "$\\beta_i$", "$X_{i,t}$",
+    "$\\sigma_{I,q}$", "$M1_{a,t}$", "$M2_{a,t}$", "$S_p(t)$",
+    "$I_{p,t}$", "$\\text{Sel}_p(a)$", "$\\beta_E$", "$E_t$",
     "$\\lambda$", "$w_i$", "$\\theta_j$", "$\\theta_{j,\\text{prior}}$",
     "$\\sigma_{\\theta,j}$", "$\\tau$", "$F'_{f,t}$", "$R_0$", "$h$"
   ),
@@ -312,11 +333,11 @@ glossary <- data.frame(
     "Standard deviation of survey index $q$",
     "Base natural mortality at age $a$, time $t$",
     "Predation mortality at age $a$, time $t$",
-    "Consumption by predator $p$ at time $t$",
-    "Age-specific selectivity by predator $p$",
-    "Available biomass for predation at time $t$",
-    "Environmental coefficient for covariate $i$",
-    "Environmental covariate $i$ at time $t$",
+    "Predator-index scaling parameter for predator $p$ (time-varying)",
+    "Standardized abundance index for predator $p$ at time $t$",
+    "Age-specific selectivity of predator $p$",
+    "Environmental sensitivity coefficient (recruitment link)",
+    "Standardized environmental covariate (Chl-a) at time $t$",
     "Penalty weight", "Likelihood component weight",
     "Estimated parameter $j$", "Prior mean for parameter $j$",
     "Prior standard deviation for parameter $j$",
@@ -335,8 +356,8 @@ glossary <- data.frame(
     "Various", "Metric tons", "Various", "Various",
     "Proportion", "Proportion", "Proportion", "Proportion",
     "Dimensionless", "Log-scale", "yr$^{-1}$", "yr$^{-1}$",
-    "Metric tons", "Proportion", "Metric tons",
-    "Dimensionless", "Various", "Dimensionless", "Dimensionless",
+    "Dimensionless", "Dimensionless", "Proportion",
+    "Dimensionless", "Dimensionless", "Dimensionless", "Dimensionless",
     "Various", "Various", "Various", "Years",
     "yr$^{-1}$", "Thousands", "Dimensionless"
   ),
