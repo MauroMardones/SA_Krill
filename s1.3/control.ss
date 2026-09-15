@@ -34,7 +34,7 @@
 1 #_time-vary parm bound check (1=warn relative to base parm bounds; 3=no bound check); Also see env (3) and dev (5) options to constrain with base bounds
 #
 # AUTOGEN
-1 0 0 0 0 # autogen: 1st element for biology, 2nd for SR, 3rd for Q, 4th reserved, 5th for selex
+1 1 0 0 0 # autogen: 1st element for biology, 2nd for SR, 3rd for Q, 4th reserved, 5th for selex
 # where: 0 = autogen time-varying parms of this category; 1 = read each time-varying parm line; 2 = read then autogen if parm min==-12345
 #
 #_Available timevary codes
@@ -70,10 +70,10 @@
 #_growth_parms
 #_ LO HI INIT PRIOR PR_SD PR_type PHASE env_var&link dev_link dev_minyr dev_maxyr dev_PH Block Block_Fxn
 # Sex: 1  BioPattern: 1  NatMort
-0.2  1 0.27 0.27 0.5 0 3 0 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1
+  0.2  2 1.1 1.1 0.5 0 -3 0 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1
 # Sex: 1  BioPattern: 1  Growth
 0  5  3.4 3.4 0.5 6 -2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
-1  10  5 5 0.5 6 -4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
+1  10  6.08 6.08 0.5 6 -4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1   
 0.05  0.8 0.47  0.47 0.5 6 -4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
 0.05 0.25 0.14 0.14 0.5 0 -4  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
 0.05 0.25 0.07 0.07 0.5 0 -4  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
@@ -121,26 +121,27 @@
 1  # 0/1 to use steepness in initial equ recruitment calculation
 0  #  future feature:  0/1 to make realized sigmaR a function of SR curvature
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn #  parm_name
-3            30           23         23            0.3             0          1          201          0          0          0          0          0          0 # SR_LN(R0)
+3            30           23         23            0.3             0          1          0          0          0          0          0          0          0 # SR_LN(R0)
 0.2             1           0.85           0.85             1             0         -4          0          0          0          0          0          0          0 # SR_BH_steep
 0             2           1.2          1.2           1.1             0         -4          0          0          0          0          0          0          0 # SR_sigmaR
--5             5             0             0             1             0         -4          0          0          0          0          0          0          0 # SR_regime
+-5             5             0             0             1             0         -4          201          0          0          0          0          0          0 # SR_regime
 0             0             0             0             0             0        -99          0          0          0          0          0          0          0 # SR_autocorr
-#_no timevary SR parameters
+# timevary SR parameters
+-3  3  0  0  1  6  2  # SR_regime_ENV_add
 1 #do_recdev:  0=none; 1=devvector (R=F(SSB)+dev); 2=deviations (R=F(SSB)+dev); 3=deviations (R=R0*dev; dev2=R-f(SSB)); 4=like 3 with sum(dev2) adding penalty
 1990 # first year of main recr_devs; early devs can preceed this era
-2015 # last year of main recr_devs; forecast devs start in following year
+2019 # last year of main recr_devs; forecast devs start in following year
 2 #_recdev phase 
 1 # (0/1) to read 13 advanced options
 0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
   -4 #_recdev_early_phase
 -4 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
 1 #_lambda for Fcast_recr_like occurring before endyr+1
-1995.7   #_last_early_yr_nobias_adj_in_MPD 
-2000.0   #_first_yr_fullbias_adj_in_MPD 
-2015.7   #_last_yr_fullbias_adj_in_MPD 
-2022.3   #_first_recent_yr_nobias_adj_in_MPD 
-0.8274  #_max_bias_adj_in_MPD (1.0 to mimic pre-2009 models) 
+1972.892   #_last_early_yr_nobias_adj_in_MPD 
+1990.264   #_first_yr_fullbias_adj_in_MPD 
+2018.822   #_last_yr_fullbias_adj_in_MPD 
+2026.015   #_first_recent_yr_nobias_adj_in_MPD 
+0.826   #_max_bias_adj_in_MPD (1.0 to mimic pre-2009 models) 
   0 #_period of cycles in recruitment (N parms read below)
 -5 #min rec_dev
 5 #max rec_dev
@@ -239,9 +240,9 @@
 #Pattern:_42; parm=special+3+2; cubic spline; like 27, with 2 additional param for scaling (average over bin range)
 #_discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead;_4=define_dome-shaped_retention
 #_Pattern Discard Male Special
-1	0	0	0	#		FISHERYBS
+24	0	0	0	#		FISHERYBS
 1	0	0	0	#		FISHERYEI
-1	0	0	0	#		FISHERYGS
+15	0	0	1	#		FISHERYGS (mirror BS fleet 1)
 1	0	0	0	#		FISHERYJOIN
 1	0	0	0	#		FISHERYSSIW
 1	0	0	0	#		SURVEYBS
@@ -283,21 +284,22 @@
 #0	0	0	0	#		PREDATOR                                               
 #
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name
+#	24	FISHERY	LenSelex (domo)
+1.3	6.9	2	2	0.01	1	3	0	0	0	0	0	1	1	#	Peak_FISHERY(1)
+-5	5	-3	-3	0.01	1	-3	0	0	0	0	0	0	0	#	Top_logistic_FISHERY(1)
+-5	9	2	2	0.01	1	3	0	0	0	0	0	1	1	#	Ascend_width_FISHERY(1)
+-5	9	3	3	0.01	1	4	0	0	0	0	0	0	0	#	Descend_width_FISHERY(1)
+-999	9	-999	-999	0.01	1	-99	0	0	0	0	0	0	0	#	Initial_selex_FISHERY(1)
+-999	9	-999	-999	0.01	1	-99	0	0	0	0	0	0	0	#	Final_selex_FISHERY(1)
 #	1	FISHERY	LenSelex														
-0.01	8	2	2	0.01	1	3	0	0	0	0	0	1	1	#	Size_inflection_FISHERY(1)		
-0.1	8	2	2	0.01	1	2	0	0	0	0	0	1	1	#	Size_95%width_FISHERY(1)		
+0.01	10	3.5	3.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(2)		
+0.5	8	4	4	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(2)		
 #	1	FISHERY	LenSelex														
-0.01	10 3.5	3.5	0.01	1	3	0	0	0	0	0	1	1	#	Size_inflection_FISHERY(2)		
-0.5	8	4	4	0.01	1	2	0	0	0	0	0	1	1	#	Size_95%width_FISHERY(2)		
+0.01	8	3.5	3.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(4)		
+0.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(4)	
 #	1	FISHERY	LenSelex														
-0.01	8	2	2	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(3)		
-0.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(3)	
-#	1	FISHERY	LenSelex														
-0.01	8	3.5	3.5	0.01	1	3	0	0	0	0	0	1	1	#	Size_inflection_FISHERY(4)		
-0.5	8	2	2	0.01	1	2	0	0	0	0	0	1	1	#	Size_95%width_FISHERY(4)	
-#	1	FISHERY	LenSelex														
-0.01	8	3.5	3.5	0.01	1	3	0	0	0	0	0	1	1	#	Size_inflection_FISHERY(5)		
-0.5	8	2	2	0.01	1	2	0	0	0	0	0	1	1	#	Size_95%width_FISHERY(5)		
+0.01	8	3.5	3.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(5)		
+0.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(5)		
 #	2	SURVEY1	LenSelex														
 1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(6)		
 1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(6)		
@@ -334,16 +336,16 @@
 #_6=mult_by_size-at-age_N
 #_7=mult_by_generalized_sizecomp
 #_Factor  Fleet  Value
-4     1          0.273357 # 
-4     2          0.232894 # 
-4     3          0.245937 #
-4     4          0.259961 #  
-4     5          0.277591 # 
-4     6          0.272757 # 
-4     7          0.355792 # 
-4     8          0.249432 # 
-4     9          0.193560 # 
-#4    10          0.347818 # 
+4     1          0.15 # FISHERYBS
+4     2          0.0199 # FISHERYEI
+4     3          0.0529 # FISHERYGS
+4     4          0.0217 # FISHERYJOIN
+4     5          0.0599 # FISHERYSSIW
+4     6          0.0475 # SURVEYBS
+4     7          0.0565 # SURVEYEI
+4     8          0.0286 # SURVEYGS
+4     9          0.0179 # SURVEYJOIN
+#4    10          0.347818 # SURVEYSSIW (sin datos de talla, se deja comentado)
 -9999   1    0  # terminator
 #
 4 #_maxlambdaphase

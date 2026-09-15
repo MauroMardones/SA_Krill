@@ -34,7 +34,7 @@
 1 #_time-vary parm bound check (1=warn relative to base parm bounds; 3=no bound check); Also see env (3) and dev (5) options to constrain with base bounds
 #
 # AUTOGEN
-1 0 0 0 0 # autogen: 1st element for biology, 2nd for SR, 3rd for Q, 4th reserved, 5th for selex
+1 1 0 0 0 # autogen: 1st element for biology, 2nd for SR, 3rd for Q, 4th reserved, 5th for selex
 # where: 0 = autogen time-varying parms of this category; 1 = read each time-varying parm line; 2 = read then autogen if parm min==-12345
 #
 #_Available timevary codes
@@ -73,7 +73,7 @@
   0.2  2 1.1 1.1 0.5 0 -3 0 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1
 # Sex: 1  BioPattern: 1  Growth
 0  5  3.4 3.4 0.5 6 -2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
-1  10  6.08 6.08 0.5 6 -4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
+1  10  6.08 6.08 0.5 6 -4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1   
 0.05  0.8 0.47  0.47 0.5 6 -4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
 0.05 0.25 0.14 0.14 0.5 0 -4  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
 0.05 0.25 0.07 0.07 0.5 0 -4  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
@@ -124,24 +124,24 @@
 3            30           23         23            0.3             0          1          0          0          0          0          0          0          0 # SR_LN(R0)
 0.2             1           0.85           0.85             1             0         -4          0          0          0          0          0          0          0 # SR_BH_steep
 0             2           1.2          1.2           1.1             0         -4          0          0          0          0          0          0          0 # SR_sigmaR
--5             5             0             0             1             0         -4          0          0          0          0          0          0          0 # SR_regime
+-5             5             0             0             1             0             -4             0             0             0             0             0             0             0 # SR_regime
 0             0             0             0             0             0        -99          0          0          0          0          0          0          0 # SR_autocorr
-#_no timevary SR parameters
+# timevary SR parameters
 1 #do_recdev:  0=none; 1=devvector (R=F(SSB)+dev); 2=deviations (R=F(SSB)+dev); 3=deviations (R=R0*dev; dev2=R-f(SSB)); 4=like 3 with sum(dev2) adding penalty
 1990 # first year of main recr_devs; early devs can preceed this era
 2019 # last year of main recr_devs; forecast devs start in following year
 2 #_recdev phase 
 1 # (0/1) to read 13 advanced options
 0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
--4 #_recdev_early_phase
+  -4 #_recdev_early_phase
 -4 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
 1 #_lambda for Fcast_recr_like occurring before endyr+1
-1972.6925   #_last_early_yr_nobias_adj_in_MPD 
-1990.9329   #_first_yr_fullbias_adj_in_MPD 
-2018.6018   #_last_yr_fullbias_adj_in_MPD 
-2026.0426   #_first_recent_yr_nobias_adj_in_MPD 
-0.8557   #_max_bias_adj_in_MPD (1.0 to mimic pre-2009 models) 
-0 #_period of cycles in recruitment (N parms read below)
+1972.892   #_last_early_yr_nobias_adj_in_MPD 
+1990.264   #_first_yr_fullbias_adj_in_MPD 
+2018.822   #_last_yr_fullbias_adj_in_MPD 
+2026.015   #_first_recent_yr_nobias_adj_in_MPD 
+0.826   #_max_bias_adj_in_MPD (1.0 to mimic pre-2009 models) 
+  0 #_period of cycles in recruitment (N parms read below)
 -5 #min rec_dev
 5 #max rec_dev
 0 #_read_recdevs
@@ -190,6 +190,7 @@
 8	1	0	0	0	0	#	SURVEYGS
 9	1	0	0	0	0	#	SURVEYJOIN
 10 1	0	0	0	0	#	SURVEYSSIW
+11	1	0	0	0	0	#	SURVEYENV
 #11 1	0	1	0	0	#	PREDATOR
 -9999 0 0 0 0 0                                               
 #
@@ -215,6 +216,7 @@
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(9)	
 -7  25  1.1	1.1  0.5  1  -1  0  0  0  0  0  0  0  # LnQ_base_SURVEYSSIW(10)	
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(10)	
+-5	5	0	0	1	0	2	0	0	0	0	0	0	0	#	LnQ_base_SURVEYENV(11)
 #-7	25	1	0	0	0	1	0	0	0	0	0	0	0	#	LnQ_base_PREDATOR(11)	
 #0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_PREDATOR(11)
 #_no timevary Q parameters
@@ -249,6 +251,7 @@
 1	0	0	0	#		SURVEYGS
 1	0	0	0	#		SURVEYJOIN
 1	0	0	0	#		SURVEYSSIW
+0	0	0	0	#		SURVEYENV
 #1	0	0	0	#		PREDATOR                                            
 #
 #_age_selex_patterns
@@ -280,6 +283,7 @@
 0	0	0	0	#		SURVEYGS
 0	0	0	0	#		SURVEYJOIN
 0	0	0	0	#		SURVEYSSIW
+0	0	0	0	#		SURVEYENV
 #0	0	0	0	#		PREDATOR                                               
 #
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name

@@ -110,10 +110,11 @@ dir1.1<-here::here("s1.1") # no predador- environmental
 dir1.2 <- here::here("s1.2") # s1.1 w/ predador
 dir1.3 <- here::here("s1.3") # s1.1 w/ env
 dir1.4 <- here::here("s1.4") # s1.1 predator and env
+dir1.5 <- here::here("s1.5") # s1.3 w/ env as index
 Figs <- here::here("Figs")
 outdir <- here::here("outputs")
 
-dir1.1 <- here("s1.1")
+
 start1 <- SS_readstarter(file = file.path(dir1.1, "starter.ss"), verbose = FALSE)
 dat1   <- SS_readdat(file = file.path(dir1.1, start1$datfile), verbose = FALSE)
 ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
@@ -121,7 +122,6 @@ ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
 fore1  <- SS_readforecast(file = file.path(dir1.1, "forecast.ss"), verbose = FALSE)
 
 
-dir1.4 <- here("s1.4")
 start4 <- SS_readstarter(file = file.path(dir1.4, "starter.ss"), verbose = FALSE)
 dat4   <- SS_readdat(file = file.path(dir1.4, start4$datfile), verbose = FALSE)
 ctl4   <- SS_readctl(file = file.path(dir1.4, start4$ctlfil),
@@ -163,8 +163,8 @@ r4ss::run(
 r4ss::run(
   dir = dir1.2,
   exe = "ss_osx",
-  skipfinished = FALSE, 
-  show_in_console = TRUE 
+  skipfinished = FALSE,
+  show_in_console = TRUE
 )
 # s1.3
 r4ss::run(
@@ -176,6 +176,13 @@ r4ss::run(
 # s1.4
 r4ss::run(
   dir = dir1.4,
+  exe = "ss_osx",
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
+)
+# s1.5
+r4ss::run(
+  dir = dir1.5,
   exe = "ss_osx",
   skipfinished = FALSE, 
   show_in_console = TRUE 
@@ -198,6 +205,10 @@ base.model1.3 <- SS_output(dir=dir1.3,
                         forecast=T)
 #s1.4
 base.model1.4 <- SS_output(dir=dir1.4,
+                        covar=T,
+                        forecast=T)
+#s1.5
+base.model1.5 <- SS_output(dir=dir1.5,
                         covar=T,
                         forecast=T)
 ```
@@ -531,6 +542,46 @@ plot_selex_scenario(base.model1.3, "s1.3")
 plot_selex_scenario(base.model1.4, "s1.4")
 ```
 
+Length by age
+
+
+```{r}
+# ── ALK: curvas de probabilidad de talla por edad, superpuestas en un
+# mismo panel (coloreadas por clase de edad) ─────────────────────────────
+
+repl <- base.model1.1   # cambiá al escenario que corresponda
+
+alk_matrix <- repl$ALK[, , 1]   # [Length, TrueAge, Morph] -> Morph 1
+
+alk_df <- as.data.frame(as.table(alk_matrix))
+colnames(alk_df) <- c("Length", "TrueAge", "Value")
+
+alk_df <- alk_df |>
+  dplyr::mutate(
+    Length  = as.numeric(as.character(Length)),
+    TrueAge = as.numeric(as.character(TrueAge)),
+    Value   = as.numeric(Value)
+  )
+
+library(ggplot2)
+
+p_alk <- ggplot(alk_df, aes(x = Length, y = Value,
+                             color = factor(TrueAge), group = TrueAge)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_viridis_d(name = "Edad") +
+  labs(x = "Talla (cm)", y = "Probabilidad",
+       title = "Age-Length Key (ALK): probabilidad de talla por clase de edad") +
+  theme_bw() +
+  theme(legend.position = "right")
+
+print(p_alk)
+# 
+# ggsave(p_alk, filename = "Figs/ALK_curves_overlaid.png",
+#        width = 8, height = 5, units = "in", dpi = 300)
+```
+
+
+
 This Figure \@ref(fig:index2) shows standardized time series of input indices used in four different model scenarios (s1.1 to s1.4) for the stock assessment of Antarctic krill in Subarea 48.1.
 
 ```{r index2, fig.height=6, fig.width=6, fig.cap= "Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework"}
@@ -561,14 +612,16 @@ outps1 <- base.model1.1$timeseries[, cols] %>% mutate(Model = "s1.1")
 outps2 <- base.model1.2$timeseries[, cols] %>% mutate(Model = "s1.2")
 outps3 <- base.model1.3$timeseries[, cols] %>% mutate(Model = "s1.3")
 outps4 <- base.model1.4$timeseries[, cols] %>% mutate(Model = "s1.4")
+outps5 <- base.model1.5$timeseries[, cols] %>% mutate(Model = "s1.5")
 
 
 outps1$Model <- "s1.1"
 outps2$Model <- "s1.2"
 outps3$Model <- "s1.3"
 outps4$Model <- "s1.4"
+outps5$Model <- "s1.5"
 
-outpsall <- rbind(outps1, outps2, outps3, outps4)
+outpsall <- rbind(outps1, outps2, outps3, outps4, outps5)
 
 outpsall_long <- outpsall |>
   pivot_longer(
@@ -589,8 +642,9 @@ panel_order <- c("Summary Biomass (t)",
                  "Recruitment (N)")
 
 colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-            "s1.3" = "#bababa", "s1.4" = "#404040")
-shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4)
+            "s1.3" = "#bababa", "s1.4" = "#404040",
+            "s1.5" = "#0571b0")
+shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4, "s1.5" = 8)
 theme_prod <- theme_bw() +
   theme(
     panel.grid.minor = element_blank(),
@@ -616,7 +670,8 @@ virgin_long <- dplyr::bind_rows(
   get_virgin(base.model1.1, "s1.1"),
   get_virgin(base.model1.2, "s1.2"),
   get_virgin(base.model1.3, "s1.3"),
-  get_virgin(base.model1.4, "s1.4")
+  get_virgin(base.model1.4, "s1.4"),
+  get_virgin(base.model1.5, "s1.5")
 ) |>
   pivot_longer(cols = c(Bio_smry, SpawnBio, Recruit_0),
                names_to = "VarRaw", values_to = "Virgin") |>
@@ -686,7 +741,8 @@ pop_unc <- dplyr::bind_rows(
   get_pop_unc(base.model1.1, "s1.1"),
   get_pop_unc(base.model1.2, "s1.2"),
   get_pop_unc(base.model1.3, "s1.3"),
-  get_pop_unc(base.model1.4, "s1.4")
+  get_pop_unc(base.model1.4, "s1.4"),
+  get_pop_unc(base.model1.5, "s1.5")
 ) |>
   dplyr::filter(Yr >= 1989, Yr <= 2020) |>
   dplyr::left_join(virgin_long, by = c("Model", "Variable")) |>
@@ -761,6 +817,203 @@ ggsave(alloutput, filename = "Figs/popvar_scenarios_relative.png",
        width = 9,
        height = 4,
        units = "in", dpi = 300)
+alloutput
+```
+
+
+```{r}
+cols <- c("Yr", "Bio_smry", "SpawnBio", "Recruit_0")
+outps1 <- base.model1.1$timeseries[, cols] %>% mutate(Model = "s1.1")
+outps2 <- base.model1.2$timeseries[, cols] %>% mutate(Model = "s1.2")
+outps3 <- base.model1.3$timeseries[, cols] %>% mutate(Model = "s1.3")
+outps4 <- base.model1.4$timeseries[, cols] %>% mutate(Model = "s1.4")
+outps5 <- base.model1.5$timeseries[, cols] %>% mutate(Model = "s1.5")
+
+outps1$Model <- "s1.1"
+outps2$Model <- "s1.2"
+outps3$Model <- "s1.3"
+outps4$Model <- "s1.4"
+outps5$Model <- "s1.5"
+outpsall <- rbind(outps1, outps2, outps3, outps4, outps5)
+outpsall_long <- outpsall |>
+  pivot_longer(
+    cols      = c(Bio_smry, SpawnBio, Recruit_0),
+    names_to  = "Variable",
+    values_to = "Value"
+  ) |>
+  filter(Yr >= 1989, Yr <= 2020) |>
+  mutate(Variable = case_when(
+    Variable == "Bio_smry"  ~ "Summary Biomass (t)",
+    Variable == "SpawnBio"  ~ "Spawning Stock Biomass (t)",
+    Variable == "Recruit_0" ~ "Recruitment (N)",
+    TRUE ~ Variable
+  ))
+panel_order <- c("Summary Biomass (t)",
+                 "Spawning Stock Biomass (t)",
+                 "Recruitment (N)")
+colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
+            "s1.3" = "#bababa", "s1.4" = "#404040",
+            "s1.5" = "#0571b0")
+shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4)
+theme_prod <- theme_bw() +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "grey92"),
+    strip.background = element_blank(),
+    legend.position  = "none",
+    axis.text        = element_text(size = 9),
+    axis.title       = element_text(size = 10)
+  )
+
+# ── Valores virginales (B0/R0) por escenario, desde la fila de equilibrio
+# no explotado del timeseries (Era == "VIRG"). Ya NO se usan para normalizar
+# (eso era la versión relativa); se conservan solo por si querés dibujarlos
+# como línea de referencia horizontal por escenario ────────────────────
+get_virgin <- function(model, modelname) {
+  model$timeseries |>
+    dplyr::filter(Era == "VIRG") |>
+    dplyr::slice(1) |>
+    dplyr::select(Bio_smry, SpawnBio, Recruit_0) |>
+    dplyr::mutate(Model = modelname)
+}
+virgin_long <- dplyr::bind_rows(
+  get_virgin(base.model1.1, "s1.1"),
+  get_virgin(base.model1.2, "s1.2"),
+  get_virgin(base.model1.3, "s1.3"),
+  get_virgin(base.model1.4, "s1.4"),
+  get_virgin(base.model1.5, "s1.5")
+) |>
+  pivot_longer(cols = c(Bio_smry, SpawnBio, Recruit_0),
+               names_to = "VarRaw", values_to = "Virgin") |>
+  mutate(Variable = case_when(
+    VarRaw == "Bio_smry"  ~ "Summary Biomass (t)",
+    VarRaw == "SpawnBio"  ~ "Spawning Stock Biomass (t)",
+    VarRaw == "Recruit_0" ~ "Recruitment (N)",
+    TRUE ~ VarRaw
+  )) |>
+  dplyr::select(Model, Variable, Virgin)
+
+# Serie principal en escala ABSOLUTA (sin dividir por el valor virginal)
+# outpsall_long ya está en unidades absolutas, no hace falta tocarla
+
+# ── Survey total con CV propagado → va en Summary Biomass, en unidades
+# absolutas (sin referenciar contra SmryBio0) ───────────────────────────
+survey_total <- dat1$CPUE |>
+  dplyr::filter(index %in% c(6, 7, 8, 9, 10)) |>
+  dplyr::group_by(year) |>
+  dplyr::summarise(
+    Value   = sum(obs),
+    cv_pool = sqrt(sum((se_log * obs)^2)) / sum(obs),
+    .groups = "drop"
+  ) |>
+  dplyr::filter(year >= 1989, year <= 2020) |>
+  dplyr::rename(Yr = year) |>
+  dplyr::mutate(
+    Variable = "Summary Biomass (t)",
+    lo       = Value * exp(-1.96 * cv_pool),
+    hi       = Value * exp( 1.96 * cv_pool)
+  )
+
+# ── Incertidumbre de las variables poblacionales (derived_quants, SS3),
+# en escala absoluta (sin dividir por Virgin) ───────────────────────────
+get_pop_unc <- function(model, modelname) {
+  dq <- model$derived_quants
+  extract_dq <- function(prefix, varname) {
+    dq |>
+      dplyr::filter(grepl(paste0("^", prefix, "_[0-9]{4}$"), Label)) |>
+      dplyr::mutate(
+        Yr       = as.numeric(gsub(paste0(prefix, "_"), "", Label)),
+        Variable = varname,
+        Model    = modelname
+      ) |>
+      dplyr::select(Yr, Variable, Model, Value, StdDev)
+  }
+  dplyr::bind_rows(
+    extract_dq("SSB",     "Spawning Stock Biomass (t)"),
+    extract_dq("Recr",    "Recruitment (N)"),
+    extract_dq("SmryBio", "Summary Biomass (t)")
+  )
+}
+pop_unc <- dplyr::bind_rows(
+  get_pop_unc(base.model1.1, "s1.1"),
+  get_pop_unc(base.model1.2, "s1.2"),
+  get_pop_unc(base.model1.3, "s1.3"),
+  get_pop_unc(base.model1.4, "s1.4"),
+  get_pop_unc(base.model1.5, "s1.5")
+) |>
+  dplyr::filter(Yr >= 1989, Yr <= 2020) |>
+  dplyr::mutate(
+    cv = StdDev / Value,
+    lo = Value * exp(-1.96 * cv),
+    hi = Value * exp( 1.96 * cv)
+  )
+
+alloutput_abs <- ggplot(
+  outpsall_long,
+  aes(x = Yr,
+      y = Value,
+      color = Model,
+      shape = Model,
+      group = Model)) +
+  geom_ribbon(
+    data        = pop_unc,
+    aes(x = Yr, ymin = lo, ymax = hi, fill = Model),
+    inherit.aes = FALSE,
+    alpha       = 0.15,
+    color       = NA
+  ) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 1.2, alpha = 0.7) +
+  geom_errorbar(
+    data        = survey_total,
+    aes(x = Yr, ymin = lo, ymax = hi),
+    inherit.aes = FALSE,
+    color       = "#1f78b4",
+    width       = 0.4,
+    linewidth   = 0.5,
+    alpha       = 0.7
+  ) +
+  geom_point(
+    data        = survey_total,
+    aes(x = Yr, y = Value),
+    inherit.aes = FALSE,
+    color       = "#1f78b4",
+    shape       = 18,
+    size        = 2.2,
+    alpha       = 0.9
+  ) +
+  facet_wrap(
+    ~ factor(Variable, levels = panel_order),
+    ncol   = 3,
+    scales = "free"
+  ) +
+  scale_color_manual(name = "Scenario", values = colors) +
+  scale_shape_manual(name = "Scenario", values = shapes) +
+  scale_fill_manual(values = colors, guide = "none") +
+  scale_y_continuous(limits = c(0, NA)) +
+  scale_x_continuous(breaks = seq(1990, 2020, by = 5)) +
+  labs(x = "", y = "") +
+  theme_prod +
+  theme(
+    axis.text.x     = element_text(angle = 90, hjust = 1),
+    strip.text      = element_text(size = 8),
+    legend.position = "bottom",
+    legend.title    = element_text(size = 10, face = "bold"),
+    legend.text     = element_text(size = 9)
+  )
+
+ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute.png",
+       width = 9,
+       height = 4,
+       units = "in", dpi = 300)
+alloutput_abs
+```
+
+```{r}
+out1.1 <- r4ss::SS_fitbiasramp(base.model1.1, plot = TRUE, print = TRUE)
+out1.2 <- r4ss::SS_fitbiasramp(base.model1.2, plot = TRUE, print = TRUE)
+out1.3 <- r4ss::SS_fitbiasramp(base.model1.3, plot = TRUE, print = TRUE)
+out1.4 <- r4ss::SS_fitbiasramp(base.model1.4, plot = TRUE, print = TRUE)
 ```
 
 Comparsion in long term time series forecasting Figure \@ref(fig:cumsum)
@@ -799,7 +1052,8 @@ boxout <- ggplot(outpsall_box,
   scale_fill_manual(
     name   = "Scenario",
     values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-               "s1.3" = "#bababa", "s1.4" = "#404040")
+               "s1.3" = "#bababa", "s1.4" = "#404040",
+               "s1.5"= "#0571b0")
   ) +
   scale_y_continuous(
     labels = scales::label_number(scale_cut = cut_short_scale())
@@ -819,6 +1073,56 @@ ggsave(boxout, filename = "Figs/popvar_scenarios_boxplot.png",
        width = 9,
        height = 3,
        units = "in", dpi = 300)
+```
+
+## Comparision
+
+```{r}
+# ── Comparación entre los 4 escenarios con r4ss::SSplotComparisons ──────
+# Requiere los 4 objetos ya leídos con SS_output(covar=TRUE, forecast=TRUE):
+# base.model1.1, base.model1.2, base.model1.3, base.model1.4
+
+modelnames <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")
+mycolors   <- c("#ca0020", "#f4a582", "#bababa", "#404040", "#0571b0")
+
+# SSsummarize junta los derived_quants/timeseries de todos los modelos
+# en un solo objeto que SSplotComparisons sabe leer
+mysummary <- r4ss::SSsummarize(
+  list(base.model1.1, base.model1.2, base.model1.3, base.model1.4, base.model1.5)
+)
+
+# Plot en pantalla (todas las figuras por default: SSB, Bratio, reclutas,
+# F, índices, etc.) — subplots = "all" o un vector de números específicos
+r4ss::SSplotComparisons(
+  mysummary,
+  legendlabels = modelnames,
+  col          = mycolors,
+  legendloc    = "topleft",
+  subplots     = 1:20,     # ver ?SSplotComparisons para el listado de subplots disponibles
+  endyrvec     = 2020,
+  new          = TRUE
+)
+
+# Mismo llamado pero grabando los PNG directo a Figs/ con prefijo propio,
+# para no pisar las figuras ggplot que ya tenés
+r4ss::SSplotComparisons(
+  mysummary,
+  legendlabels    = modelnames,
+  col             = mycolors,
+  legendloc       = "topleft",
+  #subplots        = 1:20,
+  subplots       = c(2, 4, 8, 11), # SSB, SSB/SSB0, reclutas, F -> revisar numeración con ?SSplotComparisons
+  endyrvec        = 2020,
+  print           = TRUE,
+  plotdir         = "Figs",
+  filenameprefix  = "compare_",
+  pwidth          = 7,
+  pheight         = 5,
+  punits          = "in",
+  res             = 300
+)
+
+
 ```
 
 
