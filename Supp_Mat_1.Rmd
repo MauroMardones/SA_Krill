@@ -135,7 +135,8 @@ fore4  <- SS_readforecast(file = file.path(dir1.4, "forecast.ss"), verbose = FAL
 directorios <- c("s1.1",
                  "s1.2",
                  "s1.3",
-                 "s1.4")  
+                 "s1.4",
+                 "s1.5")  
 
 for (dir in directorios) {
   r4ss::run(
@@ -525,7 +526,7 @@ SS_plots(base.model1.4,
 Selectivity estimated by scenario in Figure \@ref(fig:selectivity).
 
 ```{r selectivity, fig.height=6, fig.width=6, fig.cap="Selectivity by fleet in each scenario"}
-par(mfrow = c(2, 2), mar = c(4, 4, 2.5, 1))
+par(mfrow = c(3, 2), mar = c(4, 4, 2.5, 1))
 
 plot_selex_scenario <- function(model, label) {
   op <- par(cex = 0.55, cex.axis = 1, cex.lab = 1)
@@ -540,6 +541,7 @@ plot_selex_scenario(base.model1.1, "s1.1")
 plot_selex_scenario(base.model1.2, "s1.2")
 plot_selex_scenario(base.model1.3, "s1.3")
 plot_selex_scenario(base.model1.4, "s1.4")
+plot_selex_scenario(base.model1.5, "s1.5")
 ```
 
 Length by age
@@ -1002,6 +1004,7 @@ alloutput_abs <- ggplot(
     legend.text     = element_text(size = 9)
   )
 
+
 ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute.png",
        width = 9,
        height = 4,
@@ -1014,6 +1017,7 @@ out1.1 <- r4ss::SS_fitbiasramp(base.model1.1, plot = TRUE, print = TRUE)
 out1.2 <- r4ss::SS_fitbiasramp(base.model1.2, plot = TRUE, print = TRUE)
 out1.3 <- r4ss::SS_fitbiasramp(base.model1.3, plot = TRUE, print = TRUE)
 out1.4 <- r4ss::SS_fitbiasramp(base.model1.4, plot = TRUE, print = TRUE)
+out1.5 <- r4ss::SS_fitbiasramp(base.model1.5, plot = TRUE, print = TRUE)
 ```
 
 Comparsion in long term time series forecasting Figure \@ref(fig:cumsum)
@@ -1047,7 +1051,7 @@ outpsall_box <- outpsall |>
 
 boxout <- ggplot(outpsall_box,
                  aes(x = Model, y = Value, fill = Model)) +
-  geom_boxplot(outlier.size = 0.8, outlier.alpha = 0.5, linewidth = 0.4) +
+  geom_boxplot(outliers = F) +
   facet_wrap(~ Variable, ncol = 3, scales = "free_y") +
   scale_fill_manual(
     name   = "Scenario",
@@ -1066,6 +1070,7 @@ boxout <- ggplot(outpsall_box,
     strip.text      = element_text(size = 9),
     legend.position = "bottom"
   )
+
 
 boxout
 
@@ -1167,8 +1172,9 @@ These metrics allow us to analyze both the productivity and the temporal dynamic
 ```{r}
 # ── Paleta y tema común ───────────────────────────────────────
 colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-            "s1.3" = "#bababa", "s1.4" = "#404040")
-shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4)
+            "s1.3" = "#bababa", "s1.4" = "#404040",
+            "s1.5" = "#0571b0")
+shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4, "s1.5" = 18)
 
 theme_prod <- theme_bw() +
   theme(
@@ -1188,7 +1194,8 @@ models <- list(
   s1.1 = base.model1.1,
   s1.2 = base.model1.2,
   s1.3 = base.model1.3,
-  s1.4 = base.model1.4
+  s1.4 = base.model1.4,
+  s1.5 = base.model1.5
 )
 
 plot_data  <- list()
@@ -1271,7 +1278,8 @@ escenarios <- list(
   s1.1 = base.model1.1$SPAWN_RECR_CURVE,
   s1.2 = base.model1.2$SPAWN_RECR_CURVE,
   s1.3 = base.model1.3$SPAWN_RECR_CURVE,
-  s1.4 = base.model1.4$SPAWN_RECR_CURVE
+  s1.4 = base.model1.4$SPAWN_RECR_CURVE,
+  s1.5 = base.model1.5$SPAWN_RECR_CURVE
 )
 
 # Verifica nombres: names(base.model1.1$SPAWN_RECR_CURVE)
@@ -1293,8 +1301,7 @@ prod <- ggplot(
   geom_point(size = 1.5, alpha = 0.6) +
   scale_color_manual(values = colors, name = "Scenario") +
   scale_shape_manual(values = shapes, name = "Scenario") +
-  coord_cartesian(ylim = c(0, 15000), xlim = c(0, 1.25)) +
-  labs(
+   labs(
     x = expression(SSB / SSB[0]),
     y = "Recruitment efficiency (R/SSB)"
   ) +
@@ -1312,18 +1319,20 @@ get_lnR0 <- function(model) {
 }
 
 r0_vals <- data.frame(
-  model = c("s1.1", "s1.2", "s1.3", "s1.4"),
+  model = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5"),
   value = c(
     get_lnR0(base.model1.1)$value,
     get_lnR0(base.model1.2)$value,
     get_lnR0(base.model1.3)$value,
-    get_lnR0(base.model1.4)$value
+    get_lnR0(base.model1.4)$value,
+    get_lnR0(base.model1.5)$value
   ),
   sd = c(
     get_lnR0(base.model1.1)$sd,
     get_lnR0(base.model1.2)$sd,
     get_lnR0(base.model1.3)$sd,
-    get_lnR0(base.model1.4)$sd
+    get_lnR0(base.model1.4)$sd,
+    get_lnR0(base.model1.5)$sd
   )
 )
 
@@ -1430,15 +1439,17 @@ df1 <- base.model1.1$exploitation[, c(1, 4)] %>% mutate(model = "s1.1")
 df2 <- base.model1.2$exploitation[, c(1, 4)] %>% mutate(model = "s1.2")
 df3 <- base.model1.3$exploitation[, c(1, 4)] %>% mutate(model = "s1.3")
 df4 <- base.model1.4$exploitation[, c(1, 4)] %>% mutate(model = "s1.4")
+df5 <- base.model1.5$exploitation[, c(1, 4)] %>% mutate(model = "s1.5")
 
 
-df_all <- bind_rows(df1, df2, df3, df4)
+df_all <- bind_rows(df1, df2, df3, df4, df5)
 colnames(df_all) <- c("year", "exploitation_rate", "model")
 
 colores <- c("s1.1" = "#ca0020", 
              "s1.2" = "#f4a582", 
              "s1.3" = "#bababa", 
-             "s1.4" = "#404040")
+             "s1.4" = "#404040",
+             "s1.5" = "#0571b0")
 ggplot(df_all, aes(x = year, y = exploitation_rate, color = model)) +
   geom_line() +
   geom_point(size = 3, shape = 16) +
@@ -1466,7 +1477,8 @@ The convergence criterion used for model calibration is set to a final threshold
 
 ```{r acf}
 cols <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-          "s1.3" = "#bababa", "s1.4" = "#404040")
+          "s1.3" = "#bababa", "s1.4" = "#404040",
+          "s1.5" = "#0571b0")
 plot_acf_color <- function(x, label, color) {
   ac <- acf(x, plot = FALSE)
   ci <- qnorm(0.975) / sqrt(length(x))
@@ -1487,8 +1499,9 @@ p1 <- plot_acf_color(base.model1.1$recruit$pred_recr, "s1.1", cols["s1.1"])
 p2 <- plot_acf_color(base.model1.2$recruit$pred_recr, "s1.2", cols["s1.2"])
 p3 <- plot_acf_color(base.model1.3$recruit$pred_recr, "s1.3", cols["s1.3"])
 p4 <- plot_acf_color(base.model1.4$recruit$pred_recr, "s1.4", cols["s1.4"])
+p5 <- plot_acf_color(base.model1.5$recruit$pred_recr, "s1.5", cols["s1.5"])
 
-acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, ncol = 2)
+acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, p5, ncol = 1)
 
 ggsave("Figs/acf_recruitment.png",
        plot   = acf_combined,
@@ -1528,7 +1541,6 @@ create_heatmap_df <- function(df, model_name) {
     df_norm <- dplyr::rename(df_norm, Fleet = !!rlang::sym(fleet_col))
 
   df_norm %>%
-    dplyr::filter(Pearson < 5) %>%
     dplyr::select(Yr, Bin, Pearson, Fleet) %>%
     dplyr::mutate(
       Fleet = dplyr::case_when(
@@ -1554,7 +1566,8 @@ df_all <- bind_rows(
   create_heatmap_df(base.model1.1$lendbase, "s1.1"),
   create_heatmap_df(base.model1.2$lendbase, "s1.2"),
   create_heatmap_df(base.model1.3$lendbase, "s1.3"),
-  create_heatmap_df(base.model1.4$lendbase, "s1.4")
+  create_heatmap_df(base.model1.4$lendbase, "s1.4"),
+  create_heatmap_df(base.model1.5$lendbase, "s1.5")
 )
 
 
@@ -1652,7 +1665,8 @@ cpue_resid <- bind_rows(
   base.model1.1$cpue %>% mutate(model = "s1.1"),
   base.model1.2$cpue %>% mutate(model = "s1.2"),
   base.model1.3$cpue %>% mutate(model = "s1.3"),
-  base.model1.4$cpue %>% mutate(model = "s1.4")
+  base.model1.4$cpue %>% mutate(model = "s1.4"),
+  base.model1.5$cpue %>% mutate(model = "s1.5")
 )
 
 
@@ -1660,7 +1674,8 @@ len_resid <- bind_rows(
   base.model1.1$lendbase %>% mutate(model = "s1.1"),
   base.model1.2$lendbase %>% mutate(model = "s1.2"),
   base.model1.3$lendbase %>% mutate(model = "s1.3"),
-  base.model1.4$lendbase %>% mutate(model = "s1.4")
+  base.model1.4$lendbase %>% mutate(model = "s1.4"),
+  base.model1.5$lendbase %>% mutate(model = "s1.5")
 )
 
 # Normalizar columnas de lendbase (r4ss >= 1.46 renombra Yr -> year, Fleet puede variar)
@@ -1751,6 +1766,13 @@ SSplotRunstest(base.model1.4,
                add=T,
                plot = TRUE,
                plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.5,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+
 ```
 
 
@@ -1779,6 +1801,12 @@ SSplotRunstest(base.model1.4,
                add=T,
                plot = TRUE,
                plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.5,
+               subplots = "cpue",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
 ```
 
 
@@ -1787,7 +1815,7 @@ SSplotRunstest(base.model1.4,
 By analyzing residual patterns and RMSE values, the model can be refined to improve the accuracy of mean length predictions, ultimately enhancing the reliability of stock assessment outcomes and management recommendations (Figure \@ref(fig:rmse1)).
 
 ```{r rmse1, fig.height=7, fig.width=6.5, fig.cap="Time series of RMSE of length compositions by scenario"}
-par(mfrow=c(2,2), mar=c(5,4,2,1))
+par(mfrow=c(3,3), mar=c(5,4,2,1))
 rmse1l <- SSplotJABBAres(base.model1.1,
                subplots = "len",
                add=T)
@@ -1800,11 +1828,14 @@ rmse3l <- SSplotJABBAres(base.model1.3,
 rmse4l <- SSplotJABBAres(base.model1.4,
                subplots = "len",
                add=T)
+rmse5l <- SSplotJABBAres(base.model1.5,
+               subplots = "len",
+               add=T)
 ```
 Figure \@ref(fig:rmse2) show RMSE to index.
 
 ```{r rmse2, fig.height=7, fig.width=6.5, fig.cap="Time series of RMSE of CPUE compositions by scenario"}
-par(mfrow=c(2,2), mar=c(5,4,2,1))
+par(mfrow=c(3,2), mar=c(5,4,2,1))
 rmse1c <- SSplotJABBAres(base.model1.1,
                subplots = "cpue",
                add=T)
@@ -1817,6 +1848,9 @@ rmse3c <- SSplotJABBAres(base.model1.3,
 rmse4c <- SSplotJABBAres(base.model1.4,
                subplots = "cpue",
                add=T)
+rmse5c <- SSplotJABBAres(base.model1.5,
+               subplots = "cpue",
+               add=T)
 ```
 
 Table \@ref(tab:combined_rmse) of RMSE values for each scenario and type (index and length) is created below. The RMSE values are extracted from the respective data frames for each scenario.
@@ -1824,15 +1858,17 @@ Table \@ref(tab:combined_rmse) of RMSE values for each scenario and type (index 
 
 ```{r combined_rmse, echo=FALSE, results='asis', fig.cap="Table of RMSE values for each scenario and type (index and length)"}
 combined_rmse <- tibble(
-  Scenario     = c("s1.1", "s1.2", "s1.3", "s1.4"),
+  Scenario     = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5"),
   RMSE_index   = c(rmse1c |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse2c |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse3c |> filter(indices == "Combined") |> pull(RMSE.perc),
-                   rmse4c |> filter(indices == "Combined") |> pull(RMSE.perc)),
+                   rmse4c |> filter(indices == "Combined") |> pull(RMSE.perc),
+                   rmse5c |> filter(indices == "Combined") |> pull(RMSE.perc)),
   RMSE_length  = c(rmse1l |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse2l |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse3l |> filter(indices == "Combined") |> pull(RMSE.perc),
-                   rmse4l |> filter(indices == "Combined") |> pull(RMSE.perc))
+                   rmse4l |> filter(indices == "Combined") |> pull(RMSE.perc),
+                   rmse5l |> filter(indices == "Combined") |> pull(RMSE.perc))
 )
 kbl_pdf(combined_rmse)
 ```
@@ -1852,14 +1888,16 @@ n_common_idx <- min(
   nrow(filter(rmse1c, indices != "Combined")),
   nrow(filter(rmse2c, indices != "Combined")),
   nrow(filter(rmse3c, indices != "Combined")),
-  nrow(filter(rmse4c, indices != "Combined"))
+  nrow(filter(rmse4c, indices != "Combined")),
+  nrow(filter(rmse5c, indices != "Combined"))
 )
 
 n_common_len <- min(
   nrow(filter(rmse1l, indices != "Combined")),
   nrow(filter(rmse2l, indices != "Combined")),
   nrow(filter(rmse3l, indices != "Combined")),
-  nrow(filter(rmse4l, indices != "Combined"))
+  nrow(filter(rmse4l, indices != "Combined")),
+  nrow(filter(rmse5l, indices != "Combined"))
 )
 
 # ── Data frames ──────────────────────────────────────────────
@@ -1867,14 +1905,16 @@ dfrmse_index <- data.frame(
   s1.1 = extract_rmse(rmse1c, n_common_idx),
   s1.2 = extract_rmse(rmse2c, n_common_idx),
   s1.3 = extract_rmse(rmse3c, n_common_idx),
-  s1.4 = extract_rmse(rmse4c, n_common_idx)
+  s1.4 = extract_rmse(rmse4c, n_common_idx),
+  s1.5 = extract_rmse(rmse5c, n_common_idx)
 )
 
 dfrmse_len <- data.frame(
   s1.1 = extract_rmse(rmse1l, n_common_len),
   s1.2 = extract_rmse(rmse2l, n_common_len),
   s1.3 = extract_rmse(rmse3l, n_common_len),
-  s1.4 = extract_rmse(rmse4l, n_common_len)
+  s1.4 = extract_rmse(rmse4l, n_common_len),
+  s1.5 = extract_rmse(rmse5l, n_common_len)
 )
 
 # ── Función plot ─────────────────────────────────────────────
@@ -1894,7 +1934,8 @@ plot_rmse <- function(df, title = "") {
               aes(x = variable, y = mean_val, label = sprintf("%.2f", mean_val)),
               inherit.aes = FALSE, vjust = -1.2, size = 3, fontface = "bold") +
     scale_fill_manual(values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-                                 "s1.3" = "#bababa", "s1.4" = "#404040")) +
+                                 "s1.3" = "#bababa", "s1.4" = "#404040",
+                                 "s1.5" = "#0571b0")) +
     labs(x = "", y = "RMSE", title = title) +
     theme_few() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1),
@@ -1924,7 +1965,7 @@ combined_rmse_delta <- combined_rmse |>
   mutate(Metric = dplyr::recode(Metric,
                                  delta_index  = "Abundance indices",
                                  delta_length = "Length compositions"),
-         Scenario = factor(Scenario, levels = c("s1.2", "s1.3", "s1.4")))
+         Scenario = factor(Scenario, levels = c("s1.2", "s1.3", "s1.4", "s1.5")))
 
 difrmse <- ggplot(combined_rmse_delta, aes(x = Scenario, y = Delta, fill = Scenario)) +
   geom_col(width = 0.6, alpha = 0.85) +
@@ -1932,7 +1973,7 @@ difrmse <- ggplot(combined_rmse_delta, aes(x = Scenario, y = Delta, fill = Scena
   geom_text(aes(label = sprintf("%+.1f%%", Delta),
                 vjust = ifelse(Delta >= 0, -0.5, 1.3)), size = 3) +
   facet_wrap(~Metric) +
-  scale_fill_manual(values = c("s1.2" = "#f4a582", "s1.3" = "#bababa", "s1.4" = "#404040")) +
+  scale_fill_manual(values = c("s1.2" = "#f4a582", "s1.3" = "#bababa", "s1.4" = "#404040", "s1.5"= "#0571b0")) +
   labs(x = "", y = "RMSE change vs. s1.1 (%)") +
   theme_bw() +
   theme(legend.position = "none", strip.background = element_blank(),

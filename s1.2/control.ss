@@ -73,10 +73,10 @@
 0.2  2 1.1 1.1 0.5 0 -3 0 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1
 # Sex: 1  BioPattern: 1  Growth
 0  5  3.4 3.4 0.5 6 -2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
-1  10  6.08 6.08 0.5 6 -4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
-0.05  0.8 0.47  0.47 0.5 6 -4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
-0.05 0.25 0.14 0.14 0.5 0 -4  0 0 0 0 0 0 0 # CV_young_Fem_GP_1 
-0.05 0.25 0.07 0.07 0.5 0 -4  0 0 0 0 0 0 0 # CV_old_Fem_GP_1 
+1  10  6.08 6.08 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1  
+0.05  0.8 0.47  0.47 0.5 6 4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
+0.05 0.25 0.14 0.14 0.5 0 -4 0 0 0 0 0 0 0  # CV_young_Fem_GP_1 
+0.05 0.25 0.07 0.07 0.5 0 -4 0 0 0 0 0 0 0  # CV_old_Fem_GP_1 
 # Sex: 1  BioPattern: 1  WtLen
 0 3 5.00E-06  5.00E-06  0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_1_Fem_GP_1
 1 4 3.34694 3.34694 0.8 0 -3  0 0 0 0 0 0 0 # Wtlen_2_Fem_GP_1
@@ -136,11 +136,11 @@
 -4 #_recdev_early_phase
 -4 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
 1 #_lambda for Fcast_recr_like occurring before endyr+1
-1966.4546   #_last_early_yr_nobias_adj_in_MPD 
-1993.6689   #_first_yr_fullbias_adj_in_MPD 
-2019.0   #_last_yr_fullbias_adj_in_MPD 
-2026.2929   #_first_recent_yr_nobias_adj_in_MPD 
-0.9303   #_max_bias_adj_in_MPD (1.0 to mimic pre-2009 models) 
+1982.5688   #_last_early_yr_nobias_adj_in_MPD 
+1994.6116   #_first_yr_fullbias_adj_in_MPD 
+2018.595   #_last_yr_fullbias_adj_in_MPD 
+2025.5513   #_first_recent_yr_nobias_adj_in_MPD 
+0.9345   #_max_bias_adj_in_MPD (1.0 to mimic pre-2009 models) 
 0 #_period of cycles in recruitment (N parms read below)
 -5 #min rec_dev
 5 #max rec_dev
@@ -287,7 +287,7 @@
 1.3	6.9	2	2	0.01	1	3	0	0	0	0	0	1	1	#	Peak_FISHERY(1)
 -5	5	-3	-3	0.01	1	-3	0	0	0	0	0	0	0	#	Top_logistic_FISHERY(1)
 -5	9	2	2	0.01	1	3	0	0	0	0	0	1	1	#	Ascend_width_FISHERY(1)
--5	9	3	3	0.01	1	4	0	0	0	0	0	0	0	#	Descend_width_FISHERY(1)
+-5	9	-1.26261	3	0.01	1	-4	0	0	0	0	0	0	0	#	Descend_width_FISHERY(1)
 -999	9	-999	-999	0.01	1	-99	0	0	0	0	0	0	0	#	Initial_selex_FISHERY(1)
 -999	9	-999	-999	0.01	1	-99	0	0	0	0	0	0	0	#	Final_selex_FISHERY(1)
 #	1	FISHERY	LenSelex
