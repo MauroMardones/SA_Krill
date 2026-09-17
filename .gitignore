@@ -85,3 +85,6 @@ outputs/
 # ============================================================
 .DS_Store
 Ejercicios*/
+Claude outputs*/
+*.md.bak
+

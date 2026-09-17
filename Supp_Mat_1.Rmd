@@ -178,8 +178,8 @@ r4ss::run(
 r4ss::run(
   dir = dir1.4,
   exe = "ss_osx",
-  skipfinished = FALSE, 
-  show_in_console = TRUE 
+  skipfinished = FALSE,
+  show_in_console = TRUE
 )
 # s1.5
 r4ss::run(
@@ -411,7 +411,7 @@ p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
        x = "cm",
        y = "",
        fill = "Category") +
-  theme_bw()+
+  theme_minimal()+
   theme(legend.position = "none")
 p2
 ```
@@ -780,18 +780,20 @@ alloutput <- ggplot(
     data        = survey_total,
     aes(x = Yr, ymin = lo, ymax = hi),
     inherit.aes = FALSE,
-    color       = "#1f78b4",
+    color       = "black",
     width       = 0.4,
     linewidth   = 0.5,
-    alpha       = 0.7
+    alpha       = 0.6
   ) +
   geom_point(
     data        = survey_total,
     aes(x = Yr, y = Value),
     inherit.aes = FALSE,
-    color       = "#1f78b4",
-    shape       = 18,
+    shape       = 21,
+    color       = "black",
+    fill        = "white",
     size        = 2.2,
+    stroke      = 0.6,
     alpha       = 0.9
   ) +
   facet_wrap(
@@ -821,7 +823,7 @@ ggsave(alloutput, filename = "Figs/popvar_scenarios_relative.png",
        units = "in", dpi = 300)
 alloutput
 ```
-
+Absolute populations variables
 
 ```{r}
 cols <- c("Yr", "Bio_smry", "SpawnBio", "Recruit_0")
@@ -850,9 +852,12 @@ outpsall_long <- outpsall |>
     Variable == "Recruit_0" ~ "Recruitment (N)",
     TRUE ~ Variable
   ))
+
+# ── NUEVO: panel_order con Catch como cuarto panel, escala propia ──────
 panel_order <- c("Summary Biomass (t)",
                  "Spawning Stock Biomass (t)",
-                 "Recruitment (N)")
+                 "Recruitment (N)",
+                 "Catch (t)")
 colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
             "s1.3" = "#bababa", "s1.4" = "#404040",
             "s1.5" = "#0571b0")
@@ -867,10 +872,6 @@ theme_prod <- theme_bw() +
     axis.title       = element_text(size = 10)
   )
 
-# ── Valores virginales (B0/R0) por escenario, desde la fila de equilibrio
-# no explotado del timeseries (Era == "VIRG"). Ya NO se usan para normalizar
-# (eso era la versión relativa); se conservan solo por si querés dibujarlos
-# como línea de referencia horizontal por escenario ────────────────────
 get_virgin <- function(model, modelname) {
   model$timeseries |>
     dplyr::filter(Era == "VIRG") |>
@@ -895,11 +896,6 @@ virgin_long <- dplyr::bind_rows(
   )) |>
   dplyr::select(Model, Variable, Virgin)
 
-# Serie principal en escala ABSOLUTA (sin dividir por el valor virginal)
-# outpsall_long ya está en unidades absolutas, no hace falta tocarla
-
-# ── Survey total con CV propagado → va en Summary Biomass, en unidades
-# absolutas (sin referenciar contra SmryBio0) ───────────────────────────
 survey_total <- dat1$CPUE |>
   dplyr::filter(index %in% c(6, 7, 8, 9, 10)) |>
   dplyr::group_by(year) |>
@@ -916,8 +912,6 @@ survey_total <- dat1$CPUE |>
     hi       = Value * exp( 1.96 * cv_pool)
   )
 
-# ── Incertidumbre de las variables poblacionales (derived_quants, SS3),
-# en escala absoluta (sin dividir por Virgin) ───────────────────────────
 get_pop_unc <- function(model, modelname) {
   dq <- model$derived_quants
   extract_dq <- function(prefix, varname) {
@@ -950,6 +944,20 @@ pop_unc <- dplyr::bind_rows(
     hi = Value * exp( 1.96 * cv)
   )
 
+# ── Captura total anual, EN SU PROPIO PANEL, sin reescalar ─────────────
+# Misma serie observada para los 5 escenarios (no depende del ambiente ni
+# del predador), se toma de un solo modelo como referencia.
+catch_cols <- grep("^obs_cat:_", names(base.model1.1$timeseries), value = TRUE)
+
+catch_total <- base.model1.1$timeseries |>
+  dplyr::filter(Era == "TIME") |>
+  dplyr::transmute(
+    Yr    = Yr,
+    Value = rowSums(dplyr::across(dplyr::all_of(catch_cols)), na.rm = TRUE)
+  ) |>
+  dplyr::filter(Yr >= 1989, Yr <= 2020) |>
+  dplyr::mutate(Variable = "Catch (t)")
+
 alloutput_abs <- ggplot(
   outpsall_long,
   aes(x = Yr,
@@ -961,7 +969,7 @@ alloutput_abs <- ggplot(
     data        = pop_unc,
     aes(x = Yr, ymin = lo, ymax = hi, fill = Model),
     inherit.aes = FALSE,
-    alpha       = 0.15,
+    alpha       = 0.05,
     color       = NA
   ) +
   geom_line(linewidth = 0.8) +
@@ -970,29 +978,40 @@ alloutput_abs <- ggplot(
     data        = survey_total,
     aes(x = Yr, ymin = lo, ymax = hi),
     inherit.aes = FALSE,
-    color       = "#1f78b4",
+    color       = "black",
     width       = 0.4,
     linewidth   = 0.5,
-    alpha       = 0.7
+    alpha       = 0.6
   ) +
   geom_point(
     data        = survey_total,
     aes(x = Yr, y = Value),
     inherit.aes = FALSE,
-    color       = "#1f78b4",
-    shape       = 18,
+    shape       = 21,
+    color       = "black",
+    fill        = "white",
     size        = 2.2,
+    stroke      = 0.6,
     alpha       = 0.9
+  ) +
+  # panel de captura, valores reales, sin reescalar
+  geom_col(
+    data        = catch_total,
+    aes(x = Yr, y = Value),
+    inherit.aes = FALSE,
+    fill        = "grey45",
+    width       = 0.7
   ) +
   facet_wrap(
     ~ factor(Variable, levels = panel_order),
-    ncol   = 3,
+    ncol   = 2,
     scales = "free"
   ) +
   scale_color_manual(name = "Scenario", values = colors) +
   scale_shape_manual(name = "Scenario", values = shapes) +
   scale_fill_manual(values = colors, guide = "none") +
-  scale_y_continuous(limits = c(0, NA)) +
+  scale_y_continuous(trans = "sqrt", limits = c(0, NA))+
+  #scale_y_continuous(trans = "log10", limits = c(NA, NA))+
   scale_x_continuous(breaks = seq(1990, 2020, by = 5)) +
   labs(x = "", y = "") +
   theme_prod +
@@ -1006,9 +1025,92 @@ alloutput_abs <- ggplot(
 
 
 ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute.png",
-       width = 9,
+       width = 11.5,
        height = 4,
        units = "in", dpi = 300)
+alloutput_abs
+
+
+library(ggh4x)
+
+panel_order <- c("Summary Biomass (t)",
+                 "Spawning Stock Biomass (t)",
+                 "Recruitment (N)",
+                 "Catch (t)")
+
+alloutput_abs <- ggplot(
+  outpsall_long,
+  aes(x = Yr,
+      y = Value,
+      color = Model,
+      shape = Model,
+      group = Model)) +
+  geom_ribbon(
+    data        = pop_unc,
+    aes(x = Yr, ymin = lo, ymax = hi, fill = Model),
+    inherit.aes = FALSE,
+    alpha       = 0.05,
+    color       = NA
+  ) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 1.2, alpha = 0.7) +
+  geom_errorbar(
+    data        = survey_total,
+    aes(x = Yr, ymin = lo, ymax = hi),
+    inherit.aes = FALSE,
+    color       = "black",
+    width       = 0.4,
+    linewidth   = 0.5,
+    alpha       = 0.6
+  ) +
+  geom_point(
+    data        = survey_total,
+    aes(x = Yr, y = Value),
+    inherit.aes = FALSE,
+    shape       = 21,
+    color       = "black",
+    fill        = "white",
+    size        = 2.2,
+    stroke      = 0.6,
+    alpha       = 0.9
+  ) +
+  geom_col(
+    data        = catch_total,
+    aes(x = Yr, y = Value),
+    inherit.aes = FALSE,
+    fill        = "grey45",
+    width       = 0.7
+  ) +
+  facet_wrap(
+    ~ factor(Variable, levels = panel_order),
+    ncol   = 2,
+    scales = "free"
+  ) +
+  scale_color_manual(name = "Scenario", values = colors) +
+  scale_shape_manual(name = "Scenario", values = shapes) +
+  scale_fill_manual(values = colors, guide = "none") +
+  # ── escala y por panel: log10 SOLO en Recruitment, lineal en el resto ──
+  ggh4x::facetted_pos_scales(
+    y = list(
+      scale_y_continuous(limits = c(0, NA)),   # Summary Biomass (t)
+      scale_y_continuous(limits = c(0, NA)),   # Spawning Stock Biomass (t)
+      scale_y_continuous(trans = "log10"),      # Recruitment (N)
+      scale_y_continuous(limits = c(0, NA))    # Catch (t)
+    )
+  ) +
+  scale_x_continuous(breaks = seq(1990, 2020, by = 5)) +
+  labs(x = "", y = "") +
+  theme_prod +
+  theme(
+    axis.text.x     = element_text(angle = 90, hjust = 1),
+    strip.text      = element_text(size = 8),
+    legend.position = "bottom",
+    legend.title    = element_text(size = 10, face = "bold"),
+    legend.text     = element_text(size = 9)
+  )
+
+ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute.png",
+       width = 11.5, height = 4, units = "in", dpi = 300)
 alloutput_abs
 ```
 
@@ -1048,10 +1150,13 @@ outpsall_box <- outpsall |>
     ),
     Variable = factor(Variable, levels = var_labels)
   )
-
+# poner outlier
 boxout <- ggplot(outpsall_box,
                  aes(x = Model, y = Value, fill = Model)) +
-  geom_boxplot(outliers = F) +
+  geom_boxplot(outlier.size = 0.8,
+               outlier.fill = NA,
+               outlier.shape = 21,
+               alpha = 0.5)+
   facet_wrap(~ Variable, ncol = 3, scales = "free_y") +
   scale_fill_manual(
     name   = "Scenario",
@@ -1501,12 +1606,12 @@ p3 <- plot_acf_color(base.model1.3$recruit$pred_recr, "s1.3", cols["s1.3"])
 p4 <- plot_acf_color(base.model1.4$recruit$pred_recr, "s1.4", cols["s1.4"])
 p5 <- plot_acf_color(base.model1.5$recruit$pred_recr, "s1.5", cols["s1.5"])
 
-acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, p5, ncol = 1)
+acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, p5, ncol = 5)
 
 ggsave("Figs/acf_recruitment.png",
        plot   = acf_combined,
-       width  = 6,
-       height = 6,
+       width  = 8,
+       height = 5,
        dpi    = 300)
 ```
 
@@ -1801,7 +1906,7 @@ SSplotRunstest(base.model1.4,
                add=T,
                plot = TRUE,
                plotdir = Figs)
-par(mfrow=c(2,5), mar=c(5,4,2,1))
+par(mfrow=c(3,5), mar=c(5,4,2,1))
 SSplotRunstest(base.model1.5,
                subplots = "cpue",
                add=T,
@@ -1973,12 +2078,13 @@ difrmse <- ggplot(combined_rmse_delta, aes(x = Scenario, y = Delta, fill = Scena
   geom_text(aes(label = sprintf("%+.1f%%", Delta),
                 vjust = ifelse(Delta >= 0, -0.5, 1.3)), size = 3) +
   facet_wrap(~Metric) +
-  scale_fill_manual(values = c("s1.2" = "#f4a582", "s1.3" = "#bababa", "s1.4" = "#404040", "s1.5"= "#0571b0")) +
+  scale_fill_manual(values = c("s1.2" = "#f4a582", "s1.3" = "#bababa",
+                                "s1.4" = "#404040", "s1.5" = "#0571b0")) +
   labs(x = "", y = "RMSE change vs. s1.1 (%)") +
   theme_bw() +
   theme(legend.position = "none", strip.background = element_blank(),
-        panel.grid.minor = element_blank())+
-  ylim(-10, 10)
+        panel.grid.minor = element_blank()) +
+  coord_flip(ylim = c(-12, 0))   # amplié un poco el límite inferior para que quepa s1.2
 
 ggsave(file.path(Figs, "rmse_delta.png"), difrmse, width = 6.5, height = 3.5, dpi = 300)
 ```
@@ -2005,7 +2111,8 @@ Code to run all retrospective analysis for all scenarios in a loop:
 directorios <- c("s1.1",
                  "s1.2",
                  "s1.3",
-                 "s1.4")  
+                 "s1.4",
+                 "s1.5")  
 for (dir in directorios) {
   retro(
     dir = dir,
@@ -2048,14 +2155,20 @@ retroModels1.4 <- SSgetoutput(dirvec=file.path(dir1.4,
                                                   sep="")))
 
 retroSummary1.4 <- SSsummarize(retroModels1.4)
+#stest
+retroModels1.5 <- SSgetoutput(dirvec=file.path(dir1.5,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
 
+retroSummary1.5 <- SSsummarize(retroModels1.5)
 
 ```
 
 Using `retro()` and `SSplotRetro()` functions, we obtain main results of retrospective analysis for spawning biomass (SSB) and recruitment (R0) for each scenario. The retrospective analysis is a diagnostic tool used to evaluate the consistency of model estimates over time by sequentially removing recent years of data and refitting the model. This helps identify potential biases or inconsistencies in the model's predictions. Retrospective analysis for spawning biomass (Figure \@ref(fig:retrossb))
 
 ```{r retrossb, fig.height=6, fig.width=6,, fig.cap="Retrospective analysis for spawning biomass by scenario in krill"}
-par(mfrow=c(2,2), mar=c(5,4,1,1)) 
+par(mfrow=c(3,2), mar=c(5,4,1,1)) 
 retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
             forecast = F,
@@ -2075,6 +2188,12 @@ retro1.3 <- SSplotRetro(retroSummary1.3,
             verbose=F,
             subplots = c("SSB"))
 retro1.4 <- SSplotRetro(retroSummary1.4,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            subplots = c("SSB"))
+retro1.5 <- SSplotRetro(retroSummary1.5,
             add=T,
             forecast = F,
             legend = T,
@@ -2085,7 +2204,7 @@ retro1.4 <- SSplotRetro(retroSummary1.4,
 Retrospective analysis for fishing mortality (Figure \@ref(fig:retrof))
 
 ```{r retrof, fig.height=6, fig.width=6, fig.cap="Retrospective analysis for fishing mortality by scenario in krill"}
-par(mfrow=c(2,2), mar=c(5,4,1,1)) 
+par(mfrow=c(2,3), mar=c(5,4,1,1)) 
 retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
             forecast = F,
@@ -2105,6 +2224,12 @@ retro1.3 <- SSplotRetro(retroSummary1.3,
             verbose=F,
             subplots = c("F"))
 retro1.4 <- SSplotRetro(retroSummary1.4,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            subplots = c("F"))
+retro1.5 <- SSplotRetro(retroSummary1.5,
             add=T,
             forecast = F,
             legend = T,
@@ -2120,6 +2245,7 @@ hc1 <- SShcbias(retroSummary1.1, quants = c("SSB", "F"), verbose = FALSE)
 hc2 <- SShcbias(retroSummary1.2, quants = c("SSB", "F"), verbose = FALSE)
 hc3 <- SShcbias(retroSummary1.3, quants = c("SSB", "F"), verbose = FALSE)
 hc4 <- SShcbias(retroSummary1.4, quants = c("SSB", "F"), verbose = FALSE)
+hc5 <- SShcbias(retroSummary1.5, quants = c("SSB", "F"), verbose = FALSE)
 
 extract_hc <- function(hc, scenario) {
   hc |>
@@ -2131,9 +2257,10 @@ hc_all <- bind_rows(
   extract_hc(hc1, "s1.1"),
   extract_hc(hc2, "s1.2"),
   extract_hc(hc3, "s1.3"),
-  extract_hc(hc4, "s1.4")
+  extract_hc(hc4, "s1.4"),
+  extract_hc(hc5, "s1.5")
 ) |>
-  mutate(Scenario = factor(Scenario, levels = c("s1.1", "s1.2", "s1.3", "s1.4")),
+  mutate(Scenario = factor(Scenario, levels = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")),
          type     = factor(type, levels = c("SSB", "F")))
 
 hc_summary <- hc_all |>
@@ -2155,11 +2282,13 @@ p_hcbias <- ggplot(hc_all, aes(x = Scenario, y = Rho)) +
              inherit.aes = FALSE) +
   facet_wrap(~ type, ncol = 2) +
   scale_fill_manual(values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-                               "s1.3" = "#bababa", "s1.4" = "#404040"), guide = "none") +
+                               "s1.3" = "#bababa", "s1.4" = "#404040",
+                               "s1.5" = "#0571b0"), guide = "none") +
   labs(x = "", y = "Mohn's rho") +
   theme_few() +
   theme(panel.grid.minor = element_blank(), strip.background = element_blank(),
-        legend.position = "none")
+        legend.position = "none")+
+  ylim(-2,2)
 #p_hcbias
 
 ggsave(file.path(Figs, "rhoplot.png"), p_hcbias, width = 6, height = 3, dpi = 300)
@@ -2182,7 +2311,8 @@ The Figure \@ref(fig:desvpar) shows the distribution of estimated parameters (ph
 ## fallar por Hessiano no invertido y confundirse con "fijo")
 
 models <- list(s1.1 = base.model1.1, s1.2 = base.model1.2,
-               s1.3 = base.model1.3, s1.4 = base.model1.4)
+               s1.3 = base.model1.3, s1.4 = base.model1.4,
+               s1.5 = base.model1.5)
 
 target_params <- c(
   "NatM_uniform_Fem_GP_1",
@@ -2248,14 +2378,15 @@ if (nrow(param_nohess) == 0) {
 }
 
 colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-            "s1.3" = "#bababa", "s1.4" = "#404040")
+            "s1.3" = "#bababa", "s1.4" = "#404040",
+            "s1.5" = "#0571b0")
 
 p_params <- ggplot() +
   geom_line(data = param_dens, aes(x = x, y = density, color = Scenario),
             linewidth = 0.7) +
   geom_point(data = param_nohess, aes(x = value, y = 0, color = Scenario),
              shape = 4, size = 1.5, stroke = 1) +
-  facet_wrap(~ parameter, scales = "free", ncol = 4) +
+  facet_wrap(~ parameter, scales = "free", ncol = 5) +
   scale_color_manual(values = colors, name = "Scenario") +
   labs(x = "Parameter value", y = "Density",
        caption = "x = estimated (phase>0) without SD (Hessiano no invertido)") +
@@ -2347,6 +2478,18 @@ hci4 = SSplotHCxval(retroSummary1.4,
                    legendcex = 0.7) 
 ```
 
+
+
+```{r hcval5,fig.height=10, fig.width=5, fig.cap="Hindcast validation for s1.5 by fleet"}
+par(mfrow=c(6,2), mar=c(5,4,2,1))
+hci5 <- SSplotHCxval(retroSummary1.5,
+                      indexselect = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),  # excluye 11 = SURVEYENV
+                      add = TRUE,
+                      verbose = FALSE,
+                      legendcex = 0.7)
+```
+
+
 ```{r}
 extract_mase <- function(hci, scenario) {
   hci |>
@@ -2359,12 +2502,13 @@ mase_all <- bind_rows(
   extract_mase(hci1, "s1.1"),
   extract_mase(hci2, "s1.2"),
   extract_mase(hci3, "s1.3"),
-  extract_mase(hci4, "s1.4")
+  extract_mase(hci4, "s1.4"),
+  extract_mase(hci5, "s1.5")
 )
 
 index_order <- c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FISHERYSSIW",
                   "SURVEYBS", "SURVEYEI", "SURVEYGS", "PREDATOR")
-scen_order <- c("s1.1", "s1.2", "s1.3", "s1.4")
+scen_order <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")
 
 mase_grid <- mase_all |>
   mutate(Index    = factor(Index, levels = index_order),
@@ -2418,7 +2562,7 @@ A summary version of the same diagnostic, averaged across indices, is shown in F
 ```{r masesummary, fig.cap="Mean MASE by scenario, averaged across indices with n.eval > 2. The dashed line marks MASE = 1 (naive forecast threshold). FISHERYGS is excluded due to its extreme skill values relative to all other indices (see Figure \\@ref(fig:mase) for the full breakdown)."}
 mase_summary <- mase_all |>
   filter(n.eval > 2, Index != "FISHERYGS") |>   # excluye SURVEYEI (n.eval=1) y el outlier FISHERYGS
-  mutate(Scenario = factor(Scenario, levels = rev(c("s1.1", "s1.2", "s1.3", "s1.4")))) |>
+  mutate(Scenario = factor(Scenario, levels = rev(c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")))) |>
   group_by(Scenario) |>
   summarise(mean_MASE = mean(MASE, na.rm = TRUE),
             sd_MASE   = sd(MASE, na.rm = TRUE),
@@ -2433,7 +2577,8 @@ ggplot(mase_summary, aes(x = Scenario, y = mean_MASE, fill = Scenario)) +
   geom_hline(yintercept = 1, linetype = "dashed", color = "black", linewidth = 0.4) +
   geom_text(aes(label = sprintf("%.2f", mean_MASE)), vjust = -0.6, size = 3.2) +
   scale_fill_manual(values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-                               "s1.3" = "#bababa", "s1.4" = "#404040")) +
+                               "s1.3" = "#bababa", "s1.4" = "#404040",
+                               "s1.5" = "blue")) +
   labs(x = "", y = "Mean MASE (± SD)") +
   theme_bw() +
   theme(legend.position = "none", panel.grid.minor = element_blank()) +
@@ -2465,7 +2610,8 @@ runs_all <- bind_rows(
   extract_runs(base.model1.1, "s1.1"),
   extract_runs(base.model1.2, "s1.2"),
   extract_runs(base.model1.3, "s1.3"),
-  extract_runs(base.model1.4, "s1.4")
+  extract_runs(base.model1.4, "s1.4"),
+  extract_runs(base.model1.5, "s1.5")
 )
 
 index_order_runs <- c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FISHERYSSIW",
@@ -2474,8 +2620,8 @@ index_order_runs <- c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FIS
 
 full_grid <- tidyr::expand_grid(
   Index    = factor(index_order_runs, levels = index_order_runs),
-  Scenario = factor(c("s1.1", "s1.2", "s1.3", "s1.4"),
-                     levels = c("s1.1", "s1.2", "s1.3", "s1.4")),
+  Scenario = factor(c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5"),
+                     levels = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")),
   Type     = factor(c("Abundance index", "Length composition"),
                      levels = c("Abundance index", "Length composition"))
 )
@@ -2685,11 +2831,15 @@ df3 <- base.model1.3$likelihoods_used %>%
 df4 <- base.model1.4$likelihoods_used %>%
   dplyr::select(values) %>%
   mutate(Componente = rownames(base.model1.4$likelihoods_used), Modelo = "s1.4")
+df5 <- base.model1.5$likelihoods_used %>%
+  dplyr::select(values) %>%
+  mutate(Componente = rownames(base.model1.5$likelihoods_used), Modelo = "s1.5")
 
 df <- bind_rows(df1, 
                 df2,
                 df3,
-                df4)
+                df4, 
+                df5)
 ggplot(df %>% 
          filter(values > 1), aes(x = Componente, y = values, fill = Modelo)) +
   geom_col(position = position_dodge(), width = 0.7) +  
@@ -2699,11 +2849,13 @@ ggplot(df %>%
                     values = c("s1.1" = '#ca0020',
                                "s1.2" = '#f4a582', 
                                "s1.3" = '#bababa',
-                               "s1.4" = '#404040')) + 
+                               "s1.4" = '#404040',
+                               "s1.5" = '#0571b0')) + 
   labs(x = "",
        y = "Log-Normal Likelihood", 
        title = "") 
 ```
+
 
 ```{r}
 # Extrae el Mohn's rho / forecast bias ya calculado por ss3diags
@@ -2787,11 +2939,31 @@ diag1.4 <- data.frame(
   Rho_f = get_combined(hc4, "F", "Rho"),
   Forecast_Rho_f = get_combined(hc4, "F", "ForcastRho")
 )
+# Modelo s1.5 
+diag1.5 <- data.frame(
+  Scenario = "s1.5",
+  Convergency = base.model1.5$maximum_gradient_component,
+  AIC = as.numeric(2 * dim(base.model1.5$estimated_non_dev_parameters)[1] +
+                     2 * base.model1.5$likelihoods_used[1, 1]),
+  Total_like = base.model1.5$likelihoods_used$values[rownames(base.model1.5$likelihoods_used) == "TOTAL"],
+  N_Params = as.numeric(2 * dim(base.model1.5$estimated_non_dev_parameters)[1]),
+  Survey_like = base.model1.5$likelihoods_used$values[rownames(base.model1.5$likelihoods_used) == "Survey"],
+  Length_comp_like = base.model1.5$likelihoods_used$values[rownames(base.model1.5$likelihoods_used) == "Length_comp"],
+  RMSE_index = rmse5c$RMSE.perc[rmse5c$indices == "Combined"],
+  RMSE_length = rmse5l$RMSE.perc[rmse5l$indices == "Combined"],
+  MASE = mean(hci5$MASE, na.rm = TRUE),
+  Retro_Rho_ssb = get_combined(hc5, "SSB", "Rho"),
+  Forecast_Rho_ssb = get_combined(hc5, "SSB", "ForcastRho"),
+  Rho_f = get_combined(hc5, "F", "Rho"),
+  Forecast_Rho_f = get_combined(hc5, "F", "ForcastRho")
+)
+
 
 diag_all <- rbind(diag1.1,
                   diag1.2, 
                   diag1.3, 
-                  diag1.4)
+                  diag1.4,
+                  diag1.5)
 
 diag_tidy <- diag_all |>
   pivot_longer(cols = -Scenario, names_to = "Description", values_to = "Value") |>
@@ -2804,7 +2976,7 @@ diag_tidy[, 2:5] <- lapply(diag_tidy[, 2:5], function(x) as.numeric(format(round
 
 ```{r eval=FALSE}
 diag_pub <- diag_tidy |>
-  mutate(across(c(s1.1, s1.2, s1.3, s1.4), ~ ifelse(
+  mutate(across(c(s1.1, s1.2, s1.3, s1.4, s1.5), ~ ifelse(
     Description == "Convergency",
     formatC(.x, digits = 3, format = "f"),
     formatC(.x, digits = 2, format = "f")
@@ -2840,18 +3012,20 @@ biglist <- SSgetoutput(keyvec = NULL,
                        dirvec = c(dir1.1,
                                   dir1.2,
                                   dir1.3,
-                                  dir1.4),
+                                  dir1.4,
+                                  dir1.5),
                        getcovar = F)
 summaryoutputall <- SSsummarize(biglist)
 
-legend.labels <- c('s1.1','s1.2','s1.3', 's1.4')
+legend.labels <- c('s1.1','s1.2','s1.3', 's1.4', 's1.5')
 
 #read in all model runs
 #note if cover=T you need a hessian; if covar=F you do not need a hessian
 biglist <- SSgetoutput(keyvec = NULL, dirvec = c(dir1.1,
                                                  dir1.2,
                                                  dir1.3,
-                                                 dir1.4),	getcovar = F)
+                                                 dir1.4,
+                                                 dir1.5),	getcovar = F)
 
 #create summary of model runs from list above
 summaryoutput <- SSsummarize(biglist)
