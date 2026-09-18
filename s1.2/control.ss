@@ -205,7 +205,7 @@
 #0	1	0	0.1	0.1	0	-3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(4)	
 -25	25	-5.72231	0	-1	0	1	0	0	0	0	0	0	0	#	LnQ_base_FISHERY(5)	
 #0	1	0	0.1	0.1	0	-3	0	0	0	0	0	0	0	#	Q_extraSD_FISHERY(5)	
--7	25	1.1	1.1	0.5	1	2	0	0	0	0	0	0	0	#	LnQ_base_SURVEYBS(6)	
+-7	25	1.1	1.1	0.5	1	2	0	0	0	0	0	1	2	#	LnQ_base_SURVEYBS(6)
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(6)	
 -7	25	1.1	1.1	0.5	1	2	0	0	0	0	0	0	0	#	LnQ_base_SURVEYEI(7)	
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(7)	

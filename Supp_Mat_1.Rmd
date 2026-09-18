@@ -79,7 +79,8 @@ pkgs<-c("r4ss","ss3diags","doParallel",
         "ggridges","ggrepel",
         "cowplot",
         "kableExtra","flextable","here",
-        "scales", "ggthemes", "patchwork")
+        "scales", "ggthemes", "patchwork",
+        "ggh4x")
 
 instalar<-pkgs[!pkgs%in%installed.packages()]
 if(length(instalar)>0)install.packages(instalar)
@@ -1029,10 +1030,10 @@ ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute.png",
        height = 4,
        units = "in", dpi = 300)
 alloutput_abs
+```
 
 
-library(ggh4x)
-
+```{r}
 panel_order <- c("Summary Biomass (t)",
                  "Spawning Stock Biomass (t)",
                  "Recruitment (N)",
