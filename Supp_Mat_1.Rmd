@@ -468,10 +468,14 @@ knitr::include_graphics('Figs/pathmod.png')
 
 Figure \@ref(fig:dataserie) show time series of differente componentes of data sources to this krill stock assessment.
 
-```{r dataserie, fig.width=5, fig.height=7, fig.cap="Data series used in krill modelling in 48.1 Subarea"}
+```{r dataserie, fig.width=8, fig.height=5, fig.cap="Data series used in krill modelling in 48.1 Subarea"}
 SSplotData(base.model1.4, 
            subplots = 1,
-           ptsize = -1.3)
+           ptsize = 10,
+           lwd = 5,
+           cex =0.9,
+           maxsize = 3,
+           alphasize = 0.5)
 ```
 \newpage
 
@@ -915,7 +919,6 @@ panel_order <- c("Summary Biomass (t)",
 colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
             "s1.3" = "#bababa", "s1.4" = "#404040",
             "s1.5" = "#0571b0", "s1.6" = "#1b9e77", "s1.7" = "#e6ab02") 
-shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4)
 theme_prod <- theme_bw() +
   theme(
     panel.grid.minor = element_blank(),
@@ -1021,8 +1024,7 @@ alloutput_abs <- ggplot(
   aes(x = Yr,
       y = Value,
       color = Model,
-      shape = Model,
-      group = Model)) +
+      group = Model)) +          # <- sin shape
   geom_ribbon(
     data        = pop_unc,
     aes(x = Yr, ymin = lo, ymax = hi, fill = Model),
@@ -1030,8 +1032,8 @@ alloutput_abs <- ggplot(
     alpha       = 0.05,
     color       = NA
   ) +
-  geom_line(linewidth = 0.8) +
-  geom_point(size = 1.2, alpha = 0.7) +
+  geom_line(linewidth = 0.75) +
+  geom_point(size = 1.1, alpha = 0.08) +   # círculo por defecto
   geom_errorbar(
     data        = survey_total,
     aes(x = Yr, ymin = lo, ymax = hi),
@@ -1048,87 +1050,7 @@ alloutput_abs <- ggplot(
     shape       = 21,
     color       = "black",
     fill        = "white",
-    size        = 2.2,
-    stroke      = 0.6,
-    alpha       = 0.9
-  ) +
-  # panel de captura, valores reales, sin reescalar
-  geom_col(
-    data        = catch_total,
-    aes(x = Yr, y = Value),
-    inherit.aes = FALSE,
-    fill        = "grey45",
-    width       = 0.7
-  ) +
-  facet_wrap(
-    ~ factor(Variable, levels = panel_order),
-    ncol   = 2,
-    scales = "free"
-  ) +
-  scale_color_manual(name = "Scenario", values = colors) +
-  scale_shape_manual(name = "Scenario", values = shapes) +
-  scale_fill_manual(values = colors, guide = "none") +
-  scale_y_continuous(trans = "sqrt", limits = c(0, NA))+
-  #scale_y_continuous(trans = "log10", limits = c(NA, NA))+
-  scale_x_continuous(breaks = seq(1990, 2020, by = 5)) +
-  labs(x = "", y = "") +
-  theme_prod +
-  theme(
-    axis.text.x     = element_text(angle = 90, hjust = 1),
-    strip.text      = element_text(size = 8),
-    legend.position = "bottom",
-    legend.title    = element_text(size = 10, face = "bold"),
-    legend.text     = element_text(size = 9)
-  )
-
-
-ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute.png",
-       width = 11.5,
-       height = 4,
-       units = "in", dpi = 300)
-alloutput_abs
-```
-
-
-```{r}
-panel_order <- c("Summary Biomass (t)",
-                 "Spawning Stock Biomass (t)",
-                 "Recruitment (N)",
-                 "Catch (t)")
-
-alloutput_abs <- ggplot(
-  outpsall_long,
-  aes(x = Yr,
-      y = Value,
-      color = Model,
-      shape = Model,
-      group = Model)) +
-  geom_ribbon(
-    data        = pop_unc,
-    aes(x = Yr, ymin = lo, ymax = hi, fill = Model),
-    inherit.aes = FALSE,
-    alpha       = 0.05,
-    color       = NA
-  ) +
-  geom_line(linewidth = 0.8) +
-  geom_point(size = 1.2, alpha = 0.7) +
-  geom_errorbar(
-    data        = survey_total,
-    aes(x = Yr, ymin = lo, ymax = hi),
-    inherit.aes = FALSE,
-    color       = "black",
-    width       = 0.4,
-    linewidth   = 0.5,
-    alpha       = 0.6
-  ) +
-  geom_point(
-    data        = survey_total,
-    aes(x = Yr, y = Value),
-    inherit.aes = FALSE,
-    shape       = 21,
-    color       = "black",
-    fill        = "white",
-    size        = 2.2,
+    size        = 1.8,
     stroke      = 0.6,
     alpha       = 0.9
   ) +
@@ -1144,31 +1066,33 @@ alloutput_abs <- ggplot(
     ncol   = 2,
     scales = "free"
   ) +
-  scale_color_manual(name = "Scenario", values = colors) +
-  scale_shape_manual(name = "Scenario", values = shapes) +
+    scale_color_manual(name = "Scenario", values = colors) +
+  guides(color = guide_legend(nrow = 1, byrow = TRUE)) +
   scale_fill_manual(values = colors, guide = "none") +
-  # ── escala y por panel: log10 SOLO en Recruitment, lineal en el resto ──
   ggh4x::facetted_pos_scales(
     y = list(
-      scale_y_continuous(limits = c(0, NA)),   # Summary Biomass (t)
-      scale_y_continuous(limits = c(0, NA)),   # Spawning Stock Biomass (t)
-      scale_y_continuous(trans = "log10"),      # Recruitment (N)
-      scale_y_continuous(limits = c(0, NA))    # Catch (t)
+      scale_y_continuous(limits = c(0, NA)),
+      scale_y_continuous(limits = c(0, NA)),
+      scale_y_continuous(trans = "log10"),
+      scale_y_continuous(limits = c(0, NA))
     )
   ) +
   scale_x_continuous(breaks = seq(1990, 2020, by = 5)) +
   labs(x = "", y = "") +
   theme_prod +
-  theme(
-    axis.text.x     = element_text(angle = 90, hjust = 1),
-    strip.text      = element_text(size = 8),
-    legend.position = "bottom",
-    legend.title    = element_text(size = 10, face = "bold"),
-    legend.text     = element_text(size = 9)
+    theme(
+    axis.text.x       = element_text(angle = 90, hjust = 1),
+    strip.text        = element_text(size = 8),
+    legend.position   = "bottom",
+    legend.title      = element_text(size = 10),
+    legend.text       = element_text(size = 10),
+    legend.key.size   = unit(0.4, "cm"),
+    legend.spacing.x  = unit(0.2, "cm"),
+    legend.margin     = margin(t = -5)
   )
 
-ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute.png",
-       width = 11.5, height = 4, units = "in", dpi = 300)
+ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute_2.png",
+       width = 7, height = 6, units = "in", dpi = 700)
 alloutput_abs
 ```
 
@@ -1330,8 +1254,10 @@ These metrics allow us to analyze both the productivity and the temporal dynamic
 # ── Paleta y tema común ───────────────────────────────────────
 colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
             "s1.3" = "#bababa", "s1.4" = "#404040",
-            "s1.5" = "#0571b0")
-shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4, "s1.5" = 18)
+            "s1.5" = "#0571b0",
+            "s1.6" =  "#1b9e77", "s1.7" = "#e6ab02")
+shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4, "s1.5" = 18, 
+            "s1.6" = 21, "s1.7" = 23)
 
 theme_prod <- theme_bw() +
   theme(
@@ -1352,7 +1278,9 @@ models <- list(
   s1.2 = base.model1.2,
   s1.3 = base.model1.3,
   s1.4 = base.model1.4,
-  s1.5 = base.model1.5
+  s1.5 = base.model1.5,
+  s1.6 = base.model1.6,
+  s1.7 = base.model1.7
 )
 
 plot_data  <- list()
@@ -1436,7 +1364,9 @@ escenarios <- list(
   s1.2 = base.model1.2$SPAWN_RECR_CURVE,
   s1.3 = base.model1.3$SPAWN_RECR_CURVE,
   s1.4 = base.model1.4$SPAWN_RECR_CURVE,
-  s1.5 = base.model1.5$SPAWN_RECR_CURVE
+  s1.5 = base.model1.5$SPAWN_RECR_CURVE,
+  s1.6 = base.model1.6$SPAWN_RECR_CURVE,
+  s1.7 = base.model1.7$SPAWN_RECR_CURVE
 )
 
 # Verifica nombres: names(base.model1.1$SPAWN_RECR_CURVE)
@@ -1476,20 +1406,25 @@ get_lnR0 <- function(model) {
 }
 
 r0_vals <- data.frame(
-  model = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5"),
+  model = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7"),
   value = c(
     get_lnR0(base.model1.1)$value,
     get_lnR0(base.model1.2)$value,
     get_lnR0(base.model1.3)$value,
     get_lnR0(base.model1.4)$value,
-    get_lnR0(base.model1.5)$value
+    get_lnR0(base.model1.5)$value,
+    get_lnR0(base.model1.6)$value,
+    get_lnR0(base.model1.7)$value
+    
   ),
   sd = c(
     get_lnR0(base.model1.1)$sd,
     get_lnR0(base.model1.2)$sd,
     get_lnR0(base.model1.3)$sd,
     get_lnR0(base.model1.4)$sd,
-    get_lnR0(base.model1.5)$sd
+    get_lnR0(base.model1.5)$sd,
+    get_lnR0(base.model1.6)$sd,
+    get_lnR0(base.model1.7)$sd
   )
 )
 
@@ -1597,16 +1532,20 @@ df2 <- base.model1.2$exploitation[, c(1, 4)] %>% mutate(model = "s1.2")
 df3 <- base.model1.3$exploitation[, c(1, 4)] %>% mutate(model = "s1.3")
 df4 <- base.model1.4$exploitation[, c(1, 4)] %>% mutate(model = "s1.4")
 df5 <- base.model1.5$exploitation[, c(1, 4)] %>% mutate(model = "s1.5")
+df6 <- base.model1.6$exploitation[, c(1, 4)] %>% mutate(model = "s1.6")
+df7 <- base.model1.7$exploitation[, c(1, 4)] %>% mutate(model = "s1.7")
 
 
-df_all <- bind_rows(df1, df2, df3, df4, df5)
+df_all <- bind_rows(df1, df2, df3, df4, df5, df6, df7)
 colnames(df_all) <- c("year", "exploitation_rate", "model")
 
 colores <- c("s1.1" = "#ca0020", 
              "s1.2" = "#f4a582", 
              "s1.3" = "#bababa", 
              "s1.4" = "#404040",
-             "s1.5" = "#0571b0")
+             "s1.5" = "#0571b0",
+             "s1.6" = "#1b9e77", 
+             "s1.7" = "#e6ab02")
 ggplot(df_all, aes(x = year, y = exploitation_rate, color = model)) +
   geom_line() +
   geom_point(size = 3, shape = 16) +
@@ -1635,7 +1574,8 @@ The convergence criterion used for model calibration is set to a final threshold
 ```{r acf}
 cols <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
           "s1.3" = "#bababa", "s1.4" = "#404040",
-          "s1.5" = "#0571b0")
+          "s1.5" = "#0571b0",
+          "s1.6" =  "#1b9e77", "s1.7" = "#e6ab02")
 plot_acf_color <- function(x, label, color) {
   ac <- acf(x, plot = FALSE)
   ci <- qnorm(0.975) / sqrt(length(x))
@@ -1657,8 +1597,10 @@ p2 <- plot_acf_color(base.model1.2$recruit$pred_recr, "s1.2", cols["s1.2"])
 p3 <- plot_acf_color(base.model1.3$recruit$pred_recr, "s1.3", cols["s1.3"])
 p4 <- plot_acf_color(base.model1.4$recruit$pred_recr, "s1.4", cols["s1.4"])
 p5 <- plot_acf_color(base.model1.5$recruit$pred_recr, "s1.5", cols["s1.5"])
+p6 <- plot_acf_color(base.model1.6$recruit$pred_recr, "s1.6", cols["s1.6"])
+p7 <- plot_acf_color(base.model1.7$recruit$pred_recr, "s1.7", cols["s1.7"])
 
-acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, p5, ncol = 5)
+acf_combined <- cowplot::plot_grid(p1, p2, p3, p4, p5, p6, p7, ncol = 4)
 
 ggsave("Figs/acf_recruitment.png",
        plot   = acf_combined,
@@ -1674,6 +1616,8 @@ out1.2 <- r4ss::SS_fitbiasramp(base.model1.2, plot = TRUE, print = TRUE)
 out1.3 <- r4ss::SS_fitbiasramp(base.model1.3, plot = TRUE, print = TRUE)
 out1.4 <- r4ss::SS_fitbiasramp(base.model1.4, plot = TRUE, print = TRUE)
 out1.5 <- r4ss::SS_fitbiasramp(base.model1.5, plot = TRUE, print = TRUE)
+out1.6 <- r4ss::SS_fitbiasramp(base.model1.6, plot = TRUE, print = TRUE)
+out1.7 <- r4ss::SS_fitbiasramp(base.model1.7, plot = TRUE, print = TRUE)
 ```
 
 This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pearson residuals and trends of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity.
@@ -1682,7 +1626,7 @@ This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pea
 \begin{landscape}
 
 
-```{r pearson, fig.width=9, fig.height=7, fig.cap="Pearson residual by scenario and fleet"}
+```{r pearson, fig.width=8, fig.height=6, fig.cap="Pearson residual by scenario and fleet"}
 # ── Función robusta: normaliza nombres de columna según versión de r4ss
 create_heatmap_df <- function(df, model_name) {
   df_norm <- df
@@ -1733,7 +1677,9 @@ df_all <- bind_rows(
   create_heatmap_df(base.model1.2$lendbase, "s1.2"),
   create_heatmap_df(base.model1.3$lendbase, "s1.3"),
   create_heatmap_df(base.model1.4$lendbase, "s1.4"),
-  create_heatmap_df(base.model1.5$lendbase, "s1.5")
+  create_heatmap_df(base.model1.5$lendbase, "s1.5"),
+  create_heatmap_df(base.model1.6$lendbase, "s1.6"),
+  create_heatmap_df(base.model1.7$lendbase, "s1.7")
 )
 
 
@@ -1778,8 +1724,8 @@ circleplot_res
 ggsave(
   filename = file.path(Figs, "pearson_residuals.png"),
   plot     = circleplot_res,
-  width    = 10,
-  height   = 5,
+  width    = 8,
+  height   = 6,
   dpi      = 300
 )
 ```
@@ -1938,6 +1884,18 @@ SSplotRunstest(base.model1.5,
                add=T,
                plot = TRUE,
                plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.6,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+par(mfrow=c(2,5), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.7,
+               subplots = "len",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
 
 ```
 
@@ -1980,8 +1938,8 @@ SSplotRunstest(base.model1.5,
 
 By analyzing residual patterns and RMSE values, the model can be refined to improve the accuracy of mean length predictions, ultimately enhancing the reliability of stock assessment outcomes and management recommendations (Figure \@ref(fig:rmse1)).
 
-```{r rmse1, fig.height=7, fig.width=6.5, fig.cap="Time series of RMSE of length compositions by scenario"}
-par(mfrow=c(3,3), mar=c(5,4,2,1))
+```{r rmse1, fig.height=8, fig.width=12, fig.cap="Time series of RMSE of length compositions by scenario"}
+par(mfrow=c(2,4), mar=c(5,4,2,1))
 rmse1l <- SSplotJABBAres(base.model1.1,
                subplots = "len",
                add=T)
@@ -1997,11 +1955,17 @@ rmse4l <- SSplotJABBAres(base.model1.4,
 rmse5l <- SSplotJABBAres(base.model1.5,
                subplots = "len",
                add=T)
+rmse6l <- SSplotJABBAres(base.model1.6,
+               subplots = "len",
+               add=T)
+rmse7l <- SSplotJABBAres(base.model1.7,
+               subplots = "len",
+               add=T)
 ```
 Figure \@ref(fig:rmse2) show RMSE to index.
 
-```{r rmse2, fig.height=7, fig.width=6.5, fig.cap="Time series of RMSE of CPUE compositions by scenario"}
-par(mfrow=c(3,2), mar=c(5,4,2,1))
+```{r rmse2, fig.height=8, fig.width=12, fig.cap="Time series of RMSE of CPUE compositions by scenario"}
+par(mfrow=c(2,4), mar=c(5,4,2,1))
 rmse1c <- SSplotJABBAres(base.model1.1,
                subplots = "cpue",
                add=T)
@@ -2017,6 +1981,12 @@ rmse4c <- SSplotJABBAres(base.model1.4,
 rmse5c <- SSplotJABBAres(base.model1.5,
                subplots = "cpue",
                add=T)
+rmse6c <- SSplotJABBAres(base.model1.6,
+               subplots = "cpue",
+               add=T)
+rmse7c <- SSplotJABBAres(base.model1.7,
+               subplots = "cpue",
+               add=T)
 ```
 
 Table \@ref(tab:combined_rmse) of RMSE values for each scenario and type (index and length) is created below. The RMSE values are extracted from the respective data frames for each scenario.
@@ -2024,17 +1994,21 @@ Table \@ref(tab:combined_rmse) of RMSE values for each scenario and type (index 
 
 ```{r combined_rmse, echo=FALSE, results='asis', fig.cap="Table of RMSE values for each scenario and type (index and length)"}
 combined_rmse <- tibble(
-  Scenario     = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5"),
+  Scenario     = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7"),
   RMSE_index   = c(rmse1c |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse2c |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse3c |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse4c |> filter(indices == "Combined") |> pull(RMSE.perc),
-                   rmse5c |> filter(indices == "Combined") |> pull(RMSE.perc)),
+                   rmse5c |> filter(indices == "Combined") |> pull(RMSE.perc),
+                   rmse6c |> filter(indices == "Combined") |> pull(RMSE.perc),
+                   rmse7c |> filter(indices == "Combined") |> pull(RMSE.perc)),
   RMSE_length  = c(rmse1l |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse2l |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse3l |> filter(indices == "Combined") |> pull(RMSE.perc),
                    rmse4l |> filter(indices == "Combined") |> pull(RMSE.perc),
-                   rmse5l |> filter(indices == "Combined") |> pull(RMSE.perc))
+                   rmse5l |> filter(indices == "Combined") |> pull(RMSE.perc),
+                   rmse6l |> filter(indices == "Combined") |> pull(RMSE.perc),
+                   rmse7l |> filter(indices == "Combined") |> pull(RMSE.perc))
 )
 kbl_pdf(combined_rmse)
 ```
@@ -2055,7 +2029,9 @@ n_common_idx <- min(
   nrow(filter(rmse2c, indices != "Combined")),
   nrow(filter(rmse3c, indices != "Combined")),
   nrow(filter(rmse4c, indices != "Combined")),
-  nrow(filter(rmse5c, indices != "Combined"))
+  nrow(filter(rmse5c, indices != "Combined")),
+  nrow(filter(rmse6c, indices != "Combined")),
+  nrow(filter(rmse7c, indices != "Combined"))
 )
 
 n_common_len <- min(
@@ -2063,7 +2039,10 @@ n_common_len <- min(
   nrow(filter(rmse2l, indices != "Combined")),
   nrow(filter(rmse3l, indices != "Combined")),
   nrow(filter(rmse4l, indices != "Combined")),
-  nrow(filter(rmse5l, indices != "Combined"))
+  nrow(filter(rmse5l, indices != "Combined")),
+  nrow(filter(rmse6l, indices != "Combined")),
+  nrow(filter(rmse7l, indices != "Combined"))
+       
 )
 
 # ── Data frames ──────────────────────────────────────────────
@@ -2072,7 +2051,9 @@ dfrmse_index <- data.frame(
   s1.2 = extract_rmse(rmse2c, n_common_idx),
   s1.3 = extract_rmse(rmse3c, n_common_idx),
   s1.4 = extract_rmse(rmse4c, n_common_idx),
-  s1.5 = extract_rmse(rmse5c, n_common_idx)
+  s1.5 = extract_rmse(rmse5c, n_common_idx),
+  s1.6 = extract_rmse(rmse6c, n_common_idx),
+  s1.7 = extract_rmse(rmse7c, n_common_idx)
 )
 
 dfrmse_len <- data.frame(
@@ -2080,7 +2061,9 @@ dfrmse_len <- data.frame(
   s1.2 = extract_rmse(rmse2l, n_common_len),
   s1.3 = extract_rmse(rmse3l, n_common_len),
   s1.4 = extract_rmse(rmse4l, n_common_len),
-  s1.5 = extract_rmse(rmse5l, n_common_len)
+  s1.5 = extract_rmse(rmse5l, n_common_len),
+  s1.6 = extract_rmse(rmse6l, n_common_len),
+  s1.7 = extract_rmse(rmse7l, n_common_len)
 )
 
 # ── Función plot ─────────────────────────────────────────────
@@ -2095,13 +2078,14 @@ plot_rmse <- function(df, title = "") {
   ggplot(melted, aes(x = variable, y = value, fill = variable)) +
     geom_boxplot(width = 0.2, alpha = 0.8, outlier.shape = NA) +
     geom_jitter(width = 0.01, alpha = 0.3) +
-    stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "black") +
+    stat_summary(fun = mean, geom = "point", size = 3, color = "black") +
     geom_text(data = means,
               aes(x = variable, y = mean_val, label = sprintf("%.2f", mean_val)),
-              inherit.aes = FALSE, vjust = -1.2, size = 3, fontface = "bold") +
+              inherit.aes = FALSE, vjust = -1.2, size = 5) +
     scale_fill_manual(values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
                                  "s1.3" = "#bababa", "s1.4" = "#404040",
-                                 "s1.5" = "#0571b0")) +
+                                 "s1.5" = "#0571b0",
+                                 "s1.6" =  "#1b9e77", "s1.7" = "#e6ab02")) +
     labs(x = "", y = "RMSE", title = title) +
     theme_few() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1),
@@ -2131,7 +2115,8 @@ combined_rmse_delta <- combined_rmse |>
   mutate(Metric = dplyr::recode(Metric,
                                  delta_index  = "Abundance indices",
                                  delta_length = "Length compositions"),
-         Scenario = factor(Scenario, levels = c("s1.2", "s1.3", "s1.4", "s1.5")))
+         Scenario = factor(Scenario, levels = c("s1.2", "s1.3", "s1.4", "s1.5",
+                                                "s1.6", "s1.7")))
 
 difrmse <- ggplot(combined_rmse_delta, aes(x = Scenario, y = Delta, fill = Scenario)) +
   geom_col(width = 0.6, alpha = 0.85) +
@@ -2140,12 +2125,13 @@ difrmse <- ggplot(combined_rmse_delta, aes(x = Scenario, y = Delta, fill = Scena
                 vjust = ifelse(Delta >= 0, -0.5, 1.3)), size = 3) +
   facet_wrap(~Metric) +
   scale_fill_manual(values = c("s1.2" = "#f4a582", "s1.3" = "#bababa",
-                                "s1.4" = "#404040", "s1.5" = "#0571b0")) +
+                                "s1.4" = "#404040", "s1.5" = "#0571b0",
+                                "s1.6" =  "#1b9e77", "s1.7" = "#e6ab02")) +
   labs(x = "", y = "RMSE change vs. s1.1 (%)") +
   theme_bw() +
   theme(legend.position = "none", strip.background = element_blank(),
         panel.grid.minor = element_blank()) +
-  coord_flip(ylim = c(-12, 0))   # amplié un poco el límite inferior para que quepa s1.2
+  coord_flip(ylim = c(-12, 12))   # amplié un poco el límite inferior para que quepa s1.2
 
 ggsave(file.path(Figs, "rmse_delta.png"), difrmse, width = 6.5, height = 3.5, dpi = 300)
 ```
