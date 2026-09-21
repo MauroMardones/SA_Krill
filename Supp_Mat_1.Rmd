@@ -112,22 +112,42 @@ dir1.2 <- here::here("s1.2") # s1.1 w/ predador
 dir1.3 <- here::here("s1.3") # s1.1 w/ env
 dir1.4 <- here::here("s1.4") # s1.1 predator and env
 dir1.5 <- here::here("s1.5") # s1.3 w/ env as index
+dir1.6 <- here::here("s1.6") # s1.4 w/ env in k
+dir1.7 <- here::here("s1.7") # s1.4 w/ env in k and predator 
 Figs <- here::here("Figs")
 outdir <- here::here("outputs")
 
 
-start1 <- SS_readstarter(file = file.path(dir1.1, "starter.ss"), verbose = FALSE)
-dat1   <- SS_readdat(file = file.path(dir1.1, start1$datfile), verbose = FALSE)
-ctl1   <- SS_readctl(file = file.path(dir1.1, start1$ctlfil),
-                     verbose = FALSE, use_datlist = TRUE, datlist = dat1)
-fore1  <- SS_readforecast(file = file.path(dir1.1, "forecast.ss"), verbose = FALSE)
+start1 <- SS_readstarter(file = file.path(dir1.1,
+                                          "starter.ss"),
+                         verbose = FALSE)
+dat1   <- SS_readdat(file = file.path(dir1.1,  
+                                      start1$datfile), 
+                     verbose = FALSE)
+ctl1   <- SS_readctl(file = file.path(dir1.1,
+                                      start1$ctlfil),
+                     verbose = FALSE, 
+                     use_datlist = TRUE,
+                     datlist = dat1)
+fore1  <- SS_readforecast(file = file.path(dir1.1,
+                                           "forecast.ss"), 
+                          verbose = FALSE)
 
 
-start4 <- SS_readstarter(file = file.path(dir1.4, "starter.ss"), verbose = FALSE)
-dat4   <- SS_readdat(file = file.path(dir1.4, start4$datfile), verbose = FALSE)
-ctl4   <- SS_readctl(file = file.path(dir1.4, start4$ctlfil),
-                     verbose = FALSE, use_datlist = TRUE, datlist = dat4)
-fore4  <- SS_readforecast(file = file.path(dir1.4, "forecast.ss"), verbose = FALSE)
+start4 <- SS_readstarter(file = file.path(dir1.4,
+                                          "starter.ss"),
+                         verbose = FALSE)
+dat4   <- SS_readdat(file = file.path(dir1.4, 
+                                      start4$datfile),
+                     verbose = FALSE)
+ctl4   <- SS_readctl(file = file.path(dir1.4,
+                                      start4$ctlfil),
+                     verbose = FALSE,
+                     use_datlist = TRUE, 
+                     datlist = dat4)
+fore4  <- SS_readforecast(file = file.path(dir1.4,
+                                           "forecast.ss"),
+                          verbose = FALSE)
 
 ```
 
@@ -189,6 +209,20 @@ r4ss::run(
   skipfinished = FALSE, 
   show_in_console = TRUE 
 )
+# s1.6
+r4ss::run(
+  dir = dir1.6,
+  exe = "ss_osx",
+  skipfinished = FALSE,
+  show_in_console = TRUE
+)
+# s1.7
+r4ss::run(
+  dir = dir1.7,
+  exe = "ss_osx",
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
+)
 ```
 
 ```{r message=F, echo=TRUE, results='hide'}
@@ -211,6 +245,14 @@ base.model1.4 <- SS_output(dir=dir1.4,
                         forecast=T)
 #s1.5
 base.model1.5 <- SS_output(dir=dir1.5,
+                        covar=T,
+                        forecast=T)
+#s1.6
+base.model1.6 <- SS_output(dir=dir1.6,
+                        covar=T,
+                        forecast=T)
+#s1.7
+base.model1.7 <- SS_output(dir=dir1.7,
                         covar=T,
                         forecast=T)
 ```
@@ -527,7 +569,7 @@ SS_plots(base.model1.4,
 Selectivity estimated by scenario in Figure \@ref(fig:selectivity).
 
 ```{r selectivity, fig.height=6, fig.width=6, fig.cap="Selectivity by fleet in each scenario"}
-par(mfrow = c(3, 2), mar = c(4, 4, 2.5, 1))
+par(mfrow = c(3, 3), mar = c(4, 4, 2.5, 1))
 
 plot_selex_scenario <- function(model, label) {
   op <- par(cex = 0.55, cex.axis = 1, cex.lab = 1)
@@ -543,6 +585,8 @@ plot_selex_scenario(base.model1.2, "s1.2")
 plot_selex_scenario(base.model1.3, "s1.3")
 plot_selex_scenario(base.model1.4, "s1.4")
 plot_selex_scenario(base.model1.5, "s1.5")
+plot_selex_scenario(base.model1.6, "s1.6")
+plot_selex_scenario(base.model1.7, "s1.7")
 ```
 
 Length by age
@@ -588,7 +632,7 @@ print(p_alk)
 This Figure \@ref(fig:index2) shows standardized time series of input indices used in four different model scenarios (s1.1 to s1.4) for the stock assessment of Antarctic krill in Subarea 48.1.
 
 ```{r index2, fig.height=6, fig.width=6, fig.cap= "Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework"}
-par(mfrow = c(2, 2), mar = c(4, 4, 2.5, 1))
+par(mfrow = c(3, 3), mar = c(4, 4, 2.5, 1))
  
 plot_indices_scenario <- function(model, label) {
   op <- par(cex = 0.55, cex.axis = 1, cex.lab = 1)
@@ -604,11 +648,14 @@ plot_indices_scenario(base.model1.1, "s1.1")
 plot_indices_scenario(base.model1.2, "s1.2")
 plot_indices_scenario(base.model1.3, "s1.3")
 plot_indices_scenario(base.model1.4, "s1.4")
+#plot_indices_scenario(base.model1.5, "s1.5")
+plot_indices_scenario(base.model1.6, "s1.6")
+plot_indices_scenario(base.model1.7, "s1.7")
 ```
 
 ## Population variables 
 
-```{r popvar2, fig.cap="Time series of population variables, expressed as percent of virgin (unfished) level, by scenario"}
+```{r eval= FAlSE, popvar2, fig.cap="Time series of population variables, expressed as percent of virgin (unfished) level, by scenario"}
 cols <- c("Yr", "Bio_smry", "SpawnBio", "Recruit_0")
 
 outps1 <- base.model1.1$timeseries[, cols] %>% mutate(Model = "s1.1")
@@ -824,6 +871,7 @@ ggsave(alloutput, filename = "Figs/popvar_scenarios_relative.png",
        units = "in", dpi = 300)
 alloutput
 ```
+
 Absolute populations variables
 
 ```{r}
@@ -833,13 +881,18 @@ outps2 <- base.model1.2$timeseries[, cols] %>% mutate(Model = "s1.2")
 outps3 <- base.model1.3$timeseries[, cols] %>% mutate(Model = "s1.3")
 outps4 <- base.model1.4$timeseries[, cols] %>% mutate(Model = "s1.4")
 outps5 <- base.model1.5$timeseries[, cols] %>% mutate(Model = "s1.5")
+outps6 <- base.model1.6$timeseries[, cols] %>% mutate(Model = "s1.6")
+outps7 <- base.model1.7$timeseries[, cols] %>% mutate(Model = "s1.7")
 
 outps1$Model <- "s1.1"
 outps2$Model <- "s1.2"
 outps3$Model <- "s1.3"
 outps4$Model <- "s1.4"
 outps5$Model <- "s1.5"
-outpsall <- rbind(outps1, outps2, outps3, outps4, outps5)
+outps6$Model <- "s1.6"
+outps7$Model <- "s1.7"
+
+outpsall <- rbind(outps1, outps2, outps3, outps4, outps5, outps6, outps7)
 outpsall_long <- outpsall |>
   pivot_longer(
     cols      = c(Bio_smry, SpawnBio, Recruit_0),
@@ -861,7 +914,7 @@ panel_order <- c("Summary Biomass (t)",
                  "Catch (t)")
 colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
             "s1.3" = "#bababa", "s1.4" = "#404040",
-            "s1.5" = "#0571b0")
+            "s1.5" = "#0571b0", "s1.6" = "#1b9e77", "s1.7" = "#e6ab02") 
 shapes <- c("s1.1" = 16, "s1.2" = 17, "s1.3" = 15, "s1.4" = 4)
 theme_prod <- theme_bw() +
   theme(
@@ -885,7 +938,9 @@ virgin_long <- dplyr::bind_rows(
   get_virgin(base.model1.2, "s1.2"),
   get_virgin(base.model1.3, "s1.3"),
   get_virgin(base.model1.4, "s1.4"),
-  get_virgin(base.model1.5, "s1.5")
+  get_virgin(base.model1.5, "s1.5"),
+  get_virgin(base.model1.6, "s1.6"),
+  get_virgin(base.model1.7, "s1.7")
 ) |>
   pivot_longer(cols = c(Bio_smry, SpawnBio, Recruit_0),
                names_to = "VarRaw", values_to = "Virgin") |>
@@ -936,7 +991,9 @@ pop_unc <- dplyr::bind_rows(
   get_pop_unc(base.model1.2, "s1.2"),
   get_pop_unc(base.model1.3, "s1.3"),
   get_pop_unc(base.model1.4, "s1.4"),
-  get_pop_unc(base.model1.5, "s1.5")
+  get_pop_unc(base.model1.5, "s1.5"),
+  get_pop_unc(base.model1.6, "s1.6"),
+  get_pop_unc(base.model1.7, "s1.7")
 ) |>
   dplyr::filter(Yr >= 1989, Yr <= 2020) |>
   dplyr::mutate(
@@ -1115,13 +1172,7 @@ ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute.png",
 alloutput_abs
 ```
 
-```{r}
-out1.1 <- r4ss::SS_fitbiasramp(base.model1.1, plot = TRUE, print = TRUE)
-out1.2 <- r4ss::SS_fitbiasramp(base.model1.2, plot = TRUE, print = TRUE)
-out1.3 <- r4ss::SS_fitbiasramp(base.model1.3, plot = TRUE, print = TRUE)
-out1.4 <- r4ss::SS_fitbiasramp(base.model1.4, plot = TRUE, print = TRUE)
-out1.5 <- r4ss::SS_fitbiasramp(base.model1.5, plot = TRUE, print = TRUE)
-```
+
 
 Comparsion in long term time series forecasting Figure \@ref(fig:cumsum)
 
@@ -1163,7 +1214,7 @@ boxout <- ggplot(outpsall_box,
     name   = "Scenario",
     values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
                "s1.3" = "#bababa", "s1.4" = "#404040",
-               "s1.5"= "#0571b0")
+               "s1.5"= "#0571b0", "s1.6" = "#1b9e77", "s1.7" = "#e6ab02")
   ) +
   scale_y_continuous(
     labels = scales::label_number(scale_cut = cut_short_scale())
@@ -1193,13 +1244,13 @@ ggsave(boxout, filename = "Figs/popvar_scenarios_boxplot.png",
 # Requiere los 4 objetos ya leídos con SS_output(covar=TRUE, forecast=TRUE):
 # base.model1.1, base.model1.2, base.model1.3, base.model1.4
 
-modelnames <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")
-mycolors   <- c("#ca0020", "#f4a582", "#bababa", "#404040", "#0571b0")
+modelnames <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7")
+mycolors <- c("#ca0020", "#f4a582", "#bababa", "#404040", "#0571b0", "#1b9e77", "#e6ab02")
 
 # SSsummarize junta los derived_quants/timeseries de todos los modelos
 # en un solo objeto que SSplotComparisons sabe leer
 mysummary <- r4ss::SSsummarize(
-  list(base.model1.1, base.model1.2, base.model1.3, base.model1.4, base.model1.5)
+  list(base.model1.1, base.model1.2, base.model1.3, base.model1.4, base.model1.5, base.model1.6, base.model1.7)
 )
 
 # Plot en pantalla (todas las figuras por default: SSB, Bratio, reclutas,
@@ -1615,6 +1666,15 @@ ggsave("Figs/acf_recruitment.png",
        height = 5,
        dpi    = 300)
 ```
+Figure \@ref(fig:biasramp) shows the bias correction by scenario in krill.
+
+```{r biasramp, eval=FALSE, warning=FALSE, message=FALSE, fig.cap="Bias correction by scenario"}}
+out1.1 <- r4ss::SS_fitbiasramp(base.model1.1, plot = TRUE, print = TRUE)
+out1.2 <- r4ss::SS_fitbiasramp(base.model1.2, plot = TRUE, print = TRUE)
+out1.3 <- r4ss::SS_fitbiasramp(base.model1.3, plot = TRUE, print = TRUE)
+out1.4 <- r4ss::SS_fitbiasramp(base.model1.4, plot = TRUE, print = TRUE)
+out1.5 <- r4ss::SS_fitbiasramp(base.model1.5, plot = TRUE, print = TRUE)
+```
 
 This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pearson residuals and trends of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity.
 
@@ -1907,7 +1967,7 @@ SSplotRunstest(base.model1.4,
                add=T,
                plot = TRUE,
                plotdir = Figs)
-par(mfrow=c(3,5), mar=c(5,4,2,1))
+par(mfrow=c(3,4), mar=c(5,4,2,1))
 SSplotRunstest(base.model1.5,
                subplots = "cpue",
                add=T,
@@ -2211,30 +2271,40 @@ retro1.1 <- SSplotRetro(retroSummary1.1,
             forecast = F,
             legend = T,
             verbose=F,
+            uncertainty = F,
+            ylim = c(0, 5),
             subplots = c("F"))
 retro1.2 <- SSplotRetro(retroSummary1.2,
             add=T,
             forecast = F,
             legend = T,
             verbose=F,
+            uncertainty = F,
+            ylim = c(0, 5),
             subplots = c("F"))
 retro1.3 <- SSplotRetro(retroSummary1.3,
             add=T,
             forecast = F,
             legend = T,
             verbose=F,
+            uncertainty = F,
+            ylim = c(0, 5),
             subplots = c("F"))
 retro1.4 <- SSplotRetro(retroSummary1.4,
             add=T,
             forecast = F,
             legend = T,
             verbose=F,
+            uncertainty = F,
+            ylim = c(0, 5),
             subplots = c("F"))
 retro1.5 <- SSplotRetro(retroSummary1.5,
             add=T,
             forecast = F,
             legend = T,
             verbose=F,
+            uncertainty = F,
+            ylim = c(0, 5),
             subplots = c("F"))
 ```
 

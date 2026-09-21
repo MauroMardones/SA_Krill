@@ -5,7 +5,7 @@
 #_User_info_available_at:https://vlab.noaa.gov/group/stock-synthesis
 #_Source_code_at:_https://github.com/nmfs-stock-synthesis/stock-synthesis
 
-#C growth parameters are estimated
+#C growth parameters are estimated; s1.6: Chl-a env link on VonBert K (not on SR)
 #C spawner-recruitment bias adjustment Not tuned For optimality
 #_data_and_control_files: data.ss // control.ss
 0  # 0 means do not read wtatage.ss; 1 means read and use wtatage.ss and also read and use growth parameters
@@ -74,7 +74,7 @@
 # Sex: 1  BioPattern: 1  Growth
 0  5  3.4 3.4 0.5 6 -2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
 1  10  6.08 6.08 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1   
-0.05  0.8 0.47  0.47 0.5 6 4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1  
+0.05  1.5 0.47  0.47 0.5 6 4 201 0 0 0 0 0 0 # VonBert_K_Fem_GP_1 (env link: additive, Chl-a var 1)
 0.05 0.25 0.14 0.14 0.5 0 -4 0 0 0 0 0 0 0  # CV_young_Fem_GP_1 
 0.05 0.25 0.07 0.07 0.5 0 -4 0 0 0 0 0 0 0  # CV_old_Fem_GP_1 
 # Sex: 1  BioPattern: 1  WtLen
@@ -110,7 +110,8 @@
 #0.0001 2 1.7 0.5 0.5 -6 -5 # M2_pred1_dev_se
 #-0.99 0.99 0 0 0.5 -6 -6 # M2_pred1_dev_autocorr
 #
-#_no timevary MG parameters
+#_timevary MG parameters: VonBert_K env link (Chl-a)
+-0.1  0.1  0.01  0  0.05  6  5  # VonBert_K_ENV_add (K(y)=K+TVP*chl(y))
 #
 #_seasonal_effects_on_biology_parms
 0 0 0 0 0 0 0 0 0 0 #_femwtlen1,femwtlen2,mat1,mat2,fec1,fec2,Malewtlen1,malewtlen2,L1,K
@@ -124,10 +125,9 @@
 3            30           24.5       23            0.3             0          1          0          0          0          0          0          0          0 # SR_LN(R0)
 0.2             1           0.85           0.85             1             0         -4          0          0          0          0          0          0          0 # SR_BH_steep
 0             2           0.8          0.8           1.1             0         -4          0          0          0          0          0          0          0 # SR_sigmaR
--5             5             0             0             1             0         -4          201          0          0          0          0          0          0 # SR_regime
+-5             5             0             0             1             0         -4          0          0          0          0          0          0          0 # SR_regime
 0             0             0             0             0             0        -99          0          0          0          0          0          0          0 # SR_autocorr
-# timevary SR parameters
--3  3  0  0  1  6  2  # SR_regime_ENV_add
+# timevary SR parameters (none: env link moved to VonBert K)
 1 #do_recdev:  0=none; 1=devvector (R=F(SSB)+dev); 2=deviations (R=F(SSB)+dev); 3=deviations (R=R0*dev; dev2=R-f(SSB)); 4=like 3 with sum(dev2) adding penalty
 1994 # first year of main recr_devs; early devs can preceed this era
 2019 # last year of main recr_devs; forecast devs start in following year
