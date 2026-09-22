@@ -18,7 +18,7 @@
 1 #_Ngenders: 1, 2, -1  (use -1 for 1 sex setup with SSB multiplied by female_frac parameter)
 7 #_Nages=accumulator age, first age is always age 0
 1 #_Nareas
-11 #_Nfleets (including surveys and predators)
+10 #_Nfleets (including surveys and predators)
 #_fleet_type: 1=catch fleet; 2=bycatch only fleet; 3=survey; 4=predator(M2) 
 #_sample_timing: -1 for fishing fleet to use season-long catch-at-age for observations, or 1 to use observation month;  (always 1 for surveys)
 #_fleet_area:  area the fleet/survey operates in 
@@ -36,7 +36,6 @@
 3 1 1 2 0 SURVEYGS  # 8
 3 1 1 2 0 SURVEYJOIN  # 9
 3 1 1 2 0 SURVEYSSIW  # 10
-3 1 1 2 0 SURVEYENV  # 11
 #4 1 1 1 0 PREDATOR # 11
 #Bycatch_fleet_input_goes_next
 #a:  fleet index
@@ -218,7 +217,6 @@
 8 1 0 1 # SURVEYGS
 9 1 0 1 # SURVEYJOIN
 10 1 0 1 # SURVEYSSIW
-11 36 -1 1 # SURVEYENV
 #11 2 0 0 # PREDATOR
 #_yr month fleet obs stderr
 1999	6	1	7.57	0.6	#FISHERYBS
@@ -392,57 +390,36 @@
 #	1988	6	11	35142	0.4	#_	PREDATOR
 #	1989	6	11	27700	0.4	#_	PREDATOR
 #	1990	6	11	25925	0.4	#_	PREDATOR
-#	1991	6	11	115236	0.4	#_	PREDATOR
-#	1992	6	11	142838	0.4	#_	PREDATOR
-#	1993	6	11	44156	0.4	#_	PREDATOR
-#	1994	6	11	71510	0.4	#_	PREDATOR
-#	1995	6	11	72388	0.4	#_	PREDATOR
-#	1996	6	11	85082	0.4	#_	PREDATOR
-#	1997	6	11	95356	0.4	#_	PREDATOR
-#	1998	6	11	82852	0.4	#_	PREDATOR
-#	1999	6	11	113334	0.4	#_	PREDATOR
-#	2000	6	11	101574	0.4	#_	PREDATOR
-#	2001	6	11	72134	0.4	#_	PREDATOR
-#	2002	6	11	95470	0.4	#_	PREDATOR
-#	2003	6	11	117936	0.4	#_	PREDATOR
-#	2004	6	11	102514	0.4	#_	PREDATOR
-#	2005	6	11	101168	0.4	#_	PREDATOR
-#	2006	6	11	74438	0.4	#_	PREDATOR
-#	2007	6	11	111606	0.4	#_	PREDATOR
-#	2008	6	11	209820	0.4	#_	PREDATOR
-#	2009	6	11	193348	0.4	#_	PREDATOR
-#	2010	6	11	263820	0.4	#_	PREDATOR
-#	2011	6	11	337830	0.4	#_	PREDATOR
-#	2012	6	11	437196	0.4	#_	PREDATOR
-#	2013	6	11	280296	0.4	#_	PREDATOR
-#	2014	6	11	286542	0.4	#_	PREDATOR
-#	2015	6	11	529110	0.4	#_	PREDATOR
-#	2016	6	11	249662	0.4	#_	PREDATOR
-#	2017	6	11	169820	0.4	#_	PREDATOR
-#	2018	6	11	127716	0.4	#_	PREDATOR
-#	2019	6	11	267458	0.4	#_	PREDATOR
-#	2020	6	11	13800	0.4	#_	PREDATOR
-2000	6	11	4.12636	0.3	#SURVEYENV(pseudo-index of recdev)
-2001	6	11	-0.2141	0.3	#SURVEYENV(pseudo-index of recdev)
-2002	6	11	-0.12652	0.3	#SURVEYENV(pseudo-index of recdev)
-2003	6	11	0.30169	0.3	#SURVEYENV(pseudo-index of recdev)
-2004	6	11	-0.22384	0.3	#SURVEYENV(pseudo-index of recdev)
-2005	6	11	0.09732	0.3	#SURVEYENV(pseudo-index of recdev)
-2006	6	11	-0.12652	0.3	#SURVEYENV(pseudo-index of recdev)
-2007	6	11	-0.35035	0.3	#SURVEYENV(pseudo-index of recdev)
-2008	6	11	0.01946	0.3	#SURVEYENV(pseudo-index of recdev)
-2009	6	11	-0.51579	0.3	#SURVEYENV(pseudo-index of recdev)
-2010	6	11	-0.06812	0.3	#SURVEYENV(pseudo-index of recdev)
-2011	6	11	-0.62285	0.3	#SURVEYENV(pseudo-index of recdev)
-2012	6	11	-0.57419	0.3	#SURVEYENV(pseudo-index of recdev)
-2013	6	11	-0.33089	0.3	#SURVEYENV(pseudo-index of recdev)
-2014	6	11	-0.46713	0.3	#SURVEYENV(pseudo-index of recdev)
-2015	6	11	-0.11678	0.3	#SURVEYENV(pseudo-index of recdev)
-2016	6	11	0.56445	0.3	#SURVEYENV(pseudo-index of recdev)
-2017	6	11	-0.30169	0.3	#SURVEYENV(pseudo-index of recdev)
-2018	6	11	0.17518	0.3	#SURVEYENV(pseudo-index of recdev)
-2019	6	11	-0.42821	0.3	#SURVEYENV(pseudo-index of recdev)
-2020	6	11	-0.81749	0.3	#SURVEYENV(pseudo-index of recdev)
+#	1991	6	11	28588	0.4	#_	PREDATOR
+#	1992	6	11	32498	0.4	#_	PREDATOR
+#	1993	6	11	17408	0.4	#_	PREDATOR
+#	1994	6	11	33903	0.4	#_	PREDATOR
+#	1995	6	11	34899	0.4	#_	PREDATOR
+#	1996	6	11	29639	0.4	#_	PREDATOR
+#	1997	6	11	33016	0.4	#_	PREDATOR
+#	1998	6	11	32062	0.4	#_	PREDATOR
+#	1999	6	11	24824	0.4	#_	PREDATOR
+#	2000	6	11	26319	0.4	#_	PREDATOR
+#	2001	6	11	24853	0.4	#_	PREDATOR
+#	2002	6	11	19077	0.4	#_	PREDATOR
+#	2003	6	11	17019	0.4	#_	PREDATOR
+#	2004	6	11	15180	0.4	#_	PREDATOR
+#	2005	6	11	14817	0.4	#_	PREDATOR
+#	2006	6	11	16220	0.4	#_	PREDATOR
+#	2007	6	11	14682	0.4	#_	PREDATOR
+#	2008	6	11	19886	0.4	#_	PREDATOR
+#	2009	6	11	17744	0.4	#_	PREDATOR
+#	2010	6	11	27051	0.4	#_	PREDATOR
+#	2011	6	11	24651	0.4	#_	PREDATOR
+#	2012	6	11	23269	0.4	#_	PREDATOR
+#	2013	6	11	29370	0.4	#_	PREDATOR
+#	2014	6	11	24124	0.4	#_	PREDATOR
+#	2015	6	11	20993	0.4	#_	PREDATOR
+#	2016	6	11	26671	0.4	#_	PREDATOR
+#	2017	6	11	22937	0.4	#_	PREDATOR
+#	2018	6	11	9554	0.4	#_	PREDATOR
+#	2019	6	11	8359	0.4	#_	PREDATOR
+#	2020	6	11	192	0.4	#_	PREDATOR
 -9999 1 1 1 1 # terminator for survey observations 
 #
 0 #_N_fleets_with_discard
@@ -482,7 +459,6 @@
 -1 0.0001 0 0 0 0 0.1 #_fleet:8_SURVEYGS
 -1 0.0001 0 0 0 0 0.1 #_fleet:9_SURVEYBS
 -1 0.0001 0 0 0 0 0.1 #_fleet:10_SURVEYSSWW
--1 0.0001 0 0 0 0 0.1 #_fleet:11_SURVEYENV
 #-1 0.0001 0 0 0 0 0.1 #_fleet:7_PREDATOR
 # sex codes:  0=combined; 1=use female only; 2=use male only; 3=use both as joint sexxlength distribution
 # partition codes:  (0=combined; 1=discard; 2=retained
@@ -686,7 +662,30 @@
 #
 0 #_Use_MeanSize-at-Age_obs (0/1)
 #1
-0 #_N_environ_variables (moved to CPUE pseudo-index of recdev, see SURVEYENV)
+1 #_N_environ_variables
+#Yr Variable Value
+2000	1	4.12636
+2001	1	-0.2141
+2002	1	-0.12652
+2003	1	0.30169
+2004	1	-0.22384
+2005	1	0.09732
+2006	1	-0.12652
+2007	1	-0.350350
+2008	1	0.01946
+2009	1	-0.51579
+2010	1	-0.06812
+2011	1	-0.62285
+2012	1	-0.57419
+2013	1	-0.33089
+2014	1	-0.46713
+2015	1	-0.11678
+2016	1	0.56445
+2017	1	-0.30169
+2018	1	0.17518
+2019	1	-0.42821
+2020	1	-0.81749
+-9999 0 0 
 #
 0 # N sizefreq methods to read 
 #
