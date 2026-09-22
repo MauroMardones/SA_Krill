@@ -1,7 +1,7 @@
 ---
 title: "Supplementary Material 1"
 subtitle: "Reproducible Code to Output and Model Diagnostics for Antarctic Krill Stock Assessment"
-date:  "27 August, 2026"
+date:  "22 September, 2026"
 bibliography: bib/SA_krill.bib
 csl: bib/apa.csl
 #csl: icesjournal.csl
@@ -56,7 +56,7 @@ pkgs <- c("r4ss", "ss3diags", "doParallel", "tibble",
     "forecast", "mixR", "lmtest", "funtimes", "car",
     "ggpubr", "ggthemes", "ggridges", "ggrepel", "cowplot",
     "kableExtra", "flextable", "here", "scales", "ggthemes",
-    "patchwork")
+    "patchwork", "ggh4x")
 
 instalar <- pkgs[!pkgs %in% installed.packages()]
 if (length(instalar) > 0) install.packages(instalar)
@@ -80,7 +80,8 @@ The repository with files templates by scenario to replicate this analysis can b
 
 ``` r
 ### Run all Models
-directorios <- c("s1.1", "s1.2", "s1.3", "s1.4")
+directorios <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5",
+    "s1.6", "s1.7")
 
 for (dir in directorios) {
     r4ss::run(dir = dir, exe = "ss_osx", skipfinished = FALSE,
@@ -104,6 +105,15 @@ base.model1.3 <- SS_output(dir = dir1.3, covar = T,
     forecast = T)
 # s1.4
 base.model1.4 <- SS_output(dir = dir1.4, covar = T,
+    forecast = T)
+# s1.5
+base.model1.5 <- SS_output(dir = dir1.5, covar = T,
+    forecast = T)
+# s1.6
+base.model1.6 <- SS_output(dir = dir1.6, covar = T,
+    forecast = T)
+# s1.7
+base.model1.7 <- SS_output(dir = dir1.7, covar = T,
     forecast = T)
 ```
 
@@ -202,7 +212,6 @@ Figure \@ref(fig:dataserie) show time series of differente componentes of data s
 
 
 
-
 Selectivity estimated by scenario in Figure \@ref(fig:selectivity).
 
 \begin{figure}[H]
@@ -214,18 +223,21 @@ Selectivity estimated by scenario in Figure \@ref(fig:selectivity).
 \caption{Selectivity by fleet in each scenario}(\#fig:selectivity)
 \end{figure}
 
-This Figure \@ref(fig:index2) shows standardized time series of input indices used in four different model scenarios (s1.1 to s1.4) for the stock assessment of Antarctic krill in Subarea 48.1.
+Length by age
 
-\begin{figure}[H]
 
-{\centering \includegraphics[width=\linewidth]{Figs/index2-1} 
 
-}
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-7-1} \end{center}
 
-\caption{Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework}(\#fig:index2)
-\end{figure}
 
 ## Population variables 
+
+
+
+
+
+
+
 
 
 
@@ -239,6 +251,10 @@ Comparsion in long term time series forecasting Figure \@ref(fig:cumsum)
 
 \caption{Summary of estimation of different populations variables}(\#fig:cumsum)
 \end{figure}
+
+
+
+
 
 
 ## Relationship Stock-Recruit
@@ -284,6 +300,66 @@ These metrics allow us to analyze both the productivity and the temporal dynamic
 
 
 
+Figure \@ref(fig:biasramp) shows the bias correction by scenario in krill.
+
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/biasramp-1} 
+
+}
+
+\caption{Bias correction by scenario}(\#fig:biasramp-1)
+\end{figure}
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/biasramp-2} 
+
+}
+
+\caption{Bias correction by scenario}(\#fig:biasramp-2)
+\end{figure}
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/biasramp-3} 
+
+}
+
+\caption{Bias correction by scenario}(\#fig:biasramp-3)
+\end{figure}
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/biasramp-4} 
+
+}
+
+\caption{Bias correction by scenario}(\#fig:biasramp-4)
+\end{figure}
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/biasramp-5} 
+
+}
+
+\caption{Bias correction by scenario}(\#fig:biasramp-5)
+\end{figure}
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/biasramp-6} 
+
+}
+
+\caption{Bias correction by scenario}(\#fig:biasramp-6)
+\end{figure}
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/biasramp-7} 
+
+}
+
+\caption{Bias correction by scenario}(\#fig:biasramp-7)
+\end{figure}
+
 
 
 
@@ -292,6 +368,19 @@ These metrics allow us to analyze both the productivity and the temporal dynamic
 The convergence criterion used for model calibration is set to a final threshold of **0.0001** (or equivalently **1.0e-04**). This criterion defines the minimum acceptable difference between successive model iterations. Convergence is considered achieved when the absolute change in the objective function value or key parameters falls below this threshold. A smaller convergence value ensures that the model achieves a high degree of accuracy and stability in its final estimates, indicating that further iterations are unlikely to result in significant changes to the parameter estimates.
 
 
+
+
+
+This Figure \@ref(fig:index2) shows standardized time series of input indices used in four different model scenarios (s1.1 to s1.4) for the stock assessment of Antarctic krill in Subarea 48.1.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/index2-1} 
+
+}
+
+\caption{Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework}(\#fig:index2)
+\end{figure}
 
 
 This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pearson residuals and trends of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity.
@@ -309,11 +398,9 @@ This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pea
 \caption{Pearson residual by scenario and fleet}(\#fig:pearson)
 \end{figure}
 
-\end{landscape}
 
 \clearpage
 
-\begin{landscape}
 
 \begin{figure}[H]
 
@@ -379,6 +466,38 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 ## Plotting JABBA residual plot
 ```
 
+```
+## 
+## RMSE stats by Index:
+```
+
+```
+## Plotting JABBA residual plot
+```
+
+```
+## 
+## RMSE stats by Index:
+```
+
+```
+## Plotting JABBA residual plot
+```
+
+```
+## 
+## RMSE stats by Index:
+```
+
+```
+## Plotting JABBA residual plot
+```
+
+```
+## 
+## RMSE stats by Index:
+```
+
 \begin{figure}[H]
 
 {\centering \includegraphics[width=\linewidth]{Figs/rmse1-1} 
@@ -387,11 +506,6 @@ By analyzing residual patterns and RMSE values, the model can be refined to impr
 
 \caption{Time series of RMSE of length compositions by scenario}(\#fig:rmse1)
 \end{figure}
-
-```
-## 
-## RMSE stats by Index:
-```
 Figure \@ref(fig:rmse2) show RMSE to index.
 
 
@@ -426,6 +540,38 @@ Figure \@ref(fig:rmse2) show RMSE to index.
 ## Plotting JABBA residual plot
 ```
 
+```
+## 
+## RMSE stats by Index:
+```
+
+```
+## Plotting JABBA residual plot
+```
+
+```
+## 
+## RMSE stats by Index:
+```
+
+```
+## Plotting JABBA residual plot
+```
+
+```
+## 
+## RMSE stats by Index:
+```
+
+```
+## Plotting JABBA residual plot
+```
+
+```
+## 
+## RMSE stats by Index:
+```
+
 \begin{figure}[H]
 
 {\centering \includegraphics[width=\linewidth]{Figs/rmse2-1} 
@@ -434,11 +580,6 @@ Figure \@ref(fig:rmse2) show RMSE to index.
 
 \caption{Time series of RMSE of CPUE compositions by scenario}(\#fig:rmse2)
 \end{figure}
-
-```
-## 
-## RMSE stats by Index:
-```
 
 Table \@ref(tab:combined_rmse) of RMSE values for each scenario and type (index and length) is created below. The RMSE values are extracted from the respective data frames for each scenario.
 
@@ -451,10 +592,14 @@ Table \@ref(tab:combined_rmse) of RMSE values for each scenario and type (index 
 \toprule
 Scenario & RMSE\_index & RMSE\_length\\
 \midrule
-s1.1 & 77.1 & 9.1\\
-s1.2 & 72.5 & 9.8\\
-s1.3 & 76.1 & 9.1\\
-s1.4 & 74.6 & 10.0\\
+s1.1 & 69.1 & 13.7\\
+s1.2 & 60.8 & 12.3\\
+s1.3 & 68.9 & 13.6\\
+s1.4 & 67.8 & 13.0\\
+s1.5 & 68.3 & 13.2\\
+\addlinespace
+s1.6 & 67.8 & 13.9\\
+s1.7 & 67.6 & 13.0\\
 \bottomrule
 \end{tabular}}
 \endgroup{}
@@ -477,7 +622,8 @@ Code to run all retrospective analysis for all scenarios in a loop:
 
 
 ``` r
-directorios <- c("s1.1", "s1.2", "s1.3", "s1.4")
+directorios <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5",
+    "s1.6", "s1.7")
 for (dir in directorios) {
     retro(dir = dir, oldsubdir = "", newsubdir = "Retrospective",
         years = 0:-5, exe = "ss_osx", extras = "-nox",
@@ -512,7 +658,14 @@ Retrospective analysis for fishing mortality (Figure \@ref(fig:retrof))
 
 Mohn's rho and one-step-ahead forecast bias, summarized across retrospective peels for SSB and F, are in  Table \@ref(tab:hcbiastable).
 
+\begin{figure}[H]
 
+{\centering \includegraphics[width=\linewidth]{Figs/hcbias-1} 
+
+}
+
+\caption{Mohn's rho by scenario for spawning biomass (SSB) and fishing mortality (F). Bars show the mean Mohn's rho across retrospective peels; points show individual peel values; labels give the combined rho value per scenario.}(\#fig:hcbias)
+\end{figure}
 
 \begin{table}[H]
 \centering
@@ -524,31 +677,26 @@ Mohn's rho and one-step-ahead forecast bias, summarized across retrospective pee
 \toprule
 Scenario & type & MohnsRho & ForecastRho\\
 \midrule
-s1.1 & SSB & -0.029 & -0.223\\
-s1.1 & F & -0.042 & 0.052\\
-s1.2 & SSB & -0.216 & -0.248\\
-s1.2 & F & -0.349 & -0.113\\
-s1.3 & SSB & 0.290 & 0.054\\
+s1.1 & SSB & -0.095 & -0.116\\
+s1.1 & F & -0.560 & 0.198\\
+s1.2 & SSB & -0.016 & -0.111\\
+s1.2 & F & 0.347 & 1.091\\
+s1.3 & SSB & -0.092 & -0.111\\
 \addlinespace
-s1.3 & F & -0.426 & -0.349\\
-s1.4 & SSB & -0.356 & -0.381\\
-s1.4 & F & 1.157 & 1.383\\
+s1.3 & F & -0.690 & -0.214\\
+s1.4 & SSB & -0.293 & -0.434\\
+s1.4 & F & -0.433 & -0.139\\
+s1.5 & SSB & -0.195 & -0.246\\
+s1.5 & F & -0.343 & 0.459\\
+\addlinespace
+s1.6 & SSB & 0.050 & 0.027\\
+s1.6 & F & 0.332 & 0.842\\
+s1.7 & SSB & -0.304 & -0.449\\
+s1.7 & F & 1.093 & 2.484\\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-### Test distribution on parameters
-
-The Figure \@ref(fig:desvpar) shows the distribution of estimated parameters (phase > 0) by scenario. The parameters were selected based on a direct review of the `control.ss` files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with "fixed" parameters.
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=\linewidth]{Figs/desvpar-1} 
-
-}
-
-\caption{Distribution of estimated parameters (phase > 0) by scenario. Parameters were selected based on a direct review of the control.ss files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with 'fixed' parameters.}(\#fig:desvpar)
-\end{figure}
 
 
 
@@ -606,6 +754,38 @@ Hindcast validation in `s1.1` (Figure \@ref(fig:hcval1)), `s1.2` (Figure \@ref(f
 
 
 
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/hcval5-1} 
+
+}
+
+\caption{Hindcast validation for s1.5 by fleet}(\#fig:hcval5)
+\end{figure}
+
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/hcval6-1} 
+
+}
+
+\caption{Hindcast validation for s1.6 by fleet}(\#fig:hcval6)
+\end{figure}
+
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{Figs/hcval7-1} 
+
+}
+
+\caption{Hindcast validation for s1.7 by fleet}(\#fig:hcval7)
+\end{figure}
+
+
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-19-1} \end{center}
+
 A summary version of the same diagnostic, averaged across indices, is shown in Figure \@ref(fig:masesummary).
 
 \begin{figure}[H]
@@ -646,6 +826,7 @@ Figure \@ref(fig:likecompo2) show the likelihood components for the four models.
 
 
 
+
 As shown in Table \@ref(tab:parametercomparison), the models differ in key parameter estimates and likelihood contributions.
 
 \begin{table}[H]
@@ -654,57 +835,39 @@ As shown in Table \@ref(tab:parametercomparison), the models differ in key param
 \centering
 \resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
 \fontsize{8}{10}\selectfont
-\begin{tabular}[t]{lllll}
+\begin{tabular}[t]{llllllll}
 \toprule
-Label & s1.1 & s1.2 & s1.3 & s1.4\\
+Label & s1.1 & s1.2 & s1.3 & s1.4 & s1.5 & s1.6 & s1.7\\
 \midrule
-TOTAL\_like & 770.46600 & 1214.9200 & 766.70500 & 1275.5400\\
-Survey\_like & 362.03000 & 290.1570 & 346.82500 & 306.8210\\
-Length\_comp\_like & 394.07300 & 907.6210 & 393.13300 & 948.8740\\
-Parm\_priors\_like & 1.78642 & 1.5700 & 7.03105 & 2.2464\\
-Recr\_Virgin\_billions & 36244.90000 & 16793.6000 & 41541.00000 & 14774.0000\\
+TOTAL\_like & 221.6530 & 209.4000 & 221.3090 & 565.43100 & 265.235 & 208.9150 & 564.81100\\
+Survey\_like & 82.0641 & 17.8335 & 81.8127 & 82.08210 & 112.116 & 66.2866 & 77.39640\\
+Length\_comp\_like & 124.3580 & 177.6570 & 124.4400 & 465.04800 & 127.811 & 124.0250 & 468.23800\\
+Parm\_priors\_like & 3.8220 & 2.7483 & 3.8460 & 3.27001 & 3.819 & 7.7911 & 3.79170\\
+Recr\_Virgin\_billions & 25133.0000 & 31012.4000 & 24834.8000 & 44761.50000 & 24307.300 & 17484.4000 & 44137.40000\\
 \addlinespace
-SR\_LN(R0) & 24.31360 & 23.5443 & 24.44990 & 23.4161\\
-SR\_LN(R0)\_ENV\_add & NA & NA & 2.62509 & -0.9144\\
-SSB\_Virgin & 32410400.00000 & 40245900.0000 & 31092000.00000 & 39847300.0000\\
-Bratio\_2020 & 1.77416 & 0.9474 & 1.50852 & 1.0561\\
-SPRratio\_2020 & 0.06769 & 0.1088 & 0.07419 & 0.1203\\
+SR\_LN(R0) & 23.9474 & 24.1577 & 23.9355 & 24.52460 & 23.914 & 23.5846 & 24.51060\\
+SSB\_Virgin & 2637080.0000 & 1495540.0000 & 2604340.0000 & 3282530.00000 & 2551500.000 & 1991450.0000 & 3156110.00000\\
+Bratio\_2020 & 1.0412 & 1.2645 & 1.0545 & 0.67514 & 1.222 & 1.0906 & 0.67749\\
+SPRratio\_2020 & 0.1457 & 0.1661 & 0.1452 & 0.07431 & 0.163 & 0.2061 & 0.07841\\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-### Statistics analisys differences bewteen models
-
-To evaluate the residual behavior across model scenarios, we computed residuals as the difference between observed and expected values (`residual = Obs - Exp`). Basic statistics, including sample size (`n()`), mean (`mean()`), and standard deviation (`sd()`), were calculated for each combination of model and type. To test the normality of residuals, we applied the Shapiro-Wilk test (`shapiro.test()`) [@shapiro1965analysis], which is appropriate for small to moderate sample sizes. Temporal autocorrelation was assessed using the Ljung-Box test (`Box.test()` [@ljung1978measure] with `type = "Ljung-Box"` and `lag = 10`), evaluating the null hypothesis of independence across lags. To detect heteroscedasticity, we used the Breusch-Pagan test (`bptest()` from the `lmtest` package) [@breusch1979simple], fitting a linear model of residuals against year (`residual ~ Yr`) and testing for non-constant variance in the residuals. These diagnostics provide insight into the validity of model assumptions across different scenarios.
 
 
+### Test distribution on parameters
 
+The Figure \@ref(fig:desvpar) shows the distribution of estimated parameters (phase > 0) by scenario. The parameters were selected based on a direct review of the `control.ss` files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with "fixed" parameters.
 
-As shown in Table \@ref(tab:residualsummary), the residuals exhibit different statistical properties across model scenarios.
+\begin{figure}[H]
 
+{\centering \includegraphics[width=\linewidth]{Figs/desvpar-1} 
 
-\begin{table}[H]
-\centering
-\caption{(\#tab:residualsummary)Summary statistics and residual diagnostic tests by type and model}
-\centering
-\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
-\fontsize{9}{11}\selectfont
-\begin{tabular}[t]{>{}cccccccc}
-\toprule
-type & model & N & Mean & SD & shapiro\_p & ljung\_p & bp\_p\\
-\midrule
-\textbf{Index} & s1.1 & 159 & 128193.6 & 1.341717e+06 & 0 & 0.67588 & 0.41023\\
-\textbf{Index} & s1.2 & 188 & 101332.3 & 1.185888e+06 & 0 & 0.42597 & 0.23572\\
-\textbf{Index} & s1.3 & 159 & 134673.5 & 1.289550e+06 & 0 & 0.62566 & 0.56176\\
-\textbf{Index} & s1.4 & 188 & 102967.5 & 1.198603e+06 & 0 & 0.47671 & 0.21986\\
-\textbf{Length} & s1.1 & 3752 & 0.0 & 3.643000e-02 & 0 & 0.00000 & 0.05507\\
-\addlinespace
-\textbf{Length} & s1.2 & 4564 & 0.0 & 3.783000e-02 & 0 & 0.00000 & 0.01885\\
-\textbf{Length} & s1.3 & 3752 & 0.0 & 3.628000e-02 & 0 & 0.00000 & 0.02956\\
-\textbf{Length} & s1.4 & 4564 & 0.0 & 3.819000e-02 & 0 & 0.00000 & 0.01661\\
-\bottomrule
-\end{tabular}}
-\end{table}
+}
+
+\caption{Distribution of estimated parameters (phase > 0) by scenario. Parameters were selected based on a direct review of the control.ss files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with 'fixed' parameters.}(\#fig:desvpar)
+\end{figure}
+
 
 \newpage 
 

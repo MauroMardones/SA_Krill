@@ -157,7 +157,9 @@ directorios <- c("s1.1",
                  "s1.2",
                  "s1.3",
                  "s1.4",
-                 "s1.5")  
+                 "s1.5",
+                 "s1.6",
+                 "s1.7")  
 
 for (dir in directorios) {
   r4ss::run(
@@ -303,7 +305,7 @@ knitr::include_graphics('Figs/new_predator_plot.png')
 
 Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1. Each panel represents a distinct spatial or functional stratum, with trend lines indicating temporal variation from 1990 to 2020. Colors denote data source categories: green for fishery, orange for scientific surveys, and purple for predator-based indices. These patterns highlight spatial and temporal heterogeneity in krill dynamics across the subarea Figure \@ref(fig:index))
 
-```{r index, fig.cap="Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1"}
+```{r index, fig.height=6, fig.width=7, fig.cap="Standardized indices of krill index abundance and consumption from fishery-dependent, fishery-independent, and predator-based data sources across different strata within Subarea 48.1"}
 
 dat4_std <- dat4$CPUE %>%
   mutate(
@@ -455,7 +457,8 @@ p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
        y = "",
        fill = "Category") +
   theme_minimal()+
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        strip.text = element_text(size = 6))
 p2
 ```
 
@@ -569,28 +572,70 @@ SS_plots(base.model1.4,
          forecast=T)
 ```
 
-
 Selectivity estimated by scenario in Figure \@ref(fig:selectivity).
 
-```{r selectivity, fig.height=6, fig.width=6, fig.cap="Selectivity by fleet in each scenario"}
-par(mfrow = c(3, 3), mar = c(4, 4, 2.5, 1))
+```{r selectivity, fig.height=8, fig.width=8, fig.cap="Selectivity by fleet in each scenario"}
+models <- list(
+  s1.1 = base.model1.1, s1.2 = base.model1.2, s1.3 = base.model1.3,
+  s1.4 = base.model1.4, s1.5 = base.model1.5, s1.6 = base.model1.6,
+  s1.7 = base.model1.7
+)
 
-plot_selex_scenario <- function(model, label) {
-  op <- par(cex = 0.55, cex.axis = 1, cex.lab = 1)
-  SSplotSelex(model,
-              subplots = 1,
-              mainTitle = FALSE,
-              legendloc = "bottomleft")
-  par(op)
-  mtext(label, side = 3, line = 0.5, cex = 0.8)
+# Selectividad por talla (Lsel) de las hembras/sexo 1, ultimo anio disponible por flota
+get_selex <- function(model, scen) {
+  sx <- as.data.frame(model$sizeselex)
+  names(sx) <- trimws(names(sx))
+
+  # detecta columnas por nombre, sin importar mayusculas
+  nm     <- names(sx)
+  c_fac  <- nm[tolower(nm) == "factor"][1]
+  c_flt  <- nm[tolower(nm) %in% c("fleet", "fleet_name", "fleetname")][1]
+  c_yr   <- nm[tolower(nm) == "yr"][1]
+  c_sex  <- nm[tolower(nm) == "sex"][1]
+  if (anyNA(c(c_fac, c_flt, c_yr, c_sex)))
+    stop("No encuentro Factor/Fleet/Yr/Sex. Columnas: ",
+         paste(head(nm, 10), collapse = ", "))
+
+  sx <- sx[sx[[c_fac]] == "Lsel" & sx[[c_sex]] == 1 &
+             sx[[c_yr]] <= model$endyr, ]
+
+  # ultimo anio disponible por flota
+  keep <- ave(sx[[c_yr]], sx[[c_flt]], FUN = function(y) y == max(y))
+  sx   <- sx[keep == 1, ]
+
+  len_cols <- grep("^[0-9.]+$", nm, value = TRUE)   # columnas = tallas
+
+  flt <- sx[[c_flt]]
+  fleet_name <- if (is.numeric(flt)) model$FleetNames[flt] else as.character(flt)
+
+  data.frame(Scenario   = scen,
+             Fleet_name = rep(fleet_name, times = length(len_cols)),
+             Length     = rep(as.numeric(len_cols), each = nrow(sx)),
+             Selex      = unlist(sx[, len_cols], use.names = FALSE))
 }
-plot_selex_scenario(base.model1.1, "s1.1")
-plot_selex_scenario(base.model1.2, "s1.2")
-plot_selex_scenario(base.model1.3, "s1.3")
-plot_selex_scenario(base.model1.4, "s1.4")
-plot_selex_scenario(base.model1.5, "s1.5")
-plot_selex_scenario(base.model1.6, "s1.6")
-plot_selex_scenario(base.model1.7, "s1.7")
+
+selex_all <- purrr::imap_dfr(models, get_selex) |>
+  dplyr::filter(!grepl("ENV", Fleet_name)) |>
+  dplyr::mutate(Fleet_name = factor(Fleet_name, levels = unique(Fleet_name)))
+
+p_selex <- ggplot(selex_all,
+                  aes(x = Length, y = Selex, color = Fleet_name)) +
+  geom_line(linewidth = 0.7) +
+  facet_wrap(~Scenario, ncol = 3) +
+  scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1)) +
+  labs(x = "Length (mm)", y = "Selectivity", color = "Fleet") +
+  theme_bw() +
+  theme(strip.background = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position  = "bottom",
+        legend.title     = element_text(size = 9, face = "bold"),
+        legend.text      = element_text(size = 8),
+        axis.text        = element_text(size = 8)) +
+  guides(color = guide_legend(nrow = 2, byrow = TRUE))
+
+ggsave("Figs/selectivity_scenarios.png", p_selex,
+       width = 8, height = 7, units = "in", dpi = 600)
+p_selex
 ```
 
 Length by age
@@ -632,34 +677,9 @@ print(p_alk)
 ```
 
 
-
-This Figure \@ref(fig:index2) shows standardized time series of input indices used in four different model scenarios (s1.1 to s1.4) for the stock assessment of Antarctic krill in Subarea 48.1.
-
-```{r index2, fig.height=6, fig.width=6, fig.cap= "Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework"}
-par(mfrow = c(3, 3), mar = c(4, 4, 2.5, 1))
- 
-plot_indices_scenario <- function(model, label) {
-  op <- par(cex = 0.55, cex.axis = 1, cex.lab = 1)
-  SSplotIndices(model,
-                subplots = 9,
-                cex = 0.6,
-                legendloc = "topright")
-  par(op)
-  mtext(label, side = 3, line = 0.5, cex = 0.8)
-}
- 
-plot_indices_scenario(base.model1.1, "s1.1")
-plot_indices_scenario(base.model1.2, "s1.2")
-plot_indices_scenario(base.model1.3, "s1.3")
-plot_indices_scenario(base.model1.4, "s1.4")
-#plot_indices_scenario(base.model1.5, "s1.5")
-plot_indices_scenario(base.model1.6, "s1.6")
-plot_indices_scenario(base.model1.7, "s1.7")
-```
-
 ## Population variables 
 
-```{r eval= FAlSE, popvar2, fig.cap="Time series of population variables, expressed as percent of virgin (unfished) level, by scenario"}
+```{r eval= FALSE, popvar2, fig.cap="Time series of population variables, expressed as percent of virgin (unfished) level, by scenario"}
 cols <- c("Yr", "Bio_smry", "SpawnBio", "Recruit_0")
 
 outps1 <- base.model1.1$timeseries[, cols] %>% mutate(Model = "s1.1")
@@ -876,9 +896,10 @@ ggsave(alloutput, filename = "Figs/popvar_scenarios_relative.png",
 alloutput
 ```
 
-Absolute populations variables
+
 
 ```{r}
+#Absolute populations variables
 cols <- c("Yr", "Bio_smry", "SpawnBio", "Recruit_0")
 outps1 <- base.model1.1$timeseries[, cols] %>% mutate(Model = "s1.1")
 outps2 <- base.model1.2$timeseries[, cols] %>% mutate(Model = "s1.2")
@@ -1093,9 +1114,85 @@ alloutput_abs <- ggplot(
 
 ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute_2.png",
        width = 7, height = 6, units = "in", dpi = 700)
-alloutput_abs
+#alloutput_abs
 ```
 
+```{r eval=FALSE}
+# ── Summary Biomass, panel propio ───────────────────────────────────────
+p_summary <- ggplot(
+  filter(outpsall_long, Variable == "Summary Biomass (t)"),
+  aes(x = Yr, y = Value, color = Model, group = Model)) +
+  geom_ribbon(
+    data        = filter(pop_unc, Variable == "Summary Biomass (t)"),
+    aes(x = Yr, ymin = lo, ymax = hi, fill = Model),
+    inherit.aes = FALSE, alpha = 0.08, color = NA
+  ) +
+  geom_line(linewidth = 0.8) +
+  geom_errorbar(
+    data        = survey_total,
+    aes(x = Yr, ymin = lo, ymax = hi),
+    inherit.aes = FALSE, color = "black", width = 0.4,
+    linewidth = 0.5, alpha = 0.6
+  ) +
+  geom_point(
+    data        = survey_total,
+    aes(x = Yr, y = Value),
+    inherit.aes = FALSE, shape = 21, color = "black",
+    fill = "white", size = 1.8, stroke = 0.6, alpha = 0.9
+  ) +
+  scale_color_manual(name = "Scenario", values = colors) +
+  scale_fill_manual(values = colors, guide = "none") +
+  guides(color = guide_legend(nrow = 1, byrow = TRUE)) +
+  scale_y_continuous(limits = c(0, NA)) +
+  scale_x_continuous(breaks = seq(1990, 2020, by = 5)) +
+  labs(x = "", y = "Summary Biomass (t)") +
+  theme_prod +
+  theme(
+    axis.text.x       = element_text(angle = 90, hjust = 1),
+    legend.position    = "bottom",
+    legend.title       = element_text(size = 10),
+    legend.text        = element_text(size = 10),
+    legend.key.size    = unit(0.4, "cm"),
+    legend.spacing.x   = unit(0.2, "cm"),
+    legend.margin      = margin(t = -5)
+  )
+
+ggsave(p_summary, filename = "Figs/summary_biomass_scenarios.png",
+       width = 7, height = 4.5, units = "in", dpi = 700)
+
+# ── Recruitment, panel propio (escala log, como en la figura combinada) ─
+p_recr <- ggplot(
+  filter(outpsall_long, Variable == "Recruitment (N)"),
+  aes(x = Yr, y = Value, color = Model, group = Model)) +
+  geom_ribbon(
+    data        = filter(pop_unc, Variable == "Recruitment (N)"),
+    aes(x = Yr, ymin = lo, ymax = hi, fill = Model),
+    inherit.aes = FALSE, alpha = 0.08, color = NA
+  ) +
+  geom_line(linewidth = 0.8) +
+  scale_color_manual(name = "Scenario", values = colors) +
+  scale_fill_manual(values = colors, guide = "none") +
+  guides(color = guide_legend(nrow = 1, byrow = TRUE)) +
+  scale_y_continuous(trans = "log10") +
+  scale_x_continuous(breaks = seq(1990, 2020, by = 5)) +
+  labs(x = "", y = "Recruitment (N)") +
+  theme_prod +
+  theme(
+    axis.text.x       = element_text(angle = 90, hjust = 1),
+    legend.position    = "bottom",
+    legend.title       = element_text(size = 10),
+    legend.text        = element_text(size = 10),
+    legend.key.size    = unit(0.4, "cm"),
+    legend.spacing.x   = unit(0.2, "cm"),
+    legend.margin      = margin(t = -5)
+  )
+
+ggsave(p_recr, filename = "Figs/recruitment_scenarios.png",
+       width = 7, height = 4.5, units = "in", dpi = 700)
+
+p_summary
+p_recr
+```
 
 
 Comparsion in long term time series forecasting Figure \@ref(fig:cumsum)
@@ -1161,9 +1258,11 @@ ggsave(boxout, filename = "Figs/popvar_scenarios_boxplot.png",
        units = "in", dpi = 300)
 ```
 
-## Comparision
+
 
 ```{r}
+
+## Comparision
 # ── Comparación entre los 4 escenarios con r4ss::SSplotComparisons ──────
 # Requiere los 4 objetos ya leídos con SS_output(covar=TRUE, forecast=TRUE):
 # base.model1.1, base.model1.2, base.model1.3, base.model1.4
@@ -1199,7 +1298,7 @@ r4ss::SSplotComparisons(
   #subplots        = 1:20,
   subplots       = c(2, 4, 8, 11), # SSB, SSB/SSB0, reclutas, F -> revisar numeración con ?SSplotComparisons
   endyrvec        = 2020,
-  print           = TRUE,
+  print           = F,
   plotdir         = "Figs",
   filenameprefix  = "compare_",
   pwidth          = 7,
@@ -1522,6 +1621,19 @@ ggsave("Figs/fig_recpro.png",
        dpi    = 300)
 ```
 
+Figure \@ref(fig:biasramp) shows the bias correction by scenario in krill.
+
+
+```{r biasramp,  warning=FALSE, message=FALSE, fig.cap="Bias correction by scenario"}
+out1.1 <- r4ss::SS_fitbiasramp(base.model1.1, plot = TRUE, print = TRUE)
+out1.2 <- r4ss::SS_fitbiasramp(base.model1.2, plot = TRUE, print = TRUE)
+out1.3 <- r4ss::SS_fitbiasramp(base.model1.3, plot = TRUE, print = TRUE)
+out1.4 <- r4ss::SS_fitbiasramp(base.model1.4, plot = TRUE, print = TRUE)
+out1.5 <- r4ss::SS_fitbiasramp(base.model1.5, plot = TRUE, print = TRUE)
+out1.6 <- r4ss::SS_fitbiasramp(base.model1.6, plot = TRUE, print = TRUE)
+out1.7 <- r4ss::SS_fitbiasramp(base.model1.7, plot = TRUE, print = TRUE)
+```
+
 
 ```{r hrate, eval=FALSE, warning=FALSE, message=FALSE, fig.cap="Harves rate by scenario in krill overtime"}
 
@@ -1608,17 +1720,71 @@ ggsave("Figs/acf_recruitment.png",
        height = 5,
        dpi    = 300)
 ```
-Figure \@ref(fig:biasramp) shows the bias correction by scenario in krill.
 
-```{r biasramp, eval=FALSE, warning=FALSE, message=FALSE, fig.cap="Bias correction by scenario"}}
-out1.1 <- r4ss::SS_fitbiasramp(base.model1.1, plot = TRUE, print = TRUE)
-out1.2 <- r4ss::SS_fitbiasramp(base.model1.2, plot = TRUE, print = TRUE)
-out1.3 <- r4ss::SS_fitbiasramp(base.model1.3, plot = TRUE, print = TRUE)
-out1.4 <- r4ss::SS_fitbiasramp(base.model1.4, plot = TRUE, print = TRUE)
-out1.5 <- r4ss::SS_fitbiasramp(base.model1.5, plot = TRUE, print = TRUE)
-out1.6 <- r4ss::SS_fitbiasramp(base.model1.6, plot = TRUE, print = TRUE)
-out1.7 <- r4ss::SS_fitbiasramp(base.model1.7, plot = TRUE, print = TRUE)
+
+This Figure \@ref(fig:index2) shows standardized time series of input indices used in four different model scenarios (s1.1 to s1.4) for the stock assessment of Antarctic krill in Subarea 48.1.
+
+```{r index2, fig.height=7, fig.width=9, fig.cap= "Standardized indices of krill abundance used as input in four model scenarios (s1.1 to s1.4), representing fishery-dependent (FISHERY) and fishery-independent (SURVEY) data across five spatial strata: Bransfield Strait (BS), Elephant Island (EI), Gerlache Strait (GS), Joinville Island (JOIN), and South West (SW). Scenario s1.4 also incorporates a predator index (PREDATOR), reflecting the integration of ecosystem variables into the assessment framework"}
+
+models <- list(
+  s1.1 = base.model1.1, s1.2 = base.model1.2, s1.3 = base.model1.3,
+  s1.4 = base.model1.4, s1.5 = base.model1.5, s1.6 = base.model1.6,
+  s1.7 = base.model1.7
+)
+
+get_cpue <- function(model, scen) {
+  cp <- as.data.frame(model$cpue)
+  cp <- cp[!is.na(cp$Obs) & cp$Use > 0, ]        # solo datos usados en el ajuste
+  data.frame(
+    Scenario   = scen,
+    Fleet      = cp$Fleet,
+    Fleet_name = model$FleetNames[cp$Fleet],
+    Yr         = cp$Yr,
+    Obs        = cp$Obs,
+    Exp        = cp$Exp,
+    SE         = cp$SE
+  )
+}
+
+cpue_all <- purrr::imap_dfr(models, get_cpue)
+
+# Sin pseudo-indice ambiental (s1.5) ni flotas que no quieras mostrar
+cpue_all <- cpue_all[!grepl("ENV", cpue_all$Fleet_name), ]
+cpue_all$Fleet_name <- factor(cpue_all$Fleet_name,
+                              levels = unique(cpue_all$Fleet_name))
+
+# Observaciones: una sola vez por flota y año (tomadas de s1.1)
+obs <- subset(cpue_all, Scenario == "s1.1")
+obs$lo <- obs$Obs * exp(-1.96 * obs$SE)
+obs$hi <- obs$Obs * exp( 1.96 * obs$SE)
+
+colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
+            "s1.3" = "#bababa", "s1.4" = "#404040",
+            "s1.5" = "#0571b0", "s1.6" = "#1b9e77", "s1.7" = "#e6ab02") 
+
+p_idx <- ggplot() +
+  geom_errorbar(data = obs, aes(x = Yr, ymin = lo, ymax = hi),
+                width = 0.3, color = "grey40", linewidth = 0.4) +
+   geom_point(data = obs, aes(x = Yr, y = Obs),
+           shape = 4, color = "black", size = 1.8, stroke = 0.7) +
+  geom_line(data = cpue_all,
+            aes(x = Yr, y = Exp, color = Scenario, group = Scenario),
+            linewidth = 0.6) +
+  facet_wrap(~Fleet_name, scales = "free_y", ncol = 4) +
+  scale_color_manual(values = colors) +
+  labs(x = "", y = "Index (observed vs. expected)") +
+  theme_bw() +
+  theme(strip.background = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position  = "bottom",
+        axis.text        = element_text(size = 8),
+        axis.text.x      = element_text(angle = 90, hjust = 1)) +
+  guides(color = guide_legend(nrow = 1))
+
+ggsave("Figs/index_fits_all.png", p_idx, width = 9, height = 7, dpi = 600)
+p_idx
 ```
+
 
 This Figure \@ref(fig:pearson)  and Figure \@ref(fig:pearsontrend) shows the Pearson residuals and trends of predicted length distributions for krill across four modeling scenarios, each incorporating different levels of ecosystem complexity.
 
@@ -1730,11 +1896,9 @@ ggsave(
 )
 ```
 
-\end{landscape}
 
 \clearpage
 
-\begin{landscape}
 
 ```{r pearsontrend, fig.width=9, fig.height=7,  message=FALSE, warning=F, fig.cap="Pearson residual trend by scenario and fleet"}
 # 1. Calcular pendiente y p-value por Fleet y Modelo
@@ -1931,6 +2095,18 @@ SSplotRunstest(base.model1.5,
                add=T,
                plot = TRUE,
                plotdir = Figs)
+par(mfrow=c(3,4), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.6,
+               subplots = "cpue",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
+par(mfrow=c(3,4), mar=c(5,4,2,1))
+SSplotRunstest(base.model1.7,
+               subplots = "cpue",
+               add=T,
+               plot = TRUE,
+               plotdir = Figs)
 ```
 
 
@@ -1938,8 +2114,8 @@ SSplotRunstest(base.model1.5,
 
 By analyzing residual patterns and RMSE values, the model can be refined to improve the accuracy of mean length predictions, ultimately enhancing the reliability of stock assessment outcomes and management recommendations (Figure \@ref(fig:rmse1)).
 
-```{r rmse1, fig.height=8, fig.width=12, fig.cap="Time series of RMSE of length compositions by scenario"}
-par(mfrow=c(2,4), mar=c(5,4,2,1))
+```{r rmse1, fig.height=6, fig.width=9, fig.cap="Time series of RMSE of length compositions by scenario"}
+par(mfrow=c(2,4), mar=c(2,3,1,1))
 rmse1l <- SSplotJABBAres(base.model1.1,
                subplots = "len",
                add=T)
@@ -1964,8 +2140,8 @@ rmse7l <- SSplotJABBAres(base.model1.7,
 ```
 Figure \@ref(fig:rmse2) show RMSE to index.
 
-```{r rmse2, fig.height=8, fig.width=12, fig.cap="Time series of RMSE of CPUE compositions by scenario"}
-par(mfrow=c(2,4), mar=c(5,4,2,1))
+```{r rmse2, fig.height=6, fig.width=9, fig.cap="Time series of RMSE of CPUE compositions by scenario"}
+par(mfrow=c(2,4), mar=c(2,3,1,1))
 rmse1c <- SSplotJABBAres(base.model1.1,
                subplots = "cpue",
                add=T)
@@ -2015,7 +2191,7 @@ kbl_pdf(combined_rmse)
 
 The RMSE values for each scenario and type (index and length) are summarized in the table above. 
 
-```{r rmse3, fig.cap="RMSE and Residual values for krill model evaluation across scenarios (s1.1-s1.4), highlighting precision and prediction errors."}
+```{r rmse3, fig.cap="RMSE and Residual values for krill model evaluation across scenarios (s1.1-s1.7), highlighting precision and prediction errors."}
 
 extract_rmse <- function(rmse_obj, n = NULL) {
   x <- rmse_obj |> filter(indices != "Combined") |> pull(RMSE.perc)
@@ -2122,7 +2298,7 @@ difrmse <- ggplot(combined_rmse_delta, aes(x = Scenario, y = Delta, fill = Scena
   geom_col(width = 0.6, alpha = 0.85) +
   geom_hline(yintercept = 0, linewidth = 0.4) +
   geom_text(aes(label = sprintf("%+.1f%%", Delta),
-                vjust = ifelse(Delta >= 0, -0.5, 1.3)), size = 3) +
+                vjust = ifelse(Delta >= 0, 0.5, 1.3)), size = 3) +
   facet_wrap(~Metric) +
   scale_fill_manual(values = c("s1.2" = "#f4a582", "s1.3" = "#bababa",
                                 "s1.4" = "#404040", "s1.5" = "#0571b0",
@@ -2131,9 +2307,10 @@ difrmse <- ggplot(combined_rmse_delta, aes(x = Scenario, y = Delta, fill = Scena
   theme_bw() +
   theme(legend.position = "none", strip.background = element_blank(),
         panel.grid.minor = element_blank()) +
-  coord_flip(ylim = c(-12, 12))   # amplié un poco el límite inferior para que quepa s1.2
+  scale_x_discrete(limits = rev)+   # antes del coord_flip
+  coord_flip(ylim = c(-13, 13))   # amplié un poco el límite inferior para que quepa s1.2
 
-ggsave(file.path(Figs, "rmse_delta.png"), difrmse, width = 6.5, height = 3.5, dpi = 300)
+ggsave(file.path(Figs, "rmse_delta.png"), difrmse, width = 8, height = 3, dpi = 700)
 ```
 
 
@@ -2159,7 +2336,9 @@ directorios <- c("s1.1",
                  "s1.2",
                  "s1.3",
                  "s1.4",
-                 "s1.5")  
+                 "s1.5",
+                 "s1.6",
+                 "s1.7")  
 for (dir in directorios) {
   retro(
     dir = dir,
@@ -2209,13 +2388,27 @@ retroModels1.5 <- SSgetoutput(dirvec=file.path(dir1.5,
                                                   sep="")))
 
 retroSummary1.5 <- SSsummarize(retroModels1.5)
+#stest
+retroModels1.6 <- SSgetoutput(dirvec=file.path(dir1.6,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary1.6 <- SSsummarize(retroModels1.6)
+#stest
+retroModels1.7 <- SSgetoutput(dirvec=file.path(dir1.7,
+                                            "Retrospective",
+                                            paste("retro",0:-5,
+                                                  sep="")))
+
+retroSummary1.7 <- SSsummarize(retroModels1.7)
 
 ```
 
 Using `retro()` and `SSplotRetro()` functions, we obtain main results of retrospective analysis for spawning biomass (SSB) and recruitment (R0) for each scenario. The retrospective analysis is a diagnostic tool used to evaluate the consistency of model estimates over time by sequentially removing recent years of data and refitting the model. This helps identify potential biases or inconsistencies in the model's predictions. Retrospective analysis for spawning biomass (Figure \@ref(fig:retrossb))
 
 ```{r retrossb, fig.height=6, fig.width=6,, fig.cap="Retrospective analysis for spawning biomass by scenario in krill"}
-par(mfrow=c(3,2), mar=c(5,4,1,1)) 
+par(mfrow=c(3,3), mar=c(5,4,1,1)) 
 retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
             forecast = F,
@@ -2241,6 +2434,18 @@ retro1.4 <- SSplotRetro(retroSummary1.4,
             verbose=F,
             subplots = c("SSB"))
 retro1.5 <- SSplotRetro(retroSummary1.5,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            subplots = c("SSB"))
+retro1.6 <- SSplotRetro(retroSummary1.6,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            subplots = c("SSB"))
+retro1.7 <- SSplotRetro(retroSummary1.7,
             add=T,
             forecast = F,
             legend = T,
@@ -2251,7 +2456,7 @@ retro1.5 <- SSplotRetro(retroSummary1.5,
 Retrospective analysis for fishing mortality (Figure \@ref(fig:retrof))
 
 ```{r retrof, fig.height=6, fig.width=6, fig.cap="Retrospective analysis for fishing mortality by scenario in krill"}
-par(mfrow=c(2,3), mar=c(5,4,1,1)) 
+par(mfrow=c(3,3), mar=c(5,4,1,1)) 
 retro1.1 <- SSplotRetro(retroSummary1.1,
             add=T,
             forecast = F,
@@ -2285,6 +2490,22 @@ retro1.4 <- SSplotRetro(retroSummary1.4,
             ylim = c(0, 5),
             subplots = c("F"))
 retro1.5 <- SSplotRetro(retroSummary1.5,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            uncertainty = F,
+            ylim = c(0, 5),
+            subplots = c("F"))
+retro1.6 <- SSplotRetro(retroSummary1.6,
+            add=T,
+            forecast = F,
+            legend = T,
+            verbose=F,
+            uncertainty = F,
+            ylim = c(0, 5),
+            subplots = c("F"))
+retro1.7 <- SSplotRetro(retroSummary1.7,
             add=T,
             forecast = F,
             legend = T,
@@ -2303,6 +2524,8 @@ hc2 <- SShcbias(retroSummary1.2, quants = c("SSB", "F"), verbose = FALSE)
 hc3 <- SShcbias(retroSummary1.3, quants = c("SSB", "F"), verbose = FALSE)
 hc4 <- SShcbias(retroSummary1.4, quants = c("SSB", "F"), verbose = FALSE)
 hc5 <- SShcbias(retroSummary1.5, quants = c("SSB", "F"), verbose = FALSE)
+hc6 <- SShcbias(retroSummary1.6, quants = c("SSB", "F"), verbose = FALSE)
+hc7 <- SShcbias(retroSummary1.7, quants = c("SSB", "F"), verbose = FALSE)
 
 extract_hc <- function(hc, scenario) {
   hc |>
@@ -2315,9 +2538,11 @@ hc_all <- bind_rows(
   extract_hc(hc2, "s1.2"),
   extract_hc(hc3, "s1.3"),
   extract_hc(hc4, "s1.4"),
-  extract_hc(hc5, "s1.5")
+  extract_hc(hc5, "s1.5"),
+  extract_hc(hc6, "s1.6"),
+  extract_hc(hc7, "s1.7")
 ) |>
-  mutate(Scenario = factor(Scenario, levels = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")),
+  mutate(Scenario = factor(Scenario, levels = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7")),
          type     = factor(type, levels = c("SSB", "F")))
 
 hc_summary <- hc_all |>
@@ -2327,8 +2552,21 @@ hc_summary <- hc_all |>
                     .groups = "drop") |>
   dplyr::mutate(vj = ifelse(MohnsRho >= 0, -0.4, 1.3))
 
+
+## ---- Choose which threshold set applies to krill --------------------------
+## short-lived (recommended for krill, high M / fast turnover):
+hurtado_lo <- -0.22
+hurtado_hi <-  0.30
+
+## long-lived alternative (uncomment to use instead, e.g. as a sensitivity
+## check or if a reviewer wants the more conservative groundfish-style bound):
+# hurtado_lo <- -0.15
+# hurtado_hi <-  0.20
+
 p_hcbias <- ggplot(hc_all, aes(x = Scenario, y = Rho)) +
   geom_hline(yintercept = 0, color = "grey30", linewidth = 0.4) +
+  geom_hline(yintercept = c(hurtado_lo, hurtado_hi),
+             color = "grey50", linetype = "dashed", linewidth = 0.5) +
   geom_col(data = hc_summary, aes(x = Scenario, y = MohnsRho, fill = Scenario),
            width = 0.5, alpha = 0.8) +
   geom_jitter(width = 0.08, size = 1.6, alpha = 0.6, color = "grey20") +
@@ -2339,16 +2577,21 @@ p_hcbias <- ggplot(hc_all, aes(x = Scenario, y = Rho)) +
              inherit.aes = FALSE) +
   facet_wrap(~ type, ncol = 2) +
   scale_fill_manual(values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-                               "s1.3" = "#bababa", "s1.4" = "#404040",
-                               "s1.5" = "#0571b0"), guide = "none") +
+                                 "s1.3" = "#bababa", "s1.4" = "#404040",
+                                 "s1.5" = "#0571b0",
+                                 "s1.6" =  "#1b9e77",
+                               "s1.7" = "#e6ab02"),
+                    guide = "none") +
   labs(x = "", y = "Mohn's rho") +
   theme_few() +
-  theme(panel.grid.minor = element_blank(), strip.background = element_blank(),
+  theme(panel.grid.minor = element_blank(),
+        strip.background = element_blank(),
+        axis.text.x = element_text(angle = 90),
         legend.position = "none")+
   ylim(-2,2)
-#p_hcbias
-
-ggsave(file.path(Figs, "rhoplot.png"), p_hcbias, width = 6, height = 3, dpi = 300)
+p_hcbias
+ggsave(file.path(Figs, "rhoplot.png"),
+       p_hcbias, width = 6, height = 3, dpi = 700)
 ```
 
 ```{r hcbiastable}
@@ -2358,107 +2601,6 @@ kbl_pdf(hc_summary |>
         caption = "Mohn's rho and mean one-step-ahead forecast bias by scenario and quantity")
 ```
 
-### Test distribution on parameters
-
-The Figure \@ref(fig:desvpar) shows the distribution of estimated parameters (phase > 0) by scenario. The parameters were selected based on a direct review of the `control.ss` files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with "fixed" parameters.
-
-```{r desvpar, fig.width=6, fig.height=4, fig.cap="Distribution of estimated parameters (phase > 0) by scenario. Parameters were selected based on a direct review of the control.ss files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with 'fixed' parameters."}
-## ── Distribución de parámetros ESTIMADOS (phase > 0), por escenario ──
-## Basado en revisión directa de s1.1-s1.4/control.ss (no en SD>0, que puede
-## fallar por Hessiano no invertido y confundirse con "fijo")
-
-models <- list(s1.1 = base.model1.1, s1.2 = base.model1.2,
-               s1.3 = base.model1.3, s1.4 = base.model1.4,
-               s1.5 = base.model1.5)
-
-target_params <- c(
-  "NatM_uniform_Fem_GP_1",
-  "SR_LN(R0)",
-  "SR_LN(R0)_ENV_add",
-  "M2_pred1",
-  "LnQ_base_FISHERY(1)",
-  "LnQ_base_FISHERY(2)",
-  "LnQ_base_FISHERY(3)",
-  "LnQ_base_FISHERY(4)",
-  "LnQ_base_FISHERY(5)",
-  "LnQ_base_SURVEYBS(6)",
-  "LnQ_base_SURVEYEI(7)",
-  "LnQ_base_SURVEYGS(8)",
-  "LnQ_base_SURVEYJOIN(9)",
-  "LnQ_base_PREDATOR(11)",
-  "Size_inflection_FISHERY(1)",
-  "Size_95%width_FISHERY(1)",
-  "Size_inflection_SURVEY1(6)",
-  "Size_95%width_SURVEY1(6)",
-  "Size_inflection_PREDATOR(11)",
-  "Size_95%width_PREDATOR(11)"
-)
-
-## Phase > 0 es la fuente de verdad de "estimado" (viene del control.ss real,
-## no depende de si el Hessiano se pudo invertir)
-extract_param <- function(model, label) {
-  pars <- model$parameters
-  row  <- pars[pars$Label == label, ]
-  if (nrow(row) == 0 || is.na(row$Phase[1]) || row$Phase[1] <= 0) return(NULL)
-  data.frame(value = row$Value[1], sd = row$Parm_StDev[1])
-}
-
-## Curvas de densidad (phase>0 y SD válida)
-param_dens <- purrr::map_dfr(target_params, function(lab) {
-  purrr::map_dfr(names(models), function(sc) {
-    info <- extract_param(models[[sc]], lab)
-    if (is.null(info) || is.na(info$sd) || info$sd <= 0) return(NULL)
-    x <- seq(info$value - 4 * info$sd, info$value + 4 * info$sd, length.out = 200)
-    data.frame(parameter = lab, Scenario = sc, x = x,
-               density = dnorm(x, info$value, info$sd))
-  })
-})
-
-## Estimado (phase>0) pero SD no disponible (Hessiano no invertido): marcador
-## de aviso en vez de curva, para no confundirlo con "parámetro fijo"
-param_nohess <- purrr::map_dfr(target_params, function(lab) {
-  purrr::map_dfr(names(models), function(sc) {
-    info <- extract_param(models[[sc]], lab)
-    if (is.null(info) || !(is.na(info$sd) || info$sd <= 0)) return(NULL)
-    data.frame(parameter = lab, Scenario = sc, value = info$value)
-  })
-})
-
-# purrr::map_dfr() con TODOS los resultados internos en NULL devuelve un
-# tibble de 0 filas Y 0 columnas (sin "parameter"/"Scenario"/"value") en vez
-# de un tibble vacío con esas columnas — eso rompe geom_point() más abajo.
-# Si llega vacío aquí, en realidad es buena señal: todos tus parámetros con
-# phase>0 tuvieron SD válida (Hessiano bien invertido) en los 4 escenarios.
-if (nrow(param_nohess) == 0) {
-  param_nohess <- data.frame(parameter = character(0), Scenario = character(0),
-                             value = numeric(0))
-}
-
-colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-            "s1.3" = "#bababa", "s1.4" = "#404040",
-            "s1.5" = "#0571b0")
-
-p_params <- ggplot() +
-  geom_line(data = param_dens, aes(x = x, y = density, color = Scenario),
-            linewidth = 0.7) +
-  geom_point(data = param_nohess, aes(x = value, y = 0, color = Scenario),
-             shape = 4, size = 1.5, stroke = 1) +
-  facet_wrap(~ parameter, scales = "free", ncol = 5) +
-  scale_color_manual(values = colors, name = "Scenario") +
-  labs(x = "Parameter value", y = "Density",
-       caption = "x = estimated (phase>0) without SD (Hessiano no invertido)") +
-  theme_few() +
-  theme(
-    strip.text      = element_text(size = 5),
-    axis.text       = element_text(size = 6),
-    legend.position = "bottom"
-  )
-
-p_params
-
-ggsave("Figs/param_distributions_estimated.png", plot = p_params,
-       width = 13, height = 9, dpi = 300)
-```
 
 
 ```{r eval=FALSE}
@@ -2538,14 +2680,31 @@ hci4 = SSplotHCxval(retroSummary1.4,
 
 
 ```{r hcval5,fig.height=10, fig.width=5, fig.cap="Hindcast validation for s1.5 by fleet"}
-par(mfrow=c(6,2), mar=c(5,4,2,1))
+par(mfrow=c(5,2), mar=c(5,4,2,1))
 hci5 <- SSplotHCxval(retroSummary1.5,
-                      indexselect = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),  # excluye 11 = SURVEYENV
+                      indexselect = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
                       add = TRUE,
                       verbose = FALSE,
                       legendcex = 0.7)
 ```
 
+
+```{r hcval6,fig.height=10, fig.width=5, fig.cap="Hindcast validation for s1.6 by fleet"}
+par(mfrow=c(5,2), mar=c(5,4,2,1))
+hci6 <- SSplotHCxval(retroSummary1.6, 
+                      add = TRUE,
+                      verbose = FALSE,
+                      legendcex = 0.7)
+```
+
+
+```{r hcval7,fig.height=10, fig.width=5, fig.cap="Hindcast validation for s1.7 by fleet"}
+par(mfrow=c(5,2), mar=c(5,4,2,1))
+hci7 <- SSplotHCxval(retroSummary1.7,  
+                      add = TRUE,
+                      verbose = FALSE,
+                      legendcex = 0.7)
+```
 
 ```{r}
 extract_mase <- function(hci, scenario) {
@@ -2560,12 +2719,14 @@ mase_all <- bind_rows(
   extract_mase(hci2, "s1.2"),
   extract_mase(hci3, "s1.3"),
   extract_mase(hci4, "s1.4"),
-  extract_mase(hci5, "s1.5")
+  extract_mase(hci5, "s1.5"),
+  extract_mase(hci6, "s1.6"),
+  extract_mase(hci7, "s1.7")
 )
 
 index_order <- c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FISHERYSSIW",
                   "SURVEYBS", "SURVEYEI", "SURVEYGS", "PREDATOR")
-scen_order <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")
+scen_order <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7")
 
 mase_grid <- mase_all |>
   mutate(Index    = factor(Index, levels = index_order),
@@ -2608,7 +2769,7 @@ p_mase <- ggplot(mase_grid, aes(x = Scenario, y = Index, fill = fill_value)) +
     legend.position = "right"
   )
 
-#p_mase
+p_mase
 
 ggsave(file.path(Figs, "mase_hcxval_scenarios.png"), p_mase,
        width = 6.5, height = 5, dpi = 300)
@@ -2619,7 +2780,8 @@ A summary version of the same diagnostic, averaged across indices, is shown in F
 ```{r masesummary, fig.cap="Mean MASE by scenario, averaged across indices with n.eval > 2. The dashed line marks MASE = 1 (naive forecast threshold). FISHERYGS is excluded due to its extreme skill values relative to all other indices (see Figure \\@ref(fig:mase) for the full breakdown)."}
 mase_summary <- mase_all |>
   filter(n.eval > 2, Index != "FISHERYGS") |>   # excluye SURVEYEI (n.eval=1) y el outlier FISHERYGS
-  mutate(Scenario = factor(Scenario, levels = rev(c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")))) |>
+  mutate(Scenario = factor(Scenario, levels = rev(c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5",
+                                                    "s1.6", "s1.7")))) |>
   group_by(Scenario) |>
   summarise(mean_MASE = mean(MASE, na.rm = TRUE),
             sd_MASE   = sd(MASE, na.rm = TRUE),
@@ -2634,8 +2796,10 @@ ggplot(mase_summary, aes(x = Scenario, y = mean_MASE, fill = Scenario)) +
   geom_hline(yintercept = 1, linetype = "dashed", color = "black", linewidth = 0.4) +
   geom_text(aes(label = sprintf("%.2f", mean_MASE)), vjust = -0.6, size = 3.2) +
   scale_fill_manual(values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
-                               "s1.3" = "#bababa", "s1.4" = "#404040",
-                               "s1.5" = "blue")) +
+                                 "s1.3" = "#bababa", "s1.4" = "#404040",
+                                 "s1.5" = "#0571b0",
+                                 "s1.6" =  "#1b9e77", 
+                               "s1.7" = "#e6ab02")) +
   labs(x = "", y = "Mean MASE (± SD)") +
   theme_bw() +
   theme(legend.position = "none", panel.grid.minor = element_blank()) +
@@ -2668,7 +2832,9 @@ runs_all <- bind_rows(
   extract_runs(base.model1.2, "s1.2"),
   extract_runs(base.model1.3, "s1.3"),
   extract_runs(base.model1.4, "s1.4"),
-  extract_runs(base.model1.5, "s1.5")
+  extract_runs(base.model1.5, "s1.5"),
+  extract_runs(base.model1.6, "s1.6"),
+  extract_runs(base.model1.7, "s1.7")
 )
 
 index_order_runs <- c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FISHERYSSIW",
@@ -2677,8 +2843,8 @@ index_order_runs <- c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FIS
 
 full_grid <- tidyr::expand_grid(
   Index    = factor(index_order_runs, levels = index_order_runs),
-  Scenario = factor(c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5"),
-                     levels = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5")),
+  Scenario = factor(c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7"),
+                     levels = c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7")),
   Type     = factor(c("Abundance index", "Length composition"),
                      levels = c("Abundance index", "Length composition"))
 )
@@ -2711,13 +2877,13 @@ p_runs <- ggplot(runs_grid, aes(x = Scenario, y = Index)) +
 #p_runs
 
 ggsave(file.path(Figs, "runstest_scenarios.png"), p_runs,
-       width = 8, height = 5.5, dpi = 300)
+        width = 8, height = 5.5, dpi = 300)
 ```
 
 Failure counts by scenario and index can be tallied directly for the Results text with `table(runs_grid$Scenario, runs_grid$test, runs_grid$Type)`, once the diagnostic table above is reviewed.
 
 
-```{r eval=FALSE, echo = FALSE}
+```{r like1, eval=FALSE, echo = FALSE}
 <!-- ### Likelihood Profile  -->
 # 1. Identificar el directorio donde se encuentra el modelo base ----
 dirname.model.run <- here("s1.1")
@@ -2878,36 +3044,51 @@ Figure \@ref(fig:likecompo2) show the likelihood components for the four models.
 ```{r likecompo2, fig.cap="total likelihood composition by scenario"}
 df1 <- base.model1.1$likelihoods_used %>%
   dplyr::select(values) %>%
-  mutate(Componente = rownames(base.model1.1$likelihoods_used), Modelo = "s1.1")
+  mutate(Componente = rownames(base.model1.1$likelihoods_used), 
+         Modelo = "s1.1")
 df2 <- base.model1.2$likelihoods_used %>%
   dplyr::select(values) %>%
-  mutate(Componente = rownames(base.model1.2$likelihoods_used), Modelo = "s1.2")
+  mutate(Componente = rownames(base.model1.2$likelihoods_used), 
+         Modelo = "s1.2")
 df3 <- base.model1.3$likelihoods_used %>%
   dplyr::select(values) %>%
-  mutate(Componente = rownames(base.model1.3$likelihoods_used), Modelo = "s1.3")
+  mutate(Componente = rownames(base.model1.3$likelihoods_used), 
+         Modelo = "s1.3")
 df4 <- base.model1.4$likelihoods_used %>%
   dplyr::select(values) %>%
-  mutate(Componente = rownames(base.model1.4$likelihoods_used), Modelo = "s1.4")
+  mutate(Componente = rownames(base.model1.4$likelihoods_used),
+         Modelo = "s1.4")
 df5 <- base.model1.5$likelihoods_used %>%
   dplyr::select(values) %>%
-  mutate(Componente = rownames(base.model1.5$likelihoods_used), Modelo = "s1.5")
+  mutate(Componente = rownames(base.model1.5$likelihoods_used),
+         Modelo = "s1.5")
+df6 <- base.model1.6$likelihoods_used %>%
+  dplyr::select(values) %>%
+  mutate(Componente = rownames(base.model1.6$likelihoods_used),
+         Modelo = "s1.6")
+df7 <- base.model1.7$likelihoods_used %>%
+  dplyr::select(values) %>%
+  mutate(Componente = rownames(base.model1.7$likelihoods_used),
+         Modelo = "s1.7")
 
 df <- bind_rows(df1, 
                 df2,
                 df3,
                 df4, 
-                df5)
+                df5,
+                df6,
+                df7)
 ggplot(df %>% 
          filter(values > 1), aes(x = Componente, y = values, fill = Modelo)) +
   geom_col(position = position_dodge(), width = 0.7) +  
   theme_few() +
   coord_flip() +  
   scale_fill_manual(name= "Scenario",
-                    values = c("s1.1" = '#ca0020',
-                               "s1.2" = '#f4a582', 
-                               "s1.3" = '#bababa',
-                               "s1.4" = '#404040',
-                               "s1.5" = '#0571b0')) + 
+                    values = c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
+                                 "s1.3" = "#bababa", "s1.4" = "#404040",
+                                 "s1.5" = "#0571b0",
+                                 "s1.6" =  "#1b9e77", 
+                               "s1.7" = "#e6ab02")) + 
   labs(x = "",
        y = "Log-Normal Likelihood", 
        title = "") 
@@ -3016,24 +3197,61 @@ diag1.5 <- data.frame(
 )
 
 
-diag_all <- rbind(diag1.1,
-                  diag1.2, 
-                  diag1.3, 
-                  diag1.4,
-                  diag1.5)
+# Modelo s1.6
+diag1.6 <- data.frame(
+  Scenario = "s1.6",
+  Convergency = base.model1.6$maximum_gradient_component,
+  AIC = as.numeric(2 * dim(base.model1.6$estimated_non_dev_parameters)[1] +
+                     2 * base.model1.6$likelihoods_used[1, 1]),
+  Total_like = base.model1.6$likelihoods_used$values[rownames(base.model1.6$likelihoods_used) == "TOTAL"],
+  N_Params = as.numeric(2 * dim(base.model1.6$estimated_non_dev_parameters)[1]),
+  Survey_like = base.model1.6$likelihoods_used$values[rownames(base.model1.6$likelihoods_used) == "Survey"],
+  Length_comp_like = base.model1.6$likelihoods_used$values[rownames(base.model1.6$likelihoods_used) == "Length_comp"],
+  RMSE_index = rmse6c$RMSE.perc[rmse6c$indices == "Combined"],
+  RMSE_length = rmse6l$RMSE.perc[rmse6l$indices == "Combined"],
+  MASE = mean(hci6$MASE, na.rm = TRUE),
+  Retro_Rho_ssb = get_combined(hc6, "SSB", "Rho"),
+  Forecast_Rho_ssb = get_combined(hc6, "SSB", "ForcastRho"),
+  Rho_f = get_combined(hc6, "F", "Rho"),
+  Forecast_Rho_f = get_combined(hc6, "F", "ForcastRho")
+)
+
+# Modelo s1.7
+diag1.7 <- data.frame(
+  Scenario = "s1.7",
+  Convergency = base.model1.7$maximum_gradient_component,
+  AIC = as.numeric(2 * dim(base.model1.7$estimated_non_dev_parameters)[1] +
+                     2 * base.model1.7$likelihoods_used[1, 1]),
+  Total_like = base.model1.7$likelihoods_used$values[rownames(base.model1.7$likelihoods_used) == "TOTAL"],
+  N_Params = as.numeric(2 * dim(base.model1.7$estimated_non_dev_parameters)[1]),
+  Survey_like = base.model1.7$likelihoods_used$values[rownames(base.model1.7$likelihoods_used) == "Survey"],
+  Length_comp_like = base.model1.7$likelihoods_used$values[rownames(base.model1.7$likelihoods_used) == "Length_comp"],
+  RMSE_index = rmse7c$RMSE.perc[rmse7c$indices == "Combined"],
+  RMSE_length = rmse7l$RMSE.perc[rmse7l$indices == "Combined"],
+  MASE = mean(hci7$MASE, na.rm = TRUE),
+  Retro_Rho_ssb = get_combined(hc7, "SSB", "Rho"),
+  Forecast_Rho_ssb = get_combined(hc7, "SSB", "ForcastRho"),
+  Rho_f = get_combined(hc7, "F", "Rho"),
+  Forecast_Rho_f = get_combined(hc7, "F", "ForcastRho")
+)
+
+diag_all <- rbind(diag1.1, diag1.2, diag1.3, diag1.4,
+                  diag1.5, diag1.6, diag1.7)
 
 diag_tidy <- diag_all |>
   pivot_longer(cols = -Scenario, names_to = "Description", values_to = "Value") |>
   pivot_wider(names_from = Scenario, values_from = Value)
 
-diag_tidy[, 2:5] <- lapply(diag_tidy[, 2:5], function(x) as.numeric(format(round(x, 3), nsmall = 3)))
+# ahora hay 7 escenarios: columnas 2 a 8
+diag_tidy[, 2:8] <- lapply(diag_tidy[, 2:8], function(x)
+  as.numeric(format(round(x, 3), nsmall = 3)))
 ```
 
 
 
 ```{r eval=FALSE}
 diag_pub <- diag_tidy |>
-  mutate(across(c(s1.1, s1.2, s1.3, s1.4, s1.5), ~ ifelse(
+  mutate(across(c(s1.1, s1.2, s1.3, s1.4, s1.5, s1.6, s1.7), ~ ifelse(
     Description == "Convergency",
     formatC(.x, digits = 3, format = "f"),
     formatC(.x, digits = 2, format = "f")
@@ -3063,33 +3281,12 @@ write_csv(diag_pub, file.path(outdir,
 As shown in Table \@ref(tab:parametercomparison), the models differ in key parameter estimates and likelihood contributions.
 
 ```{r parametercomparison, warning=FALSE, message=FALSE}
-#read in all model runs
-#note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist <- SSgetoutput(keyvec = NULL,
-                       dirvec = c(dir1.1,
-                                  dir1.2,
-                                  dir1.3,
-                                  dir1.4,
-                                  dir1.5),
-                       getcovar = F)
-summaryoutputall <- SSsummarize(biglist)
 
-legend.labels <- c('s1.1','s1.2','s1.3', 's1.4', 's1.5')
-
-#read in all model runs
-#note if cover=T you need a hessian; if covar=F you do not need a hessian
-biglist <- SSgetoutput(keyvec = NULL, dirvec = c(dir1.1,
-                                                 dir1.2,
-                                                 dir1.3,
-                                                 dir1.4,
-                                                 dir1.5),	getcovar = F)
-
-#create summary of model runs from list above
-summaryoutput <- SSsummarize(biglist)
+legend.labels <- c('s1.1','s1.2','s1.3', 's1.4', 's1.5', 's1.6', 's1.7')
 
 # Crear tabla con SStableComparisons
 tablelike <- SStableComparisons(
-  summaryoutput,
+  mysummary,
   likenames = c("TOTAL", "Survey", "Length_comp", "Age_comp", "priors", "Size_at_age"), 
   names = c("Recr_Virgin", "R0", "SSB_Virg", "Bratio_2020", "SPRratio_2020"),
   digits = NULL,
@@ -3112,65 +3309,112 @@ kbl_pdf(table_clean, font = 8,
 
 ```
 
-### Statistics analisys differences bewteen models
-
-To evaluate the residual behavior across model scenarios, we computed residuals as the difference between observed and expected values (`residual = Obs - Exp`). Basic statistics, including sample size (`n()`), mean (`mean()`), and standard deviation (`sd()`), were calculated for each combination of model and type. To test the normality of residuals, we applied the Shapiro-Wilk test (`shapiro.test()`) [@shapiro1965analysis], which is appropriate for small to moderate sample sizes. Temporal autocorrelation was assessed using the Ljung-Box test (`Box.test()` [@ljung1978measure] with `type = "Ljung-Box"` and `lag = 10`), evaluating the null hypothesis of independence across lags. To detect heteroscedasticity, we used the Breusch-Pagan test (`bptest()` from the `lmtest` package) [@breusch1979simple], fitting a linear model of residuals against year (`residual ~ Yr`) and testing for non-constant variance in the residuals. These diagnostics provide insight into the validity of model assumptions across different scenarios.
 
 
-```{r message=FALSE, warning=FALSE}
-resid_all <- resid_all %>%
-  mutate(residual = Obs - Exp)
+### Test distribution on parameters
 
-# Estadísticas básicas
-resid_stats <- resid_all %>%
-  dplyr::group_by(type, model) %>%
-  dplyr::summarise(
-    N = n(),
-    Mean = mean(residual, na.rm = TRUE),
-    SD = sd(residual, na.rm = TRUE),
-    .groups = "drop"
+The Figure \@ref(fig:desvpar) shows the distribution of estimated parameters (phase > 0) by scenario. The parameters were selected based on a direct review of the `control.ss` files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with "fixed" parameters.
+
+```{r desvpar, fig.width=6, fig.height=7, fig.cap="Distribution of estimated parameters (phase > 0) by scenario. Parameters were selected based on a direct review of the control.ss files for each scenario, rather than relying on SD > 0, which can fail due to a non-invertible Hessian and may be confused with 'fixed' parameters."}
+## ── Distribución de parámetros ESTIMADOS (phase > 0), por escenario ──
+## Basado en revisión directa de s1.1-s1.4/control.ss (no en SD>0, que puede
+## fallar por Hessiano no invertido y confundirse con "fijo")
+
+models <- list(s1.1 = base.model1.1, s1.2 = base.model1.2,
+               s1.3 = base.model1.3, s1.4 = base.model1.4,
+               s1.5 = base.model1.5,
+               s1.6 = base.model1.6,
+               s1.7 = base.model1.7)
+
+target_params <- c(
+  "NatM_uniform_Fem_GP_1",
+  "SR_LN(R0)",
+  "SR_LN(R0)_ENV_add",
+  "M2_pred1",
+  "LnQ_base_FISHERY(1)",
+  "LnQ_base_FISHERY(2)",
+  "LnQ_base_FISHERY(3)",
+  "LnQ_base_FISHERY(4)",
+  "LnQ_base_FISHERY(5)",
+  "LnQ_base_SURVEYBS(6)",
+  "LnQ_base_SURVEYEI(7)",
+  "LnQ_base_SURVEYGS(8)",
+  "LnQ_base_SURVEYJOIN(9)",
+  "LnQ_base_PREDATOR(11)",
+  "Size_inflection_FISHERY(1)",
+  "Size_95%width_FISHERY(1)",
+  "Size_inflection_SURVEY1(6)",
+  "Size_95%width_SURVEY1(6)",
+  "Size_inflection_PREDATOR(11)",
+  "Size_95%width_PREDATOR(11)"
+)
+
+## Phase > 0 es la fuente de verdad de "estimado" (viene del control.ss real,
+## no depende de si el Hessiano se pudo invertir)
+extract_param <- function(model, label) {
+  pars <- model$parameters
+  row  <- pars[pars$Label == label, ]
+  if (nrow(row) == 0 || is.na(row$Phase[1]) || row$Phase[1] <= 0) return(NULL)
+  data.frame(value = row$Value[1], sd = row$Parm_StDev[1])
+}
+
+## Curvas de densidad (phase>0 y SD válida)
+param_dens <- purrr::map_dfr(target_params, function(lab) {
+  purrr::map_dfr(names(models), function(sc) {
+    info <- extract_param(models[[sc]], lab)
+    if (is.null(info) || is.na(info$sd) || info$sd <= 0) return(NULL)
+    x <- seq(info$value - 4 * info$sd, info$value + 4 * info$sd, length.out = 200)
+    data.frame(parameter = lab, Scenario = sc, x = x,
+               density = dnorm(x, info$value, info$sd))
+  })
+})
+
+## Estimado (phase>0) pero SD no disponible (Hessiano no invertido): marcador
+## de aviso en vez de curva, para no confundirlo con "parámetro fijo"
+param_nohess <- purrr::map_dfr(target_params, function(lab) {
+  purrr::map_dfr(names(models), function(sc) {
+    info <- extract_param(models[[sc]], lab)
+    if (is.null(info) || !(is.na(info$sd) || info$sd <= 0)) return(NULL)
+    data.frame(parameter = lab, Scenario = sc, value = info$value)
+  })
+})
+
+# purrr::map_dfr() con TODOS los resultados internos en NULL devuelve un
+# tibble de 0 filas Y 0 columnas (sin "parameter"/"Scenario"/"value") en vez
+# de un tibble vacío con esas columnas — eso rompe geom_point() más abajo.
+# Si llega vacío aquí, en realidad es buena señal: todos tus parámetros con
+# phase>0 tuvieron SD válida (Hessiano bien invertido) en los 4 escenarios.
+if (nrow(param_nohess) == 0) {
+  param_nohess <- data.frame(parameter = character(0), Scenario = character(0),
+                             value = numeric(0))
+}
+
+colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
+                                 "s1.3" = "#bababa", "s1.4" = "#404040",
+                                 "s1.5" = "#0571b0",
+                                 "s1.6" =  "#1b9e77", "s1.7" = "#e6ab02")
+
+p_params <- ggplot() +
+  geom_line(data = param_dens, aes(x = x, y = density, color = Scenario),
+            linewidth = 0.7) +
+  geom_point(data = param_nohess, aes(x = value, y = 0, color = Scenario),
+             shape = 4, size = 1.5, stroke = 1) +
+  facet_wrap(~ parameter, scales = "free", ncol = 3) +
+  scale_color_manual(values = colors, name = "Scenario") +
+  labs(x = "Parameter value", y = "Density") +
+  theme_few() +
+  theme(
+    strip.text      = element_text(size = 8),
+    axis.text       = element_text(size = 6),
+    legend.position = "bottom"
   )
 
-# Shapiro-Wilk (normalidad)
-shapiro_p <- resid_all %>%
-  dplyr::group_by(type, model) %>%
-  dplyr::summarise(
-    shapiro_p = ifelse(n() > 3, shapiro.test(residual)$p.value, NA),
-    .groups = "drop"
-  )
+p_params
 
-# Ljung-Box (autocorrelación temporal)
-ljung_p <- resid_all %>%
-  dplyr::group_by(type, model) %>%
-  dplyr::summarise(
-    ljung_p = ifelse(n() > 10, Box.test(residual, lag = 10, type = "Ljung-Box")$p.value, NA),
-    .groups = "drop"
-  )
-
-# Breusch-Pagan (heterocedasticidad)
-bp_p <- resid_all %>%
-  dplyr::group_by(type, model) %>%
-  dplyr::summarise(
-    bp_p = ifelse(n() > 3, bptest(lm(residual ~ Yr, data = cur_data()))$p.value, NA),
-    .groups = "drop"
-  )
-
+ggsave("Figs/param_distributions_estimated.png", plot = p_params,
+       width = 7, height = 8, dpi = 600)
 ```
 
-As shown in Table \@ref(tab:residualsummary), the residuals exhibit different statistical properties across model scenarios.
-
-
-```{r residualsummary, message=FALSE, warning=FALSE}
-tabla_resumen <- resid_stats %>%
-  left_join(shapiro_p, by = c("type", "model")) %>%
-  left_join(ljung_p, by = c("type", "model")) %>%
-  left_join(bp_p, by = c("type", "model")) %>%
-  mutate(across(where(is.numeric), ~ round(.x, 5)))
-
-kbl_pdf(tabla_resumen, digits = 5, align = "c",
-        caption = "Summary statistics and residual diagnostic tests by type and model") %>%
-  column_spec(1, bold = TRUE)
-```
 
 \newpage 
 

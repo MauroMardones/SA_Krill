@@ -75,6 +75,8 @@ scenarios/
 ~$*.docx
 *.html
 index_files*/
+Ejercicios*/
+Claude outputs*/
 
 # ============================================================
 # Data and figure outputs
@@ -97,7 +99,6 @@ outputs/
 # System
 # ============================================================
 .DS_Store
-Ejercicios*/
-Claude outputs*/
+
 *.md.bak
 

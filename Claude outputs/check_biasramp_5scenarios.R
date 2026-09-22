@@ -25,7 +25,9 @@ models <- list(
   s1.2 = base.model1.2,
   s1.3 = base.model1.3,
   s1.4 = base.model1.4,
-  s1.5 = base.model1.5
+  s1.5 = base.model1.5,
+  s1.6 = base.model1.6,
+  s1.7 = base.model1.7
 )
 
 # ── 1) Valores ACTUALES de la rampa (los que están hoy en cada control.ss) ──
@@ -105,3 +107,23 @@ print(comparison)
 # SÍ puede (y normalmente DEBE) diferir entre escenarios, porque depende del
 # patrón de varianza de los recdevs propio de cada modelo -- no rompe la
 # comparabilidad estructural que hemos mantenido para el resto de los parámetros.
+
+
+
+
+library(r4ss)
+
+models <- list(
+  s1.1 = base.model1.1, s1.2 = base.model1.2, s1.3 = base.model1.3,
+  s1.4 = base.model1.4, s1.5 = base.model1.5, s1.6 = base.model1.6,
+  s1.7 = base.model1.7
+)
+
+dir.create("Figs/biasramp", showWarnings = FALSE)
+
+for (nm in names(models)) {
+  png(sprintf("Figs/biasramp/biasramp_%s.png", nm), width = 700, height = 900)
+  SS_fitbiasramp(replist = models[[nm]], plot = TRUE, print = FALSE,
+                 altmethod = "nlminb")
+  dev.off()
+}
