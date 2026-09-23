@@ -114,6 +114,7 @@ dir1.4 <- here::here("s1.4") # s1.1 predator and env
 dir1.5 <- here::here("s1.5") # s1.3 w/ env as index
 dir1.6 <- here::here("s1.6") # s1.4 w/ env in k
 dir1.7 <- here::here("s1.7") # s1.4 w/ env in k and predator 
+#dircorr <- here::here("ss3_flotas_corregidas")
 Figs <- here::here("Figs")
 outdir <- here::here("outputs")
 
@@ -220,7 +221,7 @@ r4ss::run(
 )
 # s1.7
 r4ss::run(
-  dir = dir1.7,
+  dir = dircorr,
   exe = "ss_osx",
   skipfinished = FALSE, 
   show_in_console = TRUE 
@@ -257,6 +258,7 @@ base.model1.6 <- SS_output(dir=dir1.6,
 base.model1.7 <- SS_output(dir=dir1.7,
                         covar=T,
                         forecast=T)
+
 ```
 
 
@@ -1114,7 +1116,7 @@ alloutput_abs <- ggplot(
 
 ggsave(alloutput_abs, filename = "Figs/popvar_scenarios_absolute_2.png",
        width = 5, height = 5, units = "in", dpi = 700)
-#alloutput_abs
+alloutput_abs
 ```
 
 ```{r eval=FALSE}

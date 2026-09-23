@@ -185,12 +185,12 @@
 2	1	0	0	0	0	#	FISHERYEI
 3	1	0	0	0	0	#	FISHERYGS
 4	1	0	0	0	0	#	FISHERYJOIN
-5	1	0	0	0	0	#	FISHERYSSIW
+5	1	0	0	0	0	#	FISHERYSSWI
 6	1	0	0	0	0	#	SURVEYBS
 7	1	0	0	0	0	#	SURVEYEI
 8	1	0	0	0	0	#	SURVEYGS
 9	1	0	0	0	0	#	SURVEYJOIN
-10 1	0	0	0	0	#	SURVEYSSIW
+10 1	0	0	0	0	#	SURVEYSSWI
 #11 1	0	1	0	0	#	PREDATOR
 -9999 0 0 0 0 0                                               
 #
@@ -210,11 +210,11 @@
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(6)	
 -7	25	1.1	1.1	0.5	1	2	0	0	0	0	0	0	0	#	LnQ_base_SURVEYEI(7)	
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(7)	
--7	25	1.1	1.1	0.5	1	2	0	0	0	0	0	0	0	#	LnQ_base_SURVEYGS(8)	
+-7	25	1.1	1.1	0.5	1	-1	0	0	0	0	0	0	0	#	LnQ_base_SURVEYGS(8)  (fixed: only 2 obs, 2000 & 2019)
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(8)	
 -7	25	1.1	1.1	0.5	1	2	0	0	0	0	0	0	0	#	LnQ_base_SURVEYJOIN(9)	
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(9)	
--7  25  1.1	1.1  0.5  1  -1  0  0  0  0  0  0  0  # LnQ_base_SURVEYSSIW(10)	
+-7	25	1.1	1.1	0.5	1	2	0	0	0	0	0	0	0	#	LnQ_base_SURVEYSSWI(10)
 #0	0.5	0	0.05	1	0	-4	0	0	0	0	0	0	0	#	Q_extraSD_SURVEY(10)	
 #-7	25	1	0	0	0	1	0	0	0	0	0	0	0	#	LnQ_base_PREDATOR(11)	
 #0	0.5	0	0.05	1	0	4	0	0	0	0	0	0	0	#	Q_extraSD_PREDATOR(11)
@@ -244,12 +244,12 @@
 1	0	0	0	#		FISHERYEI
 15	0	0	1	#		FISHERYGS (mirror BS fleet 1)
 1	0	0	0	#		FISHERYJOIN
-1	0	0	0	#		FISHERYSSIW
+1	0	0	0	#		FISHERYSSWI
 1	0	0	0	#		SURVEYBS
 1	0	0	0	#		SURVEYEI
 1	0	0	0	#		SURVEYGS
 1	0	0	0	#		SURVEYJOIN
-1	0	0	0	#		SURVEYSSIW
+1	0	0	0	#		SURVEYSSWI
 #1	0	0	0	#		PREDATOR                                            
 #
 #_age_selex_patterns
@@ -275,12 +275,12 @@
 0	0	0	0	#		FISHERYEI
 0	0	0	0	#		FISHERYGS
 0	0	0	0	#		FISHERYJOIN
-0	0	0	0	#		FISHERYSSIW
+0	0	0	0	#		FISHERYSSWI
 0	0	0	0	#		SURVEYBS
 0	0	0	0	#		SURVEYEI
 0	0	0	0	#		SURVEYGS
 0	0	0	0	#		SURVEYJOIN
-0	0	0	0	#		SURVEYSSIW
+0	0	0	0	#		SURVEYSSWI
 #0	0	0	0	#		PREDATOR                                               
 #
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name
@@ -300,21 +300,21 @@
 #	1	FISHERY	LenSelex														
 0.01	8	3.5	3.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(5)		
 0.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(5)		
-#	2	SURVEY1	LenSelex														
-1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(6)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(6)		
-#	2	SURVEY1	LenSelex														
-1	7	3	3	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(7)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(7)		
-#	2	SURVEY1	LenSelex														
-1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(8)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(8)		
-#	2	SURVEY1	LenSelex														
-1	7	3	3	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(9)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(9)		
-#	2	SURVEY1	LenSelex														
-1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEY1(10)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEY1(10)
+#	1	SURVEY	LenSelex														
+1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYBS(6)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYBS(6)		
+#	1	SURVEY	LenSelex														
+1	7	3	3	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYEI(7)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYEI(7)		
+#	1	SURVEY	LenSelex														
+1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYGS(8)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYGS(8)		
+#	1	SURVEY	LenSelex														
+1	7	3	3	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYJOIN(9)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYJOIN(9)		
+#	1	SURVEY	LenSelex														
+1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYSSWI(10)		
+1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYSSWI(10)
 #	2	PREDATOR	LenSelex														
 #0	3	0.2	0.2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_PREDATOR(11)		
 #0	3	0.2 0.2	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_PREDATOR(11)		   
@@ -340,12 +340,12 @@
 4     2          0.0199 # FISHERYEI
 4     3          0.0529 # FISHERYGS
 4     4          0.0217 # FISHERYJOIN
-4     5          0.0599 # FISHERYSSIW
-4     6          0.0475 # SURVEYBS
+4     5          0.0599 # FISHERYSSWI
+4     6          0.0286 # SURVEYBS   (valor que antes tenia fleet 8, que contenia los datos BS)
 4     7          0.0565 # SURVEYEI
-4     8          0.0286 # SURVEYGS
+#4    8          0.0286 # SURVEYGS   (sin datos de talla)
 4     9          0.0179 # SURVEYJOIN
-#4    10          0.347818 # SURVEYSSIW (sin datos de talla, se deja comentado)
+4    10          0.0475 # SURVEYSSWI (valor que antes tenia fleet 6, que contenia los datos SSWI)
 -9999   1    0  # terminator
 #
 4 #_maxlambdaphase
@@ -362,8 +362,8 @@
 4 5 1 0.5 1
 4 6 1 0.5 1
 4 7 1 0.5 1
-4 8 1 0.5 1
 4 9 1 0.5 1
+4 10 1 0.5 1
 -9999  1  1  1  1  #  terminator
 #
 # lambdas (for info only; columns are phases)

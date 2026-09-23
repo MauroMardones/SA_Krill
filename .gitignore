@@ -83,6 +83,8 @@ Claude outputs*/
 # ============================================================
 Figs/
 outputs/
+ss3_flotas_corregidas/
+_backup_flotas_20260923/
 *.png
 *.xlsx
 *.csv
