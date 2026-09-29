@@ -1,6 +1,6 @@
 # Integrating environmental and predator effects into a length-based stock assessment of Antarctic krill (*Euphausia superba*)
 
-This repository contains the Stock Synthesis 3 (SS3 v3.30.21) assessment model for *Euphausia superba* (Antarctic krill) in Subarea 48.1, incorporating spatial heterogeneity and ecosystem variables (environmental covariates and predator-derived natural mortality). Eight model configurations are evaluated, ranging from a baseline spatial implicit model to fully ecosystem-informed scenarios, including three alternative formulations of the environmental link (recruitment, pseudo-index of recruitment deviations, and growth) and two predator components (penguins and baleen whales). Key functions and documentation are available at: [SA_Krill Documentation](https://mauromardones.github.io/SA_Krill/).
+This repository contains the Stock Synthesis 3 (SS3 v3.30.21) assessment model for *Euphausia superba* (Antarctic krill) in Subarea 48.1, incorporating spatial heterogeneity and ecosystem variables (environmental covariates and predator-derived natural mortality). Seven model configurations are evaluated, ranging from a baseline spatial implicit model to fully ecosystem-informed scenarios, including three alternative formulations of the environmental link (recruitment, pseudo-index of recruitment deviations, and growth). Key functions and documentation are available at: [SA_Krill Documentation](https://mauromardones.github.io/SA_Krill/).
 
 ## Project Structure
 
@@ -13,7 +13,6 @@ SA_Krill
 │── s1.5/           # Baseline + environmental covariate (Chl-a as pseudo-index of recruitment deviations)
 │── s1.6/           # Baseline + environmental covariate (Chl-a → von Bertalanffy K, additive)
 │── s1.7/           # Baseline + predator mortality + environmental covariate (Chl-a → von Bertalanffy K, additive)
-│── s1.8/           # s1.2 + baleen whales as a second predator (imposed M2 trend)
 │── Figs/           # Output figures
 │── outputs/        # Processed results and diagnostics
 │── MS2_Krill_revised.Rmd   # Main manuscript (R Markdown)
@@ -28,13 +27,12 @@ SA_Krill
 | Scenario | Predator (M₂) | Environment (Chl-a) | Environmental link formulation |
 |----------|:-------------:|:--------------------:|---------------------------------|
 | s1.1     | No            | No                    | —                                |
-| s1.2     | Penguins      | No                    | —                                |
+| s1.2     | Yes           | No                    | —                                |
 | s1.3     | No            | Yes                   | Forced additively in `SR_regime` (`SR_regime_ENV_add`) |
-| s1.4     | Penguins      | Yes                   | Forced additively in `SR_regime` (`SR_regime_ENV_add`) |
+| s1.4     | Yes           | Yes                   | Forced additively in `SR_regime` (`SR_regime_ENV_add`) |
 | s1.5     | No            | Yes                   | Pseudo-index of recruitment deviations (dedicated `SURVEYENV` fleet, CPUE units = 36) |
 | s1.6     | No            | Yes                   | Forced additively on the von Bertalanffy growth coefficient K (`VonBert_K_ENV_add`) |
-| s1.7     | Penguins      | Yes                   | Forced additively on the von Bertalanffy growth coefficient K (`VonBert_K_ENV_add`) |
-| s1.8     | Penguins + whales | No                | —                                |
+| s1.7     | Yes           | Yes                   | Forced additively on the von Bertalanffy growth coefficient K (`VonBert_K_ENV_add`) |
 
 All scenarios share the same recruitment variability setting, `SR_sigmaR = 0.8` (fixed, phase -4), so that differences among scenarios are not confounded by different sigmaR values.
 ### Environmental link formulations
@@ -45,13 +43,6 @@ Three alternative ways of incorporating the Chl-a covariate are tested: two acti
 - **s1.5 — pseudo-index of recruitment deviations**: the same Chl-a series is instead read as an observed index for a dedicated survey fleet (`SURVEYENV`), using CPUE data-unit code 36 (recdev), with its own observation error. This anchors the environmental signal independently of the annual recruitment deviations rather than letting it compete with them.
 - **s1.6 / s1.7 — additive on von Bertalanffy K**: the Chl-a series enters as a time-varying additive term on the growth coefficient (`env_var&link = 201`, environmental variable 1), so that K(y) = K + β·Chl-a(y), with β estimated as `VonBert_K_ENV_add` (bounds −0.1 to 0.1). The underlying assumption is faster growth in years of higher chlorophyll. The `SR_regime` environmental link is switched off in these scenarios. The upper bound of K was raised to 1.5. s1.6 is the growth-link counterpart of s1.3 (no predator) and s1.7 the counterpart of s1.4 (with predator M₂).
 
-### Predator formulations
-
-Predation is modelled with SS3 predator fleets (fleet type 4, available since v3.30.18). Each predator fleet adds an age-specific predation mortality M2 to the base natural mortality M1 (fixed at 1.1), distributed across ages by the fleet selectivity: M(a,y) = M1 + Σ_k M2_k(y)·sel_k(a).
-
-- **Penguins (s1.2, s1.4, s1.7, s1.8), fleet 11 `PREDATOR`**: `M2_pred1` is estimated with annual deviations (mean-reverting random walk, `dev_link = 5`). It is informed by a penguin abundance index entered as "predator effort" (index units = 2, with its own Q) and by diet length compositions, which estimate a logistic selectivity.
-- **Baleen whales (s1.8), fleet 12 `WHALES`**: no observed whale time series exists for the model area, so whale M2 is imposed rather than estimated, following the SS3 manual option for an external M2 series. `M2_pred2` has its base fixed at 0 and an additive link to environmental variable 2 (`env_var&link = 202`) with the slope fixed at 1, so that M2_whales(y) = env2(y). The series is 0.51 in 2007 and increases at 5% per year (0.23 in 1991, 0.95 in 2020), based on humpback whale rates of increase (Branch et al. 2011; Johannessen et al. 2022) and a whale:penguin consumption ratio of ~1.25:1 derived from Watters et al. (2013). Whale selectivity is an own logistic curve fixed at the s1.2 FISHERYEI estimates (inflection 4.4 cm, 95% width 1.24), so it is not coupled to any fishery fleet. As a consistency check, whale consumption reported in the `Predator_(M2)` section of `Report.sso` is compared against published estimates for humpback and fin whales (Johannessen et al. 2022; Biuw et al. 2024). The script `whale_george_ideas.R` reproduces the supporting figures (`Figs/whale_A` to `whale_F`).
-
 ## Reproducibility
 
 All SS3 model configuration files (`starter.ss`, `forecast.ss`, `control.ss`, `data.ss`) are available within each scenario folder. To run the models, the SS3 executable is required and can be downloaded directly from R using `r4ss`:
@@ -60,7 +51,7 @@ All SS3 model configuration files (`starter.ss`, `forecast.ss`, `control.ss`, `d
 r4ss::get_ss3_exe(dir = "s1.1", version = "v3.30.21")
 ```
 
-Run the same line for each scenario folder (`s1.2`, `s1.3`, `s1.4`, `s1.5`, `s1.6`, `s1.7`, `s1.8`).
+Run the same line for each scenario folder (`s1.2`, `s1.3`, `s1.4`, `s1.5`, `s1.6`, `s1.7`).
 
 ### R Packages
 
@@ -82,7 +73,7 @@ invisible(lapply(pkgs, library, character.only = TRUE))
 ### Run Models
 
 ```r
-directorios <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7", "s1.8")
+directorios <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7")
 
 for (dir in directorios) {
   r4ss::run(
@@ -106,7 +97,6 @@ dir1.4 <- here("s1.4")
 dir1.5 <- here("s1.5")
 dir1.6 <- here("s1.6")
 dir1.7 <- here("s1.7")
-dir1.8 <- here("s1.8")
 
 base.model1.1 <- SS_output(dir = dir1.1, covar = TRUE, forecast = TRUE)
 base.model1.2 <- SS_output(dir = dir1.2, covar = TRUE, forecast = TRUE)
@@ -115,7 +105,6 @@ base.model1.4 <- SS_output(dir = dir1.4, covar = TRUE, forecast = TRUE)
 base.model1.5 <- SS_output(dir = dir1.5, covar = TRUE, forecast = TRUE)
 base.model1.6 <- SS_output(dir = dir1.6, covar = TRUE, forecast = TRUE)
 base.model1.7 <- SS_output(dir = dir1.7, covar = TRUE, forecast = TRUE)
-base.model1.8 <- SS_output(dir = dir1.8, covar = TRUE, forecast = TRUE)
 ```
 
 ## Contributions
