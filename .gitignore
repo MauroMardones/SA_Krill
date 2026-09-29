@@ -52,6 +52,13 @@ s1.7/*
 !s1.7/control.ss
 !s1.7/data.ss
 
+
+s1.8/*
+!s1.8/starter.ss
+!s1.8/forecast.ss
+!s1.8/control.ss
+!s1.8/data.ss
+
 # Other scenario folders (not tracked)
 s01*/
 s1/

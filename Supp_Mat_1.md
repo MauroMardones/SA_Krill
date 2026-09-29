@@ -1,7 +1,7 @@
 ---
 title: "Supplementary Material 1"
 subtitle: "Reproducible Code to Output and Model Diagnostics for Antarctic Krill Stock Assessment"
-date:  "22 September, 2026"
+date:  "23 September, 2026"
 bibliography: bib/SA_krill.bib
 csl: bib/apa.csl
 #csl: icesjournal.csl
@@ -237,6 +237,7 @@ Length by age
 
 
 
+\begin{center}\includegraphics[width=\linewidth]{Figs/unnamed-chunk-8-1} \end{center}
 
 
 
@@ -593,13 +594,13 @@ Table \@ref(tab:combined_rmse) of RMSE values for each scenario and type (index 
 Scenario & RMSE\_index & RMSE\_length\\
 \midrule
 s1.1 & 69.1 & 13.7\\
-s1.2 & 60.8 & 12.3\\
-s1.3 & 68.9 & 13.6\\
-s1.4 & 67.8 & 13.0\\
-s1.5 & 68.3 & 13.2\\
+s1.2 & 63.0 & 12.5\\
+s1.3 & 68.9 & 13.7\\
+s1.4 & 69.0 & 13.4\\
+s1.5 & 71.5 & 13.3\\
 \addlinespace
 s1.6 & 67.8 & 13.9\\
-s1.7 & 67.6 & 13.0\\
+s1.7 & 69.3 & 13.3\\
 \bottomrule
 \end{tabular}}
 \endgroup{}
@@ -677,22 +678,22 @@ Mohn's rho and one-step-ahead forecast bias, summarized across retrospective pee
 \toprule
 Scenario & type & MohnsRho & ForecastRho\\
 \midrule
-s1.1 & SSB & -0.095 & -0.116\\
-s1.1 & F & -0.560 & 0.198\\
-s1.2 & SSB & -0.016 & -0.111\\
-s1.2 & F & 0.347 & 1.091\\
-s1.3 & SSB & -0.092 & -0.111\\
+s1.1 & SSB & -0.136 & -0.099\\
+s1.1 & F & -0.625 & 0.035\\
+s1.2 & SSB & -0.037 & -0.061\\
+s1.2 & F & -0.719 & -0.383\\
+s1.3 & SSB & -0.135 & -0.099\\
 \addlinespace
-s1.3 & F & -0.690 & -0.214\\
-s1.4 & SSB & -0.293 & -0.434\\
-s1.4 & F & -0.433 & -0.139\\
-s1.5 & SSB & -0.195 & -0.246\\
-s1.5 & F & -0.343 & 0.459\\
+s1.3 & F & -0.625 & 0.036\\
+s1.4 & SSB & -0.415 & -0.485\\
+s1.4 & F & -0.718 & -0.291\\
+s1.5 & SSB & -0.230 & -0.247\\
+s1.5 & F & -0.404 & 0.421\\
 \addlinespace
-s1.6 & SSB & 0.050 & 0.027\\
-s1.6 & F & 0.332 & 0.842\\
-s1.7 & SSB & -0.304 & -0.449\\
-s1.7 & F & 1.093 & 2.484\\
+s1.6 & SSB & 0.040 & 0.050\\
+s1.6 & F & 0.141 & 0.743\\
+s1.7 & SSB & -0.420 & -0.496\\
+s1.7 & F & 1.188 & 2.477\\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -839,16 +840,16 @@ As shown in Table \@ref(tab:parametercomparison), the models differ in key param
 \toprule
 Label & s1.1 & s1.2 & s1.3 & s1.4 & s1.5 & s1.6 & s1.7\\
 \midrule
-TOTAL\_like & 221.6530 & 209.4000 & 221.3090 & 565.43100 & 265.235 & 208.9150 & 564.81100\\
-Survey\_like & 82.0641 & 17.8335 & 81.8127 & 82.08210 & 112.116 & 66.2866 & 77.39640\\
-Length\_comp\_like & 124.3580 & 177.6570 & 124.4400 & 465.04800 & 127.811 & 124.0250 & 468.23800\\
-Parm\_priors\_like & 3.8220 & 2.7483 & 3.8460 & 3.27001 & 3.819 & 7.7911 & 3.79170\\
-Recr\_Virgin\_billions & 25133.0000 & 31012.4000 & 24834.8000 & 44761.50000 & 24307.300 & 17484.4000 & 44137.40000\\
+TOTAL\_like & 216.7810 & 223.9480 & 216.3860 & 556.35200 & 260.2380 & 205.2490 & 556.78100\\
+Survey\_like & 79.6837 & 29.5600 & 79.4165 & 81.50490 & 109.6760 & 64.4832 & 81.67160\\
+Length\_comp\_like & 121.7390 & 176.6390 & 121.8070 & 451.38300 & 125.0550 & 121.9000 & 450.60600\\
+Parm\_priors\_like & 3.9297 & 3.4117 & 3.9558 & 3.80777 & 3.9253 & 8.0349 & 4.02998\\
+Recr\_Virgin\_billions & 27662.6000 & 33334.3000 & 27367.5000 & 68335.30000 & 26764.0000 & 18252.2000 & 65156.50000\\
 \addlinespace
-SR\_LN(R0) & 23.9474 & 24.1577 & 23.9355 & 24.52460 & 23.914 & 23.5846 & 24.51060\\
-SSB\_Virgin & 2637080.0000 & 1495540.0000 & 2604340.0000 & 3282530.00000 & 2551500.000 & 1991450.0000 & 3156110.00000\\
-Bratio\_2020 & 1.0412 & 1.2645 & 1.0545 & 0.67514 & 1.222 & 1.0906 & 0.67749\\
-SPRratio\_2020 & 0.1457 & 0.1661 & 0.1452 & 0.07431 & 0.163 & 0.2061 & 0.07841\\
+SR\_LN(R0) & 24.0433 & 24.2299 & 24.0326 & 24.94770 & 24.0103 & 23.6276 & 24.90010\\
+SSB\_Virgin & 2867680.0000 & 2283820.0000 & 2836240.0000 & 5829760.00000 & 2779320.0000 & 2064830.0000 & 5577290.00000\\
+Bratio\_2020 & 0.8499 & 0.5373 & 0.8616 & 0.44836 & 1.0400 & 0.9573 & 0.44489\\
+SPRratio\_2020 & 0.1245 & 0.1385 & 0.1236 & 0.04131 & 0.1424 & 0.1886 & 0.04436\\
 \bottomrule
 \end{tabular}}
 \end{table}

@@ -114,6 +114,7 @@ dir1.4 <- here::here("s1.4") # s1.1 predator and env
 dir1.5 <- here::here("s1.5") # s1.3 w/ env as index
 dir1.6 <- here::here("s1.6") # s1.4 w/ env in k
 dir1.7 <- here::here("s1.7") # s1.4 w/ env in k and predator 
+dir1.8 <- here::here("s1.8") # s1.2 w/ whale
 #dircorr <- here::here("ss3_flotas_corregidas")
 Figs <- here::here("Figs")
 outdir <- here::here("outputs")
@@ -221,7 +222,7 @@ r4ss::run(
 )
 # s1.7
 r4ss::run(
-  dir = dircorr,
+  dir = dir1.8,
   exe = "ss_osx",
   skipfinished = FALSE, 
   show_in_console = TRUE 
@@ -256,6 +257,10 @@ base.model1.6 <- SS_output(dir=dir1.6,
                         forecast=T)
 #s1.7
 base.model1.7 <- SS_output(dir=dir1.7,
+                        covar=T,
+                        forecast=T)
+
+base.model1.8 <- SS_output(dir=dir1.8,
                         covar=T,
                         forecast=T)
 
@@ -364,73 +369,70 @@ p1_b
 Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020. Each panel represents a distinct stratum for either fishery-dependent (green), fishery-independent survey (orange), or predator-based (purple) observations. Density ridgelines illustrate variation in krill size structure across years. The red vertical line marks a recruit references length (3.6 cm) (Figure \@ref(fig:length)).
 
 ```{r length, warning=FALSE, fig.cap="Annual length-frequency distributions of Antarctic krill (Euphausia superba) across different data sources and spatial strata within Subarea 48.1 from 1991 to 2020."}
-
 dat_lencomp <- dat4$lencomp
 
-# ── Diagnóstico: muestra columnas reales (quitar comentario si hay problemas)
-# message("Columnas en dat1$lencomp: ", paste(names(dat_lencomp), collapse = ", "))
-
-# ── Compatibilidad multi-versión de r4ss:
-# Detecta la columna de flota sea cual sea su nombre y la normaliza a "FltSvy"
+# ── Compatibilidad multi-versión de r4ss: normalizar columna de flota a "FltSvy"
 posibles_fleet <- c("FltSvy", "Fleet", "fleet", "Flt", "flt", "FLT",
                     "FLT_SVY", "fltsvy")
 col_flota <- intersect(posibles_fleet, names(dat_lencomp))
 
 if (length(col_flota) == 0) {
-  # Último recurso: usar la 3ª columna (posición estándar SS3: Yr, Seas, Fleet...)
   col_flota <- names(dat_lencomp)[3]
   message("AVISO: columna de flota no detectada por nombre. ",
           "Usando columna 3 ('", col_flota, "'). ",
           "Columnas disponibles: ", paste(names(dat_lencomp), collapse = ", "))
 }
-
 if (col_flota[1] != "FltSvy") {
   dat_lencomp <- dplyr::rename(dat_lencomp, FltSvy = !!rlang::sym(col_flota[1]))
 }
 
-# ── Normalizar columna de año: r4ss >= 1.46 usa "year" en vez de "Yr"
+# ── Normalizar columna de año (r4ss >= 1.46 usa "year")
 if (!"Yr" %in% names(dat_lencomp) && "year" %in% names(dat_lencomp)) {
   dat_lencomp <- dplyr::rename(dat_lencomp, Yr = year)
 }
 
+# ── Nombres de flotas (estructura corregida, SSWI)
+niveles_flota <- c("FISHERYBS", "FISHERYEI", "FISHERYGS", "FISHERYJOIN", "FISHERYSSWI",
+                   "SURVEYBS",  "SURVEYEI",  "SURVEYGS",  "SURVEYJOIN",  "SURVEYSSWI",
+                   "PREDATOR")
+
+# ── Formato largo
 dat_long <- dat_lencomp %>%
   pivot_longer(cols = starts_with("l"),
                names_to = "Talla",
                values_to = "Frecuencia") %>%
-  mutate(Talla = as.numeric(sub("l", "", Talla))) %>%
-  mutate(FltSvy = dplyr::recode(FltSvy,
-                         `1` = "FISHERYBS",
-                         `2` = "FISHERYEI",
-                         `3` = "FISHERYGS",
-                         `4` = "FISHERYJOIN",
-                         `5` = "FISHERYSSIW",
-                         `6` = "SURVEYBS",
-                         `7` = "SURVEYEI",
-                         `8` = "SURVEYGS",
-                         `9` = "SURVEYJOIN",
-                         `10` = "SURVEYSSIW",
-                         `11` = "PREDATOR")) %>%
-  mutate(FltSvy = factor(FltSvy, levels = c("FISHERYBS", 
-                                            "FISHERYEI", 
-                                            "FISHERYGS",
-                                            "FISHERYJOIN", 
-                                            "FISHERYSSIW",
-                                            "SURVEYBS",
-                                            "SURVEYEI", 
-                                            "SURVEYGS", 
-                                            "SURVEYJOIN",
-                                            "SURVEYSSIW",
-                                            "PREDATOR"))) 
+  mutate(Talla = as.numeric(sub("l", "", Talla)),
+         FltSvy = niveles_flota[as.integer(FltSvy)],
+         FltSvy = factor(FltSvy, levels = niveles_flota)) %>%
+  filter(Frecuencia > 0) %>%
+  droplevels()          # quita flotas sin tallas (ej. SURVEYGS)
 
+# ── Talla media ponderada por frecuencia
 mean_talla <- dat_long %>%
   group_by(FltSvy) %>%
-  summarise(mean_Talla = mean(Talla, na.rm = TRUE))
+  summarise(mean_Talla = weighted.mean(Talla, w = Frecuencia, na.rm = TRUE),
+            .groups = "drop")
 
-
+# ── Expandir para histograma (x10 y redondeo: uncount requiere enteros)
 dat_expanded <- dat_long %>%
+  mutate(Frecuencia = round(Frecuencia * 10)) %>%
+  filter(Frecuencia > 0) %>%
   uncount(weights = Frecuencia)
 
+# ── Colores
+colores <- c("FISHERYBS"   = "#1b9e77",
+             "FISHERYEI"   = "#1b9e77",
+             "FISHERYGS"   = "#1b9e77",
+             "FISHERYJOIN" = "#1b9e77",
+             "FISHERYSSWI" = "#1b9e77",
+             "SURVEYBS"    = "#d95f02",
+             "SURVEYEI"    = "#d95f02",
+             "SURVEYGS"    = "#d95f02",
+             "SURVEYJOIN"  = "#d95f02",
+             "SURVEYSSWI"  = "#d95f02",
+             "PREDATOR"    = "#7570b3")
 
+# ── Gráfico
 p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
   geom_density_ridges(stat = "binline",
                       bins = 20,
@@ -438,29 +440,20 @@ p2 <- ggplot(dat_expanded, aes(x = Talla, y = as.factor(Yr), fill = FltSvy)) +
                       draw_baseline = FALSE,
                       col = "black",
                       alpha = 0.4) +
-  facet_wrap(~FltSvy, ncol = 11) +
-  geom_vline(data = mean_talla, aes(xintercept = mean_Talla), 
-             color = "red", 
-             size = 0.7,
+  facet_wrap(~FltSvy, ncol = nlevels(dat_long$FltSvy)) +
+  geom_vline(data = mean_talla, aes(xintercept = mean_Talla),
+             color = "red",
+             linewidth = 0.7,
              alpha = 0.5) +
-  scale_fill_manual(values = c("FISHERYBS" = '#1b9e77',  
-                               "FISHERYEI" = '#1b9e77',  
-                               "FISHERYGS" = '#1b9e77',
-                               "FISHERYJOIN" = '#1b9e77',  
-                               "FISHERYSSIW" = '#1b9e77',  
-                               "SURVEYBS" = '#d95f02',  
-                               "SURVEYEI" = '#d95f02',  
-                               "SURVEYGS" = '#d95f02',  
-                               "SURVEYJOIN" = '#d95f02',  
-                               "SURVEYSSIW" = '#d95f02',  
-                               "PREDATOR" = '#7570b3')) +  
+  scale_fill_manual(values = colores) +
   labs(title = "",
        x = "cm",
        y = "",
        fill = "Category") +
-  theme_minimal()+
+  theme_minimal() +
   theme(legend.position = "none",
         strip.text = element_text(size = 6))
+
 p2
 ```
 
@@ -1269,13 +1262,13 @@ ggsave(boxout, filename = "Figs/popvar_scenarios_boxplot.png",
 # Requiere los 4 objetos ya leídos con SS_output(covar=TRUE, forecast=TRUE):
 # base.model1.1, base.model1.2, base.model1.3, base.model1.4
 
-modelnames <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7")
-mycolors <- c("#ca0020", "#f4a582", "#bababa", "#404040", "#0571b0", "#1b9e77", "#e6ab02")
+modelnames <- c("s1.1", "s1.2", "s1.3", "s1.4", "s1.5", "s1.6", "s1.7", "s1.8")
+mycolors <- c("#ca0020", "#f4a582", "#bababa", "#404040", "#0571b0", "#1b9e77", "#e6ab02", "purple")
 
 # SSsummarize junta los derived_quants/timeseries de todos los modelos
 # en un solo objeto que SSplotComparisons sabe leer
 mysummary <- r4ss::SSsummarize(
-  list(base.model1.1, base.model1.2, base.model1.3, base.model1.4, base.model1.5, base.model1.6, base.model1.7)
+  list(base.model1.1, base.model1.2, base.model1.3, base.model1.4, base.model1.5, base.model1.6, base.model1.7, base.model1.8)
 )
 
 # Plot en pantalla (todas las figuras por default: SSB, Bratio, reclutas,
@@ -2307,7 +2300,7 @@ difrmse <- ggplot(combined_rmse_delta, aes(x = Scenario, y = Delta, fill = Scena
                                 "s1.6" =  "#1b9e77", "s1.7" = "#e6ab02")) +
   labs(x = "", y = "RMSE change vs. s1.1 (%)") +
   theme_bw() +
-  theme(legend.position = "none", strip.background = element_blank(),
+  theme(legend.position = "none", strip.background = element_blank(),           
         panel.grid.minor = element_blank()) +
   scale_x_discrete(limits = rev)+   # antes del coord_flip
   coord_flip(ylim = c(-13, 13))   # amplié un poco el límite inferior para que quepa s1.2
