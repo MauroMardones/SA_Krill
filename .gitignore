@@ -59,6 +59,13 @@ s1.8/*
 !s1.8/control.ss
 !s1.8/data.ss
 
+
+s1.9/*
+!s1.9/starter.ss
+!s1.9/forecast.ss
+!s1.9/control.ss
+!s1.9/data.ss
+
 # Other scenario folders (not tracked)
 s01*/
 s1/
@@ -110,4 +117,5 @@ _backup_flotas_20260923/
 .DS_Store
 
 *.md.bak
+
 

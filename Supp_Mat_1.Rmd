@@ -115,6 +115,7 @@ dir1.5 <- here::here("s1.5") # s1.3 w/ env as index
 dir1.6 <- here::here("s1.6") # s1.4 w/ env in k
 dir1.7 <- here::here("s1.7") # s1.4 w/ env in k and predator 
 dir1.8 <- here::here("s1.8") # s1.2 w/ whale
+dir1.9 <- here::here("s1.9") # s1.1 w/o CPUE (survey index only)
 #dircorr <- here::here("ss3_flotas_corregidas")
 Figs <- here::here("Figs")
 outdir <- here::here("outputs")
@@ -161,7 +162,9 @@ directorios <- c("s1.1",
                  "s1.4",
                  "s1.5",
                  "s1.6",
-                 "s1.7")  
+                 "s1.7",
+                 "s1.8",
+                 "s1.9")  
 
 for (dir in directorios) {
   r4ss::run(
@@ -222,6 +225,14 @@ r4ss::run(
 )
 # s1.7
 r4ss::run(
+  dir = dir1.7,
+  exe = "ss_osx",
+  skipfinished = FALSE, 
+  show_in_console = TRUE 
+)
+
+# s1.8
+r4ss::run(
   dir = dir1.8,
   exe = "ss_osx",
   skipfinished = FALSE, 
@@ -261,6 +272,10 @@ base.model1.7 <- SS_output(dir=dir1.7,
                         forecast=T)
 
 base.model1.8 <- SS_output(dir=dir1.8,
+                        covar=T,
+                        forecast=T)
+#s1.9
+base.model1.9 <- SS_output(dir=dir1.9,
                         covar=T,
                         forecast=T)
 
@@ -903,6 +918,8 @@ outps4 <- base.model1.4$timeseries[, cols] %>% mutate(Model = "s1.4")
 outps5 <- base.model1.5$timeseries[, cols] %>% mutate(Model = "s1.5")
 outps6 <- base.model1.6$timeseries[, cols] %>% mutate(Model = "s1.6")
 outps7 <- base.model1.7$timeseries[, cols] %>% mutate(Model = "s1.7")
+outps8 <- base.model1.8$timeseries[, cols] %>% mutate(Model = "s1.8")
+outps9 <- base.model1.9$timeseries[, cols] %>% mutate(Model = "s1.9")
 
 outps1$Model <- "s1.1"
 outps2$Model <- "s1.2"
@@ -911,8 +928,10 @@ outps4$Model <- "s1.4"
 outps5$Model <- "s1.5"
 outps6$Model <- "s1.6"
 outps7$Model <- "s1.7"
+outps8$Model <- "s1.8"
+outps9$Model <- "s1.9"
 
-outpsall <- rbind(outps1, outps2, outps3, outps4, outps5, outps6, outps7)
+outpsall <- rbind(outps1, outps2, outps3, outps4, outps5, outps6, outps7, outps8, outps9)
 outpsall_long <- outpsall |>
   pivot_longer(
     cols      = c(Bio_smry, SpawnBio, Recruit_0),
@@ -934,7 +953,8 @@ panel_order <- c("Summary Biomass (t)",
                  "Catch (t)")
 colors <- c("s1.1" = "#ca0020", "s1.2" = "#f4a582",
             "s1.3" = "#bababa", "s1.4" = "#404040",
-            "s1.5" = "#0571b0", "s1.6" = "#1b9e77", "s1.7" = "#e6ab02") 
+            "s1.5" = "#0571b0", "s1.6" = "#1b9e77", "s1.7" = "#e6ab02",
+            "s1.8" = "#d95f02", "s1.9" = "#7570b3") 
 theme_prod <- theme_bw() +
   theme(
     panel.grid.minor = element_blank(),
@@ -959,7 +979,9 @@ virgin_long <- dplyr::bind_rows(
   get_virgin(base.model1.4, "s1.4"),
   get_virgin(base.model1.5, "s1.5"),
   get_virgin(base.model1.6, "s1.6"),
-  get_virgin(base.model1.7, "s1.7")
+  get_virgin(base.model1.7, "s1.7"),
+  get_virgin(base.model1.8, "s1.8"),
+  get_virgin(base.model1.9, "s1.9")
 ) |>
   pivot_longer(cols = c(Bio_smry, SpawnBio, Recruit_0),
                names_to = "VarRaw", values_to = "Virgin") |>
@@ -1012,7 +1034,9 @@ pop_unc <- dplyr::bind_rows(
   get_pop_unc(base.model1.4, "s1.4"),
   get_pop_unc(base.model1.5, "s1.5"),
   get_pop_unc(base.model1.6, "s1.6"),
-  get_pop_unc(base.model1.7, "s1.7")
+  get_pop_unc(base.model1.7, "s1.7"),
+  get_pop_unc(base.model1.8, "s1.8"),
+  get_pop_unc(base.model1.9, "s1.9")
 ) |>
   dplyr::filter(Yr >= 1989, Yr <= 2020) |>
   dplyr::mutate(
