@@ -346,6 +346,7 @@
 #4    8          0.0286 # SURVEYGS   (sin datos de talla)
 4     9          0.0179 # SURVEYJOIN
 4    10          0.0475 # SURVEYSSWI (valor que antes tenia fleet 6, que contenia los datos SSWI)
+4    11         0.1052 # PREDATOR
 -9999   1    0  # terminator
 #
 4 #_maxlambdaphase
