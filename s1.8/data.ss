@@ -385,36 +385,36 @@
 2018	2	10	1794021	0.1905	#_	SURVEYSSWI	(West)
 2019	2	10	1051743	0.3559	#_	SURVEYSSWI	(West)
 2020	2	10	8838799	0.2562	#_	SURVEYSSWI	(West)
-1991	6	11	115236	0.4	#_	PREDATOR
-1992	6	11	142838	0.4	#_	PREDATOR
-1993	6	11	44156	0.4	#_	PREDATOR
-1994	6	11	71510	0.4	#_	PREDATOR
-1995	6	11	72388	0.4	#_	PREDATOR
-1996	6	11	85082	0.4	#_	PREDATOR
-1997	6	11	95356	0.4	#_	PREDATOR
-1998	6	11	82852	0.4	#_	PREDATOR
-1999	6	11	113334	0.4	#_	PREDATOR
-2000	6	11	101574	0.4	#_	PREDATOR
-2001	6	11	72134	0.4	#_	PREDATOR
-2002	6	11	95470	0.4	#_	PREDATOR
-2003	6	11	117936	0.4	#_	PREDATOR
-2004	6	11	102514	0.4	#_	PREDATOR
-2005	6	11	101168	0.4	#_	PREDATOR
-2006	6	11	74438	0.4	#_	PREDATOR
-2007	6	11	111606	0.4	#_	PREDATOR
-2008	6	11	209820	0.4	#_	PREDATOR
-2009	6	11	193348	0.4	#_	PREDATOR
-2010	6	11	263820	0.4	#_	PREDATOR
-2011	6	11	337830	0.4	#_	PREDATOR
-2012	6	11	437196	0.4	#_	PREDATOR
-2013	6	11	280296	0.4	#_	PREDATOR
-2014	6	11	286542	0.4	#_	PREDATOR
-2015	6	11	529110	0.4	#_	PREDATOR
-2016	6	11	249662	0.4	#_	PREDATOR
-2017	6	11	169820	0.4	#_	PREDATOR
-2018	6	11	127716	0.4	#_	PREDATOR
-2019	6	11	267458	0.4	#_	PREDATOR
-2020	6	11	13800	0.4	#_	PREDATOR
+1991	6	11	1.3530	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+1992	6	11	1.3774	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+1993	6	11	1.2534	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+1994	6	11	1.1894	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+1995	6	11	1.2333	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+1996	6	11	1.1629	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+1997	6	11	1.2034	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+1998	6	11	1.3132	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+1999	6	11	1.1830	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2000	6	11	0.9632	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2001	6	11	0.9600	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2002	6	11	0.8471	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2003	6	11	0.7468	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2004	6	11	0.6434	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2005	6	11	0.6069	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2006	6	11	0.5761	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2007	6	11	0.3613	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2008	6	11	0.6515	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2009	6	11	0.4770	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2010	6	11	0.6133	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2011	6	11	0.6395	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2012	6	11	0.4431	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2013	6	11	0.6561	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2014	6	11	0.7276	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2015	6	11	0.7507	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2016	6	11	0.6284	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2017	6	11	0.5571	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2018	6	11	0.4386	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2019	6	11	0.4491	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
+2020	6	11	0.4236	0.4	#_	PREDATOR (MAPPPD 16 index colonies, weighted, relative)
 -9999 1 1 1 1 # terminator for survey observations 
 #
 0 #_N_fleets_with_discard

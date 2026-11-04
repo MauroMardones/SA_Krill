@@ -74,7 +74,7 @@
 # Sex: 1  BioPattern: 1  Growth
 0  5  3.4 3.4 0.5 6 -2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1  
 1  10  6.08 6.08 0.5 6 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1   
-0.05  1.5 0.47  0.47 0.5 6 4 201 0 0 0 0 0 0 # VonBert_K_Fem_GP_1 (env link: additive, Chl-a var 1)
+0.05 1.5 0.47 0.47 0.5 6 4 201 0 0 0 0 0 0 # VonBert_K_Fem_GP_1 (env link: additive, Chl-a var 1)
 0.05 0.25 0.14 0.14 0.5 0 -4 0 0 0 0 0 0 0  # CV_young_Fem_GP_1 
 0.05 0.25 0.07 0.07 0.5 0 -4 0 0 0 0 0 0 0  # CV_old_Fem_GP_1 
 # Sex: 1  BioPattern: 1  WtLen
@@ -111,7 +111,7 @@
 #-0.99 0.99 0 0 0.5 -6 -6 # M2_pred1_dev_autocorr
 #
 #_timevary MG parameters: VonBert_K env link (Chl-a)
--0.1  0.1  0.01  0  0.05  6  5  # VonBert_K_ENV_add (K(y)=K+TVP*chl(y))
+-0.1  0.1  0.01  0  1  6  2  # VonBert_K_ENV_add (K(y)=K+TVP*chl(y))
 #
 #_seasonal_effects_on_biology_parms
 0 0 0 0 0 0 0 0 0 0 #_femwtlen1,femwtlen2,mat1,mat2,fec1,fec2,Malewtlen1,malewtlen2,L1,K
@@ -129,7 +129,7 @@
 0             0             0             0             0             0        -99          0          0          0          0          0          0          0 # SR_autocorr
 # timevary SR parameters (none: env link moved to VonBert K)
 1 #do_recdev:  0=none; 1=devvector (R=F(SSB)+dev); 2=deviations (R=F(SSB)+dev); 3=deviations (R=R0*dev; dev2=R-f(SSB)); 4=like 3 with sum(dev2) adding penalty
-1994 # first year of main recr_devs; early devs can preceed this era
+1990 # first year of main recr_devs; early devs can preceed this era
 2019 # last year of main recr_devs; forecast devs start in following year
 2 #_recdev phase 
 1 # (0/1) to read 13 advanced options
@@ -243,7 +243,7 @@
 24	0	0	0	#		FISHERYBS
 1	0	0	0	#		FISHERYEI
 15	0	0	1	#		FISHERYGS (mirror BS fleet 1)
-1	0	0	0	#		FISHERYJOIN
+15	0	0	2	#		FISHERYJOIN (mirror EI fleet 2)
 1	0	0	0	#		FISHERYSSWI
 1	0	0	0	#		SURVEYBS
 1	0	0	0	#		SURVEYEI
@@ -292,29 +292,27 @@
 -999	9	-999	-999	0.01	1	-99	0	0	0	0	0	0	0	#	Initial_selex_FISHERY(1)
 -999	9	-999	-999	0.01	1	-99	0	0	0	0	0	0	0	#	Final_selex_FISHERY(1)
 #	1	FISHERY	LenSelex														
-0.01	10	3.5	3.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(2)		
-0.5	8	4	4	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(2)		
+0.01	5.5	4.4	4.4	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(2)		
+0.5	8	1	1	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(2)		
 #	1	FISHERY	LenSelex														
-0.01	8	3.5	3.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(4)		
-0.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(4)	
 #	1	FISHERY	LenSelex														
-0.01	8	3.5	3.5	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(5)		
-0.5	8	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(5)		
+0.01	5.5	4.6	4.6	0.01	1	3	0	0	0	0	0	0	0	#	Size_inflection_FISHERY(5)		
+0.5	8	1	1	0.01	1	2	0	0	0	0	0	0	0	#	Size_95%width_FISHERY(5)		
 #	1	SURVEY	LenSelex														
 1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYBS(6)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYBS(6)		
+0.3	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYBS(6)		
 #	1	SURVEY	LenSelex														
 1	7	3	3	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYEI(7)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYEI(7)		
+0.3	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYEI(7)		
 #	1	SURVEY	LenSelex														
 1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYGS(8)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYGS(8)		
+0.3	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYGS(8)		
 #	1	SURVEY	LenSelex														
 1	7	3	3	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYJOIN(9)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYJOIN(9)		
+0.3	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYJOIN(9)		
 #	1	SURVEY	LenSelex														
 1	7	2	2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_SURVEYSSWI(10)		
-1	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYSSWI(10)
+0.3	7	1.0	1.0	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_SURVEYSSWI(10)
 #	2	PREDATOR	LenSelex														
 #0	3	0.2	0.2	0.01	1	2	0	0	0	0	0	0	0	#	Size_inflection_PREDATOR(11)		
 #0	3	0.2 0.2	0.01	1	3	0	0	0	0	0	0	0	#	Size_95%width_PREDATOR(11)		   
