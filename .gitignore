@@ -123,3 +123,4 @@ _backup_flotas_20260923/
 *.md.bak
 
 
+data/chl/*.nc
